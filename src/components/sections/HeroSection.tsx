@@ -81,7 +81,7 @@ export default function HeroSection() {
                   priority
                 />
               </a>
-              <span className="text-[1rem] opacity-70">
+              <span className="text-[1rem] text-xwhite">
                 Free to download. Your data stays yours.
               </span>
             </div>
@@ -101,7 +101,7 @@ export default function HeroSection() {
           </div>
 
           {/* Right Column - Phone */}
-          <div className="relative h-full max-[767px]:flex max-[767px]:justify-center">
+          <div className="relative h-full flex justify-end max-[767px]:justify-center">
             <Image
               src="/images/dashboard.png"
               alt="Smartphone screen displaying a health app dashboard with xHeal Score of 25, flare ups, streak of 5 days, health awareness report score of 75 out of 100, and navigation icons for Home, Routine, Add, Records, and Chat."
