@@ -78,7 +78,7 @@ export default function Navbar() {
             <Link
               key={item.href}
               href={item.href}
-              className="text-[1.375rem] px-[10px] py-[10px] border border-transparent rounded-[12px] transition-all duration-200 hover:border-xlight-blue hover:bg-xlight-blue-low"
+              className="text-[1.5rem] px-[10px] py-[10px] border border-transparent rounded-[12px] transition-all duration-200 hover:border-xlight-blue hover:bg-xlight-blue-low"
               style={{ color: "#ffffff" }}
             >
               {item.label}
