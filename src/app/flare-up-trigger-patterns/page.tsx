@@ -116,24 +116,24 @@ const testimonials = [
 
 const trustItems = [
   {
-    title: "Zero-retention AI",
+    title: "Your patterns stay on your terms",
     detail:
-      "Our LLM partner does not store your data and never uses it for training. Period.",
+      "Flare-up data is analyzed using zero-retention AI. Your symptom patterns are never stored by our AI partner or used to train models.",
   },
   {
-    title: "Medical-standard reasoning",
+    title: "Clinically grounded detection",
     detail:
-      "Every insight is interpreted through WHO, ADA, EASD, and other global clinical guidelines.",
+      "Pattern analysis is interpreted through WHO, ADA, and EASD guidelines, not unverified correlations.",
   },
   {
-    title: "You own your history",
+    title: "Only you see your triggers",
     detail:
-      "Delete any conversation or your entire chat history at any time, right from the app.",
+      "Your trigger patterns, symptom logs, and early warnings are visible only to you unless you choose to share them.",
   },
   {
-    title: "Minimized data transfer",
+    title: "Built for accuracy, not assumptions",
     detail:
-      "We send de-identified signals and limit data to only what's needed to answer your question.",
+      "xHeal cross-references multiple data sources before surfacing a pattern. The more context you provide, the fewer false signals.",
   },
 ];
 
@@ -321,7 +321,7 @@ export default function FlareUpTriggerPatternsPage() {
                   ))}
                 </div>
                 <span className="text-[1.125rem]" style={{ color: "#ffffffdd" }}>
-                  Trusted by 5,000+ people
+                  Rated 5.0 on the App Store
                 </span>
               </div>
 
@@ -343,6 +343,9 @@ export default function FlareUpTriggerPatternsPage() {
                     priority
                   />
                 </a>
+                <p className="text-[0.875rem] mt-[8px]" style={{ color: "#ffffffaa" }}>
+                  Free to download. Your data stays yours.
+                </p>
               </div>
             </div>
 
@@ -382,9 +385,9 @@ export default function FlareUpTriggerPatternsPage() {
         <div className="w-full max-w-[100em] mx-auto px-[5em] pt-[5em] pb-[5em] flex flex-col gap-[80px] max-[991px]:px-[40px] max-[479px]:px-[20px]">
           <ScrollReveal>
             <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack max-w-[52rem] max-[991px]:text-[3rem]">
-              Flare-ups don&apos;t come from nowhere.{" "}
+              Your body sends warning signs.{" "}
               <span className="text-xdark-blue">
-                The patterns are there - you just can&apos;t see them yet.
+                The problem is seeing them in time.
               </span>
             </h2>
           </ScrollReveal>
@@ -428,8 +431,8 @@ export default function FlareUpTriggerPatternsPage() {
         <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col items-center gap-[80px] max-[991px]:px-[40px] max-[479px]:px-[20px]">
           <ScrollReveal>
             <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack text-center max-[991px]:text-[3rem]">
-              Three steps to{" "}
-              <span className="text-xdark-blue">prevention</span>
+              From tracking to preventing,{" "}
+              <span className="text-xdark-blue">in three steps</span>
             </h2>
           </ScrollReveal>
 
@@ -481,9 +484,9 @@ export default function FlareUpTriggerPatternsPage() {
         <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col gap-[80px] max-[991px]:px-[40px] max-[479px]:px-[20px]">
           <ScrollReveal>
             <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack max-w-[52rem] max-[991px]:text-[3rem]">
-              Real questions.{" "}
+              Questions your body{" "}
               <span className="text-xdark-blue">
-                Real answers from your data.
+                can finally answer
               </span>
             </h2>
           </ScrollReveal>
@@ -530,8 +533,8 @@ export default function FlareUpTriggerPatternsPage() {
         <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col items-center gap-[60px] relative z-10 max-[991px]:px-[40px] max-[479px]:px-[20px]">
           <ScrollReveal>
             <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xwhite text-center max-[991px]:text-[3rem]">
-              Trusted by people who{" "}
-              <span className="text-xlight-blue">take health seriously</span>
+              From reacting to flare-ups{" "}
+              <span className="text-xlight-blue">to preventing them</span>
             </h2>
           </ScrollReveal>
 
@@ -575,8 +578,8 @@ export default function FlareUpTriggerPatternsPage() {
             <ScrollReveal>
               <div className="flex flex-col gap-[40px]">
                 <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack max-[991px]:text-[3rem]">
-                  Your data stays{" "}
-                  <span className="text-xdark-blue">yours</span>
+                  How pattern detection{" "}
+                  <span className="text-xdark-blue">stays private</span>
                 </h2>
 
                 <div className="flex flex-col gap-[28px]">
@@ -622,7 +625,7 @@ export default function FlareUpTriggerPatternsPage() {
         <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col items-center gap-[60px] max-[991px]:px-[40px] max-[479px]:px-[20px]">
           <ScrollReveal>
             <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xwhite text-center max-[991px]:text-[3rem]">
-              Common questions
+              About flare-up detection
             </h2>
           </ScrollReveal>
 
@@ -681,6 +684,9 @@ export default function FlareUpTriggerPatternsPage() {
                 height={67}
               />
             </a>
+            <p className="text-[0.875rem] mt-[8px]" style={{ color: "#ffffffaa" }}>
+              Free to download. Your data stays yours.
+            </p>
           </ScrollReveal>
         </div>
       </section>

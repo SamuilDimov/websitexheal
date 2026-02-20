@@ -116,24 +116,24 @@ const testimonials = [
 
 const trustItems = [
   {
-    title: "Zero-retention AI",
+    title: "Encrypted storage",
     detail:
-      "Our LLM partner does not store your data and never uses it for training. Period.",
+      "Every record, PDF, and image is encrypted at rest and in transit. Your medical history is protected by the same standards used in clinical systems.",
   },
   {
-    title: "Medical-standard reasoning",
+    title: "Works with your existing records",
     detail:
-      "Every insight is interpreted through WHO, ADA, EASD, and other global clinical guidelines.",
+      "PDFs, photos, Apple Health data, MyChart records. xHeal reads and organizes them without altering the originals.",
   },
   {
-    title: "You own your history",
+    title: "Full data portability",
     detail:
-      "Delete any conversation or your entire chat history at any time, right from the app.",
+      "Your records are yours. Export everything at any time. Delete everything at any time. No lock-in, no friction.",
   },
   {
-    title: "Minimized data transfer",
+    title: "Country and language agnostic",
     detail:
-      "We send de-identified signals and limit data to only what's needed to answer your question.",
+      "Records from any country, in any language. xHeal's AI handles the interpretation so your timeline stays complete.",
   },
 ];
 
@@ -333,7 +333,7 @@ export default function HealthTimelinePage() {
                   className="text-[1.125rem]"
                   style={{ color: "#ffffffdd" }}
                 >
-                  Trusted by 5,000+ people
+                  Rated 5.0 on the App Store
                 </span>
               </div>
 
@@ -353,6 +353,9 @@ export default function HealthTimelinePage() {
                     priority
                   />
                 </a>
+                <p className="text-[0.875rem] mt-[8px]" style={{ color: "#ffffffaa" }}>
+                  Free to download. Your data stays yours.
+                </p>
               </div>
             </div>
 
@@ -392,9 +395,9 @@ export default function HealthTimelinePage() {
         <div className="w-full max-w-[100em] mx-auto px-[5em] pt-[5em] pb-[5em] flex flex-col gap-[80px] max-[991px]:px-[40px] max-[479px]:px-[20px]">
           <ScrollReveal>
             <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack max-w-[52rem] max-[991px]:text-[3rem]">
-              Your health has a history.{" "}
+              Your records are in 6 places.{" "}
               <span className="text-xdark-blue">
-                It shouldn&apos;t live in filing cabinets.
+                Your doctor sees 1.
               </span>
             </h2>
           </ScrollReveal>
@@ -438,8 +441,8 @@ export default function HealthTimelinePage() {
         <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col items-center gap-[80px] max-[991px]:px-[40px] max-[479px]:px-[20px]">
           <ScrollReveal>
             <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack text-center max-[991px]:text-[3rem]">
-              Three steps to{" "}
-              <span className="text-xdark-blue">your full picture</span>
+              All your records. One timeline.{" "}
+              <span className="text-xdark-blue">Three steps.</span>
             </h2>
           </ScrollReveal>
 
@@ -491,9 +494,9 @@ export default function HealthTimelinePage() {
         <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col gap-[80px] max-[991px]:px-[40px] max-[479px]:px-[20px]">
           <ScrollReveal>
             <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack max-w-[52rem] max-[991px]:text-[3rem]">
-              Real questions.{" "}
+              Find any record in seconds.{" "}
               <span className="text-xdark-blue">
-                Instant answers from your timeline.
+                Seriously.
               </span>
             </h2>
           </ScrollReveal>
@@ -540,8 +543,8 @@ export default function HealthTimelinePage() {
         <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col items-center gap-[60px] relative z-10 max-[991px]:px-[40px] max-[479px]:px-[20px]">
           <ScrollReveal>
             <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xwhite text-center max-[991px]:text-[3rem]">
-              Trusted by people who{" "}
-              <span className="text-xlight-blue">take health seriously</span>
+              Years of records. One place.{" "}
+              <span className="text-xlight-blue">Finally.</span>
             </h2>
           </ScrollReveal>
 
@@ -591,8 +594,8 @@ export default function HealthTimelinePage() {
             <ScrollReveal>
               <div className="flex flex-col gap-[40px]">
                 <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack max-[991px]:text-[3rem]">
-                  Your data stays{" "}
-                  <span className="text-xdark-blue">yours</span>
+                  Your records. Your control.{" "}
+                  <span className="text-xdark-blue">Always.</span>
                 </h2>
 
                 <div className="flex flex-col gap-[28px]">
@@ -638,7 +641,7 @@ export default function HealthTimelinePage() {
         <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col items-center gap-[60px] max-[991px]:px-[40px] max-[479px]:px-[20px]">
           <ScrollReveal>
             <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xwhite text-center max-[991px]:text-[3rem]">
-              Common questions
+              About your Health Timeline
             </h2>
           </ScrollReveal>
 
@@ -673,8 +676,8 @@ export default function HealthTimelinePage() {
         <div className="w-full max-w-[100em] mx-auto px-[5em] py-[10em] flex flex-col items-center gap-[40px] text-center relative z-10 max-[991px]:px-[40px] max-[991px]:py-[6em] max-[479px]:px-[20px]">
           <ScrollReveal>
             <h2 className="text-[4.5rem] font-medium leading-[1] tracking-[-0.04em] text-xwhite max-w-[48rem] mx-auto max-[991px]:text-[3rem]">
-              Your health has a history.{" "}
-              <span className="text-xlight-blue">Own it.</span>
+              Every record. Every result.{" "}
+              <span className="text-xlight-blue">One timeline.</span>
             </h2>
           </ScrollReveal>
           <ScrollReveal delay={150}>
@@ -700,6 +703,9 @@ export default function HealthTimelinePage() {
                 height={67}
               />
             </a>
+            <p className="text-[0.875rem] mt-[8px]" style={{ color: "#ffffffaa" }}>
+              Free to download. Your data stays yours.
+            </p>
           </ScrollReveal>
         </div>
       </section>

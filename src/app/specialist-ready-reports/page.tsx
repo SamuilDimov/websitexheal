@@ -139,24 +139,24 @@ const testimonials = [
 
 const trustItems = [
   {
-    title: "Zero-retention AI",
+    title: "Designed with clinicians in mind",
     detail:
-      "Our LLM partner does not store your data and never uses it for training. Period.",
+      "Report formats follow clinical communication standards. Doctors, nutritionists, and trainers can read them without training.",
   },
   {
-    title: "Medical-standard reasoning",
+    title: "Guideline-aligned analysis",
     detail:
-      "Every insight is interpreted through WHO, ADA, EASD, and other global clinical guidelines.",
+      "Every report references WHO, ADA, and EASD standards, giving your care team confidence in the data behind it.",
   },
   {
-    title: "You own your history",
+    title: "You decide who sees what",
     detail:
-      "Delete any conversation or your entire chat history at any time, right from the app.",
+      "Download as PDF, share from the app, or keep reports private. No report is shared without your explicit action.",
   },
   {
-    title: "Minimized data transfer",
+    title: "No data leaves without you",
     detail:
-      "We send de-identified signals and limit data to only what's needed to answer your question.",
+      "Reports are generated on-demand. Your full health profile never leaves the xHeal ecosystem unless you export it.",
   },
 ];
 
@@ -344,7 +344,7 @@ export default function SpecialistReadyReportsPage() {
                   ))}
                 </div>
                 <span className="text-[1.125rem]" style={{ color: "#ffffffdd" }}>
-                  Trusted by 5,000+ people
+                  Rated 5.0 on the App Store
                 </span>
               </div>
 
@@ -366,6 +366,9 @@ export default function SpecialistReadyReportsPage() {
                     priority
                   />
                 </a>
+                <p className="text-[0.875rem] mt-[8px]" style={{ color: "#ffffffaa" }}>
+                  Free to download. Your data stays yours.
+                </p>
               </div>
             </div>
 
@@ -405,9 +408,9 @@ export default function SpecialistReadyReportsPage() {
         <div className="w-full max-w-[100em] mx-auto px-[5em] pt-[5em] pb-[5em] flex flex-col gap-[80px] max-[991px]:px-[40px] max-[479px]:px-[20px]">
           <ScrollReveal>
             <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack max-w-[52rem] max-[991px]:text-[3rem]">
-              Your health data exists.{" "}
+              15 minutes. That&apos;s all you get.{" "}
               <span className="text-xdark-blue">
-                Your doctor just never sees it.
+                Make them count.
               </span>
             </h2>
           </ScrollReveal>
@@ -451,8 +454,8 @@ export default function SpecialistReadyReportsPage() {
         <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col items-center gap-[80px] max-[991px]:px-[40px] max-[479px]:px-[20px]">
           <ScrollReveal>
             <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack text-center max-[991px]:text-[3rem]">
-              Three steps to{" "}
-              <span className="text-xdark-blue">clarity</span>
+              From your data to{" "}
+              <span className="text-xdark-blue">your doctor&apos;s hands</span>
             </h2>
           </ScrollReveal>
 
@@ -535,9 +538,9 @@ export default function SpecialistReadyReportsPage() {
         <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col gap-[80px] max-[991px]:px-[40px] max-[479px]:px-[20px]">
           <ScrollReveal>
             <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack max-w-[52rem] max-[991px]:text-[3rem]">
-              Real questions.{" "}
+              The right report for{" "}
               <span className="text-xdark-blue">
-                Real answers from your data.
+                every appointment
               </span>
             </h2>
           </ScrollReveal>
@@ -584,8 +587,8 @@ export default function SpecialistReadyReportsPage() {
         <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col items-center gap-[60px] relative z-10 max-[991px]:px-[40px] max-[479px]:px-[20px]">
           <ScrollReveal>
             <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xwhite text-center max-[991px]:text-[3rem]">
-              Trusted by people who{" "}
-              <span className="text-xlight-blue">take health seriously</span>
+              My doctor said: &lsquo;I wish all patients{" "}
+              <span className="text-xlight-blue">came this prepared.&rsquo;</span>
             </h2>
           </ScrollReveal>
 
@@ -629,8 +632,8 @@ export default function SpecialistReadyReportsPage() {
             <ScrollReveal>
               <div className="flex flex-col gap-[40px]">
                 <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack max-[991px]:text-[3rem]">
-                  Your data stays{" "}
-                  <span className="text-xdark-blue">yours</span>
+                  Reports you control.{" "}
+                  <span className="text-xdark-blue">Data that stays private.</span>
                 </h2>
 
                 <div className="flex flex-col gap-[28px]">
@@ -676,7 +679,7 @@ export default function SpecialistReadyReportsPage() {
         <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col items-center gap-[60px] max-[991px]:px-[40px] max-[479px]:px-[20px]">
           <ScrollReveal>
             <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xwhite text-center max-[991px]:text-[3rem]">
-              Common questions
+              About specialist-ready reports
             </h2>
           </ScrollReveal>
 
@@ -711,8 +714,8 @@ export default function SpecialistReadyReportsPage() {
         <div className="w-full max-w-[100em] mx-auto px-[5em] py-[10em] flex flex-col items-center gap-[40px] text-center relative z-10 max-[991px]:px-[40px] max-[991px]:py-[6em] max-[479px]:px-[20px]">
           <ScrollReveal>
             <h2 className="text-[4.5rem] font-medium leading-[1] tracking-[-0.04em] text-xwhite max-w-[48rem] mx-auto max-[991px]:text-[3rem]">
-              Give your care team{" "}
-              <span className="text-xlight-blue">the full picture.</span>
+              Walk in prepared.{" "}
+              <span className="text-xlight-blue">Walk out with answers.</span>
             </h2>
           </ScrollReveal>
           <ScrollReveal delay={150}>
@@ -735,6 +738,9 @@ export default function SpecialistReadyReportsPage() {
                 height={67}
               />
             </a>
+            <p className="text-[0.875rem] mt-[8px]" style={{ color: "#ffffffaa" }}>
+              Free to download. Your data stays yours.
+            </p>
           </ScrollReveal>
         </div>
       </section>

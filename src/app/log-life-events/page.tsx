@@ -116,24 +116,24 @@ const testimonials = [
 
 const trustItems = [
   {
-    title: "Zero-retention AI",
+    title: "Manual data stays manual",
     detail:
-      "Our LLM partner does not store your data and never uses it for training. Period.",
+      "What you log is what you choose to log. xHeal never auto-generates life event entries or infers sensitive details without your input.",
   },
   {
-    title: "Medical-standard reasoning",
+    title: "Logs feed your AI, not ours",
     detail:
-      "Every insight is interpreted through WHO, ADA, EASD, and other global clinical guidelines.",
+      "Your log entries make your Digital Twin smarter. They're never shared with our AI partner for training or stored externally.",
   },
   {
-    title: "You own your history",
+    title: "Share selectively",
     detail:
-      "Delete any conversation or your entire chat history at any time, right from the app.",
+      "Include log data in specialist reports or keep it private. You control which logs are visible and to whom.",
   },
   {
-    title: "Minimized data transfer",
+    title: "Context without surveillance",
     detail:
-      "We send de-identified signals and limit data to only what's needed to answer your question.",
+      "xHeal captures what your wearable can't: stress, medications, life changes. But only what you decide to record.",
   },
 ];
 
@@ -333,7 +333,7 @@ export default function LogLifeEventsPage() {
                   className="text-[1.125rem]"
                   style={{ color: "#ffffffdd" }}
                 >
-                  Trusted by 5,000+ people
+                  Rated 5.0 on the App Store
                 </span>
               </div>
 
@@ -353,6 +353,9 @@ export default function LogLifeEventsPage() {
                     priority
                   />
                 </a>
+                <p className="text-[0.875rem] mt-[8px]" style={{ color: "#ffffffaa" }}>
+                  Free to download. Your data stays yours.
+                </p>
               </div>
             </div>
 
@@ -392,9 +395,9 @@ export default function LogLifeEventsPage() {
         <div className="w-full max-w-[100em] mx-auto px-[5em] pt-[5em] pb-[5em] flex flex-col gap-[80px] max-[991px]:px-[40px] max-[479px]:px-[20px]">
           <ScrollReveal>
             <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack max-w-[52rem] max-[991px]:text-[3rem]">
-              Life happens.{" "}
+              Your Apple Watch tracks your heart rate.{" "}
               <span className="text-xdark-blue">
-                Your health data should reflect it.
+                It can&apos;t track a stressful week.
               </span>
             </h2>
           </ScrollReveal>
@@ -438,8 +441,8 @@ export default function LogLifeEventsPage() {
         <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col items-center gap-[80px] max-[991px]:px-[40px] max-[479px]:px-[20px]">
           <ScrollReveal>
             <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack text-center max-[991px]:text-[3rem]">
-              Three steps to{" "}
-              <span className="text-xdark-blue">complete context</span>
+              30 seconds to log.{" "}
+              <span className="text-xdark-blue">Months of insight.</span>
             </h2>
           </ScrollReveal>
 
@@ -488,9 +491,9 @@ export default function LogLifeEventsPage() {
         <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col gap-[80px] max-[991px]:px-[40px] max-[479px]:px-[20px]">
           <ScrollReveal>
             <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack max-w-[52rem] max-[991px]:text-[3rem]">
-              Real questions.{" "}
+              Every log makes your Digital Twin{" "}
               <span className="text-xdark-blue">
-                Real answers from your logs.
+                smarter
               </span>
             </h2>
           </ScrollReveal>
@@ -537,8 +540,8 @@ export default function LogLifeEventsPage() {
         <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col items-center gap-[60px] relative z-10 max-[991px]:px-[40px] max-[479px]:px-[20px]">
           <ScrollReveal>
             <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xwhite text-center max-[991px]:text-[3rem]">
-              Trusted by people who{" "}
-              <span className="text-xlight-blue">take health seriously</span>
+              The small things turned out{" "}
+              <span className="text-xlight-blue">to be the big things</span>
             </h2>
           </ScrollReveal>
 
@@ -588,8 +591,8 @@ export default function LogLifeEventsPage() {
             <ScrollReveal>
               <div className="flex flex-col gap-[40px]">
                 <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack max-[991px]:text-[3rem]">
-                  Your data stays{" "}
-                  <span className="text-xdark-blue">yours</span>
+                  Your logs. Your choice{" "}
+                  <span className="text-xdark-blue">who sees them.</span>
                 </h2>
 
                 <div className="flex flex-col gap-[28px]">
@@ -635,7 +638,7 @@ export default function LogLifeEventsPage() {
         <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col items-center gap-[60px] max-[991px]:px-[40px] max-[479px]:px-[20px]">
           <ScrollReveal>
             <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xwhite text-center max-[991px]:text-[3rem]">
-              Common questions
+              About logging life events
             </h2>
           </ScrollReveal>
 
@@ -670,7 +673,7 @@ export default function LogLifeEventsPage() {
         <div className="w-full max-w-[100em] mx-auto px-[5em] py-[10em] flex flex-col items-center gap-[40px] text-center relative z-10 max-[991px]:px-[40px] max-[991px]:py-[6em] max-[479px]:px-[20px]">
           <ScrollReveal>
             <h2 className="text-[4.5rem] font-medium leading-[1] tracking-[-0.04em] text-xwhite max-w-[48rem] mx-auto max-[991px]:text-[3rem]">
-              The details matter.{" "}
+              The context your health data is missing.{" "}
               <span className="text-xlight-blue">Start logging.</span>
             </h2>
           </ScrollReveal>
@@ -697,6 +700,9 @@ export default function LogLifeEventsPage() {
                 height={67}
               />
             </a>
+            <p className="text-[0.875rem] mt-[8px]" style={{ color: "#ffffffaa" }}>
+              Free to download. Your data stays yours.
+            </p>
           </ScrollReveal>
         </div>
       </section>

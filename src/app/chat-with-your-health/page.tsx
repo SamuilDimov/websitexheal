@@ -116,24 +116,24 @@ const testimonials = [
 
 const trustItems = [
   {
-    title: "Zero-retention AI",
+    title: "Zero-retention conversations",
     detail:
-      "Our LLM partner does not store your data and never uses it for training. Period.",
+      "Our AI partner does not store your messages and never uses them for training. Your conversation exists only while you're in it.",
   },
   {
     title: "Medical-standard reasoning",
     detail:
-      "Every insight is interpreted through WHO, ADA, EASD, and other global clinical guidelines.",
+      "Every answer references WHO, ADA, and EASD clinical guidelines, the same frameworks your doctor uses.",
   },
   {
-    title: "You own your history",
+    title: "You control your history",
     detail:
-      "Delete any conversation or your entire chat history at any time, right from the app.",
+      "Delete any conversation or your entire chat history from the app. No questions asked, no hidden copies.",
   },
   {
-    title: "Minimized data transfer",
+    title: "Minimal data in, maximum context out",
     detail:
-      "We send de-identified signals and limit data to only what's needed to answer your question.",
+      "We send only de-identified signals needed to answer your question. Your name, identity, and full records never leave your device.",
   },
 ];
 
@@ -321,7 +321,7 @@ export default function ChatWithYourHealthPage() {
                   ))}
                 </div>
                 <span className="text-[1.125rem]" style={{ color: "#ffffffdd" }}>
-                  Trusted by 5,000+ people
+                  Rated 5.0 on the App Store
                 </span>
               </div>
 
@@ -343,6 +343,9 @@ export default function ChatWithYourHealthPage() {
                     priority
                   />
                 </a>
+                <p className="text-[0.875rem] mt-[8px]" style={{ color: "#ffffffaa" }}>
+                  Free to download. Your data stays yours.
+                </p>
               </div>
             </div>
 
@@ -382,9 +385,9 @@ export default function ChatWithYourHealthPage() {
         <div className="w-full max-w-[100em] mx-auto px-[5em] pt-[5em] pb-[5em] flex flex-col gap-[80px] max-[991px]:px-[40px] max-[479px]:px-[20px]">
           <ScrollReveal>
             <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack max-w-[52rem] max-[991px]:text-[3rem]">
-              Your health data exists.{" "}
+              You have the data. You just can&apos;t get{" "}
               <span className="text-xdark-blue">
-                Understanding it shouldn&apos;t be this hard.
+                answers from it.
               </span>
             </h2>
           </ScrollReveal>
@@ -428,8 +431,8 @@ export default function ChatWithYourHealthPage() {
         <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col items-center gap-[80px] max-[991px]:px-[40px] max-[479px]:px-[20px]">
           <ScrollReveal>
             <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack text-center max-[991px]:text-[3rem]">
-              Three steps to{" "}
-              <span className="text-xdark-blue">clarity</span>
+              Ask anything.{" "}
+              <span className="text-xdark-blue">Here&apos;s how.</span>
             </h2>
           </ScrollReveal>
 
@@ -481,9 +484,9 @@ export default function ChatWithYourHealthPage() {
         <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col gap-[80px] max-[991px]:px-[40px] max-[479px]:px-[20px]">
           <ScrollReveal>
             <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack max-w-[52rem] max-[991px]:text-[3rem]">
-              Real questions.{" "}
+              Questions your Digital Twin{" "}
               <span className="text-xdark-blue">
-                Real answers from your data.
+                can answer right now
               </span>
             </h2>
           </ScrollReveal>
@@ -530,8 +533,8 @@ export default function ChatWithYourHealthPage() {
         <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col items-center gap-[60px] relative z-10 max-[991px]:px-[40px] max-[479px]:px-[20px]">
           <ScrollReveal>
             <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xwhite text-center max-[991px]:text-[3rem]">
-              Trusted by people who{" "}
-              <span className="text-xlight-blue">take health seriously</span>
+              They asked. Their Digital Twin{" "}
+              <span className="text-xlight-blue">answered.</span>
             </h2>
           </ScrollReveal>
 
@@ -575,8 +578,8 @@ export default function ChatWithYourHealthPage() {
             <ScrollReveal>
               <div className="flex flex-col gap-[40px]">
                 <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack max-[991px]:text-[3rem]">
-                  Your data stays{" "}
-                  <span className="text-xdark-blue">yours</span>
+                  How we protect{" "}
+                  <span className="text-xdark-blue">your conversations</span>
                 </h2>
 
                 <div className="flex flex-col gap-[28px]">
@@ -622,7 +625,7 @@ export default function ChatWithYourHealthPage() {
         <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col items-center gap-[60px] max-[991px]:px-[40px] max-[479px]:px-[20px]">
           <ScrollReveal>
             <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xwhite text-center max-[991px]:text-[3rem]">
-              Common questions
+              About xHeal Chat
             </h2>
           </ScrollReveal>
 
@@ -681,6 +684,9 @@ export default function ChatWithYourHealthPage() {
                 height={67}
               />
             </a>
+            <p className="text-[0.875rem] mt-[8px]" style={{ color: "#ffffffaa" }}>
+              Free to download. Your data stays yours.
+            </p>
           </ScrollReveal>
         </div>
       </section>
