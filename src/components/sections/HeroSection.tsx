@@ -1,54 +1,4 @@
-"use client";
-
-import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-
-function AnimatedCounter({
-  target,
-  suffix = "+",
-}: {
-  target: number;
-  suffix?: string;
-}) {
-  const [count, setCount] = useState(0);
-  const ref = useRef<HTMLDivElement>(null);
-  const hasAnimated = useRef(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !hasAnimated.current) {
-          hasAnimated.current = true;
-          const duration = 2000;
-          const steps = 60;
-          const increment = target / steps;
-          let current = 0;
-          const timer = setInterval(() => {
-            current += increment;
-            if (current >= target) {
-              current = target;
-              clearInterval(timer);
-            }
-            setCount(Math.floor(current));
-          }, duration / steps);
-        }
-      },
-      { threshold: 0.5 }
-    );
-
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, [target]);
-
-  return (
-    <div ref={ref} className="flex items-center gap-[5px]">
-      <div className="text-inherit font-medium">
-        {count.toLocaleString()}
-      </div>
-      <div className="text-inherit font-medium"> {suffix}</div>
-    </div>
-  );
-}
 
 export default function HeroSection() {
   return (
@@ -91,15 +41,19 @@ export default function HeroSection() {
             {/* Stats Cards */}
             <div className="grid grid-cols-3 gap-[40px] max-[991px]:grid-cols-1 max-[991px]:gap-[20px]">
               <div className="border border-xlight-blue-low bg-xwhite text-xdark-blue rounded-[16px] p-[20px] leading-[1] flex flex-col gap-[10px] shadow-[0_4px_4px_#1419330d]">
-                <AnimatedCounter target={20000} />
-                <p className="text-xdark-blue text-[1.125rem]">
-                  Flare-up patterns detected early
+                <div className="text-[1.5rem] font-medium text-xdark-blue">
+                  250+ health parameters
+                </div>
+                <p className="text-xdark-blue text-[1.125rem] leading-[1.4]">
+                  Sleep, stress, recovery, strain, nutrition, activity, mood, genome, vitals, and more
                 </p>
               </div>
               <div className="border border-xlight-blue-low bg-xwhite text-xdark-blue rounded-[16px] p-[20px] leading-[1] flex flex-col gap-[10px] shadow-[0_4px_4px_#1419330d]">
-                <AnimatedCounter target={300000} />
-                <p className="text-xdark-blue text-[1.125rem]">
-                  Personalized health actions completed
+                <div className="text-[1.5rem] font-medium text-xdark-blue">
+                  All your sources, one platform
+                </div>
+                <p className="text-xdark-blue text-[1.125rem] leading-[1.4]">
+                  Apple Health, wearables, lab PDFs, medical records, genomics, and daily logs
                 </p>
               </div>
               <div className="border border-xlight-blue-low bg-xwhite text-xdark-blue rounded-[16px] p-[20px] leading-[1] flex flex-col gap-[10px] shadow-[0_4px_4px_#1419330d]">

@@ -4,6 +4,8 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import ScrollReveal from "@/components/ui/ScrollReveal";
+import CrossLinkSection from "@/components/feature-landing/CrossLinkSection";
+import ComparisonSection from "@/components/feature-landing/ComparisonSection";
 
 /* ------------------------------------------------------------------ */
 /*  DATA                                                               */
@@ -511,6 +513,24 @@ export default function FlareUpTriggerPatternsPage() {
         </div>
       </section>
 
+      <ComparisonSection
+        heading="Other apps track symptoms."
+        headingAccent="xHeal predicts what's coming."
+        intro="Symptom trackers help you record how you feel. That's useful. But recording isn't preventing. xHeal goes further: it cross-references your symptoms with your sleep, stress, nutrition, activity, and wearable data to find patterns and warns you before a flare-up develops."
+        columns={["Bearable", "Flaredown", "Apple Health", "xHeal"]}
+        rows={[
+          { feature: "Log symptoms", values: ["yes", "yes", "no", "yes"] },
+          { feature: "Track daily habits", values: ["yes", "Limited", "Limited", "yes"] },
+          { feature: "Import medical records", values: ["no", "no", "no", "yes"] },
+          { feature: "AI pattern detection", values: ["no", "no", "no", "yes"] },
+          { feature: "Early flare-up warnings", values: ["no", "no", "no", "yes"] },
+          { feature: "Correlate across data types", values: ["Basic", "Basic", "no", "Advanced"] },
+          { feature: "Generate doctor reports", values: ["no", "no", "no", "4 report types"] },
+        ]}
+        closingLine="By the time you feel a flare-up, it's too late to prevent it. xHeal reads the signals your body sends days before."
+        highlightColumn={3}
+      />
+
       {/* ============================================================ */}
       {/* 5. TESTIMONIALS - Dark cinematic strip                        */}
       {/* ============================================================ */}
@@ -636,6 +656,8 @@ export default function FlareUpTriggerPatternsPage() {
           </div>
         </div>
       </section>
+
+      <CrossLinkSection pageSlug="flare-up-trigger-patterns" />
 
       {/* ============================================================ */}
       {/* 8. FINAL CTA - Cinematic gradient with large type             */}

@@ -4,6 +4,8 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import ScrollReveal from "@/components/ui/ScrollReveal";
+import CrossLinkSection from "@/components/feature-landing/CrossLinkSection";
+import ComparisonSection from "@/components/feature-landing/ComparisonSection";
 
 /* ------------------------------------------------------------------ */
 /*  DATA                                                               */
@@ -511,6 +513,24 @@ export default function ChatWithYourHealthPage() {
         </div>
       </section>
 
+      <ComparisonSection
+        heading="Health apps give you data."
+        headingAccent="xHeal gives you answers."
+        intro="Most health tools stop at tracking. They show you numbers but never explain what they mean together. Your Digital Twin doesn't just store your data. It reads it, connects it, and talks to you about it."
+        columns={["Typical health app", "Apple Health", "xHeal"]}
+        rows={[
+          { feature: "Tracks health data", values: ["One vertical only", "Aggregates from many sources", "Aggregates + medical records + life events"] },
+          { feature: "Explains what data means", values: ["no", "no", "yes"] },
+          { feature: "Knows your full health history", values: ["no", "partial", "yes"] },
+          { feature: "You can ask it questions", values: ["no", "no", "yes"] },
+          { feature: "Follows medical guidelines", values: ["Rarely", "no", "WHO, ADA, EASD standards"] },
+          { feature: "Zero-retention privacy", values: ["Varies", "n/a", "yes"] },
+          { feature: "Generates reports for your doctor", values: ["no", "no", "4 report types"] },
+        ]}
+        closingLine="Your Apple Watch knows your heart rate. It doesn't know what it means for you. xHeal does."
+        highlightColumn={2}
+      />
+
       {/* ============================================================ */}
       {/* 5. TESTIMONIALS - Dark cinematic strip                        */}
       {/* ============================================================ */}
@@ -636,6 +656,8 @@ export default function ChatWithYourHealthPage() {
           </div>
         </div>
       </section>
+
+      <CrossLinkSection pageSlug="chat-with-your-health" />
 
       {/* ============================================================ */}
       {/* 8. FINAL CTA - Cinematic gradient with large type             */}

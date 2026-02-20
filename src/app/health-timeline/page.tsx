@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import ScrollReveal from "@/components/ui/ScrollReveal";
+import CrossLinkSection from "@/components/feature-landing/CrossLinkSection";
 
 /* ------------------------------------------------------------------ */
 /*  DATA                                                               */
@@ -652,6 +653,8 @@ export default function HealthTimelinePage() {
           </div>
         </div>
       </section>
+
+      <CrossLinkSection pageSlug="health-timeline" />
 
       {/* ============================================================ */}
       {/* 8. FINAL CTA - Cinematic gradient with large type             */}
