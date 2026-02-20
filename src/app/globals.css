@@ -276,42 +276,8 @@ blockquote {
   margin-top: 0;
 }
 
-/* ===== TIMELINE ALTERNATING PATTERN ===== */
-.timeline .timeline-item:nth-child(odd) .timeline-card-left {
-  display: flex;
-  flex-flow: column;
-}
-
-.timeline .timeline-item:nth-child(odd) .timeline-card-right {
-  display: none;
-}
-
-.timeline .timeline-item:nth-child(even) .timeline-card-left {
-  display: none;
-}
-
-.timeline .timeline-item:nth-child(even) .timeline-card-right {
-  display: flex;
-  flex-flow: column;
-}
-
-@media screen and (max-width: 767px) {
-  .timeline .timeline-item:nth-child(odd) .timeline-card-left,
-  .timeline .timeline-item:nth-child(even) .timeline-card-right {
-    display: flex;
-    flex-flow: column;
-    text-align: left;
-  }
-
-  .timeline .timeline-item:nth-child(odd) .timeline-card-right,
-  .timeline .timeline-item:nth-child(even) .timeline-card-left {
-    display: none;
-  }
-
-  .timeline .timeline-item {
-    grid-template-columns: 1fr;
-  }
-}
+/* ===== TIMELINE ===== */
+/* Alternation is handled in JSX via isLeft conditional rendering */
 
 /* ===== CINEMATIC ANIMATIONS ===== */
 @keyframes floatPhone {

@@ -159,38 +159,51 @@ export default function AboutPage() {
             {/* Vertical divider line */}
             <div className="absolute left-1/2 top-0 bottom-0 w-[0.125rem] -ml-[0.0625rem] bg-xlight-blue-low max-[767px]:hidden" />
 
-            {timelineEvents.map((event, index) => (
-              <div
-                key={index}
-                className="timeline-item grid grid-cols-2 gap-[60px] py-[20px] relative max-[767px]:grid-cols-1 max-[767px]:gap-[20px]"
-              >
-                {/* Left card (odd items) */}
-                <div className="timeline-card-left border border-xlight-blue-low bg-xwhite rounded-[16px] p-[20px] shadow-[0_4px_4px_#1419330d] text-right flex flex-col gap-[10px] leading-[1] relative">
-                  <p className="text-xblack-70 text-[1rem]">{event.date}</p>
-                  <h3 className="text-[1.5rem] font-medium leading-[1] tracking-[-0.01em] max-w-[42ch] ml-auto">
-                    {event.title}
-                  </h3>
-                  <p className="text-xblack-70 text-[1.125rem] max-[767px]:text-[1rem]">
-                    {event.description}
-                  </p>
-                  {/* Dot */}
-                  <div className="absolute top-1/2 -mt-[4px] -right-[35px] w-[8px] h-[8px] bg-xdark-blue rounded-full max-[767px]:hidden" />
+            {timelineEvents.map((event, index) => {
+              const isLeft = index % 2 === 0;
+              return (
+                <div
+                  key={index}
+                  className="timeline-item grid grid-cols-[1fr_1fr] gap-[60px] py-[20px] relative max-[767px]:grid-cols-1 max-[767px]:gap-[20px]"
+                >
+                  {isLeft ? (
+                    <>
+                      {/* Left card */}
+                      <div className="border border-xlight-blue-low bg-xwhite rounded-[16px] p-[20px] shadow-[0_4px_4px_#1419330d] text-right flex flex-col gap-[10px] leading-[1] relative max-[767px]:text-left">
+                        <p className="text-xdark-blue text-[1rem]">{event.date}</p>
+                        <h3 className="text-[1.5rem] font-medium leading-[1] tracking-[-0.01em] max-w-[42ch] ml-auto max-[767px]:ml-0">
+                          {event.title}
+                        </h3>
+                        <p className="text-xblack-70 text-[1.125rem] max-[767px]:text-[1rem]">
+                          {event.description}
+                        </p>
+                        {/* Dot */}
+                        <div className="absolute top-1/2 -mt-[4px] -right-[35px] w-[8px] h-[8px] bg-xdark-blue rounded-full max-[767px]:hidden" />
+                      </div>
+                      {/* Empty right column */}
+                      <div className="max-[767px]:hidden" />
+                    </>
+                  ) : (
+                    <>
+                      {/* Empty left column */}
+                      <div className="max-[767px]:hidden" />
+                      {/* Right card */}
+                      <div className="border border-xlight-blue-low bg-xwhite rounded-[16px] p-[20px] shadow-[0_4px_4px_#1419330d] text-left flex flex-col gap-[10px] leading-[1] relative">
+                        <p className="text-xdark-blue text-[1rem]">{event.date}</p>
+                        <h3 className="text-[1.5rem] font-medium leading-[1] tracking-[-0.01em] max-w-[42ch]">
+                          {event.title}
+                        </h3>
+                        <p className="text-xblack-70 text-[1.125rem] max-[767px]:text-[1rem]">
+                          {event.description}
+                        </p>
+                        {/* Dot */}
+                        <div className="absolute top-1/2 -mt-[4px] -left-[35px] w-[8px] h-[8px] bg-xdark-blue rounded-full max-[767px]:hidden" />
+                      </div>
+                    </>
+                  )}
                 </div>
-
-                {/* Right card (even items) */}
-                <div className="timeline-card-right border border-xlight-blue-low bg-xwhite rounded-[16px] p-[20px] shadow-[0_4px_4px_#1419330d] text-left flex flex-col gap-[10px] leading-[1] relative">
-                  <p className="text-xblack-70 text-[1rem]">{event.date}</p>
-                  <h3 className="text-[1.5rem] font-medium leading-[1] tracking-[-0.01em] max-w-[42ch]">
-                    {event.title}
-                  </h3>
-                  <p className="text-xblack-70 text-[1.125rem] max-[767px]:text-[1rem]">
-                    {event.description}
-                  </p>
-                  {/* Dot */}
-                  <div className="absolute top-1/2 -mt-[4px] -left-[35px] w-[8px] h-[8px] bg-xdark-blue rounded-full max-[767px]:hidden" />
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
