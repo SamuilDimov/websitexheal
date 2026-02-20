@@ -1,8 +1,8 @@
 /**
  * IntegrationLogosStrip
  *
- * Horizontal strip showing integration partners: Apple Health, Apple Watch, MyChart.
- * All icons rendered as inline SVGs in monochrome navy for visual harmony.
+ * Horizontal strip showing integration partners: Apple Health, Apple Watch, MyChart, and file imports.
+ * All icons rendered as inline SVGs. Uses text-xdark-blue for high contrast on light backgrounds.
  * Intended for hero sections or just below hero on homepage and feature pages.
  */
 export default function IntegrationLogosStrip({
@@ -11,13 +11,13 @@ export default function IntegrationLogosStrip({
   className?: string;
 }) {
   return (
-    <div className={`flex flex-col gap-[10px] ${className}`}>
-      <div className="flex items-center gap-[28px] max-[479px]:gap-[20px]">
+    <div className={`flex flex-col gap-[10px] text-xdark-blue ${className}`}>
+      <div className="flex items-center gap-[24px] flex-wrap max-[479px]:gap-[16px]">
         {/* Apple Health */}
-        <div className="flex items-center gap-[8px] opacity-70">
+        <div className="flex items-center gap-[6px]">
           <svg
-            width="22"
-            height="22"
+            width="20"
+            height="20"
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -28,19 +28,19 @@ export default function IntegrationLogosStrip({
               fill="currentColor"
             />
           </svg>
-          <span className="text-[0.8125rem] font-medium tracking-[0.01em]">
+          <span className="text-[0.8125rem] font-medium">
             Apple Health
           </span>
         </div>
 
         {/* Divider */}
-        <div className="w-px h-[16px] bg-current opacity-20" />
+        <div className="w-px h-[14px] bg-xdark-blue/30" />
 
         {/* Apple Watch */}
-        <div className="flex items-center gap-[8px] opacity-70">
+        <div className="flex items-center gap-[6px]">
           <svg
-            width="18"
-            height="22"
+            width="16"
+            height="20"
             viewBox="0 0 18 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -60,19 +60,19 @@ export default function IntegrationLogosStrip({
             <path d="M5 19V21.5C5 22.33 5.67 23 6.5 23H11.5C12.33 23 13 22.33 13 21.5V19" stroke="currentColor" strokeWidth="1.5" fill="none" />
             <circle cx="9" cy="12" r="1.5" fill="currentColor" />
           </svg>
-          <span className="text-[0.8125rem] font-medium tracking-[0.01em]">
+          <span className="text-[0.8125rem] font-medium">
             Apple Watch
           </span>
         </div>
 
         {/* Divider */}
-        <div className="w-px h-[16px] bg-current opacity-20" />
+        <div className="w-px h-[14px] bg-xdark-blue/30" />
 
         {/* MyChart */}
-        <div className="flex items-center gap-[8px] opacity-70">
+        <div className="flex items-center gap-[6px]">
           <svg
-            width="22"
-            height="22"
+            width="20"
+            height="20"
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -95,13 +95,52 @@ export default function IntegrationLogosStrip({
               strokeLinecap="round"
             />
           </svg>
-          <span className="text-[0.8125rem] font-medium tracking-[0.01em]">
+          <span className="text-[0.8125rem] font-medium">
             MyChart
           </span>
         </div>
+
+        {/* Divider */}
+        <div className="w-px h-[14px] bg-xdark-blue/30" />
+
+        {/* PDFs & Photos */}
+        <div className="flex items-center gap-[6px]">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path
+              d="M14 2H6C4.9 2 4 2.9 4 4V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V8L14 2Z"
+              stroke="currentColor"
+              strokeWidth="2"
+              fill="none"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M14 2V8H20"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M12 18V12M12 12L9 15M12 12L15 15"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+          <span className="text-[0.8125rem] font-medium">
+            PDFs &amp; Photos
+          </span>
+        </div>
       </div>
-      <span className="text-[0.6875rem] opacity-50">
-        Integrates with your health ecosystem
+      <span className="text-[0.75rem] text-xdark-blue/60 font-medium">
+        Import from your entire health ecosystem
       </span>
     </div>
   );
