@@ -6,6 +6,7 @@ import Link from "next/link";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import CrossLinkSection from "@/components/feature-landing/CrossLinkSection";
 import ComparisonSection from "@/components/feature-landing/ComparisonSection";
+import MedicalStandardsBadge from "@/components/ui/MedicalStandardsBadge";
 
 /* ------------------------------------------------------------------ */
 /*  DATA                                                               */
@@ -331,20 +332,23 @@ export default function FlareUpTriggerPatternsPage() {
               <div
                 style={{ animation: "fadeInUp 0.6s ease-out 0.6s both" }}
               >
-                <a
-                  href="https://apps.apple.com/us/app/xheal/id6748074977"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block"
-                >
-                  <Image
-                    src="/images/app-store-badge.svg"
-                    alt="Download on the App Store"
-                    width={200}
-                    height={67}
-                    priority
-                  />
-                </a>
+                <div className="flex items-center gap-[24px] flex-wrap">
+                  <a
+                    href="https://apps.apple.com/us/app/xheal/id6748074977"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block"
+                  >
+                    <Image
+                      src="/images/app-store-badge.svg"
+                      alt="Download on the App Store"
+                      width={200}
+                      height={67}
+                      priority
+                    />
+                  </a>
+                  <MedicalStandardsBadge className="text-xwhite" />
+                </div>
                 <p className="text-[0.875rem] mt-[8px]" style={{ color: "#ffffffaa" }}>
                   Free to download. Your data stays yours.
                 </p>

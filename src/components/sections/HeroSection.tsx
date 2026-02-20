@@ -1,4 +1,6 @@
 import Image from "next/image";
+import MedicalStandardsBadge from "@/components/ui/MedicalStandardsBadge";
+import IntegrationLogosStrip from "@/components/ui/IntegrationLogosStrip";
 
 export default function HeroSection() {
   return (
@@ -66,24 +68,28 @@ export default function HeroSection() {
               </div>
             </div>
 
-            {/* App Store Badge */}
-            <div className="flex flex-col gap-[12px]">
-              <a
-                href="https://apps.apple.com/us/app/xheal/id6748074977"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Image
-                  src="/images/app-store-badge.svg"
-                  alt="Download on the App Store"
-                  width={200}
-                  height={67}
-                  priority
-                />
-              </a>
+            {/* App Store Badge + Trust Signals */}
+            <div className="flex flex-col gap-[16px]">
+              <div className="flex items-center gap-[24px] flex-wrap">
+                <a
+                  href="https://apps.apple.com/us/app/xheal/id6748074977"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Image
+                    src="/images/app-store-badge.svg"
+                    alt="Download on the App Store"
+                    width={200}
+                    height={67}
+                    priority
+                  />
+                </a>
+                <MedicalStandardsBadge />
+              </div>
               <span className="text-[1rem] text-xdark-blue">
                 Free to download. Your data stays yours.
               </span>
+              <IntegrationLogosStrip />
             </div>
 
             {/* QR Code - Desktop only */}

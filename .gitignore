@@ -42,3 +42,8 @@ next-env.d.ts
 
 # local tool configs
 .opencode/
+
+# screenshots and generated images
+screenshots/
+generated_imgs/
+*.screenshot.png
