@@ -81,7 +81,7 @@ export default function HeroSection() {
                   priority
                 />
               </a>
-              <span className="text-[1rem] text-xlight-blue">
+              <span className="text-[1rem] text-xdark-blue">
                 Free to download. Your data stays yours.
               </span>
             </div>

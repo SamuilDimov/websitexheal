@@ -78,7 +78,7 @@ export default function Navbar() {
             <Link
               key={item.href}
               href={item.href}
-              className="text-[1.25rem] px-[10px] py-[10px] border border-transparent rounded-[12px] transition-all duration-200 hover:border-xlight-blue hover:bg-xlight-blue-low"
+              className="text-[1.375rem] px-[10px] py-[10px] border border-transparent rounded-[12px] transition-all duration-200 hover:border-xlight-blue hover:bg-xlight-blue-low"
               style={{ color: "#ffffff" }}
             >
               {item.label}
@@ -89,7 +89,7 @@ export default function Navbar() {
               href="https://apps.apple.com/us/app/xheal/id6748074977"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[1.125rem] text-center rounded-[12px] px-[24px] py-[10px] transition-all duration-200 hover:shadow-[0_4px_4px_0_var(--light-blue-low)] inline-block"
+              className="text-[1.25rem] text-center rounded-[12px] px-[28px] py-[12px] transition-all duration-200 hover:shadow-[0_4px_4px_0_var(--light-blue-low)] inline-block"
               style={{ backgroundColor: "#ffffff", color: "#4764ff" }}
             >
               Download App
