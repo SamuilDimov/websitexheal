@@ -4,51 +4,53 @@ import ScrollReveal from "@/components/ui/ScrollReveal";
 
 const features = [
   {
-    image: "/images/flare-up.png",
-    alt: "Mobile app screen showing flare-up insights for November 2025, featuring a calendar with daily flare-up indicators and a bar chart comparing routine and flare-up activities by day.",
-    title: "Flare-up Trigger Patterns",
+    image: "/images/chat-landing.png",
+    alt: "xHeal Chat - ask your Digital Twin about your health data and get personalized answers",
+    title: "Chat With Your Health",
     description:
-      "Flare-ups don't have to catch you by surprise! xHeal helps you detect early warning signs, track symptoms, and understand what triggers your flare-ups - so you can take control before they take over.",
+      "Ask your Digital Twin anything about your vitals, your labs, your symptoms, your patterns. Get answers grounded in your actual health data, not generic web results.",
+    href: "/chat-with-your-health",
+    featured: true,
+  },
+  {
+    image: "/images/flare-up.png",
+    alt: "xHeal flare-up trigger pattern detection with calendar and activity charts",
+    title: "Flare-Up Trigger Patterns",
+    description:
+      "xHeal cross-references your symptoms, sleep, stress, and activity to detect what triggers your flare-ups and warns you before the next one hits.",
     href: "/flare-up-trigger-patterns",
+    featured: true,
   },
   {
     image: "/images/reports-landing.png",
-    alt: "Smartphone screen showing a health report with a 75 out of 100 score for Health Awareness, summary of mental, physical, nutrition, and medical wellness, and a button to download the full report.",
-    title: "Health Awareness",
+    alt: "xHeal Health Awareness score showing 75 out of 100 across six health domains",
+    title: "Health Awareness Score",
     description:
-      "Understanding is the first step to better health! See the bigger picture. xHeal connects your sleep, mood, nutrition, activity, medical records, and lab results - revealing patterns you'd never spot on your own.",
+      "A single 0-100 score that reflects your health across six domains. Know exactly where you stand and which area needs attention first.",
     href: "/health-awareness",
   },
   {
-    image: "/images/chat-landing.png",
-    alt: 'Smartphone screen displaying a chat conversation where the user asks to summarize and explain the next 5 tasks, and the assistant replies listing 2 tasks: taking Vitamin A and doing yoga exercises.',
-    title: "Chat with Your Own Health",
-    description:
-      '"What were my vitals last year?" or "What\'s next for my health?" - just ask. Your Digital Twin knows your history and helps you understand patterns, track progress, and plan ahead.',
-    href: "/chat-with-your-health",
-  },
-  {
-    image: "/images/records-landing.png",
-    alt: "Mobile app screen showing a Records page with tabs for All files, Reports, and My files, and reports including Weekly Analysis with a score of 78, Hormone Tests PDF, and Flare-up incident with a score of 40.",
-    title: "Health Timeline",
-    description:
-      "Your medical records and personal stories - all in one place. See doctor visits, diagnoses, treatments, and life events that shaped your wellness journey, organized chronologically.",
-    href: "/health-timeline",
-  },
-  {
     image: "/images/get-reports.png",
-    alt: "Mobile app screen showing a Records page with tabs for All files, Reports, and My files.",
+    alt: "xHeal specialist-ready health reports for doctors and care teams",
     title: "Specialist-Ready Reports",
     description:
-      "Why Finder, My Snapshot, Clinical Report, and Health Gaps - four reports designed to share with your doctors, nutritionists, and trainers. Give your care team the full picture, ready for your next appointment.",
+      "Four report types designed for doctors, nutritionists, and trainers. Walk into your next appointment with the context your care team has never had.",
     href: "/specialist-ready-reports",
   },
   {
-    image: "/images/log-medication.png",
-    alt: "Mobile app screen showing logging options for medications and supplements.",
-    title: "Log Life Events & More",
+    image: "/images/records-landing.png",
+    alt: "xHeal health timeline with organized medical records and lab results",
+    title: "Health Timeline",
     description:
-      "Track supplements, medications, and life events that impact your health. Stressful week? New medication? Diet change? Log it all so your Digital Twin can connect the dots.",
+      "Every medical record, lab result, and life event organized chronologically in one searchable place. Find anything in seconds.",
+    href: "/health-timeline",
+  },
+  {
+    image: "/images/log-medication.png",
+    alt: "xHeal life event logging for medications, supplements, and health context",
+    title: "Log Life Events",
+    description:
+      "Supplements, medications, diet changes, stress. Log the context your wearable can't capture. Every entry makes your Digital Twin smarter.",
     href: "/log-life-events",
   },
 ];
@@ -59,7 +61,8 @@ export default function WhatYouGetSection() {
       <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col items-center gap-[80px] text-xblack max-[991px]:px-[40px] max-[479px]:px-[20px]">
         <ScrollReveal>
           <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-center max-[991px]:text-[3rem]">
-            What <span className="text-xdark-blue">you get</span>
+            Everything your health app{" "}
+            <span className="text-xdark-blue">is missing</span>
           </h2>
         </ScrollReveal>
 

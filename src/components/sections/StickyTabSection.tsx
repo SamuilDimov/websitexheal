@@ -9,25 +9,25 @@ const tabs = [
     id: "unified",
     label: "Unified",
     description:
-      "Your health, all connected. xHeal combines your medical records, lab results, and lifestyle data into one simple, secure space. Built for peace of mind and effortless collaboration, it lets you and your healthcare team see the same story - your story.",
+      "Medical records, lab results, wearable data, and daily habits, connected in one secure place. Your health team sees the same story you do.",
     image: "/images/vitals.png",
-    alt: "xHealth Vitals",
+    alt: "xHeal unified health vitals dashboard",
   },
   {
     id: "actionable",
     label: "Actionable",
     description:
-      "Our specialized AI models turn your health data into daily direction. xHeal transforms health insights into small, gamified actions that make building healthier habits simple, motivating, and rewarding - turning progress into part of your everyday life.",
+      "xHeal turns patterns into plans. Get daily actions based on your data, your goals, and what's actually working for you.",
     image: "/images/routine.png",
-    alt: "xHealth Routine",
+    alt: "xHeal daily health routine with personalized tasks",
   },
   {
-    id: "personalised",
-    label: "Personalised",
+    id: "personalized",
+    label: "Personalized",
     description:
-      "Every recommendation is made uniquely for you! From bespoke nutrition plans and mental health exercises to tailored fitness routines. xHeal understands your patterns, adapts as you evolve, and shapes a health journey that truly fits you.",
+      "No generic advice. Every insight and recommendation comes from your Digital Twin, an AI built on your history, your patterns, and your body.",
     image: "/images/report-summary.png",
-    alt: "Mobile app screen showing a routine schedule for November 2025 with daily progress circles and morning and afternoon tasks like conscious breathing, heavy breakfast, strength training, drinking electrolytes, all marked done.",
+    alt: "xHeal personalized health report summary with domain scores",
   },
 ];
 
@@ -72,9 +72,9 @@ export default function StickyTabSection() {
           {/* Section heading */}
           <ScrollReveal>
             <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack max-w-[18ch] max-[991px]:text-[3rem]">
-              The first mobile platform to provide{" "}
+              One app.{" "}
               <span className="text-xdark-blue">
-                a complete overview of an individual&apos;s health
+                Your complete health picture
               </span>
               .
             </h2>

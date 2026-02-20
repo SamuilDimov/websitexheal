@@ -85,13 +85,15 @@ export default function Navbar() {
             </Link>
           ))}
           <div>
-            <Link
-              href="#sign-up"
+            <a
+              href="https://apps.apple.com/us/app/xheal/id6748074977"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-[1.125rem] text-center rounded-[12px] px-[24px] py-[10px] transition-all duration-200 hover:shadow-[0_4px_4px_0_var(--light-blue-low)] inline-block"
               style={{ backgroundColor: "#ffffff", color: "#4764ff" }}
             >
-              Join the xHeal Community
-            </Link>
+              Download Free
+            </a>
           </div>
         </div>
 
@@ -159,13 +161,15 @@ export default function Navbar() {
             >
               Support
             </Link>
-            <Link
-              href="#sign-up"
+            <a
+              href="https://apps.apple.com/us/app/xheal/id6748074977"
+              target="_blank"
+              rel="noopener noreferrer"
               className="bg-xwhite text-xdark-blue text-[1.125rem] text-center rounded-[12px] px-[24px] py-[10px] inline-block mt-[20px]"
               onClick={() => setIsOpen(false)}
             >
-              Join the xHeal Community
-            </Link>
+              Download Free
+            </a>
           </div>
         </div>
       )}

@@ -87,25 +87,27 @@ export default function Footer() {
 
 function NewsletterSection() {
   const [step, setStep] = useState(1);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
   const [submitted, setSubmitted] = useState(false);
 
   const topics = [
     {
-      id: "wellness",
-      label: "Everyday wellness & balance",
-      description: "Better sleep, less stress, simple healthy habits",
+      id: "chronic",
+      label: "Living with a chronic condition",
+      description: "Flare-up prevention, trigger patterns, energy management",
     },
     {
-      id: "active",
-      label: "Active & training focused",
-      description: "Workouts, sports, performance, physically demanding work",
+      id: "optimize",
+      label: "Optimizing health & performance",
+      description: "Sleep, nutrition, activity, and how they connect",
     },
     {
-      id: "reset",
-      label: "Reset & rebuild",
-      description: "Low energy, burnout, flare-ups, starting again",
+      id: "understand",
+      label: "Understanding my body better",
+      description: "Lab results explained, health scores, what to ask your doctor",
     },
   ];
 
@@ -130,14 +132,16 @@ function NewsletterSection() {
   if (submitted) {
     return (
       <section id="sign-up" className="bg-gradient-to-b from-transparent to-xdark-blue">
-        <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] max-[991px]:px-[40px] max-[479px]:px-[20px] flex flex-col items-center">
-          <div className="border border-xlight-blue text-xblack bg-transparent rounded-[12px] mx-auto px-[40px] py-[60px] text-center max-w-[600px]">
-            <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack mb-[20px] max-[991px]:text-[3rem]">
-              Welcome to xHeal!
-            </h2>
-            <p className="text-[1.125rem] text-xblack-70">
-              Watch your inbox for your first health update soon.
-            </p>
+        <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] max-[991px]:px-[40px] max-[479px]:px-[20px]">
+          <div className="grid grid-cols-[1.2fr_1fr] gap-[80px] max-[991px]:gap-[40px] max-[767px]:grid-cols-1">
+            <div>
+              <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack max-[991px]:text-[3rem]">
+                Welcome to xHeal!
+              </h2>
+              <p className="text-[1.125rem] text-xblack-70 mt-[20px] max-w-[42ch]">
+                Watch your inbox for your first health update soon.
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -146,89 +150,138 @@ function NewsletterSection() {
 
   return (
     <section id="sign-up" className="bg-gradient-to-b from-transparent to-xdark-blue">
-      <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] max-[991px]:px-[40px] max-[479px]:px-[20px] flex flex-col items-center gap-[40px]">
-        <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack text-center max-[991px]:text-[3rem]">
-          Stay Informed. Stay Well.
-        </h2>
-        <p className="text-[1.125rem] text-xblack-70 text-center max-w-[51ch]">
-          Discover stories, expert advice, and strategies that help real people
-          live better with chronic conditions.
-        </p>
+      <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] max-[991px]:px-[40px] max-[479px]:px-[20px]">
+        <div className="grid grid-cols-[1.2fr_1fr] gap-[80px] max-[991px]:gap-[40px] max-[767px]:grid-cols-1">
+          {/* Left Column — Heading + Description + App Store */}
+          <div className="flex flex-col justify-between gap-[40px]">
+            <div>
+              <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack max-[991px]:text-[3rem]">
+                Get smarter about your health.{" "}
+                <span className="text-xdark-blue">Every week.</span>
+              </h2>
+              <p className="text-[1.125rem] text-xblack-70 mt-[20px] max-w-[42ch]">
+                One email per week with patterns, insights, and strategies that
+                help you understand your body better, whether you&apos;re
+                managing a condition, optimizing your wellness, or just paying
+                closer attention.
+              </p>
+            </div>
+            <a
+              href="https://apps.apple.com/us/app/xheal/id6748074977"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Image
+                src="/images/app-store-badge.svg"
+                alt="Download on the App Store"
+                width={200}
+                height={67}
+              />
+            </a>
+          </div>
 
-        {step === 1 ? (
-          <form
-            onSubmit={handleSubmitEmail}
-            className="flex flex-col gap-[20px] w-full max-w-[500px]"
-          >
-            <p className="text-xdark-blue font-medium text-[1rem]">Step 1</p>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              required
-              className="border-b border-b-xdark-blue bg-transparent text-xblack text-[1.25rem] h-[3em] px-0 py-0 outline-none placeholder:text-xblack-70"
-            />
-            <p className="text-[0.9rem] text-xblack-70">
-              By subscribing, I agree to the{" "}
-              <Link
-                href="/terms-conditions"
-                className="text-xlight-blue hover:underline"
+          {/* Right Column — Form */}
+          <div>
+            {step === 1 ? (
+              <form
+                onSubmit={handleSubmitEmail}
+                className="flex flex-col gap-[24px] w-full"
               >
-                Terms &amp; Conditions
-              </Link>{" "}
-              and{" "}
-              <Link
-                href="/privacy-policy"
-                className="text-xlight-blue hover:underline"
-              >
-                Privacy Policy
-              </Link>{" "}
-              and to receive the newsletter.
-            </p>
-            <button
-              type="submit"
-              className="bg-xdark-blue text-xwhite text-[1.125rem] text-center rounded-[12px] px-[24px] py-[10px] transition-all duration-200 hover:shadow-[0_4px_4px_0_var(--light-blue-low)] self-start"
-            >
-              Next
-            </button>
-          </form>
-        ) : (
-          <form
-            onSubmit={handleSubmitTopics}
-            className="flex flex-col gap-[20px] w-full max-w-[500px]"
-          >
-            <p className="text-xdark-blue font-medium text-[1rem]">Step 2</p>
-            <p className="text-xblack font-medium text-[1.25rem]">
-              What do you want to read about most?
-            </p>
-            {topics.map((topic) => (
-              <label
-                key={topic.id}
-                className="flex flex-col gap-[10px] border-b border-b-xdark-blue pt-[20px] pb-[20px] pl-[20px] cursor-pointer text-[1.25rem] leading-[1]"
-              >
-                <div className="flex items-center gap-[20px]">
-                  <input
-                    type="checkbox"
-                    checked={selectedTopics.includes(topic.id)}
-                    onChange={() => toggleTopic(topic.id)}
-                    className="w-[22px] h-[22px] border border-xdark-blue rounded-[4px] accent-xdark-blue"
-                  />
-                  <span className="text-xblack font-medium">{topic.label}</span>
+                <div className="grid grid-cols-2 gap-[40px] max-[479px]:grid-cols-1">
+                  <div>
+                    <input
+                      type="text"
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
+                      placeholder="First Name*"
+                      required
+                      className="border-b border-b-xdark-blue bg-transparent text-xblack text-[1.25rem] h-[3em] px-0 py-0 outline-none placeholder:text-xblack-70 w-full"
+                    />
+                  </div>
+                  <div>
+                    <input
+                      type="text"
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
+                      placeholder="Last Name*"
+                      required
+                      className="border-b border-b-xdark-blue bg-transparent text-xblack text-[1.25rem] h-[3em] px-0 py-0 outline-none placeholder:text-xblack-70 w-full"
+                    />
+                  </div>
                 </div>
-                <p className="text-[1rem] text-xblack-70 ml-[42px]">
-                  {topic.description}
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Email*"
+                  required
+                  className="border-b border-b-xdark-blue bg-transparent text-xblack text-[1.25rem] h-[3em] px-0 py-0 outline-none placeholder:text-xblack-70 w-full"
+                />
+                <div className="flex justify-end">
+                  <button
+                    type="submit"
+                    className="bg-xlight-blue text-xwhite text-[1.125rem] text-center rounded-full px-[48px] py-[14px] transition-all duration-200 hover:shadow-[0_4px_12px_0_var(--light-blue-low)]"
+                  >
+                    Submit
+                  </button>
+                </div>
+                <p className="text-[0.9rem] text-xblack-70">
+                  By subscribing, I agree to the{" "}
+                  <Link
+                    href="/terms-conditions"
+                    className="text-xblack underline hover:text-xdark-blue"
+                  >
+                    Terms &amp; Conditions
+                  </Link>{" "}
+                  and{" "}
+                  <Link
+                    href="/privacy-policy"
+                    className="text-xblack underline hover:text-xdark-blue"
+                  >
+                    Privacy Policy
+                  </Link>{" "}
+                  and to receive the newsletter.
                 </p>
-              </label>
-            ))}
-            <button
-              type="submit"
-              className="bg-xdark-blue text-xwhite text-[1.125rem] text-center rounded-[12px] px-[24px] py-[10px] transition-all duration-200 hover:shadow-[0_4px_4px_0_var(--light-blue-low)] self-start"
-            >
-              Subscribe
-            </button>
-          </form>
-        )}
+              </form>
+            ) : (
+              <form
+                onSubmit={handleSubmitTopics}
+                className="flex flex-col gap-[20px] w-full"
+              >
+                <p className="text-xblack font-medium text-[1.25rem]">
+                  What matters most to you?
+                </p>
+                {topics.map((topic) => (
+                  <label
+                    key={topic.id}
+                    className="flex flex-col gap-[8px] border-b border-b-xdark-blue pt-[16px] pb-[16px] cursor-pointer text-[1.125rem] leading-[1.3]"
+                  >
+                    <div className="flex items-center gap-[12px]">
+                      <input
+                        type="checkbox"
+                        checked={selectedTopics.includes(topic.id)}
+                        onChange={() => toggleTopic(topic.id)}
+                        className="w-[20px] h-[20px] border border-xdark-blue rounded-[4px] accent-xdark-blue flex-shrink-0"
+                      />
+                      <span className="text-xblack font-medium">{topic.label}</span>
+                    </div>
+                    <p className="text-[0.9rem] text-xblack-70 ml-[32px]">
+                      {topic.description}
+                    </p>
+                  </label>
+                ))}
+                <div className="flex justify-end">
+                  <button
+                    type="submit"
+                    className="bg-xlight-blue text-xwhite text-[1.125rem] text-center rounded-full px-[48px] py-[14px] transition-all duration-200 hover:shadow-[0_4px_12px_0_var(--light-blue-low)]"
+                  >
+                    Subscribe
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
+        </div>
       </div>
     </section>
   );

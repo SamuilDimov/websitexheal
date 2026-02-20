@@ -7,7 +7,7 @@ const faqs = [
   {
     question: "What is the xHeal Chat?",
     answer:
-      "xHeal Chat is your AI-powered health companion. It can answer your questions, explain your scores and reports, help you track symptoms, and guide you with personalized recommendations—making your health journey easier and more interactive.",
+      "xHeal Chat is your AI-powered health companion. It can answer your questions, explain your scores and reports, help you track symptoms, and guide you with personalized recommendations, making your health journey easier and more interactive.",
   },
   {
     question: "What is Records?",
@@ -17,7 +17,7 @@ const faqs = [
   {
     question: "What is Routine?",
     answer:
-      "Routines are daily or weekly actions—like tracking your steps, logging meals, or practicing relaxation exercises—that support your health goals. They help build lasting habits, boost your xHeal Score, and keep you on track toward better wellbeing.",
+      "Routines are daily or weekly actions like tracking your steps, logging meals, or practicing relaxation exercises that support your health goals. They help build lasting habits, boost your xHeal Score, and keep you on track toward better wellbeing.",
   },
   {
     question: "What is the xHeal Report?",

@@ -9,22 +9,29 @@ export default function AISection() {
           <div className="grid grid-cols-[1.65fr_1fr] gap-[80px] rounded-[12px] max-[991px]:gap-[40px] max-[767px]:grid-cols-1">
             {/* Left Column - Text */}
             <div className="grid grid-cols-1 gap-[40px]">
-              <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] max-w-[18ch] max-[991px]:text-[3rem]">
-                AI-enhanced experience{" "}
+              <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] max-w-[20ch] max-[991px]:text-[3rem]">
+                AI that reasons like a care team{" "}
                 <span className="text-xdark-blue">
-                  based on real medical input
+                  but knows your full story
                 </span>
               </h2>
-              <p className="text-xblack-70 text-[1.125rem] max-w-[51ch] max-[767px]:text-[1rem]">
-                The xHeal platform applies its own reasoning AI flow to unify
-                and analyze your health data, interpreting it through trusted
-                medical standards from leading global organizations such as WHO,
-                ADA, and EASD - enabling deeper pattern detection and more
-                relevant insights tailored to your wellbeing. It&apos;s like
-                having the collective thinking of multiple medical specialists
-                examining you at once - but simplified, connected, and delivered
-                to you in real time.
-              </p>
+              <div className="flex flex-col gap-[20px] max-w-[51ch]">
+                <p className="text-xblack-70 text-[1.125rem] max-[767px]:text-[1rem]">
+                  Most health apps track a single metric. xHeal connects all of
+                  them.
+                </p>
+                <p className="text-xblack-70 text-[1.125rem] max-[767px]:text-[1rem]">
+                  Our AI interprets your data through clinical guidelines from
+                  the WHO, ADA, and EASD, the same standards your doctor uses.
+                  But unlike any single specialist, your Digital Twin sees
+                  everything at once: your labs, your sleep, your symptoms, your
+                  habits, your history.
+                </p>
+                <p className="text-xblack-70 text-[1.125rem] max-[767px]:text-[1rem]">
+                  The result? Patterns spotted earlier. Connections made faster.
+                  Answers grounded in your data, not generic advice.
+                </p>
+              </div>
             </div>
 
             {/* Right Column - 360 SVG */}

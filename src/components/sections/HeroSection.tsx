@@ -76,41 +76,44 @@ export default function HeroSection() {
           <div className="grid grid-cols-1 gap-[40px]">
             {/* Heading */}
             <h1 className="text-[7em] font-medium leading-[1] tracking-[-0.05em] max-[991px]:text-[3.75rem]">
-              Welcome to{" "}
-              <span className="text-xblack">your all in one Healthcare</span>
+              Your health data is everywhere.{" "}
+              <span className="text-xblack">Your answers are here.</span>
             </h1>
 
             {/* Subtitle */}
-            <div className="text-[1.5rem] font-medium leading-[1] tracking-[-0.01em] max-w-[48ch]">
-              From every heartbeat to every habit. xHeal connects{" "}
-              <strong>250+</strong> health parameters to bring your wellbeing
-              into one clear view
+            <div className="text-[1.5rem] font-medium leading-[1.35] tracking-[-0.01em] max-w-[48ch]">
+              xHeal builds a Digital Twin of your health, connecting your
+              medical records, lab results, wearables, and daily habits into
+              one AI that actually knows you. Ask it anything. Get answers
+              you can act on.
             </div>
 
             {/* Stats Cards */}
             <div className="grid grid-cols-3 gap-[40px] max-[991px]:grid-cols-1 max-[991px]:gap-[20px]">
               <div className="border border-xlight-blue-low bg-xwhite text-xdark-blue rounded-[16px] p-[20px] leading-[1] flex flex-col gap-[10px] shadow-[0_4px_4px_#1419330d]">
-                <AnimatedCounter target={5000} />
+                <AnimatedCounter target={20000} />
                 <p className="text-xdark-blue text-[1.125rem]">
-                  People improving their health
+                  Flare-up patterns detected early
                 </p>
               </div>
               <div className="border border-xlight-blue-low bg-xwhite text-xdark-blue rounded-[16px] p-[20px] leading-[1] flex flex-col gap-[10px] shadow-[0_4px_4px_#1419330d]">
                 <AnimatedCounter target={300000} />
                 <p className="text-xdark-blue text-[1.125rem]">
-                  Personalized routines completed
+                  Personalized health actions completed
                 </p>
               </div>
               <div className="border border-xlight-blue-low bg-xwhite text-xdark-blue rounded-[16px] p-[20px] leading-[1] flex flex-col gap-[10px] shadow-[0_4px_4px_#1419330d]">
-                <AnimatedCounter target={20000} />
+                <div className="text-[1.5rem] font-medium text-xdark-blue">
+                  &#9733;&#9733;&#9733;&#9733;&#9733;
+                </div>
                 <p className="text-xdark-blue text-[1.125rem]">
-                  Flare-up triggers detected
+                  Rated 5.0 on the App Store
                 </p>
               </div>
             </div>
 
             {/* App Store Badge */}
-            <div className="flex flex-col gap-[40px]">
+            <div className="flex flex-col gap-[12px]">
               <a
                 href="https://apps.apple.com/us/app/xheal/id6748074977"
                 target="_blank"
@@ -124,6 +127,9 @@ export default function HeroSection() {
                   priority
                 />
               </a>
+              <span className="text-[1rem] opacity-70">
+                Free to download. Your data stays yours.
+              </span>
             </div>
 
             {/* QR Code - Desktop only */}

@@ -19,52 +19,34 @@ const StarIcon = () => (
 
 const testimonials = [
   {
-    name: "Kristiyan Nikolov, 34",
-    quote:
-      "With xHeal I finally stopped juggling four different wellbeing apps. Everything I need (sleep, nutrition, energy, mood) is now in one place and connected. xHeal actually shows me how my daily patterns influence each other.",
-    image: "/images/testimonial-kris.jpeg",
-  },
-  {
-    name: "Jessica Miller, 28",
-    quote:
-      "Simple, visual, and motivating. xHeal turns scattered medical records and data into clear insights I can act on.",
-    image: "/images/testimonial-jessica.jpeg",
-  },
-  {
-    name: "Michael Reed, 41",
-    quote:
-      "I never realized how my daily habits added up until xHeal started showing my health trends. It's like having a personal health analyst.",
-    image: "/images/testimonial-michael.jpeg",
-  },
-  {
-    name: "Emily Carter, 36",
-    quote:
-      "xHeal finally helped me see the full picture of my health: sleep, activity, and check-ups in one clear dashboard. It keeps me proactive instead of guessing.",
-    image: "/images/testimonial-jessica.jpeg",
-  },
-  {
-    name: "Trifon Getsov, 33",
+    name: "Trifon G., 33",
     quote:
       "When my HRV went down, xHeal warned me early that an inflammation flare-up was coming. A few days later my labs confirmed it. xHeal saw it before I felt it.",
     image: "/images/testimonial-kris.jpeg",
   },
   {
-    name: "James Parker, 45",
+    name: "Kristiyan N., 34",
     quote:
-      "I've cut my insulin resistance related flare-ups in half by finally knowing what sets them off. xHeal turned my trial & error into prevention.",
+      "I finally stopped juggling four different wellbeing apps. Everything I need, sleep, nutrition, energy, mood, is now in one place and actually connected.",
+    image: "/images/kristiyan.png",
+  },
+  {
+    name: "James P., 45",
+    quote:
+      "I've cut my insulin resistance related flare-ups in half by finally knowing what sets them off. xHeal turned trial and error into prevention.",
     image: "/images/testimonial-michael.jpeg",
   },
   {
-    name: "Sarah Mitchell, 38",
+    name: "Jessica M., 28",
     quote:
-      "Tracking symptoms was a chore until xHeal. It spots patterns I would miss and warns me before things get worse. That's how I tackled with my stress related flare-ups.",
+      "Simple, visual, and motivating. xHeal turns scattered medical records and data into clear insights I can act on.",
     image: "/images/testimonial-jessica.jpeg",
   },
   {
-    name: "Daniel Brooks, 50",
+    name: "Sarah M., 38",
     quote:
-      "Before xHeal, flare-ups felt random. Now I know my triggers and can act early, fewer bad days, more control.",
-    image: "/images/testimonial-michael.jpeg",
+      "Tracking symptoms was a chore until xHeal. It spots patterns I would miss and warns me before things get worse.",
+    image: "/images/rayna.jpg",
   },
 ];
 
@@ -121,7 +103,8 @@ export default function TestimonialsSection() {
       <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col items-center gap-[80px] text-xblack max-[991px]:px-[40px] max-[479px]:px-[20px]">
         <ScrollReveal>
           <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-center max-[991px]:text-[3rem]">
-            Testimonials
+            People who stopped guessing{" "}
+            <span className="text-xdark-blue">about their health</span>
           </h2>
         </ScrollReveal>
 

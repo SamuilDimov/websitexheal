@@ -3,33 +3,21 @@ import ScrollReveal from "@/components/ui/ScrollReveal";
 const steps = [
   {
     number: "1",
-    title: "Connect your world",
+    title: "Connect your health",
     description:
-      "Import medical PDFs, snap a photo of your results, sync Apple Health, or connect MyChart for your medical records. Add wearables, lab results, and more - with new integrations coming soon. All your data, securely in one place.",
+      "Import medical records, sync Apple Health and wearables, upload lab PDFs. All your data in one secure place. Takes about 5 minutes.",
   },
   {
     number: "2",
-    title: "Let our AI Analyze",
+    title: "Meet your Digital Twin",
     description:
-      "Our AI studies your unique patterns - combining clinical data, lifestyle inputs, and daily trends to uncover clear, science-backed insights. The more you share, the smarter your Digital Twin becomes at understanding your health.",
+      "xHeal's AI analyzes your patterns across clinical data, lifestyle inputs, and daily trends. It learns what's normal for you, and what isn't.",
   },
   {
     number: "3",
-    title: "Request your specialist-ready reports",
+    title: "Get clarity and take action",
     description:
-      "Four reports to share with your care team: Why Finder uncovers root causes behind your symptoms, My Snapshot gives a quick wellness overview, Clinical Report provides detailed data for doctors, and Health Gaps reveals what's missing from your care.",
-  },
-  {
-    number: "4",
-    title: "Get your personal plan",
-    description:
-      "xHeal builds a care routine tailored to you - blending AI precision with your unique goals to make your wellness journey truly yours.",
-  },
-  {
-    number: "5",
-    title: "Take action & improve",
-    description:
-      "Turn insights into simple daily tasks. Build better habits, track your progress, and stay in control - because health is something you live, not just measure.",
+      "Ask questions, get daily health actions, receive early warnings, and generate reports for your doctor. Your Digital Twin gets smarter every day.",
   },
 ];
 
