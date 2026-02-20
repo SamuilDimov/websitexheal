@@ -107,7 +107,7 @@ export default function HeroSection() {
               alt="Smartphone screen displaying a health app dashboard with xHeal Score of 25, flare ups, streak of 5 days, health awareness report score of 75 out of 100, and navigation icons for Home, Routine, Add, Records, and Chat."
               width={932}
               height={1600}
-              className="w-[24em] max-w-[400px] object-cover object-top max-[767px]:w-full max-[767px]:max-w-[300px]"
+              className="w-[28em] max-w-[460px] object-cover object-top max-[767px]:w-full max-[767px]:max-w-[300px]"
               priority
             />
             <div

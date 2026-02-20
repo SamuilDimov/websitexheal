@@ -53,7 +53,7 @@ export default function Navbar() {
         }}
       />
 
-      <div className="w-full max-w-[100em] mx-auto px-[5em] flex flex-row justify-between items-center pt-[1em] pb-[2em] max-[991px]:px-[40px] max-[479px]:px-[20px] relative z-10">
+      <div className="w-full max-w-[100em] mx-auto px-[5em] flex flex-row justify-between items-center py-[1.5em] max-[991px]:px-[40px] max-[479px]:px-[20px] relative z-10">
         {/* Logo */}
         <Link href="/" className="pl-0">
           <Image
@@ -92,7 +92,7 @@ export default function Navbar() {
               className="text-[1.125rem] text-center rounded-[12px] px-[24px] py-[10px] transition-all duration-200 hover:shadow-[0_4px_4px_0_var(--light-blue-low)] inline-block"
               style={{ backgroundColor: "#ffffff", color: "#4764ff" }}
             >
-              Download Free
+              Download App
             </a>
           </div>
         </div>
@@ -168,7 +168,7 @@ export default function Navbar() {
               className="bg-xwhite text-xdark-blue text-[1.125rem] text-center rounded-[12px] px-[24px] py-[10px] inline-block mt-[20px]"
               onClick={() => setIsOpen(false)}
             >
-              Download Free
+              Download App
             </a>
           </div>
         </div>
