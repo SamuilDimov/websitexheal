@@ -14,7 +14,7 @@ export default function Footer() {
       <footer className="bg-xdark-blue text-xwhite">
         <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] max-[991px]:px-[40px] max-[479px]:px-[20px]">
           <div className="grid grid-cols-[1fr_auto_auto_auto_auto] grid-rows-[auto_auto] gap-[80px] max-[991px]:grid-cols-[1fr_auto_auto] max-[767px]:grid-cols-1 max-[767px]:gap-[40px]">
-            {/* Logo + App Store */}
+            {/* Logo */}
             <div className="flex flex-col gap-[40px]">
               <Link href="/">
                 <Image
@@ -25,19 +25,6 @@ export default function Footer() {
                   className="w-[15.5em]"
                 />
               </Link>
-              <a
-                href="https://apps.apple.com/us/app/xheal/id6748074977"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Image
-                  src="/images/app-store-badge.svg"
-                  alt="Download on the App Store"
-                  width={200}
-                  height={67}
-                  className="w-[200px]"
-                />
-              </a>
             </div>
 
             {/* Nav Links */}

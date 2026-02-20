@@ -3,7 +3,7 @@ import Image from "next/image";
 export default function HeroSection() {
   return (
     <section
-      className="relative"
+      className="relative overflow-clip"
       style={{
         backgroundImage:
           "url(/images/dot-matrix.svg), linear-gradient(180deg, var(--dark-blue), #f8f8fa00)",
@@ -13,7 +13,7 @@ export default function HeroSection() {
       }}
     >
       <div
-        className="w-full max-w-[100em] mx-auto px-[5em] flex flex-col justify-center items-stretch min-h-screen max-h-[1080px] pt-[20em] pb-[10em] text-xwhite max-[991px]:px-[40px] max-[991px]:pt-[140px] max-[991px]:pb-[60px] max-[991px]:min-h-0 max-[991px]:max-h-none max-[479px]:px-[20px]"
+        className="w-full max-w-[100em] mx-auto px-[5em] flex flex-col justify-center items-stretch min-h-screen pt-[20em] pb-[10em] text-xwhite max-[991px]:px-[40px] max-[991px]:pt-[140px] max-[991px]:pb-[60px] max-[991px]:min-h-0 max-[479px]:px-[20px]"
         style={{
           backgroundImage: "url(/images/hero-bg.svg)",
           backgroundPosition: "0%",
@@ -40,7 +40,7 @@ export default function HeroSection() {
 
             {/* Stats Cards */}
             <div className="grid grid-cols-3 gap-[40px] max-[991px]:grid-cols-1 max-[991px]:gap-[20px]">
-              <div className="border border-xlight-blue-low bg-xwhite text-xdark-blue rounded-[16px] p-[20px] leading-[1] flex flex-col gap-[10px] shadow-[0_4px_4px_#1419330d]">
+              <div className="bg-white/90 backdrop-blur-sm text-xdark-blue rounded-[16px] p-[20px] leading-[1] flex flex-col gap-[10px]">
                 <div className="text-[1.5rem] font-medium text-xdark-blue">
                   250+ health parameters
                 </div>
@@ -48,7 +48,7 @@ export default function HeroSection() {
                   Sleep, stress, recovery, strain, nutrition, activity, mood, genome, vitals, and more
                 </p>
               </div>
-              <div className="border border-xlight-blue-low bg-xwhite text-xdark-blue rounded-[16px] p-[20px] leading-[1] flex flex-col gap-[10px] shadow-[0_4px_4px_#1419330d]">
+              <div className="bg-white/90 backdrop-blur-sm text-xdark-blue rounded-[16px] p-[20px] leading-[1] flex flex-col gap-[10px]">
                 <div className="text-[1.5rem] font-medium text-xdark-blue">
                   All your sources, one platform
                 </div>
@@ -56,7 +56,7 @@ export default function HeroSection() {
                   Apple Health, wearables, lab PDFs, medical records, genomics, and daily logs
                 </p>
               </div>
-              <div className="border border-xlight-blue-low bg-xwhite text-xdark-blue rounded-[16px] p-[20px] leading-[1] flex flex-col gap-[10px] shadow-[0_4px_4px_#1419330d]">
+              <div className="bg-white/90 backdrop-blur-sm text-xdark-blue rounded-[16px] p-[20px] leading-[1] flex flex-col gap-[10px]">
                 <div className="text-[1.5rem] font-medium text-xdark-blue">
                   &#9733;&#9733;&#9733;&#9733;&#9733;
                 </div>
@@ -88,7 +88,7 @@ export default function HeroSection() {
 
             {/* QR Code - Desktop only */}
             <div className="hidden lg:flex">
-              <div className="border border-xlight-blue-low bg-xwhite text-xdark-blue rounded-[16px] p-[20px] leading-[1] shadow-[0_4px_4px_#1419330d] w-[200px]">
+              <div className="bg-white/90 backdrop-blur-sm rounded-[16px] p-[20px] leading-[1] w-[200px]">
                 <Image
                   src="/images/qr-code.avif"
                   alt="Download App QR Code"
@@ -101,21 +101,14 @@ export default function HeroSection() {
           </div>
 
           {/* Right Column - Phone */}
-          <div className="relative h-full flex justify-end max-[767px]:justify-center">
+          <div className="flex justify-end self-start max-[767px]:justify-center">
             <Image
               src="/images/dashboard.png"
               alt="Smartphone screen displaying a health app dashboard with xHeal Score of 25, flare ups, streak of 5 days, health awareness report score of 75 out of 100, and navigation icons for Home, Routine, Add, Records, and Chat."
               width={932}
               height={1600}
-              className="w-[28em] max-w-[460px] object-cover object-top max-[767px]:w-full max-[767px]:max-w-[300px]"
+              className="w-[28em] max-w-[460px] max-[767px]:w-full max-[767px]:max-w-[300px]"
               priority
-            />
-            <div
-              className="absolute inset-0 hidden"
-              style={{
-                backgroundImage:
-                  "linear-gradient(#4764ff00 69%, #7a8eff)",
-              }}
             />
           </div>
         </div>
