@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import CookieConsentProvider from "@/components/CookieConsentProvider";
 
 export const metadata: Metadata = {
   title: "xHeal | Welcome to 360° Healthcare",
@@ -38,6 +39,7 @@ export default function RootLayout({
           <main className="main-wrapper">{children}</main>
           <Footer />
         </div>
+        <CookieConsentProvider />
       </body>
     </html>
   );
