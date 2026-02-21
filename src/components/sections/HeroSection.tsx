@@ -1,5 +1,6 @@
 import Image from "next/image";
 import MedicalStandardsBadge from "@/components/ui/MedicalStandardsBadge";
+import ComplianceBadges from "@/components/ui/ComplianceBadges";
 import IntegrationLogosStrip from "@/components/ui/IntegrationLogosStrip";
 
 export default function HeroSection() {
@@ -85,6 +86,7 @@ export default function HeroSection() {
                   />
                 </a>
                 <MedicalStandardsBadge />
+                <ComplianceBadges />
               </div>
               <span className="text-[1rem] text-xdark-blue">
                 Free to download. Your data stays yours.

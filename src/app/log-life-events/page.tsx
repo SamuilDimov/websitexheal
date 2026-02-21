@@ -5,7 +5,9 @@ import Image from "next/image";
 import Link from "next/link";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import CrossLinkSection from "@/components/feature-landing/CrossLinkSection";
+import ComparisonSection from "@/components/feature-landing/ComparisonSection";
 import MedicalStandardsBadge from "@/components/ui/MedicalStandardsBadge";
+import ComplianceBadges from "@/components/ui/ComplianceBadges";
 
 /* ------------------------------------------------------------------ */
 /*  DATA                                                               */
@@ -357,6 +359,7 @@ export default function LogLifeEventsPage() {
                     />
                   </a>
                   <MedicalStandardsBadge className="text-xwhite" />
+                  <ComplianceBadges className="text-xwhite" />
                 </div>
                 <p className="text-[0.875rem] mt-[8px]" style={{ color: "#ffffffdd" }}>
                   Free to download. Your data stays yours.
@@ -523,6 +526,25 @@ export default function LogLifeEventsPage() {
         </div>
       </section>
 
+      <ComparisonSection
+        heading="Other apps track habits."
+        headingAccent="xHeal connects them to outcomes."
+        intro="Most health tools let you log food or workouts. But none of them let you log medications, supplements, and life events, then show you how those changes actually affect your health over time."
+        columns={["WHOOP", "Bevel Health", "Olivia Health", "xHeal"]}
+        rows={[
+          { feature: "Log medications", values: ["no", "no", "Basic", "yes"] },
+          { feature: "Log supplements", values: ["no", "no", "no", "yes"] },
+          { feature: "Log life events (moves, diet changes)", values: ["no", "Journaling only", "no", "yes"] },
+          { feature: "Log food and nutrition", values: ["no", "AI food logging", "no", "yes"] },
+          { feature: "Correlate logs with health data", values: ["no", "Basic (caffeine + HRV)", "no", "250+ parameters"] },
+          { feature: "See impact over time", values: ["no", "no", "no", "yes"] },
+          { feature: "AI explains what changed and why", values: ["no", "Basic AI chat", "Basic AI chat", "yes"] },
+          { feature: "Works without proprietary hardware", values: ["no", "Apple Watch only", "yes", "yes"] },
+        ]}
+        closingLine="WHOOP tracks strain. Bevel logs your meals. Olivia tracks medications. Only xHeal lets you log everything and then shows you how it all connects."
+        highlightColumn={3}
+      />
+
       {/* ============================================================ */}
       {/* 5. TESTIMONIALS - Dark cinematic strip                        */}
       {/* ============================================================ */}
@@ -596,7 +618,7 @@ export default function LogLifeEventsPage() {
             <ScrollReveal>
               <div className="flex flex-col gap-[40px]">
                 <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack max-[991px]:text-[3rem]">
-                  Your logs. Your choice{" "}
+                   Your logs. Your choice{" "}
                   <span className="text-xdark-blue">who sees them.</span>
                 </h2>
 
@@ -615,6 +637,8 @@ export default function LogLifeEventsPage() {
                     </div>
                   ))}
                 </div>
+
+                <ComplianceBadges />
               </div>
             </ScrollReveal>
 

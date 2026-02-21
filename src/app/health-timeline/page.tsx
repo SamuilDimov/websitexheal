@@ -5,7 +5,9 @@ import Image from "next/image";
 import Link from "next/link";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import CrossLinkSection from "@/components/feature-landing/CrossLinkSection";
+import ComparisonSection from "@/components/feature-landing/ComparisonSection";
 import MedicalStandardsBadge from "@/components/ui/MedicalStandardsBadge";
+import ComplianceBadges from "@/components/ui/ComplianceBadges";
 
 /* ------------------------------------------------------------------ */
 /*  DATA                                                               */
@@ -357,6 +359,7 @@ export default function HealthTimelinePage() {
                     />
                   </a>
                   <MedicalStandardsBadge className="text-xwhite" />
+                  <ComplianceBadges className="text-xwhite" />
                 </div>
                 <p className="text-[0.875rem] mt-[8px]" style={{ color: "#ffffffdd" }}>
                   Free to download. Your data stays yours.
@@ -526,6 +529,26 @@ export default function HealthTimelinePage() {
         </div>
       </section>
 
+      <ComparisonSection
+        heading="Other apps hold a piece."
+        headingAccent="xHeal holds everything."
+        intro="Your GP has some files. Your specialist has others. Your wearable has its own data. No single app brings it all together into a searchable, unified timeline. xHeal does."
+        columns={["WHOOP", "Bevel Health", "Olivia Health", "xHeal"]}
+        rows={[
+          { feature: "Import medical records", values: ["no", "no", "yes", "yes"] },
+          { feature: "Import lab results", values: ["no", "no", "no", "yes"] },
+          { feature: "Unified health timeline", values: ["Biometrics only", "Lifestyle only", "Records only", "All data types combined"] },
+          { feature: "Search across your history", values: ["no", "no", "Basic", "yes"] },
+          { feature: "Correlate events across time", values: ["no", "no", "no", "yes"] },
+          { feature: "Pattern detection over months/years", values: ["no", "no", "no", "yes"] },
+          { feature: "Includes wearable + lifestyle data", values: ["Fitness only", "yes", "no", "yes"] },
+          { feature: "Clinical AI reasoning (WHO, ADA, EASD)", values: ["no", "no", "no", "yes"] },
+          { feature: "Works without proprietary hardware", values: ["no", "Apple Watch only", "yes", "yes"] },
+        ]}
+        closingLine="WHOOP tracks your workouts. Bevel tracks your lifestyle. Olivia stores your records. Only xHeal combines clinical, wearable, and lifestyle data into one complete health timeline."
+        highlightColumn={3}
+      />
+
       {/* ============================================================ */}
       {/* 5. TESTIMONIALS - Dark cinematic strip                        */}
       {/* ============================================================ */}
@@ -599,7 +622,7 @@ export default function HealthTimelinePage() {
             <ScrollReveal>
               <div className="flex flex-col gap-[40px]">
                 <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack max-[991px]:text-[3rem]">
-                  Your records. Your control.{" "}
+                   Your records. Your control.{" "}
                   <span className="text-xdark-blue">Always.</span>
                 </h2>
 
@@ -618,6 +641,8 @@ export default function HealthTimelinePage() {
                     </div>
                   ))}
                 </div>
+
+                <ComplianceBadges />
               </div>
             </ScrollReveal>
 

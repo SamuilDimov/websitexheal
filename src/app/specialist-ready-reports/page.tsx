@@ -5,7 +5,9 @@ import Image from "next/image";
 import Link from "next/link";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import CrossLinkSection from "@/components/feature-landing/CrossLinkSection";
+import ComparisonSection from "@/components/feature-landing/ComparisonSection";
 import MedicalStandardsBadge from "@/components/ui/MedicalStandardsBadge";
+import ComplianceBadges from "@/components/ui/ComplianceBadges";
 
 /* ------------------------------------------------------------------ */
 /*  DATA                                                               */
@@ -370,6 +372,7 @@ export default function SpecialistReadyReportsPage() {
                     />
                   </a>
                   <MedicalStandardsBadge className="text-xwhite" />
+                  <ComplianceBadges className="text-xwhite" />
                 </div>
                 <p className="text-[0.875rem] mt-[8px]" style={{ color: "#ffffffdd" }}>
                   Free to download. Your data stays yours.
@@ -570,6 +573,25 @@ export default function SpecialistReadyReportsPage() {
         </div>
       </section>
 
+      <ComparisonSection
+        heading="Other apps track your health."
+        headingAccent="xHeal helps you share it."
+        intro="You track everything. But when you sit down with your doctor, none of that data comes with you. Most health apps have no way to generate reports. xHeal creates specialist-ready documents that turn months of data into something your doctor can read in minutes."
+        columns={["WHOOP", "Bevel Health", "Olivia Health", "xHeal"]}
+        rows={[
+          { feature: "Generate reports for your doctor", values: ["no", "no", "no", "4 report types"] },
+          { feature: "Include lab results in reports", values: ["no", "no", "no", "yes"] },
+          { feature: "Include wearable data in reports", values: ["Data export only", "no", "no", "yes"] },
+          { feature: "Include symptom + lifestyle context", values: ["no", "no", "no", "yes"] },
+          { feature: "Formatted for clinical review", values: ["no", "no", "no", "yes"] },
+          { feature: "Clinical AI reasoning (WHO, ADA, EASD)", values: ["no", "no", "no", "yes"] },
+          { feature: "Cross-references 250+ parameters", values: ["no", "no", "no", "yes"] },
+          { feature: "Share via PDF or in-app", values: ["no", "no", "no", "yes"] },
+        ]}
+        closingLine="WHOOP lets you export raw data. Bevel and Olivia have no report features at all. xHeal is the only app that generates clinical-grade reports your doctor can actually use."
+        highlightColumn={3}
+      />
+
       {/* ============================================================ */}
       {/* 6. TESTIMONIALS - Dark cinematic strip                        */}
       {/* ============================================================ */}
@@ -637,7 +659,7 @@ export default function SpecialistReadyReportsPage() {
             <ScrollReveal>
               <div className="flex flex-col gap-[40px]">
                 <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack max-[991px]:text-[3rem]">
-                  Reports you control.{" "}
+                   Reports you control.{" "}
                   <span className="text-xdark-blue">Data that stays private.</span>
                 </h2>
 
@@ -656,6 +678,8 @@ export default function SpecialistReadyReportsPage() {
                     </div>
                   ))}
                 </div>
+
+                <ComplianceBadges />
               </div>
             </ScrollReveal>
 

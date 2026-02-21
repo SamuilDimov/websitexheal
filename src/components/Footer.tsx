@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import ComplianceBadges from "@/components/ui/ComplianceBadges";
 
 export default function Footer() {
   return (
@@ -40,6 +41,11 @@ export default function Footer() {
             >
               Support
             </Link>
+
+            {/* Compliance badges */}
+            <div className="col-span-full">
+              <ComplianceBadges size="sm" />
+            </div>
 
             {/* Bottom row - copyright + legal */}
             <div className="col-span-full flex flex-wrap items-center gap-[40px] max-[767px]:flex-col max-[767px]:items-start max-[767px]:gap-[20px]">

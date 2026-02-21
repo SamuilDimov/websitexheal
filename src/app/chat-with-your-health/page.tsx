@@ -7,6 +7,7 @@ import ScrollReveal from "@/components/ui/ScrollReveal";
 import CrossLinkSection from "@/components/feature-landing/CrossLinkSection";
 import ComparisonSection from "@/components/feature-landing/ComparisonSection";
 import MedicalStandardsBadge from "@/components/ui/MedicalStandardsBadge";
+import ComplianceBadges from "@/components/ui/ComplianceBadges";
 
 /* ------------------------------------------------------------------ */
 /*  DATA                                                               */
@@ -348,6 +349,7 @@ export default function ChatWithYourHealthPage() {
                     />
                   </a>
                   <MedicalStandardsBadge className="text-xwhite" />
+                  <ComplianceBadges className="text-xwhite" />
                 </div>
                 <p className="text-[0.875rem] mt-[8px]" style={{ color: "#ffffffdd" }}>
                   Free to download. Your data stays yours.
@@ -604,7 +606,7 @@ export default function ChatWithYourHealthPage() {
             <ScrollReveal>
               <div className="flex flex-col gap-[40px]">
                 <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack max-[991px]:text-[3rem]">
-                  How we protect{" "}
+                   How we protect{" "}
                   <span className="text-xdark-blue">your conversations</span>
                 </h2>
 
@@ -623,6 +625,8 @@ export default function ChatWithYourHealthPage() {
                     </div>
                   ))}
                 </div>
+
+                <ComplianceBadges />
               </div>
             </ScrollReveal>
 

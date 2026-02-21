@@ -5,7 +5,9 @@ import Image from "next/image";
 import Link from "next/link";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import CrossLinkSection from "@/components/feature-landing/CrossLinkSection";
+import ComparisonSection from "@/components/feature-landing/ComparisonSection";
 import MedicalStandardsBadge from "@/components/ui/MedicalStandardsBadge";
+import ComplianceBadges from "@/components/ui/ComplianceBadges";
 
 /* ------------------------------------------------------------------ */
 /*  DATA                                                               */
@@ -358,6 +360,7 @@ export default function HealthAwarenessPage() {
                     />
                   </a>
                   <MedicalStandardsBadge className="text-xwhite" />
+                  <ComplianceBadges className="text-xwhite" />
                 </div>
                 <p className="text-[0.875rem] mt-[8px]" style={{ color: "#ffffffdd" }}>
                   Free to download. Your data stays yours.
@@ -527,6 +530,25 @@ export default function HealthAwarenessPage() {
         </div>
       </section>
 
+      <ComparisonSection
+        heading="Other apps give you a score."
+        headingAccent="xHeal shows the full picture."
+        intro="Most health tools score one dimension: your fitness, your sleep, or your body composition. None of them combine clinical data, wearable metrics, lab results, and daily habits into a single picture. xHeal does."
+        columns={["WHOOP", "Bevel Health", "Olivia Health", "xHeal"]}
+        rows={[
+          { feature: "Holistic health score", values: ["Recovery + strain only", "4 lifestyle pillars", "no", "250+ parameters combined"] },
+          { feature: "Includes clinical data (labs, records)", values: ["no", "no", "Medical records only", "yes"] },
+          { feature: "Includes wearable + lifestyle data", values: ["Fitness metrics only", "yes", "no", "yes"] },
+          { feature: "Explains why your score changed", values: ["no", "Basic AI chat", "no", "yes"] },
+          { feature: "Predictive health insights", values: ["Basic recovery prediction", "no", "no", "yes"] },
+          { feature: "Cross-references all data types", values: ["no", "no", "no", "yes"] },
+          { feature: "Clinical AI reasoning (WHO, ADA, EASD)", values: ["no", "no", "no", "yes"] },
+          { feature: "Works without proprietary hardware", values: ["no", "Apple Watch only", "yes", "yes"] },
+        ]}
+        closingLine="WHOOP scores your recovery. Bevel scores your lifestyle. Olivia stores your records. xHeal is the only platform that combines all of it into one health awareness score you can actually act on."
+        highlightColumn={3}
+      />
+
       {/* ============================================================ */}
       {/* 5. TESTIMONIALS - Dark cinematic strip                        */}
       {/* ============================================================ */}
@@ -600,7 +622,7 @@ export default function HealthAwarenessPage() {
             <ScrollReveal>
               <div className="flex flex-col gap-[40px]">
                 <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack max-[991px]:text-[3rem]">
-                  How we calculate your score, and{" "}
+                   How we calculate your score, and{" "}
                   <span className="text-xdark-blue">protect your data</span>
                 </h2>
 
@@ -619,6 +641,8 @@ export default function HealthAwarenessPage() {
                     </div>
                   ))}
                 </div>
+
+                <ComplianceBadges />
               </div>
             </ScrollReveal>
 
