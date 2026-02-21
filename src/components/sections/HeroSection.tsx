@@ -59,13 +59,13 @@ export default function HeroSection() {
                   Apple Health, wearables, lab PDFs, medical records, genomics, and daily logs
                 </p>
               </div>
-              <div className="bg-white/90 backdrop-blur-sm text-xdark-blue rounded-[16px] p-[20px] leading-[1] flex flex-col items-center justify-center gap-[10px]">
-                <div className="text-[1.5rem] font-medium text-xdark-blue text-center leading-[1.2]">
+              <div className="bg-white/90 backdrop-blur-sm text-xdark-blue rounded-[16px] p-[20px] leading-[1] flex flex-col gap-[10px]">
+                <div className="text-[1.5rem] font-medium text-xdark-blue">
                   Rated 5.0 on the App Store
                 </div>
                 <div className="flex items-center gap-[4px]">
                   {[...Array(5)].map((_, i) => (
-                    <svg key={i} width="18" height="18" viewBox="0 0 24 24" fill="#FF9500" xmlns="http://www.w3.org/2000/svg">
+                    <svg key={i} width="24" height="24" viewBox="0 0 24 24" fill="#FF9500" xmlns="http://www.w3.org/2000/svg">
                       <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                     </svg>
                   ))}
