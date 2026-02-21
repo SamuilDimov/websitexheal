@@ -301,7 +301,7 @@ export default function HealthAwarenessPage() {
               </h1>
 
               <div
-                className="text-[1.75rem] font-medium leading-[1.35] tracking-[-0.01em] max-w-[38ch]"
+                className="text-[1.75rem] font-medium leading-[1.35] tracking-[-0.01em] max-w-[38ch] max-[479px]:text-[1.25rem]"
                 style={{ color: "#ffffff" }}
               >
                 xHeal connects your sleep, mood, nutrition, activity, medical
@@ -334,7 +334,7 @@ export default function HealthAwarenessPage() {
                 </div>
                 <span
                   className="text-[1.125rem]"
-                  style={{ color: "#ffffffdd" }}
+                  style={{ color: "#ffffff" }}
                 >
                   Rated 5.0 on the App Store
                 </span>
@@ -359,7 +359,7 @@ export default function HealthAwarenessPage() {
                   </a>
                   <MedicalStandardsBadge className="text-xwhite" />
                 </div>
-                <p className="text-[0.875rem] mt-[8px]" style={{ color: "#ffffffaa" }}>
+                <p className="text-[0.875rem] mt-[8px]" style={{ color: "#ffffffdd" }}>
                   Free to download. Your data stays yours.
                 </p>
               </div>
@@ -367,16 +367,16 @@ export default function HealthAwarenessPage() {
 
             {/* Phone - floats and slides in from right */}
             <div
-              className="relative flex justify-center max-[767px]:justify-center"
+              className="relative flex justify-end self-start max-[767px]:justify-center"
               style={{ animation: "slideInRight 0.8s ease-out 0.3s both" }}
             >
               <div style={{ animation: "floatPhone 5s ease-in-out infinite" }}>
                 <Image
-                  src="/images/reports-landing.png"
+                  src="/images/dashboard.png"
                   alt="xHeal Health Awareness - see your complete health score across all domains"
                   width={932}
-                  height={1600}
-                  className="w-[28em] max-w-[480px] drop-shadow-[0_20px_60px_#4764ff55] max-[767px]:w-full max-[767px]:max-w-[340px]"
+                  height={1830}
+                  className="w-[28em] max-w-[460px] drop-shadow-[0_20px_60px_#4764ff55] max-[767px]:w-full max-[767px]:max-w-[300px] max-[767px]:mx-auto"
                   priority
                 />
               </div>
