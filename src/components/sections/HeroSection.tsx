@@ -64,9 +64,9 @@ export default function HeroSection() {
                   <svg width="20" height="24" viewBox="0 0 814 1000" xmlns="http://www.w3.org/2000/svg" fill="currentColor" className="flex-shrink-0"><path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76.5 0-103.7 40.8-165.9 40.8s-105.6-57.8-155.5-127.4c-58.3-81.4-105.3-209-105.3-329.7 0-193.6 125.8-296.3 249.6-296.3 65.8 0 120.6 43.2 161.9 43.2 39.3 0 100.6-45.8 175.5-45.8 28.4 0 130.3 2.6 197.9 97z" /><path d="M554.1 159.4c31.1-36.9 53.1-88.1 53.1-139.4 0-7.1-.6-14.3-1.9-20.1-50.6 1.9-110.8 33.7-147.1 75.8-28.4 32.4-55.1 83.6-55.1 135.5 0 7.8.6 15.6 1.3 18.2 2.6.6 6.4 1.3 10.2 1.3 45.2 0 103.3-30.4 139.5-71.3z" /></svg>
                   Rated 5.0 on the App Store
                 </div>
-                <div className="flex items-center gap-[3px]">
+                <div className="flex items-center justify-center gap-[6px]">
                   {[...Array(5)].map((_, i) => (
-                    <svg key={i} width="20" height="20" viewBox="0 0 24 24" fill="#FF9500" xmlns="http://www.w3.org/2000/svg">
+                    <svg key={i} width="28" height="28" viewBox="0 0 24 24" fill="#FF9500" xmlns="http://www.w3.org/2000/svg">
                       <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                     </svg>
                   ))}
