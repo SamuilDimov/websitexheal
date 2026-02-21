@@ -521,18 +521,20 @@ export default function ChatWithYourHealthPage() {
         heading="Health apps give you data."
         headingAccent="xHeal gives you answers."
         intro="Most health tools stop at tracking. They show you numbers but never explain what they mean together. Your Digital Twin doesn't just store your data. It reads it, connects it, and talks to you about it."
-        columns={["Typical health app", "Apple Health", "xHeal"]}
+        columns={["WHOOP", "Bevel Health", "Olivia Health", "xHeal"]}
         rows={[
-          { feature: "Tracks health data", values: ["One vertical only", "Aggregates from many sources", "Aggregates + medical records + life events"] },
-          { feature: "Explains what data means", values: ["no", "no", "yes"] },
-          { feature: "Knows your full health history", values: ["no", "partial", "yes"] },
-          { feature: "You can ask it questions", values: ["no", "no", "yes"] },
-          { feature: "Follows medical guidelines", values: ["Rarely", "no", "WHO, ADA, EASD standards"] },
-          { feature: "Zero-retention privacy", values: ["Varies", "n/a", "yes"] },
-          { feature: "Generates reports for your doctor", values: ["no", "no", "4 report types"] },
+          { feature: "Tracks health data", values: ["Fitness + sleep", "Lifestyle + recovery", "Medical records", "250+ parameters across all sources"] },
+          { feature: "Explains what data means", values: ["no", "Basic AI chat", "Basic AI chat", "yes"] },
+          { feature: "Knows your full health history", values: ["no", "no", "Medical records only", "yes"] },
+          { feature: "You can ask it questions", values: ["no", "yes", "yes", "yes"] },
+          { feature: "Cross-references clinical + lifestyle data", values: ["no", "no", "no", "yes"] },
+          { feature: "Follows medical guidelines (WHO, ADA, EASD)", values: ["no", "no", "no", "yes"] },
+          { feature: "Predictive health insights", values: ["no", "no", "no", "yes"] },
+          { feature: "Works without proprietary hardware", values: ["no", "Apple Watch only", "yes", "yes"] },
+          { feature: "Generates reports for your doctor", values: ["no", "no", "no", "4 report types"] },
         ]}
-        closingLine="Your Apple Watch knows your heart rate. It doesn't know what it means for you. xHeal does."
-        highlightColumn={2}
+        closingLine="WHOOP shows you numbers. Bevel and Olivia give you basic answers. xHeal connects 250+ parameters to tell you what your health actually means."
+        highlightColumn={3}
       />
 
       {/* ============================================================ */}

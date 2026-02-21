@@ -520,18 +520,21 @@ export default function FlareUpTriggerPatternsPage() {
       <ComparisonSection
         heading="Other apps track symptoms."
         headingAccent="xHeal predicts what's coming."
-        intro="Symptom trackers help you record how you feel. That's useful. But recording isn't preventing. xHeal goes further: it cross-references your symptoms with your sleep, stress, nutrition, activity, and wearable data to find patterns and warns you before a flare-up develops."
-        columns={["Bearable", "Flaredown", "Apple Health", "xHeal"]}
+        intro="Wellness trackers help you record how you feel. That's useful. But recording isn't preventing. xHeal goes further: it cross-references your symptoms with your sleep, stress, nutrition, activity, and clinical data to find patterns and warns you before a flare-up develops."
+        columns={["WHOOP", "Bevel Health", "Olivia Health", "xHeal"]}
         rows={[
-          { feature: "Log symptoms", values: ["yes", "yes", "no", "yes"] },
-          { feature: "Track daily habits", values: ["yes", "Limited", "Limited", "yes"] },
-          { feature: "Import medical records", values: ["no", "no", "no", "yes"] },
+          { feature: "Log symptoms", values: ["no", "no", "yes", "yes"] },
+          { feature: "Track daily habits", values: ["yes", "yes", "Limited", "yes"] },
+          { feature: "Import medical records", values: ["no", "no", "yes", "yes"] },
+          { feature: "Lab result analysis", values: ["no", "no", "no", "yes"] },
           { feature: "AI pattern detection", values: ["no", "no", "no", "yes"] },
           { feature: "Early flare-up warnings", values: ["no", "no", "no", "yes"] },
-          { feature: "Correlate across data types", values: ["Basic", "Basic", "no", "Advanced"] },
+          { feature: "Correlate across data types", values: ["Fitness only", "Lifestyle only", "Records only", "250+ parameters"] },
+          { feature: "Works without proprietary hardware", values: ["no", "Apple Watch only", "yes", "yes"] },
+          { feature: "Clinical AI reasoning (WHO, ADA, EASD)", values: ["no", "no", "no", "yes"] },
           { feature: "Generate doctor reports", values: ["no", "no", "no", "4 report types"] },
         ]}
-        closingLine="By the time you feel a flare-up, it's too late to prevent it. xHeal reads the signals your body sends days before."
+        closingLine="WHOOP tracks your strain. Bevel tracks your recovery. Olivia organizes your records. Only xHeal connects it all to predict what's coming."
         highlightColumn={3}
       />
 
