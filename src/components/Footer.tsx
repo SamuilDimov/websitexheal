@@ -107,15 +107,6 @@ export default function Footer() {
                     </svg>
                   </a>
                   <a
-                    href="mailto:support@xheal.ai"
-                    aria-label="Email"
-                    className="opacity-70 transition-opacity duration-200 hover:opacity-100"
-                  >
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2Zm0 4-8 5-8-5V6l8 5 8-5v2Z"/>
-                    </svg>
-                  </a>
-                  <a
                     href="https://linktr.ee/xheal.ai"
                     target="_blank"
                     rel="noopener noreferrer"
