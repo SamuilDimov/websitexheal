@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import ScrollReveal from "@/components/ui/ScrollReveal";
+import { testimonials, type Testimonial } from "@/data/testimonials";
 
 const StarIcon = () => (
   <svg
@@ -17,44 +18,7 @@ const StarIcon = () => (
   </svg>
 );
 
-const testimonials = [
-  {
-    name: "Trifon G., 33",
-    quote:
-      "When my HRV went down, xHeal warned me early that an inflammation flare-up was coming. A few days later my labs confirmed it. xHeal saw it before I felt it.",
-    image: "/images/testimonial-kris.jpeg",
-  },
-  {
-    name: "Kristiyan N., 34",
-    quote:
-      "I finally stopped juggling four different wellbeing apps. Everything I need, sleep, nutrition, energy, mood, is now in one place and actually connected.",
-    image: "/images/kristiyan.png",
-  },
-  {
-    name: "James P., 45",
-    quote:
-      "I've cut my insulin resistance related flare-ups in half by finally knowing what sets them off. xHeal turned trial and error into prevention.",
-    image: "/images/testimonial-michael.jpeg",
-  },
-  {
-    name: "Jessica M., 28",
-    quote:
-      "Simple, visual, and motivating. xHeal turns scattered medical records and data into clear insights I can act on.",
-    image: "/images/testimonial-jessica.jpeg",
-  },
-  {
-    name: "Sarah M., 38",
-    quote:
-      "Tracking symptoms was a chore until xHeal. It spots patterns I would miss and warns me before things get worse.",
-    image: "/images/rayna.jpg",
-  },
-];
-
-function TestimonialCard({
-  testimonial,
-}: {
-  testimonial: (typeof testimonials)[0];
-}) {
+function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
   return (
     <div className="flex-none w-[22rem] p-[10px] max-[991px]:w-[18rem] max-[767px]:w-[16rem]">
       <div className="border border-xlight-blue-low bg-xwhite rounded-[16px] grid grid-cols-1 place-items-start gap-[1rem] p-[2rem] shadow-[0_4px_4px_#1419330d] h-full">
@@ -84,6 +48,7 @@ function TestimonialCard({
               width={48}
               height={48}
               className="w-[3rem] h-[3rem] rounded-full object-cover aspect-square"
+              loading="lazy"
             />
             <div className="flex flex-col gap-[0.25rem]">
               <span className="text-xblack-70 text-[1.125rem] font-medium max-[767px]:text-[1rem]">
@@ -97,7 +62,58 @@ function TestimonialCard({
   );
 }
 
+function MarqueeRow({
+  items,
+  reverse = false,
+}: {
+  items: Testimonial[];
+  reverse?: boolean;
+}) {
+  const animationClass = reverse
+    ? "animate-marquee-reverse"
+    : "animate-marquee";
+
+  return (
+    <div className="w-full relative overflow-clip -mx-[0.5rem] min-h-[1rem]">
+      {/* Left fade */}
+      <div
+        className="absolute left-[-0.5rem] top-0 w-[30px] h-full z-10 pointer-events-none"
+        style={{
+          backgroundImage: "linear-gradient(91deg, var(--white), #fff0)",
+        }}
+      />
+
+      {/* Marquee track */}
+      <div
+        className={`flex ${animationClass} hover:[animation-play-state:paused]`}
+      >
+        {/* Original set */}
+        {items.map((t, i) => (
+          <TestimonialCard key={`a-${i}`} testimonial={t} />
+        ))}
+        {/* Duplicate set for seamless loop */}
+        {items.map((t, i) => (
+          <TestimonialCard key={`b-${i}`} testimonial={t} />
+        ))}
+      </div>
+
+      {/* Right fade */}
+      <div
+        className="absolute right-[-0.5rem] top-0 w-[30px] h-full z-10 pointer-events-none"
+        style={{
+          backgroundImage: "linear-gradient(270deg, var(--white), #fff0)",
+        }}
+      />
+    </div>
+  );
+}
+
 export default function TestimonialsSection() {
+  // Split testimonials into two rows
+  const mid = Math.ceil(testimonials.length / 2);
+  const topRow = testimonials.slice(0, mid);
+  const bottomRow = testimonials.slice(mid);
+
   return (
     <section>
       <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col items-center gap-[80px] text-xblack max-[991px]:px-[40px] max-[479px]:px-[20px]">
@@ -108,37 +124,10 @@ export default function TestimonialsSection() {
           </h2>
         </ScrollReveal>
 
-        {/* Marquee Container */}
-        <div className="w-full relative overflow-clip -mx-[0.5rem] min-h-[1rem] mb-[-80px] max-[767px]:mb-[-40px]">
-          {/* Left fade */}
-          <div
-            className="absolute left-[-0.5rem] top-0 w-[30px] h-full z-10 pointer-events-none"
-            style={{
-              backgroundImage:
-                "linear-gradient(91deg, var(--white), #fff0)",
-            }}
-          />
-
-          {/* Marquee track */}
-          <div className="flex animate-marquee hover:[animation-play-state:paused]">
-            {/* Original set */}
-            {testimonials.map((t, i) => (
-              <TestimonialCard key={`a-${i}`} testimonial={t} />
-            ))}
-            {/* Duplicate set for seamless loop */}
-            {testimonials.map((t, i) => (
-              <TestimonialCard key={`b-${i}`} testimonial={t} />
-            ))}
-          </div>
-
-          {/* Right fade */}
-          <div
-            className="absolute right-[-0.5rem] top-0 w-[30px] h-full z-10 pointer-events-none"
-            style={{
-              backgroundImage:
-                "linear-gradient(270deg, var(--white), #fff0)",
-            }}
-          />
+        {/* Two-row marquee */}
+        <div className="w-full flex flex-col gap-[20px] mb-[-80px] max-[767px]:mb-[-40px]">
+          <MarqueeRow items={topRow} />
+          <MarqueeRow items={bottomRow} reverse />
         </div>
       </div>
     </section>
