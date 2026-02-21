@@ -8,7 +8,7 @@
  * Uses exact xHeal brand colors via CSS custom properties.
  */
 export default function MedicalStandardsBadge({
-  className = "",
+  className = "text-xblack",
 }: {
   className?: string;
 }) {
@@ -40,10 +40,10 @@ export default function MedicalStandardsBadge({
 
       {/* Text */}
       <div className="flex flex-col leading-[1.15]">
-        <span className="text-[0.8125rem] font-medium tracking-[0.06em] text-xblack">
+        <span className="text-[0.8125rem] font-medium tracking-[0.06em]">
           WHO &middot; ADA &middot; EASD
         </span>
-        <span className="text-[0.6875rem] text-xblack-70">
+        <span className="text-[0.6875rem] opacity-70">
           Medical-Standard Reasoning
         </span>
       </div>
