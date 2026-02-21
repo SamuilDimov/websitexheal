@@ -95,24 +95,24 @@ const useCases = [
 const testimonials = [
   {
     quote:
-      "Tracking symptoms was a chore until xHeal. It spots patterns I would miss and warns me before things get worse.",
-    name: "Sarah Mitchell",
-    age: 38,
-    image: "/images/testimonial-jessica.jpeg",
+      "My supplement stack was expensive and I had no idea what was working. xHeal helped me cut 4 supplements and keep the 3 that actually moved my labs.",
+    name: "Dana K.",
+    age: 37,
+    image: "/images/testimonials/t-112.png",
   },
   {
     quote:
-      "I've cut my flare-ups in half by finally knowing what sets them off. xHeal turned my trial and error into real prevention.",
-    name: "James Parker",
-    age: 45,
-    image: "/images/testimonial-michael.jpeg",
+      "I started a new antidepressant and xHeal tracked my sleep, mood, and energy through the transition. Showed my doctor exactly how I responded.",
+    name: "Wesley F.",
+    age: 34,
+    image: "/images/testimonials/t-111.png",
   },
   {
     quote:
-      "Before xHeal, flare-ups felt random. Now I know my triggers and can act early - fewer bad days, more control.",
-    name: "Daniel Brooks",
-    age: 50,
-    image: "/images/testimonial-kris.jpeg",
+      "Magnesium timing matters. xHeal proved that taking it at night vs morning makes a measurable difference in my sleep quality.",
+    name: "Kelly N.",
+    age: 29,
+    image: "/images/testimonials/t-117.png",
   },
 ];
 

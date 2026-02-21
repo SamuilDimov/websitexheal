@@ -95,24 +95,24 @@ const useCases = [
 const testimonials = [
   {
     quote:
-      "I never realized how my daily habits added up until xHeal started showing my health trends. It's like having a personal health analyst.",
-    name: "Michael Reed",
-    age: 41,
-    image: "/images/testimonial-michael.jpeg",
+      "I moved states and had records at 4 different hospitals. xHeal organized everything into one timeline. It took me 10 minutes.",
+    name: "Brian D.",
+    age: 43,
+    image: "/images/testimonials/t-078.png",
   },
   {
     quote:
-      "xHeal finally helped me see the full picture of my health: sleep, activity, and check-ups in one clear dashboard.",
-    name: "Emily Carter",
-    age: 36,
-    image: "/images/testimonial-jessica.jpeg",
+      "After 20 years of medical history, having everything organized chronologically and searchable is incredible. I wish I had this decades ago.",
+    name: "Harold N.",
+    age: 67,
+    image: "/images/testimonials/t-080.png",
   },
   {
     quote:
-      "Before xHeal, flare-ups felt random. Now I know my triggers and can act early - fewer bad days, more control.",
-    name: "Daniel Brooks",
-    age: 50,
-    image: "/images/testimonial-kris.jpeg",
+      "I photograph every lab slip, prescription, and doctor's note. xHeal organizes it all automatically. No more filing cabinets.",
+    name: "Dorothy A.",
+    age: 70,
+    image: "/images/testimonials/t-085.png",
   },
 ];
 

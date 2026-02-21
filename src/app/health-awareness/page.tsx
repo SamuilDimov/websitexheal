@@ -95,24 +95,24 @@ const useCases = [
 const testimonials = [
   {
     quote:
-      "I finally stopped juggling four apps. Everything I need is in one place, and xHeal shows me how my patterns actually connect.",
-    name: "Kristiyan Nikolov",
-    age: 34,
-    image: "/images/testimonial-kris.jpeg",
-  },
-  {
-    quote:
-      "Simple, visual, and motivating. xHeal turns scattered data into clear insights I can actually act on.",
-    name: "Jessica Miller",
-    age: 28,
-    image: "/images/testimonial-jessica.jpeg",
-  },
-  {
-    quote:
-      "xHeal finally helped me see the full picture of my health: sleep, activity, and check-ups in one clear dashboard. It keeps me proactive instead of guessing.",
-    name: "Emily Carter",
+      "My health awareness score dropped from 78 to 62 and I had no idea why. xHeal pinpointed it to my sleep quality declining over two weeks.",
+    name: "Adrian V.",
     age: 36,
-    image: "/images/testimonial-michael.jpeg",
+    image: "/images/testimonials/t-118.png",
+  },
+  {
+    quote:
+      "Going from a 55 to an 82 health score in 4 months felt incredible. Having a single number to track kept me motivated every day.",
+    name: "Tamara S.",
+    age: 30,
+    image: "/images/testimonials/t-119.png",
+  },
+  {
+    quote:
+      "My score revealed that I was strong in fitness but terrible in stress management. That targeted insight was worth more than a gym membership.",
+    name: "Vincent P.",
+    age: 33,
+    image: "/images/testimonials/t-122.png",
   },
 ];
 

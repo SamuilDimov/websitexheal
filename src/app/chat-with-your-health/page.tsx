@@ -96,24 +96,24 @@ const useCases = [
 const testimonials = [
   {
     quote:
-      "When my HRV dropped, xHeal warned me a flare-up was coming. A few days later my labs confirmed it. xHeal saw it before I felt it.",
-    name: "Trifon Getsov",
-    age: 33,
-    image: "/images/testimonial-kris.jpeg",
+      "I asked my Digital Twin why I felt tired after 8 hours of sleep. It connected my HRV data to my late dinner timing. Mind blown.",
+    name: "Chloe L.",
+    age: 27,
+    image: "/images/testimonials/t-126.png",
   },
   {
     quote:
-      "I finally stopped juggling four apps. Everything I need is in one place, and xHeal shows me how my patterns actually connect.",
-    name: "Kristiyan Nikolov",
-    age: 34,
-    image: "/images/testimonial-kris.jpeg",
+      "My Digital Twin knows me better than any single doctor because it has all my data in one place. That's not an exaggeration.",
+    name: "Fiona C.",
+    age: 35,
+    image: "/images/testimonials/t-128.png",
   },
   {
     quote:
-      "Simple, visual, and motivating. xHeal turns scattered data into clear insights I can actually act on.",
-    name: "Jessica Miller",
-    age: 28,
-    image: "/images/testimonial-jessica.jpeg",
+      "The AI chat doesn't just answer, it explains the reasoning. WHO guidelines, my personal data, everything cited. It's like having a medical advisor.",
+    name: "Irene J.",
+    age: 46,
+    image: "/images/testimonials/t-130.png",
   },
 ];
 

@@ -118,24 +118,24 @@ const useCases = [
 const testimonials = [
   {
     quote:
-      "I finally stopped juggling four apps. Everything I need is in one place, and xHeal shows me how my patterns actually connect.",
-    name: "Kristiyan Nikolov",
-    age: 34,
-    image: "/images/testimonial-kris.jpeg",
+      "Walked into my gastro appointment with a 6-month report from xHeal. He spent less time asking questions and more time actually helping.",
+    name: "Allen S.",
+    age: 40,
+    image: "/images/testimonials/t-086.png",
   },
   {
     quote:
-      "Simple, visual, and motivating. xHeal turns scattered data into clear insights I can actually act on.",
-    name: "Jessica Miller",
-    age: 28,
-    image: "/images/testimonial-jessica.jpeg",
+      "My new doctor said my xHeal report was the best new patient summary she'd ever received. Cut our first appointment time in half.",
+    name: "Cheryl B.",
+    age: 45,
+    image: "/images/testimonials/t-087.png",
   },
   {
     quote:
-      "I never realized how my daily habits added up until xHeal started showing my health trends. It's like having a personal health analyst.",
-    name: "Michael Reed",
+      "My functional medicine doctor said my xHeal report saved us two months of intake assessments. We jumped straight to treatment.",
+    name: "Claire V.",
     age: 41,
-    image: "/images/testimonial-michael.jpeg",
+    image: "/images/testimonials/t-091.png",
   },
 ];
 

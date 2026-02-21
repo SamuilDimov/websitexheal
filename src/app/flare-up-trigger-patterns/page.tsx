@@ -96,24 +96,24 @@ const useCases = [
 const testimonials = [
   {
     quote:
-      "When my HRV dropped, xHeal warned me a flare-up was coming. A few days later my labs confirmed it. xHeal saw it before I felt it.",
-    name: "Trifon Getsov",
-    age: 33,
-    image: "/images/testimonial-kris.jpeg",
-  },
-  {
-    quote:
-      "I've cut my flare-ups in half by finally knowing what sets them off. xHeal turned my trial and error into real prevention.",
-    name: "James Parker",
-    age: 45,
-    image: "/images/testimonial-michael.jpeg",
-  },
-  {
-    quote:
-      "Tracking symptoms was a chore until xHeal. It spots patterns I would miss and warns me before things get worse.",
-    name: "Sarah Mitchell",
+      "xHeal predicted my last three IBS flares 48 hours in advance. I adjusted my diet each time and two of the three never fully hit.",
+    name: "Larry K.",
     age: 38,
-    image: "/images/testimonial-jessica.jpeg",
+    image: "/images/testimonials/t-102.png",
+  },
+  {
+    quote:
+      "Migraine prediction is the killer feature for me. xHeal catches the HRV and sleep pattern that precedes my migraines by 36 hours.",
+    name: "Deborah W.",
+    age: 44,
+    image: "/images/testimonials/t-104.png",
+  },
+  {
+    quote:
+      "Gout attacks used to blindside me. xHeal connected them to dehydration and specific protein intake patterns. Prevention beats treatment.",
+    name: "Howard J.",
+    age: 52,
+    image: "/images/testimonials/t-106.png",
   },
 ];
 
