@@ -74,13 +74,13 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-[48px]">
+          <div className="hidden md:flex items-center gap-[36px]">
             {navLinks.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="text-[1.5rem] px-[10px] py-[10px] border border-transparent rounded-[12px] transition-all duration-200 hover:border-xlight-blue hover:bg-xlight-blue-low"
-                style={{ color: "#ffffff" }}
+                className="px-[10px] py-[10px] border border-transparent rounded-[12px] transition-all duration-200 hover:border-xlight-blue hover:bg-xlight-blue-low"
+                style={{ color: "#ffffff", fontSize: "1.125rem" }}
               >
                 {item.label}
               </Link>
@@ -90,8 +90,8 @@ export default function Navbar() {
                 href="https://apps.apple.com/us/app/xheal/id6748074977"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[1.375rem] text-center rounded-[16px] px-[32px] py-[14px] transition-all duration-200 hover:shadow-[0_4px_4px_0_var(--light-blue-low)] inline-block"
-                style={{ backgroundColor: "#ffffff", color: "#4764ff" }}
+                className="text-center rounded-[16px] px-[28px] py-[12px] transition-all duration-200 hover:shadow-[0_4px_4px_0_var(--light-blue-low)] inline-block"
+                style={{ backgroundColor: "#ffffff", color: "#4764ff", fontSize: "1.0625rem" }}
               >
                 Download App
               </a>
