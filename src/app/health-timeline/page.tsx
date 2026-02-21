@@ -39,7 +39,7 @@ export default function HealthTimelinePage() {
           icon: "trending_flat",
           title: "No way to see trends",
           detail:
-            "Individual test results are snapshots. Without a timeline, you can't see how your markers have changed over months or years, and neither can your doctor.",
+            "Individual test results are snapshots. Without a timeline, you can't see how your markers have changed over months or years, and neither can your care team.",
         },
       ]}
       howHeading={
@@ -94,7 +94,7 @@ export default function HealthTimelinePage() {
             "Go back to any point in your timeline and see everything that was happening: symptoms, meds, lifestyle changes, lab results.",
         },
         {
-          question: "Can I share my full history with a new doctor?",
+          question: "Can I share my full history with a new provider?",
           tag: "Sharing",
           description:
             "Generate a comprehensive health summary from your timeline. Perfect for new providers who need your complete history.",
@@ -207,7 +207,7 @@ export default function HealthTimelinePage() {
           a: "Yes. All records are encrypted and stored securely. We follow HIPAA and GDPR compliance standards. You control who sees your data and can delete it at any time.",
         },
         {
-          q: "Can I share my timeline with my doctor?",
+          q: "Can I share my timeline with my care team?",
           a: "Yes. Generate a report from your timeline or share specific records directly from the app before your appointment.",
         },
       ]}

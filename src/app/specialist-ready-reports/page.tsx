@@ -5,7 +5,7 @@ const fourReports = [
   {
     title: "Why Finder",
     description:
-      "Uncovers root causes behind your symptoms. xHeal traces connections across your data to help you and your doctor understand why you feel the way you do.",
+      "Uncovers root causes behind your symptoms. xHeal traces connections across your data to help you and your care team understand why you feel the way you do.",
   },
   {
     title: "My Snapshot",
@@ -15,7 +15,7 @@ const fourReports = [
   {
     title: "Clinical Report",
     description:
-      "Detailed, data-rich report designed for doctors and specialists. Includes lab trends, vital sign patterns, medication history, and relevant correlations.",
+      "Detailed, data-rich report designed for clinicians and specialists. Includes lab trends, vital sign patterns, medication history, and relevant correlations.",
   },
   {
     title: "Health Gaps",
@@ -33,10 +33,10 @@ export default function SpecialistReadyReportsPage() {
           <span className="text-xlight-blue">prepared</span>
         </>
       }
-      heroSubtitle="Four specialist-ready reports that give your doctors, nutritionists, and trainers the complete picture - so no detail gets lost in a 15-minute visit."
+      heroSubtitle="Four specialist-ready reports that give your doctors, nutritionists, trainers, and therapists the complete picture - so no detail gets lost in a 15-minute visit."
       heroImage={{
         src: "/images/get-reports.png",
-        alt: "xHeal Specialist-Ready Reports - generate detailed health reports for your doctors, nutritionists, and trainers",
+        alt: "xHeal Specialist-Ready Reports - generate detailed health reports for your doctors, nutritionists, trainers, and therapists",
         width: 978,
         height: 1998,
       }}
@@ -55,7 +55,7 @@ export default function SpecialistReadyReportsPage() {
         },
         {
           icon: "blur_on",
-          title: "Doctors don't have context",
+          title: "Specialists don't have context",
           detail:
             "Your specialist sees their slice. Your GP sees another. Nobody has the unified view of your sleep, stress, symptoms, and lab results all together.",
         },
@@ -69,7 +69,7 @@ export default function SpecialistReadyReportsPage() {
       howHeading={
         <>
           From your data to{" "}
-          <span className="text-xdark-blue">your doctor&apos;s hands</span>
+          <span className="text-xdark-blue">your care team&apos;s hands</span>
         </>
       }
       howItWorks={[
@@ -89,7 +89,7 @@ export default function SpecialistReadyReportsPage() {
           step: "03",
           title: "Share with your care team",
           description:
-            "Download or share your report directly. Your doctor gets the context they need before the appointment even starts.",
+            "Download or share your report directly. Your specialist gets the context they need before the appointment even starts.",
         },
       ]}
       extraSection={
@@ -127,7 +127,7 @@ export default function SpecialistReadyReportsPage() {
       }
       useCases={[
         {
-          question: "What should my doctor know before my appointment?",
+          question: "What should my specialist know before my appointment?",
           tag: "GP visit",
           description:
             "Generate a My Snapshot report that summarizes your current health status across all domains.",
@@ -142,7 +142,7 @@ export default function SpecialistReadyReportsPage() {
           question: "How have my labs changed over time?",
           tag: "Lab trends",
           description:
-            "The Clinical Report includes historical lab trends so your doctor can see the trajectory, not just today's numbers.",
+            "The Clinical Report includes historical lab trends so your care team can see the trajectory, not just today's numbers.",
         },
         {
           question: "Am I missing any important tests?",
@@ -166,10 +166,10 @@ export default function SpecialistReadyReportsPage() {
       comparison={{
         heading: "Other apps track your health.",
         headingAccent: "xHeal helps you share it.",
-        intro: "You track everything. But when you sit down with your doctor, none of that data comes with you. Most health apps have no way to generate reports. xHeal creates specialist-ready documents that turn months of data into something your doctor can read in minutes.",
+        intro: "You track everything. But when you sit down with your specialist, none of that data comes with you. Most health apps have no way to generate reports. xHeal creates specialist-ready documents that turn months of data into something any provider can read in minutes.",
         columns: ["WHOOP", "Bevel Health", "Olivia Health", "xHeal"],
         rows: [
-          { feature: "Generate reports for your doctor", values: ["no", "no", "no", "4 report types"] },
+          { feature: "Generate reports for your care team", values: ["no", "no", "no", "4 report types"] },
           { feature: "Include lab results in reports", values: ["no", "no", "no", "yes"] },
           { feature: "Include wearable data in reports", values: ["Data export only", "no", "no", "yes"] },
           { feature: "Include symptom + lifestyle context", values: ["no", "no", "no", "yes"] },
@@ -178,7 +178,7 @@ export default function SpecialistReadyReportsPage() {
           { feature: "Cross-references 250+ parameters", values: ["no", "no", "no", "yes"] },
           { feature: "Share via PDF or in-app", values: ["no", "no", "no", "yes"] },
         ],
-        closingLine: "WHOOP lets you export raw data. Bevel and Olivia have no report features at all. xHeal is the only app that generates clinical-grade reports your doctor can actually use.",
+        closingLine: "WHOOP lets you export raw data. Bevel and Olivia have no report features at all. xHeal is the only app that generates clinical-grade reports your care team can actually use.",
         highlightColumn: 3,
       }}
       testimonialsHeading={
@@ -222,7 +222,7 @@ export default function SpecialistReadyReportsPage() {
         {
           title: "Designed with clinicians in mind",
           detail:
-            "Report formats follow clinical communication standards. Doctors, nutritionists, and trainers can read them without training.",
+            "Report formats follow clinical communication standards. Doctors, nutritionists, trainers, and therapists can read them without extra training.",
         },
         {
           title: "Guideline-aligned analysis",
@@ -247,7 +247,7 @@ export default function SpecialistReadyReportsPage() {
           a: "They're designed for any healthcare provider: GPs, specialists, nutritionists, personal trainers, or therapists. Each report is formatted to be clear and actionable for professionals.",
         },
         {
-          q: "Can my doctor access my reports directly?",
+          q: "Can my care team access my reports directly?",
           a: "You control sharing. You can download reports as PDFs or share them directly from the app before or during appointments.",
         },
         {
@@ -270,7 +270,7 @@ export default function SpecialistReadyReportsPage() {
           <span className="text-xlight-blue">Walk out with answers.</span>
         </>
       }
-      ctaSubtitle="Download xHeal and walk into every appointment with the context your doctors need."
+      ctaSubtitle="Download xHeal and walk into every appointment with the context your care team needs."
     />
   );
 }

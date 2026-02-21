@@ -91,7 +91,7 @@ export default function ChatWithYourHealthPage() {
           question: "Which labs should I ask for next?",
           tag: "Planning",
           description:
-            "Based on your profile and results, xHeal identifies gaps and recommends specific tests to bring to your doctor.",
+            "Based on your profile and results, xHeal identifies gaps and recommends specific tests to bring to your next appointment.",
         },
         {
           question: "What should I focus on this week?",
@@ -126,7 +126,7 @@ export default function ChatWithYourHealthPage() {
           { feature: "Follows medical guidelines (WHO, ADA, EASD)", values: ["no", "no", "no", "yes"] },
           { feature: "Predictive health insights", values: ["no", "no", "no", "yes"] },
           { feature: "Works without proprietary hardware", values: ["no", "Apple Watch only", "yes", "yes"] },
-          { feature: "Generates reports for your doctor", values: ["no", "no", "no", "4 report types"] },
+          { feature: "Generates reports for your care team", values: ["no", "no", "no", "4 report types"] },
         ],
         closingLine: "WHOOP shows you numbers. Bevel and Olivia give you basic answers. xHeal connects 250+ parameters to tell you what your health actually means.",
         highlightColumn: 3,
@@ -175,7 +175,7 @@ export default function ChatWithYourHealthPage() {
         {
           title: "Medical-standard reasoning",
           detail:
-            "Every answer references WHO, ADA, and EASD clinical guidelines, the same frameworks your doctor uses.",
+            "Every answer references WHO, ADA, and EASD clinical guidelines, the same frameworks your care team uses.",
         },
         {
           title: "You control your history",
@@ -192,7 +192,7 @@ export default function ChatWithYourHealthPage() {
       faqs={[
         {
           q: "Is this a replacement for my doctor?",
-          a: "No. xHeal Chat is a health companion, not a medical provider. It helps you understand your data, spot patterns, and prepare better questions for your doctor. It does not diagnose, treat, or prescribe.",
+          a: "No. xHeal Chat is a health companion, not a medical provider. It helps you understand your data, spot patterns, and prepare better questions for your care team. It does not diagnose, treat, or prescribe.",
         },
         {
           q: "What data does it have access to?",
@@ -207,7 +207,7 @@ export default function ChatWithYourHealthPage() {
           a: "xHeal interprets health data through guidelines from the World Health Organization (WHO), American Diabetes Association (ADA), European Association for the Study of Diabetes (EASD), and others.",
         },
         {
-          q: "Can I share insights with my doctor?",
+          q: "Can I share insights with my care team?",
           a: "Yes. xHeal generates specialist-ready reports - Why Finder, My Snapshot, Clinical Report, and Health Gaps - designed specifically for sharing with your care team.",
         },
       ]}

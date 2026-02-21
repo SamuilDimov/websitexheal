@@ -180,7 +180,7 @@ function NewsletterSection() {
     {
       id: "understand",
       label: "Understanding my body better",
-      description: "Lab results explained, health scores, what to ask your doctor",
+      description: "Lab results explained, health scores, what to ask your care team",
     },
   ];
 

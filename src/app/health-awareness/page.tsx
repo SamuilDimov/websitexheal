@@ -34,11 +34,11 @@ export default function HealthAwarenessPage() {
           icon: "pie_chart",
           title: "Health is more than one number",
           detail:
-            "Your doctor checks cholesterol. Your watch tracks steps. Your app counts calories. But no one connects them. Real health awareness means seeing how everything fits together.",
+            "Your GP checks cholesterol. Your watch tracks steps. Your app counts calories. But no one connects them. Real health awareness means seeing how everything fits together.",
         },
         {
           icon: "content_cut",
-          title: "Doctors see fragments",
+          title: "Specialists see fragments",
           detail:
             "Each specialist sees their slice. Your GP gets 15 minutes. Nobody has the time or tools to connect your sleep patterns with your lab results and your stress levels.",
         },
@@ -113,10 +113,10 @@ export default function HealthAwarenessPage() {
             "xHeal identifies blind spots in your health data and suggests what to track or test next for a more complete picture.",
         },
         {
-          question: "Can I share this with my doctor?",
+          question: "Can I share this with my care team?",
           tag: "Sharing",
           description:
-            "Generate a Health Awareness report to bring to your next appointment. Give your doctor context they\u2019ve never had before.",
+            "Generate a Health Awareness report to bring to your next appointment. Give your specialists context they\u2019ve never had before.",
         },
       ]}
       comparison={{

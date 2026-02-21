@@ -27,7 +27,7 @@ export default function LogLifeEventsPage() {
           icon: "change_history",
           title: "Small changes have big effects",
           detail:
-            "Started a new supplement? Changed your diet? Moved to a new city? These moments shape your health, but they're invisible to your doctor and easy to forget.",
+            "Started a new supplement? Changed your diet? Moved to a new city? These moments shape your health, but they're invisible to your care team and easy to forget.",
         },
         {
           icon: "link_off",
@@ -94,8 +94,8 @@ export default function LogLifeEventsPage() {
             "Log major life changes and see how they correlate with shifts in your sleep, mood, energy, and symptoms.",
         },
         {
-          question: "What should I tell my doctor about the last 3 months?",
-          tag: "Doctor prep",
+          question: "What should I tell my specialist about the last 3 months?",
+          tag: "Appointment prep",
           description:
             "Every logged event becomes part of your health timeline. Generate a report that shows exactly what changed and when.",
         },
@@ -109,7 +109,7 @@ export default function LogLifeEventsPage() {
           question: "What side effects appeared after my dosage change?",
           tag: "Monitoring",
           description:
-            "Correlate medication changes with symptom logs to help your doctor fine-tune your treatment.",
+            "Correlate medication changes with symptom logs to help your care team fine-tune your treatment.",
         },
       ]}
       comparison={{
@@ -202,7 +202,7 @@ export default function LogLifeEventsPage() {
           a: "It depends on what you're tracking. Some correlations (like sleep supplements) may show within days. Others (like dietary changes) may take weeks. The more consistently you log, the faster insights appear.",
         },
         {
-          q: "Can I share my logs with my doctor?",
+          q: "Can I share my logs with my care team?",
           a: "Yes. Your logged events become part of your health reports. Generate a timeline-based report for your next appointment.",
         },
         {

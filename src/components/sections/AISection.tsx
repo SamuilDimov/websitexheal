@@ -22,7 +22,7 @@ export default function AISection() {
                 </p>
                 <p className="text-xblack-70 text-[1.125rem] max-[767px]:text-[1rem]">
                   Our AI interprets your data through clinical guidelines from
-                  the WHO, ADA, and EASD, the same standards your doctor uses.
+                  the WHO, ADA, and EASD, the same standards your care team uses.
                   But unlike any single specialist, your Digital Twin sees
                   everything at once: your labs, your sleep, your symptoms, your
                   habits, your history.

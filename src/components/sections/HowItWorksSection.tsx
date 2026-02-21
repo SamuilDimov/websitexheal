@@ -17,7 +17,7 @@ const steps = [
     number: "3",
     title: "Get clarity and take action",
     description:
-      "Ask questions, get daily health actions, receive early warnings, and generate reports for your doctor. Your Digital Twin gets smarter every day.",
+      "Ask questions, get daily health actions, receive early warnings, and generate reports for your care team. Your Digital Twin gets smarter every day.",
   },
 ];
 

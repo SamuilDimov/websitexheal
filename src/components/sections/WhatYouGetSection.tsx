@@ -31,10 +31,10 @@ const features = [
   },
   {
     image: "/images/get-reports-card.png",
-    alt: "xHeal specialist-ready health reports for doctors and care teams",
+    alt: "xHeal specialist-ready health reports for doctors, nutritionists, trainers, and therapists",
     title: "Specialist-Ready Reports",
     description:
-      "Four report types designed for doctors, nutritionists, and trainers. Walk into your next appointment with the context your care team has never had.",
+      "Four report types designed for doctors, nutritionists, trainers, and therapists. Walk into your next appointment with the context your care team has never had.",
     href: "/specialist-ready-reports",
   },
   {

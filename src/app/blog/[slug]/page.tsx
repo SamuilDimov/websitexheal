@@ -54,7 +54,7 @@ const blogPosts: Record<
       author: { name: "Trifon Getsov", image: "/images/trifon.png" },
       content: `<p>xHeal taught me exactly which labs matter, helping me understand my health better and make smarter decisions early.</p>
       <h2>Beyond Standard Panels</h2>
-      <p>Most routine bloodwork covers the basics, but misses important markers. xHeal analyzed my symptoms, lifestyle data, and vitals to recommend specific tests that my doctor hadn't considered.</p>
+      <p>Most routine bloodwork covers the basics, but misses important markers. xHeal analyzed my symptoms, lifestyle data, and vitals to recommend specific tests that my care team hadn't considered.</p>
       <h2>Connecting the Dots</h2>
       <p>What made the difference was seeing how different markers related to each other. xHeal didn't just show me numbers - it showed me the story behind them.</p>`,
     },

@@ -127,7 +127,7 @@ export default function FlareUpTriggerPatternsPage() {
           { feature: "Correlate across data types", values: ["Fitness only", "Lifestyle only", "Records only", "250+ parameters"] },
           { feature: "Works without proprietary hardware", values: ["no", "Apple Watch only", "yes", "yes"] },
           { feature: "Clinical AI reasoning (WHO, ADA, EASD)", values: ["no", "no", "no", "yes"] },
-          { feature: "Generate doctor reports", values: ["no", "no", "no", "4 report types"] },
+          { feature: "Generate specialist reports", values: ["no", "no", "no", "4 report types"] },
         ],
         closingLine: "WHOOP tracks your strain. Bevel tracks your recovery. Olivia organizes your records. Only xHeal connects it all to predict what's coming.",
         highlightColumn: 3,
@@ -205,7 +205,7 @@ export default function FlareUpTriggerPatternsPage() {
         },
         {
           q: "Does it replace medical diagnosis?",
-          a: "No. xHeal identifies patterns and correlations in your data to help you and your doctor understand triggers. It does not diagnose conditions or replace clinical care.",
+          a: "No. xHeal identifies patterns and correlations in your data to help you and your care team understand triggers. It does not diagnose conditions or replace clinical care.",
         },
         {
           q: "How much data does it need?",

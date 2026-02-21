@@ -32,7 +32,7 @@ const faqs = [
   {
     question: "What is Flare-Up Tracking?",
     answer:
-      "Flare-Up Tracking allows you to log symptoms like headaches, fatigue, digestive issues, or other recurring conditions. Over time, the app identifies patterns and possible triggers, helping you and your doctors better understand and manage your flare-ups.",
+      "Flare-Up Tracking allows you to log symptoms like headaches, fatigue, digestive issues, or other recurring conditions. Over time, the app identifies patterns and possible triggers, helping you and your care team better understand and manage your flare-ups.",
   },
   {
     question: "What does Indicator Tracking do?",
