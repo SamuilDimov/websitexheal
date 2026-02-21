@@ -80,7 +80,7 @@ export default function Navbar() {
                 key={item.href}
                 href={item.href}
                 className="px-[10px] py-[10px] border border-transparent rounded-[12px] transition-all duration-200 hover:border-xlight-blue hover:bg-xlight-blue-low"
-                style={{ color: "#ffffff", fontSize: "1.125rem" }}
+                style={{ color: "#ffffff", fontSize: "1.25rem" }}
               >
                 {item.label}
               </Link>
@@ -91,7 +91,7 @@ export default function Navbar() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-center rounded-[16px] px-[28px] py-[12px] transition-all duration-200 hover:shadow-[0_4px_4px_0_var(--light-blue-low)] inline-block"
-                style={{ backgroundColor: "#ffffff", color: "#4764ff", fontSize: "1.0625rem" }}
+                style={{ backgroundColor: "#ffffff", color: "#4764ff", fontSize: "1.1875rem" }}
               >
                 Download App
               </a>
