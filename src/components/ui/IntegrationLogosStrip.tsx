@@ -96,7 +96,7 @@ export default function IntegrationLogosStrip({
             />
           </svg>
           <span className="text-[0.8125rem] font-medium">
-            MyChart
+            MyChart by Epic
           </span>
         </div>
 
