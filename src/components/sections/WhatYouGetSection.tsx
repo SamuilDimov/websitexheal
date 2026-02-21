@@ -4,7 +4,7 @@ import ScrollReveal from "@/components/ui/ScrollReveal";
 
 const features = [
   {
-    image: "/images/chat-landing.png",
+    image: "/images/chat-landing-card.png",
     alt: "xHeal Chat - ask your Digital Twin about your health data and get personalized answers",
     title: "Chat With Your Health",
     description:
@@ -13,7 +13,7 @@ const features = [
     featured: true,
   },
   {
-    image: "/images/flare-up.png",
+    image: "/images/flare-up-card.png",
     alt: "xHeal flare-up trigger pattern detection with calendar and activity charts",
     title: "Flare-Up Trigger Patterns",
     description:
@@ -22,7 +22,7 @@ const features = [
     featured: true,
   },
   {
-    image: "/images/reports-landing.png",
+    image: "/images/reports-landing-card.png",
     alt: "xHeal Health Awareness score showing 75 out of 100 across six health domains",
     title: "Health Awareness Score",
     description:
@@ -30,7 +30,7 @@ const features = [
     href: "/health-awareness",
   },
   {
-    image: "/images/get-reports.png",
+    image: "/images/get-reports-card.png",
     alt: "xHeal specialist-ready health reports for doctors and care teams",
     title: "Specialist-Ready Reports",
     description:
@@ -38,7 +38,7 @@ const features = [
     href: "/specialist-ready-reports",
   },
   {
-    image: "/images/records-landing.png",
+    image: "/images/records-landing-card.png",
     alt: "xHeal health timeline with organized medical records and lab results",
     title: "Health Timeline",
     description:
@@ -46,7 +46,7 @@ const features = [
     href: "/health-timeline",
   },
   {
-    image: "/images/log-medication.png",
+    image: "/images/log-medication-card.png",
     alt: "xHeal life event logging for medications, supplements, and health context",
     title: "Log Life Events",
     description:
