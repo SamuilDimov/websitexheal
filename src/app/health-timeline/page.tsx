@@ -1,540 +1,123 @@
-"use client";
-
-import { useState, useEffect, useRef } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import ScrollReveal from "@/components/ui/ScrollReveal";
-import CrossLinkSection from "@/components/feature-landing/CrossLinkSection";
-import ComparisonSection from "@/components/feature-landing/ComparisonSection";
-import MedicalStandardsBadge from "@/components/ui/MedicalStandardsBadge";
-import ComplianceBadges from "@/components/ui/ComplianceBadges";
-
-/* ------------------------------------------------------------------ */
-/*  DATA                                                               */
-/* ------------------------------------------------------------------ */
-
-const painPoints = [
-  {
-    icon: "folder_off",
-    title: "Records scattered across clinics",
-    detail:
-      "Your GP has some files. The specialist has others. That ER visit from 2022? Good luck finding it. Every provider holds a piece, but nobody holds the whole picture.",
-  },
-  {
-    icon: "event_note",
-    title: "Life events affect health too",
-    detail:
-      "A stressful move, a new job, a relationship change - these shape your health just as much as lab results. But no medical system tracks them.",
-  },
-  {
-    icon: "link_off",
-    title: "Nothing connects the dots",
-    detail:
-      "When your doctor asks 'when did this start?' you're guessing. Without a timeline, cause and effect stay hidden.",
-  },
-];
-
-const howItWorks = [
-  {
-    step: "01",
-    title: "Import your records",
-    description:
-      "Upload PDFs, snap photos, sync Apple Health, or connect MyChart. xHeal reads, organizes, and stores everything securely.",
-  },
-  {
-    step: "02",
-    title: "xHeal builds your timeline",
-    description:
-      "Every record, result, and life event is placed chronologically. Your full health story unfolds in one scrollable view.",
-  },
-  {
-    step: "03",
-    title: "Search, browse, and share",
-    description:
-      "Find anything instantly. Filter by type, date, or keyword. Share specific records with your care team in seconds.",
-  },
-];
-
-const useCases = [
-  {
-    question: "When was my last blood test?",
-    tag: "Recall",
-    description:
-      "Search your timeline and find any record instantly - no digging through email or calling clinics.",
-  },
-  {
-    question: "Show me everything from 2024",
-    tag: "Context",
-    description:
-      "Filter by year, month, or date range to see your complete health picture for any period.",
-  },
-  {
-    question: "What happened before my diagnosis?",
-    tag: "Cause & effect",
-    description:
-      "Scroll back through your timeline to see what changed in the weeks and months leading up to a health event.",
-  },
-  {
-    question: "What should I bring to my appointment?",
-    tag: "Preparation",
-    description:
-      "Pull relevant records from your timeline and share them with your doctor before your visit.",
-  },
-  {
-    question: "How did moving cities affect my health?",
-    tag: "Life events",
-    description:
-      "See how major life changes align with shifts in your symptoms, sleep, and overall wellbeing.",
-  },
-  {
-    question: "What records am I missing?",
-    tag: "Completeness",
-    description:
-      "xHeal identifies gaps in your medical history and suggests what to upload or request from providers.",
-  },
-];
-
-const testimonials = [
-  {
-    quote:
-      "I moved states and had records at 4 different hospitals. xHeal organized everything into one timeline. It took me 10 minutes.",
-    name: "Brian D.",
-    age: 43,
-    image: "/images/testimonials/t-078.png",
-  },
-  {
-    quote:
-      "After 20 years of medical history, having everything organized chronologically and searchable is incredible. I wish I had this decades ago.",
-    name: "Harold N.",
-    age: 67,
-    image: "/images/testimonials/t-080.png",
-  },
-  {
-    quote:
-      "I photograph every lab slip, prescription, and doctor's note. xHeal organizes it all automatically. No more filing cabinets.",
-    name: "Dorothy A.",
-    age: 70,
-    image: "/images/testimonials/t-085.png",
-  },
-];
-
-const trustItems = [
-  {
-    title: "Encrypted storage",
-    detail:
-      "Every record, PDF, and image is encrypted at rest and in transit. Your medical history is protected by the same standards used in clinical systems.",
-  },
-  {
-    title: "Works with your existing records",
-    detail:
-      "PDFs, photos, Apple Health data, MyChart records. xHeal reads and organizes them without altering the originals.",
-  },
-  {
-    title: "Full data portability",
-    detail:
-      "Your records are yours. Export everything at any time. Delete everything at any time. No lock-in, no friction.",
-  },
-  {
-    title: "Country and language agnostic",
-    detail:
-      "Records from any country, in any language. xHeal's AI handles the interpretation so your timeline stays complete.",
-  },
-];
-
-const faqs = [
-  {
-    q: "What file types can I upload?",
-    a: "PDFs, photos (JPG, PNG), and documents. xHeal uses AI to read and extract data from lab results, prescriptions, and medical reports.",
-  },
-  {
-    q: "Can I import from MyChart?",
-    a: "Yes. xHeal connects with MyChart to import your medical records directly. More integrations are coming soon.",
-  },
-  {
-    q: "Is my data secure?",
-    a: "Yes. All records are encrypted and stored securely. Our LLM partner follows a zero-retention policy - your data is never used for training.",
-  },
-  {
-    q: "Can I share records with my doctor?",
-    a: "Absolutely. You can share individual records or generate comprehensive reports to bring to appointments.",
-  },
-  {
-    q: "What about records from different countries?",
-    a: "xHeal works with medical records in any language and from any country. Our AI handles the interpretation.",
-  },
-];
-
-/* ------------------------------------------------------------------ */
-/*  SMALL COMPONENTS                                                   */
-/* ------------------------------------------------------------------ */
-
-function FAQItem({ q, a }: { q: string; a: string }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <div className="border-b border-[#ffffff1a]">
-      <button
-        onClick={() => setOpen(!open)}
-        className="w-full text-left py-[28px] flex justify-between items-start gap-[20px] group"
-      >
-        <h3
-          className="text-[1.25rem] font-medium leading-[1.3] tracking-[-0.01em] text-xwhite group-hover:text-xlight-blue transition-colors duration-200"
-          style={{ color: "#ffffff" }}
-        >
-          {q}
-        </h3>
-        <span
-          className="text-xlight-blue text-[1.5rem] font-light leading-[1] flex-shrink-0 mt-[2px] transition-transform duration-300"
-          style={{ transform: open ? "rotate(45deg)" : "rotate(0deg)" }}
-        >
-          +
-        </span>
-      </button>
-      <div
-        className={`overflow-hidden transition-all duration-400 ${
-          open ? "max-h-[500px] pb-[28px]" : "max-h-0"
-        }`}
-      >
-        <p
-          className="text-[1.125rem] leading-[1.6] max-w-[60ch]"
-          style={{ color: "#ffffffcc" }}
-        >
-          {a}
-        </p>
-      </div>
-    </div>
-  );
-}
-
-function StarRating() {
-  return (
-    <div className="flex gap-[6px]">
-      {[...Array(5)].map((_, i) => (
-        <svg
-          key={i}
-          width="18"
-          height="17"
-          viewBox="0 0 18 17"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M8.16379 0.551109C8.47316 -0.183704 9.52684 -0.183703 9.83621 0.551111L11.6621 4.88811C11.7926 5.19789 12.0875 5.40955 12.426 5.43636L17.1654 5.81173C17.9684 5.87533 18.294 6.86532 17.6822 7.38306L14.0713 10.4388C13.8134 10.6571 13.7007 10.9996 13.7795 11.3259L14.8827 15.8949C15.0696 16.669 14.2172 17.2809 13.5297 16.8661L9.47208 14.4176C9.18225 14.2427 8.81775 14.2427 8.52793 14.4176L4.47029 16.8661C3.7828 17.2809 2.93036 16.669 3.11727 15.8949L4.22048 11.3259C4.29928 10.9996 4.18664 10.6571 3.92873 10.4388L0.317756 7.38306C-0.294046 6.86532 0.0315611 5.87533 0.834562 5.81173L5.57402 5.43636C5.91255 5.40955 6.20744 5.19789 6.33786 4.88811L8.16379 0.551109Z"
-            fill="currentColor"
-          />
-        </svg>
-      ))}
-    </div>
-  );
-}
-
-/* Scroll-triggered visibility hook */
-function useInView(threshold = 0.2) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) {
-          setVisible(true);
-          obs.unobserve(el);
-        }
-      },
-      { threshold }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [threshold]);
-  return { ref, visible };
-}
-
-/* ------------------------------------------------------------------ */
-/*  PAGE                                                               */
-/* ------------------------------------------------------------------ */
+import FeatureLandingPage from "@/components/feature-landing/FeatureLandingPage";
 
 export default function HealthTimelinePage() {
-  const lineAnim = useInView(0.1);
-
   return (
-    <>
-      {/* ============================================================ */}
-      {/* 1. HERO - Full viewport, cinematic entrance                   */}
-      {/* ============================================================ */}
-      <section
-        className="relative overflow-hidden min-h-screen flex items-center"
-        style={{
-          background:
-            "radial-gradient(ellipse 120% 80% at 30% 40%, #4764ff 0%, #141933 55%, #0a0e1f 100%)",
-        }}
-      >
-        {/* Dot matrix texture overlay */}
-        <div
-          className="absolute inset-0 opacity-30 pointer-events-none"
-          style={{
-            backgroundImage: "url(/images/dot-matrix.svg)",
-            backgroundPosition: "50%",
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "cover",
-          }}
-        />
-
-        {/* Ambient glow behind phone */}
-        <div
-          className="absolute right-[10%] top-[50%] -translate-y-[50%] w-[500px] h-[500px] rounded-full pointer-events-none max-[767px]:right-[50%] max-[767px]:translate-x-[50%] max-[767px]:top-[60%]"
-          style={{
-            background:
-              "radial-gradient(circle, #4764ff44 0%, transparent 70%)",
-            animation: "pulseGlow 4s ease-in-out infinite",
-          }}
-        />
-
-        <div className="w-full max-w-[100em] mx-auto px-[5em] pt-[16em] pb-[10em] relative z-10 max-[991px]:px-[40px] max-[991px]:pt-[140px] max-[991px]:pb-[80px] max-[479px]:px-[20px]">
-          <div className="grid grid-cols-[1.4fr_1fr] gap-[60px] items-center max-[767px]:grid-cols-1 max-[767px]:gap-[60px]">
-            {/* Copy - slides in from left */}
-            <div
-              className="flex flex-col gap-[40px] text-xwhite"
-              style={{ animation: "slideInLeft 0.8s ease-out both" }}
-            >
-              <h1 className="text-[7em] font-medium leading-[0.95] tracking-[-0.05em] max-[991px]:text-[3.75rem] max-[479px]:text-[2.75rem]">
-                Your complete health story{" "}
-                <span className="text-xlight-blue">in one place</span>
-              </h1>
-
-              <div
-                className="text-[1.75rem] font-medium leading-[1.35] tracking-[-0.01em] max-w-[38ch] max-[479px]:text-[1.25rem]"
-                style={{ color: "#ffffff" }}
-              >
-                Medical records, lab results, life events, and personal notes
-                - organized chronologically and always accessible from your
-                pocket.
-              </div>
-
-              {/* Social proof */}
-              <div
-                className="flex items-center gap-[16px] flex-wrap"
-                style={{
-                  animation: "fadeInUp 0.6s ease-out 0.4s both",
-                }}
-              >
-                <div className="flex -space-x-[10px]">
-                  {[
-                    "/images/testimonial-kris.jpeg",
-                    "/images/testimonial-jessica.jpeg",
-                    "/images/testimonial-michael.jpeg",
-                  ].map((src, i) => (
-                    <Image
-                      key={i}
-                      src={src}
-                      alt=""
-                      width={44}
-                      height={44}
-                      className="w-[44px] h-[44px] rounded-full border-[2px] border-[#4764ff] object-cover"
-                    />
-                  ))}
-                </div>
-                <span
-                  className="text-[1.125rem]"
-                  style={{ color: "#ffffff" }}
-                >
-                  Rated 5.0 on the App Store
-                </span>
-              </div>
-
-              {/* CTA */}
-              <div style={{ animation: "fadeInUp 0.6s ease-out 0.6s both" }}>
-                <div className="flex items-center gap-[24px] flex-wrap">
-                  <a
-                    href="https://apps.apple.com/us/app/xheal/id6748074977"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-block"
-                  >
-                    <Image
-                      src="/images/app-store-badge.svg"
-                      alt="Download on the App Store"
-                      width={200}
-                      height={67}
-                      priority
-                    />
-                  </a>
-                  <MedicalStandardsBadge className="text-xwhite" />
-                  <ComplianceBadges className="text-xwhite" />
-                </div>
-                <p className="text-[0.875rem] mt-[8px]" style={{ color: "#ffffffdd" }}>
-                  Free to download. Your data stays yours.
-                </p>
-              </div>
-            </div>
-
-            {/* Phone - floats and slides in from right */}
-            <div
-              className="relative flex justify-end self-start max-[767px]:justify-center"
-              style={{ animation: "slideInRight 0.8s ease-out 0.3s both" }}
-            >
-              <div style={{ animation: "floatPhone 5s ease-in-out infinite" }}>
-                <Image
-                  src="/images/records-landing.png"
-                  alt="xHeal Health Timeline - your complete medical history organized chronologically in one place"
-                  width={978}
-                  height={1998}
-                  className="w-[28em] max-w-[460px] drop-shadow-[0_20px_60px_#4764ff55] max-[767px]:w-full max-[767px]:max-w-[300px] max-[767px]:mx-auto"
-                  priority
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom gradient fade into next section */}
-        <div
-          className="absolute bottom-0 left-0 right-0 h-[200px] pointer-events-none"
-          style={{
-            backgroundImage:
-              "linear-gradient(to top, var(--white) 0%, transparent 100%)",
-          }}
-        />
-      </section>
-
-      {/* ============================================================ */}
-      {/* 2. PAIN - Big dramatic typography                             */}
-      {/* ============================================================ */}
-      <section>
-        <div className="w-full max-w-[100em] mx-auto px-[5em] pt-[5em] pb-[5em] flex flex-col gap-[80px] max-[991px]:px-[40px] max-[479px]:px-[20px]">
-          <ScrollReveal>
-            <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack max-w-[52rem] max-[991px]:text-[3rem]">
-              Your records are in 6 places.{" "}
-              <span className="text-xdark-blue">
-                Your doctor sees 1.
-              </span>
-            </h2>
-          </ScrollReveal>
-
-          <div className="grid grid-cols-3 gap-[24px] max-[991px]:grid-cols-1">
-            {painPoints.map((p, i) => (
-              <ScrollReveal key={p.title} delay={i * 120}>
-                <div className="border border-xlight-blue-low bg-xwhite rounded-[16px] p-[32px] shadow-[0_4px_4px_#1419330d] flex flex-col gap-[20px] h-full transition-all duration-300 hover:shadow-[0_12px_40px_#14193318] hover:-translate-y-[4px]">
-                  {/* Icon */}
-                  <span
-                    className="text-xdark-blue text-[2rem]"
-                    style={{ fontFamily: "MaterialSymbolsRounded" }}
-                  >
-                    {p.icon}
-                  </span>
-                  <h3 className="text-[1.5rem] font-medium leading-[1.1] tracking-[-0.01em] text-xblack">
-                    {p.title}
-                  </h3>
-                  <p className="text-xblack-70 text-[1.125rem] leading-[1.5] max-[767px]:text-[1rem]">
-                    {p.detail}
-                  </p>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ============================================================ */}
-      {/* 3. HOW IT WORKS - Vertical timeline with animated line        */}
-      {/* ============================================================ */}
-      <section
-        className="relative"
-        style={{
-          backgroundImage: "url(/images/wave.svg)",
-          backgroundPosition: "50% 60%",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "auto 24em",
-        }}
-      >
-        <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col items-center gap-[80px] max-[991px]:px-[40px] max-[479px]:px-[20px]">
-          <ScrollReveal>
-            <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack text-center max-[991px]:text-[3rem]">
-              All your records. One timeline.{" "}
-              <span className="text-xdark-blue">Three steps.</span>
-            </h2>
-          </ScrollReveal>
-
-          {/* Steps with vertical connector */}
-          <div
-            className="relative w-full max-w-[900px]"
-            ref={lineAnim.ref}
-          >
-            {/* Animated vertical line */}
-            <div className="absolute left-[32px] top-[20px] bottom-[20px] w-[2px] bg-xlight-blue-low overflow-hidden max-[767px]:left-[24px]">
-              <div
-                className="w-full bg-xdark-blue"
-                style={{
-                  height: lineAnim.visible ? "100%" : "0%",
-                  transition: "height 1.5s ease-out 0.3s",
-                }}
-              />
-            </div>
-
-            <div className="flex flex-col gap-[40px]">
-              {howItWorks.map((s, i) => (
-                <ScrollReveal key={s.step} delay={i * 200}>
-                  <div className="grid grid-cols-[64px_1fr] gap-[32px] items-start max-[767px]:grid-cols-[48px_1fr] max-[767px]:gap-[20px]">
-                    {/* Step number circle */}
-                    <div className="w-[64px] h-[64px] rounded-full bg-xdark-blue text-xwhite flex items-center justify-center text-[1.25rem] font-medium flex-shrink-0 relative z-10 shadow-[0_4px_20px_#4764ff44] max-[767px]:w-[48px] max-[767px]:h-[48px] max-[767px]:text-[1rem]">
-                      {s.step}
-                    </div>
-                    {/* Content card */}
-                    <div className="border border-xlight-blue-low bg-xwhite rounded-[16px] p-[32px] shadow-[0_4px_4px_#1419330d] flex flex-col gap-[12px]">
-                      <h3 className="text-[2rem] font-medium leading-[1.1] tracking-[-0.02em] text-xblack max-[767px]:text-[1.5rem]">
-                        {s.title}
-                      </h3>
-                      <p className="text-xblack-70 text-[1.125rem] leading-[1.5] max-[767px]:text-[1rem]">
-                        {s.description}
-                      </p>
-                    </div>
-                  </div>
-                </ScrollReveal>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ============================================================ */}
-      {/* 4. USE CASES - Chat-bubble style with glow hover              */}
-      {/* ============================================================ */}
-      <section>
-        <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col gap-[80px] max-[991px]:px-[40px] max-[479px]:px-[20px]">
-          <ScrollReveal>
-            <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack max-w-[52rem] max-[991px]:text-[3rem]">
-              Find any record in seconds.{" "}
-              <span className="text-xdark-blue">
-                Seriously.
-              </span>
-            </h2>
-          </ScrollReveal>
-
-          <div className="grid grid-cols-3 gap-[20px] max-[991px]:grid-cols-2 max-[767px]:grid-cols-1">
-            {useCases.map((uc, i) => (
-              <ScrollReveal key={uc.question} delay={i * 80}>
-                <div className="group border border-xlight-blue-low bg-xwhite rounded-[16px] p-[28px] shadow-[0_4px_4px_#1419330d] flex flex-col gap-[16px] h-full transition-all duration-300 hover:shadow-[0_8px_32px_#4764ff22] hover:-translate-y-[3px] hover:border-xlight-blue">
-                  <span className="text-xdark-blue text-[0.85rem] font-medium tracking-[0.04em] uppercase">
-                    {uc.tag}
-                  </span>
-                  <h3 className="text-[1.375rem] font-medium leading-[1.2] tracking-[-0.01em] text-xblack">
-                    &ldquo;{uc.question}&rdquo;
-                  </h3>
-                  <p className="text-xblack-70 text-[1.125rem] leading-[1.5] max-[767px]:text-[1rem]">
-                    {uc.description}
-                  </p>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <ComparisonSection
-        heading="Other apps hold a piece."
-        headingAccent="xHeal holds everything."
-        intro="Your GP has some files. Your specialist has others. Your wearable has its own data. No single app brings it all together into a searchable, unified timeline. xHeal does."
-        columns={["WHOOP", "Bevel Health", "Olivia Health", "xHeal"]}
-        rows={[
+    <FeatureLandingPage
+      heroTitle={
+        <>
+          Every record. Every result.{" "}
+          <span className="text-xlight-blue">One timeline.</span>
+        </>
+      }
+      heroSubtitle="Import your medical records, lab results, and clinical documents into one searchable, AI-analyzed health timeline. Never lose a record again."
+      heroImage={{
+        src: "/images/records-landing.png",
+        alt: "xHeal Health Timeline - unified medical records, lab results, and health history in one searchable view",
+        width: 1058,
+        height: 2078,
+      }}
+      painHeading={
+        <>
+          Your health history shouldn&apos;t be scattered across{" "}
+          <span className="text-xdark-blue">a dozen places.</span>
+        </>
+      }
+      painPoints={[
+        {
+          icon: "folder_off",
+          title: "Records scattered across clinics",
+          detail:
+            "Your GP has some files. The specialist has others. That ER visit from 2022? Good luck finding it. Every provider holds a piece, but nobody holds the whole picture.",
+        },
+        {
+          icon: "search_off",
+          title: "Can't find what you need",
+          detail:
+            "You know you had a blood test six months ago, but which clinic? Which portal? Searching across systems is exhausting and often impossible.",
+        },
+        {
+          icon: "trending_flat",
+          title: "No way to see trends",
+          detail:
+            "Individual test results are snapshots. Without a timeline, you can't see how your markers have changed over months or years, and neither can your doctor.",
+        },
+      ]}
+      howHeading={
+        <>
+          From scattered files to{" "}
+          <span className="text-xdark-blue">your complete health story</span>
+        </>
+      }
+      howItWorks={[
+        {
+          step: "01",
+          title: "Import your records",
+          description:
+            "Upload PDFs, photos of lab results, or connect directly to health systems. xHeal reads, organizes, and stores everything securely.",
+        },
+        {
+          step: "02",
+          title: "xHeal builds your timeline",
+          description:
+            "Every record, result, and data point gets placed on a chronological timeline. Combined with your wearable and lifestyle data, you get the full picture.",
+        },
+        {
+          step: "03",
+          title: "Search, explore, and understand",
+          description:
+            "Find any record instantly. See how your lab markers trend over time. Ask your Digital Twin to explain what it all means.",
+        },
+      ]}
+      useCasesHeading={
+        <>
+          Your entire health history,{" "}
+          <span className="text-xdark-blue">searchable and connected</span>
+        </>
+      }
+      useCases={[
+        {
+          question: "Where are my records from last year?",
+          tag: "Search",
+          description:
+            "Find any record, lab result, or clinical document instantly. No more digging through portals or filing cabinets.",
+        },
+        {
+          question: "How have my labs changed over time?",
+          tag: "Trends",
+          description:
+            "See your lab markers plotted on a timeline. Track cholesterol, thyroid, iron, glucose, and more across months or years.",
+        },
+        {
+          question: "What happened around my diagnosis?",
+          tag: "Context",
+          description:
+            "Go back to any point in your timeline and see everything that was happening: symptoms, meds, lifestyle changes, lab results.",
+        },
+        {
+          question: "Can I share my full history with a new doctor?",
+          tag: "Sharing",
+          description:
+            "Generate a comprehensive health summary from your timeline. Perfect for new providers who need your complete history.",
+        },
+        {
+          question: "What tests am I overdue for?",
+          tag: "Gaps",
+          description:
+            "xHeal tracks when your last screenings and tests occurred and highlights what's overdue based on your age and profile.",
+        },
+        {
+          question: "How does my clinical data connect to my daily health?",
+          tag: "Connections",
+          description:
+            "See how lab results, wearable data, symptom logs, and lifestyle inputs connect on one unified timeline.",
+        },
+      ]}
+      comparison={{
+        heading: "Other apps hold a piece.",
+        headingAccent: "xHeal holds everything.",
+        intro: "Your GP has some files. Your specialist has others. Your wearable has its own data. No single app brings it all together into a searchable, unified timeline. xHeal does.",
+        columns: ["WHOOP", "Bevel Health", "Olivia Health", "xHeal"],
+        rows: [
           { feature: "Import medical records", values: ["no", "no", "yes", "yes"] },
           { feature: "Import lab results", values: ["no", "no", "no", "yes"] },
           { feature: "Unified health timeline", values: ["Biometrics only", "Lifestyle only", "Records only", "All data types combined"] },
@@ -544,203 +127,98 @@ export default function HealthTimelinePage() {
           { feature: "Includes wearable + lifestyle data", values: ["Fitness only", "yes", "no", "yes"] },
           { feature: "Clinical AI reasoning (WHO, ADA, EASD)", values: ["no", "no", "no", "yes"] },
           { feature: "Works without proprietary hardware", values: ["no", "Apple Watch only", "yes", "yes"] },
-        ]}
-        closingLine="WHOOP tracks your workouts. Bevel tracks your lifestyle. Olivia stores your records. Only xHeal combines clinical, wearable, and lifestyle data into one complete health timeline."
-        highlightColumn={3}
-      />
-
-      {/* ============================================================ */}
-      {/* 5. TESTIMONIALS - Dark cinematic strip                        */}
-      {/* ============================================================ */}
-      <section
-        className="relative overflow-hidden"
-        style={{
-          background:
-            "linear-gradient(135deg, #141933 0%, #1e2548 50%, #141933 100%)",
-        }}
-      >
-        {/* Subtle glow accent */}
-        <div
-          className="absolute top-[-100px] left-[20%] w-[400px] h-[400px] rounded-full pointer-events-none"
-          style={{
-            background:
-              "radial-gradient(circle, #4764ff22 0%, transparent 70%)",
-          }}
-        />
-
-        <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col items-center gap-[60px] relative z-10 max-[991px]:px-[40px] max-[479px]:px-[20px]">
-          <ScrollReveal>
-            <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xwhite text-center max-[991px]:text-[3rem]">
-              Years of records. One place.{" "}
-              <span className="text-xlight-blue">Finally.</span>
-            </h2>
-          </ScrollReveal>
-
-          <div className="grid grid-cols-3 gap-[24px] w-full max-[991px]:grid-cols-1">
-            {testimonials.map((t, i) => (
-              <ScrollReveal key={t.name} delay={i * 150}>
-                <div className="border border-[#ffffff14] bg-[#ffffff0a] backdrop-blur-sm rounded-[16px] p-[32px] flex flex-col justify-between gap-[28px] h-full transition-all duration-300 hover:border-[#ffffff22] hover:bg-[#ffffff10]">
-                  <div className="flex flex-col gap-[16px]">
-                    <div className="text-xlight-blue">
-                      <StarRating />
-                    </div>
-                    <p
-                      className="text-[1.125rem] leading-[1.6] font-medium max-[767px]:text-[1rem]"
-                      style={{ color: "#ffffff" }}
-                    >
-                      &ldquo;{t.quote}&rdquo;
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-[12px]">
-                    <Image
-                      src={t.image}
-                      alt={t.name}
-                      width={48}
-                      height={48}
-                      className="w-[48px] h-[48px] rounded-full object-cover border border-[#ffffff22]"
-                    />
-                    <span
-                      className="text-[1rem] font-medium"
-                      style={{ color: "#ffffff" }}
-                    >
-                      {t.name}, {t.age}
-                    </span>
-                  </div>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ============================================================ */}
-      {/* 6. TRUST & SECURITY - Split layout with 360 visual            */}
-      {/* ============================================================ */}
-      <section>
-        <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] max-[991px]:px-[40px] max-[479px]:px-[20px]">
-          <div className="grid grid-cols-[1.4fr_1fr] gap-[80px] items-center max-[991px]:gap-[40px] max-[767px]:grid-cols-1">
-            <ScrollReveal>
-              <div className="flex flex-col gap-[40px]">
-                <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack max-[991px]:text-[3rem]">
-                   Your records. Your control.{" "}
-                  <span className="text-xdark-blue">Always.</span>
-                </h2>
-
-                <div className="flex flex-col gap-[28px]">
-                  {trustItems.map((item, i) => (
-                    <div key={item.title} className="flex gap-[16px]">
-                      <div className="w-[3px] bg-xdark-blue rounded-full flex-shrink-0 mt-[6px] self-stretch" />
-                      <div>
-                        <h3 className="text-xblack text-[1.25rem] font-medium leading-[1.3] mb-[6px]">
-                          {item.title}
-                        </h3>
-                        <p className="text-xblack-70 text-[1.125rem] leading-[1.5] max-[767px]:text-[1rem]">
-                          {item.detail}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <ComplianceBadges />
-              </div>
-            </ScrollReveal>
-
-            <ScrollReveal delay={200}>
-              <Image
-                src="/images/xheal-360.svg"
-                alt="xHeal 360-degree health analysis"
-                width={600}
-                height={600}
-                className="w-full max-w-[500px] mx-auto"
-              />
-            </ScrollReveal>
-          </div>
-        </div>
-      </section>
-
-      {/* ============================================================ */}
-      {/* 7. FAQ - Dark cinematic section                               */}
-      {/* ============================================================ */}
-      <section
-        style={{
-          background:
-            "linear-gradient(180deg, #141933 0%, #1a2040 50%, #141933 100%)",
-        }}
-      >
-        <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col items-center gap-[60px] max-[991px]:px-[40px] max-[479px]:px-[20px]">
-          <ScrollReveal>
-            <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xwhite text-center max-[991px]:text-[3rem]">
-              About your Health Timeline
-            </h2>
-          </ScrollReveal>
-
-          <div className="w-full max-w-[720px]">
-            {faqs.map((f, i) => (
-              <FAQItem key={i} q={f.q} a={f.a} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <CrossLinkSection pageSlug="health-timeline" />
-
-      {/* ============================================================ */}
-      {/* 8. FINAL CTA - Cinematic gradient with large type             */}
-      {/* ============================================================ */}
-      <section
-        className="relative overflow-hidden"
-        style={{
-          background:
-            "radial-gradient(ellipse 100% 120% at 50% 100%, #4764ff 0%, #141933 60%, #0a0e1f 100%)",
-        }}
-      >
-        {/* Ambient glow */}
-        <div
-          className="absolute bottom-[-100px] left-[50%] -translate-x-[50%] w-[600px] h-[300px] rounded-full pointer-events-none"
-          style={{
-            background:
-              "radial-gradient(ellipse, #4764ff33 0%, transparent 70%)",
-            animation: "pulseGlow 5s ease-in-out infinite",
-          }}
-        />
-
-        <div className="w-full max-w-[100em] mx-auto px-[5em] py-[10em] flex flex-col items-center gap-[40px] text-center relative z-10 max-[991px]:px-[40px] max-[991px]:py-[6em] max-[479px]:px-[20px]">
-          <ScrollReveal>
-            <h2 className="text-[4.5rem] font-medium leading-[1] tracking-[-0.04em] text-xwhite max-w-[48rem] mx-auto max-[991px]:text-[3rem]">
-              Every record. Every result.{" "}
-              <span className="text-xlight-blue">One timeline.</span>
-            </h2>
-          </ScrollReveal>
-          <ScrollReveal delay={150}>
-            <p
-              className="text-[1.25rem] max-w-[44ch] leading-[1.5] mx-auto"
-              style={{ color: "#ffffffcc" }}
-            >
-              Download xHeal and bring your complete medical story together
-              in one place.
-            </p>
-          </ScrollReveal>
-          <ScrollReveal delay={300}>
-            <a
-              href="https://apps.apple.com/us/app/xheal/id6748074977"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block"
-            >
-              <Image
-                src="/images/app-store-badge.svg"
-                alt="Download on the App Store"
-                width={200}
-                height={67}
-              />
-            </a>
-            <p className="text-[0.875rem] mt-[8px]" style={{ color: "#ffffffaa" }}>
-              Free to download. Your data stays yours.
-            </p>
-          </ScrollReveal>
-        </div>
-      </section>
-    </>
+        ],
+        closingLine: "WHOOP tracks your workouts. Bevel tracks your lifestyle. Olivia stores your records. Only xHeal combines clinical, wearable, and lifestyle data into one complete health timeline.",
+        highlightColumn: 3,
+      }}
+      testimonialsHeading={
+        <>
+          Finally, one place for{" "}
+          <span className="text-xlight-blue">everything.</span>
+        </>
+      }
+      testimonials={[
+        {
+          quote:
+            "Imported 3 years of scattered medical records in 10 minutes. My new doctor could see my entire history before I even walked in.",
+          name: "Brian D.",
+          age: 47,
+          image: "/images/testimonials/t-078.png",
+        },
+        {
+          quote:
+            "I can finally see how my thyroid levels have changed over 2 years alongside my energy and sleep data. That context is invaluable.",
+          name: "Harold N.",
+          age: 55,
+          image: "/images/testimonials/t-080.png",
+        },
+        {
+          quote:
+            "Switching doctors used to mean starting from scratch. With xHeal I just share my timeline and they have everything.",
+          name: "Dorothy A.",
+          age: 61,
+          image: "/images/testimonials/t-083.png",
+        },
+      ]}
+      trustHeading={
+        <>
+          Your records, your control.{" "}
+          <span className="text-xdark-blue">Always.</span>
+        </>
+      }
+      trustItems={[
+        {
+          title: "Bank-level encryption",
+          detail:
+            "All medical records and lab results are encrypted at rest and in transit. Your clinical data gets the highest level of protection.",
+        },
+        {
+          title: "You own your records",
+          detail:
+            "Export or delete any record at any time. Your health history belongs to you, not us.",
+        },
+        {
+          title: "No third-party access",
+          detail:
+            "Your medical records are never shared with advertisers, insurers, or any third party. Period.",
+        },
+        {
+          title: "Clinically informed analysis",
+          detail:
+            "Lab results and records are interpreted through WHO, ADA, and EASD guidelines for accurate, meaningful insights.",
+        },
+      ]}
+      faqHeading="About your Health Timeline"
+      faqs={[
+        {
+          q: "What types of records can I import?",
+          a: "PDFs of lab results, medical records, discharge summaries, imaging reports, and clinical documents. You can upload photos or connect directly to supported health systems.",
+        },
+        {
+          q: "How does xHeal read my lab results?",
+          a: "xHeal uses AI to extract markers, values, and dates from your uploaded documents. It then organizes them chronologically and interprets them using clinical guidelines.",
+        },
+        {
+          q: "Can I import records from multiple providers?",
+          a: "Yes. That's the whole point. Import from as many providers as you have, and xHeal unifies everything into one timeline.",
+        },
+        {
+          q: "Is my medical data safe?",
+          a: "Yes. All records are encrypted and stored securely. We follow HIPAA and GDPR compliance standards. You control who sees your data and can delete it at any time.",
+        },
+        {
+          q: "Can I share my timeline with my doctor?",
+          a: "Yes. Generate a report from your timeline or share specific records directly from the app before your appointment.",
+        },
+      ]}
+      pageSlug="health-timeline"
+      ctaHeading={
+        <>
+          Your complete health story.{" "}
+          <span className="text-xlight-blue">In one place.</span>
+        </>
+      }
+      ctaSubtitle="Download xHeal and bring all your records, results, and data together."
+    />
   );
 }
