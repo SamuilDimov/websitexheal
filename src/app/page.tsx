@@ -47,8 +47,8 @@ export default function Home() {
       />
       <HeroSection />
       <StickyTabSection />
-      <WhatYouGetSection />
       <HowItWorksSection />
+      <WhatYouGetSection />
       <AISection />
       <TestimonialsSection />
     </>

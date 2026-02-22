@@ -1,23 +1,34 @@
 import ScrollReveal from "@/components/ui/ScrollReveal";
+import InsightPreview, {
+  type InsightItem,
+} from "@/components/ui/InsightPreview";
+import OnboardingChecklist from "@/components/ui/OnboardingChecklist";
+import OutcomeCarousel from "@/components/ui/OutcomeCarousel";
 
-const steps = [
+const step2Items: InsightItem[] = [
   {
-    number: "1",
-    title: "Connect your health",
-    description:
-      "Import medical records, sync Apple Health and wearables, upload lab PDFs. All your data in one secure place. Takes about 5 minutes.",
+    icon: "bedtime",
+    label: "Sleep Pattern",
+    text: "Late dinners cut your deep sleep by 40%.",
+    color: "#6366f1",
   },
   {
-    number: "2",
-    title: "Meet your Digital Twin",
-    description:
-      "xHeal's AI analyzes your patterns across clinical data, lifestyle inputs, and daily trends. It learns what's normal for you, and what isn't.",
+    icon: "warning",
+    label: "Early Warning",
+    text: "Flare-up signs building since Monday.",
+    color: "#f59e0b",
   },
   {
-    number: "3",
-    title: "Get clarity and take action",
-    description:
-      "Ask questions, get daily health actions, receive early warnings, and generate reports for your care team. Your Digital Twin gets smarter every day.",
+    icon: "link",
+    label: "Hidden Connection",
+    text: "Magnesium is improving your deep sleep.",
+    color: "#10b981",
+  },
+  {
+    icon: "science",
+    label: "Lab Trend",
+    text: "Your Vitamin D has dropped 3 months straight.",
+    color: "#ef4444",
   },
 ];
 
@@ -39,22 +50,178 @@ export default function HowItWorksSection() {
           </h2>
         </ScrollReveal>
 
-        {/* Steps */}
-        <div className="flex flex-wrap justify-center gap-[20px] max-w-[1280px]">
-          {steps.map((step, i) => (
-            <ScrollReveal key={step.number} delay={i * 100}>
-              <div className="border border-xlight-blue-low bg-xwhite text-xdark-blue rounded-[16px] flex flex-col gap-[20px] p-[20px] pt-[40px] shadow-[0_4px_4px_#1419330d] max-w-[24rem] h-full">
-                <h3 className="text-[2rem] font-medium leading-[1] tracking-[-0.02em]">
-                  {step.number}. {step.title}
+        {/* Steps 1 & 2 */}
+        <div className="grid grid-cols-2 gap-[20px] max-w-[1280px] w-full items-stretch max-[991px]:grid-cols-1">
+          {/* Step 1: INPUT - Checklist */}
+          <ScrollReveal delay={0} className="flex">
+            <div className="border border-xlight-blue-low bg-xwhite text-xdark-blue rounded-[16px] flex flex-col gap-[20px] p-[28px] pt-[44px] shadow-[0_4px_4px_#1419330d] w-full">
+              <div className="flex items-center gap-[14px]">
+                <StepBadge number={1} />
+                <h3
+                  className="font-medium leading-[1] tracking-[-0.02em]"
+                  style={{ fontSize: "28px" }}
+                >
+                  Connect your health
                 </h3>
-                <p className="text-xblack-70 text-[1.125rem] max-[767px]:text-[1rem]">
-                  {step.description}
-                </p>
               </div>
-            </ScrollReveal>
-          ))}
+              <p
+                className="leading-[1.55]"
+                style={{ fontSize: "18px", color: "rgba(20, 25, 51, 0.6)" }}
+              >
+                Answer a few questions, sync your devices, and upload your
+                records. Your full health profile in about 5 minutes.
+              </p>
+              <OnboardingChecklist />
+              <CardFooter
+                icon="lock"
+                text="Encrypted and private. Setup takes about 5 minutes."
+              />
+            </div>
+          </ScrollReveal>
+
+          {/* Step 2: INTELLIGENCE - Cycling insights */}
+          <ScrollReveal delay={100} className="flex">
+            <div className="border border-xlight-blue-low bg-xwhite text-xdark-blue rounded-[16px] flex flex-col gap-[20px] p-[28px] pt-[44px] shadow-[0_4px_4px_#1419330d] w-full">
+              <div className="flex items-center gap-[14px]">
+                <StepBadge number={2} />
+                <h3
+                  className="font-medium leading-[1] tracking-[-0.02em]"
+                  style={{ fontSize: "28px" }}
+                >
+                  Meet your Digital Twin
+                </h3>
+              </div>
+              <p
+                className="leading-[1.55]"
+                style={{ fontSize: "18px", color: "rgba(20, 25, 51, 0.6)" }}
+              >
+                xHeal cross-references your clinical data, daily habits, and
+                wearable trends. It learns what&apos;s normal for you and flags
+                what&apos;s not.
+              </p>
+              <InsightPreview items={step2Items} />
+              <CardFooter
+                icon="psychology"
+                text="Analyzing 250+ health signals. Learning yours."
+                pulse
+              />
+            </div>
+          </ScrollReveal>
         </div>
+
+        {/* Step 3: OUTPUT - Outcome carousel (full width, highlighted) */}
+        <ScrollReveal delay={200} className="w-full max-w-[1280px]">
+          <div className="border border-xlight-blue-low bg-xwhite text-xdark-blue rounded-[16px] flex gap-[40px] p-[40px] shadow-[0_4px_4px_#1419330d] w-full max-[991px]:flex-col max-[991px]:gap-[20px] max-[991px]:p-[28px]">
+            {/* Left: header + description */}
+            <div className="flex flex-col gap-[16px] flex-shrink-0 max-[991px]:max-w-none" style={{ maxWidth: "380px" }}>
+              <div className="flex items-center gap-[14px]">
+                <StepBadge number={3} />
+                <h3
+                  className="font-medium leading-[1] tracking-[-0.02em]"
+                  style={{ fontSize: "32px" }}
+                >
+                  See the difference
+                </h3>
+              </div>
+              <p
+                className="leading-[1.55]"
+                style={{ fontSize: "18px", color: "rgba(20, 25, 51, 0.6)" }}
+              >
+                Real patterns, real outcomes. Here is what changes when your
+                health data finally works together.
+              </p>
+              <div className="mt-auto max-[991px]:hidden">
+                <CardFooter
+                  icon="trending_up"
+                  text="From scattered data to a clear health picture."
+                />
+              </div>
+            </div>
+
+            {/* Right: carousel */}
+            <div className="flex-1 min-w-0">
+              <OutcomeCarousel />
+            </div>
+
+            {/* Footer on mobile only */}
+            <div className="hidden max-[991px]:block">
+              <CardFooter
+                icon="trending_up"
+                text="From scattered data to a clear health picture."
+              />
+            </div>
+          </div>
+        </ScrollReveal>
       </div>
     </section>
+  );
+}
+
+function StepBadge({ number }: { number: number }) {
+  return (
+    <div
+      className="flex items-center justify-center rounded-full flex-shrink-0"
+      style={{
+        width: "42px",
+        height: "42px",
+        backgroundColor: "rgba(71, 100, 255, 0.1)",
+        fontSize: "17px",
+        fontWeight: 600,
+        color: "#4764FF",
+      }}
+    >
+      {number}
+    </div>
+  );
+}
+
+function CardFooter({
+  icon,
+  text,
+  pulse,
+}: {
+  icon: string;
+  text: string;
+  pulse?: boolean;
+}) {
+  return (
+    <div className="flex items-center gap-[12px] pt-[8px] mt-auto">
+      <div
+        className="relative flex items-center justify-center rounded-full flex-shrink-0"
+        style={{
+          width: "40px",
+          height: "40px",
+          backgroundColor: "rgba(71, 100, 255, 0.08)",
+        }}
+      >
+        <span
+          style={{
+            fontFamily: "MaterialSymbolsRounded",
+            fontSize: "20px",
+            color: "#4764FF",
+          }}
+        >
+          {icon}
+        </span>
+        {pulse && (
+          <span
+            className="absolute inset-0 rounded-full"
+            style={{
+              border: "2px solid rgba(71, 100, 255, 0.3)",
+              animation: "pulseRing 2s ease-out infinite",
+            }}
+          />
+        )}
+      </div>
+      <span
+        className="leading-[1.35]"
+        style={{
+          fontSize: "14px",
+          color: "rgba(20, 25, 51, 0.45)",
+        }}
+      >
+        {text}
+      </span>
+    </div>
   );
 }

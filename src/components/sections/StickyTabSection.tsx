@@ -6,28 +6,28 @@ import ScrollReveal from "@/components/ui/ScrollReveal";
 
 const tabs = [
   {
+    id: "prevention",
+    label: "See it before you feel it",
+    description:
+      "Your Digital Twin cross-references sleep, stress, activity, and lab trends every day. When it spots a pattern building toward a flare-up, you know days before symptoms hit.",
+    image: "/images/flare-up.png",
+    alt: "xHeal flare-up prediction showing early warning pattern detection",
+  },
+  {
     id: "unified",
-    label: "Unified",
+    label: "One app instead of five",
     description:
-      "Medical records, lab results, wearable data, and daily habits, connected in one secure place. Your health team sees the same story you do.",
+      "Ask your Digital Twin about your labs, symptoms, or why your energy dropped this week. Answers grounded in your actual data, from every source you\u2019ve connected.",
     image: "/images/vitals.png",
-    alt: "xHeal unified health vitals dashboard",
+    alt: "xHeal unified health vitals dashboard showing all connected data",
   },
   {
-    id: "actionable",
-    label: "Actionable",
+    id: "specialists",
+    label: "Your team of specialists",
     description:
-      "xHeal turns patterns into plans. Get daily actions based on your data, your goals, and what's actually working for you.",
+      "xHeal builds your nutrition plan, fitness routine, and mindfulness practice from the same health data. Like a nutritionist, trainer, and therapist who actually talk to each other, plus medication and supplement tracking that ties it all together.",
     image: "/images/routine.png",
-    alt: "xHeal daily health routine with personalized tasks",
-  },
-  {
-    id: "personalized",
-    label: "Personalized",
-    description:
-      "No generic advice. Every insight and recommendation comes from your Digital Twin, an AI built on your history, your patterns, and your body.",
-    image: "/images/report-summary.png",
-    alt: "xHeal personalized health report summary with domain scores",
+    alt: "xHeal personalized daily routine with nutrition, fitness, and mindfulness tasks",
   },
 ];
 
@@ -71,12 +71,9 @@ export default function StickyTabSection() {
         <div className="grid grid-cols-[1.65fr_1fr] gap-[40px] rounded-[12px] max-[767px]:grid-cols-1">
           {/* Section heading */}
           <ScrollReveal>
-            <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack max-w-[18ch] max-[991px]:text-[3rem]">
-              One app.{" "}
-              <span className="text-xdark-blue">
-                Your complete health picture
-              </span>
-              .
+            <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack max-w-[20ch] max-[991px]:text-[3rem]">
+              What changes when your health data{" "}
+              <span className="text-xdark-blue">works together</span>
             </h2>
           </ScrollReveal>
 

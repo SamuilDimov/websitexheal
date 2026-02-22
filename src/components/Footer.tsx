@@ -29,7 +29,7 @@ export default function Footer() {
                   />
                 </Link>
                 <span className="text-[1rem] opacity-60">
-                  &copy; {new Date().getFullYear()} xHeal. All rights reserved.
+                  &copy; {new Date().getFullYear()} xHeal Corp. All rights reserved.
                 </span>
                 <ComplianceBadges size="sm" />
               </div>
