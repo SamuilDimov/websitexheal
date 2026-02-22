@@ -202,9 +202,12 @@ function NewsletterSection() {
               <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack max-[991px]:text-[3rem]">
                 Welcome to xHeal!
               </h2>
-              <p className="text-[1.125rem] text-xblack-70 mt-[20px] max-w-[42ch]">
-                Watch your inbox for your first health update soon.
-              </p>
+            <p className="text-[1.375rem] text-xblack-70 max-w-[42ch]">
+              One email per week with patterns, insights, and strategies that
+              help you understand your body better, whether you&apos;re
+              managing a condition, optimizing your wellness, or just paying
+              closer attention.
+            </p>
             </div>
           </div>
         </div>
@@ -215,33 +218,19 @@ function NewsletterSection() {
   return (
     <section id="sign-up" className="bg-gradient-to-b from-transparent to-xdark-blue">
       <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] max-[991px]:px-[40px] max-[479px]:px-[20px]">
-        <div className="grid grid-cols-[1.2fr_1fr] gap-[80px] max-[991px]:gap-[40px] max-[767px]:grid-cols-1">
-          {/* Left Column — Heading + Description + App Store */}
-          <div className="flex flex-col justify-between gap-[40px]">
-            <div>
-              <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack max-[991px]:text-[3rem]">
-                Get smarter about your health.{" "}
-                <span className="text-xdark-blue">Every week.</span>
-              </h2>
-              <p className="text-[1.125rem] text-xblack-70 mt-[20px] max-w-[42ch]">
-                One email per week with patterns, insights, and strategies that
-                help you understand your body better, whether you&apos;re
-                managing a condition, optimizing your wellness, or just paying
-                closer attention.
-              </p>
-            </div>
-            <a
-              href="https://apps.apple.com/us/app/xheal/id6748074977"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Image
-                src="/images/app-store-badge.svg"
-                alt="Download on the App Store"
-                width={200}
-                height={67}
-              />
-            </a>
+        <div className="grid grid-cols-[1.2fr_1fr] gap-[80px] items-stretch max-[991px]:gap-[40px] max-[767px]:grid-cols-1">
+          {/* Left Column — Heading + Description */}
+          <div className="flex flex-col justify-between">
+            <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack max-[991px]:text-[3rem]">
+              Get smarter about your health.{" "}
+              <span className="text-xdark-blue">Every week.</span>
+            </h2>
+            <p className="text-[1.125rem] text-xblack-70 mt-[20px] max-w-[42ch]">
+              One email per week with patterns, insights, and strategies that
+              help you understand your body better, whether you&apos;re
+              managing a condition, optimizing your wellness, or just paying
+              closer attention.
+            </p>
           </div>
 
           {/* Right Column — Form */}
@@ -284,7 +273,7 @@ function NewsletterSection() {
                 <div className="flex justify-end">
                   <button
                     type="submit"
-                    className="bg-xlight-blue text-xwhite text-[1.125rem] text-center rounded-full px-[48px] py-[14px] transition-all duration-200 hover:shadow-[0_4px_12px_0_var(--light-blue-low)]"
+                    className="bg-xdark-blue text-xwhite text-[1.125rem] text-center rounded-full px-[48px] py-[14px] transition-all duration-200 hover:opacity-70 active:opacity-50 active:scale-[0.97]"
                   >
                     Submit
                   </button>
@@ -337,7 +326,7 @@ function NewsletterSection() {
                 <div className="flex justify-end">
                   <button
                     type="submit"
-                    className="bg-xlight-blue text-xwhite text-[1.125rem] text-center rounded-full px-[48px] py-[14px] transition-all duration-200 hover:shadow-[0_4px_12px_0_var(--light-blue-low)]"
+                    className="bg-xdark-blue text-xwhite text-[1.125rem] text-center rounded-full px-[48px] py-[14px] transition-all duration-200 hover:opacity-70 active:opacity-50 active:scale-[0.97]"
                   >
                     Subscribe
                   </button>

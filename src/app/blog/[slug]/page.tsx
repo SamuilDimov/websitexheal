@@ -80,12 +80,6 @@ export default async function BlogPostPage({
     );
   }
 
-  // Split content in half to insert inline CTA
-  const contentParts = post.content.split("</h2>");
-  const midpoint = Math.floor(contentParts.length / 2);
-  const firstHalf = contentParts.slice(0, midpoint).join("</h2>") + "</h2>";
-  const secondHalf = contentParts.slice(midpoint).join("</h2>");
-
   return (
     <>
       {/* Hero */}
@@ -184,19 +178,10 @@ export default async function BlogPostPage({
               </div>
             </div>
 
-            {/* First half of article */}
+            {/* Article content */}
             <div
               className="rich-text"
-              dangerouslySetInnerHTML={{ __html: firstHalf }}
-            />
-
-            {/* Inline CTA */}
-            <ArticleCTA />
-
-            {/* Second half of article */}
-            <div
-              className="rich-text"
-              dangerouslySetInnerHTML={{ __html: secondHalf }}
+              dangerouslySetInnerHTML={{ __html: post.content }}
             />
 
             {/* Medical disclaimer */}
@@ -210,6 +195,9 @@ export default async function BlogPostPage({
             >
               &larr; Back to Blog
             </Link>
+
+            {/* CTA */}
+            <ArticleCTA />
 
             {/* Related posts */}
             <RelatedPosts currentSlug={slug} />

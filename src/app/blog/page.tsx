@@ -34,7 +34,7 @@ export default function BlogPage() {
           </h1>
           <p
             className="text-center max-w-[600px] leading-[1.5]"
-            style={{ fontSize: "18px", color: "rgba(248,248,250,0.75)" }}
+            style={{ fontSize: "18px", color: "rgba(20, 25, 51, 0.6)" }}
           >
             Stories, research, and practical strategies for people who want to
             understand their health, not just track it.
