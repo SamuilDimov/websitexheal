@@ -47,7 +47,7 @@ export default function Navbar() {
     <>
       <nav
         className={`fixed top-0 left-0 right-0 z-[1000] transition-all duration-300 ${
-          scrolled ? "bg-[#141933]/80 backdrop-blur-md" : "bg-transparent"
+          scrolled ? "bg-[#4764FF]/80 backdrop-blur-md" : "bg-transparent"
         }`}
         role="banner"
       >
@@ -56,7 +56,7 @@ export default function Navbar() {
           className="absolute inset-0 pointer-events-none z-0"
           style={{
             backgroundImage:
-              "linear-gradient(180deg, rgba(20, 25, 51, 0.35) 0%, rgba(20, 25, 51, 0) 100%)",
+              "linear-gradient(180deg, rgba(71, 100, 255, 0.35) 0%, rgba(71, 100, 255, 0) 100%)",
           }}
         />
 
@@ -132,7 +132,7 @@ export default function Navbar() {
       {isOpen && (
         <div
           className="md:hidden fixed inset-0 z-[1003] flex flex-col"
-          style={{ backgroundColor: "#141933" }}
+          style={{ backgroundColor: "#4764FF" }}
         >
           {/* Top bar with logo + close */}
           <div className="flex items-center justify-between px-[20px] pt-[1.25em] pb-[12px]">

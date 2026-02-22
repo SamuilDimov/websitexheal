@@ -75,7 +75,7 @@ export const blogAuthors: Record<string, BlogAuthor> = {
   },
   team: {
     name: "xHeal Team",
-    image: "/images/xheal-team-avatar.png",
+    image: "/images/xheal-team-avatar.svg",
     role: "xHeal",
   },
 };
