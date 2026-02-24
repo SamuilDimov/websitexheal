@@ -2,16 +2,16 @@
  * MedicalStandardsBadge
  *
  * Inline SVG trust badge showing WHO, ADA, EASD medical-standard compliance.
- * Renders as a compact horizontal badge intended to sit near App Store CTAs
- * to communicate clinical credibility at the moment of decision.
- *
- * Uses exact xHeal brand colors via CSS custom properties.
  */
+import { useTranslations } from "next-intl";
+
 export default function MedicalStandardsBadge({
   className = "text-xblack",
 }: {
   className?: string;
 }) {
+  const t = useTranslations("MedicalStandards");
+
   return (
     <div className={`flex items-center gap-[10px] ${className}`}>
       {/* Shield icon */}
@@ -41,10 +41,10 @@ export default function MedicalStandardsBadge({
       {/* Text */}
       <div className="flex flex-col leading-[1.15]">
         <span className="text-[0.8125rem] font-medium tracking-[0.06em]">
-          WHO &middot; ADA &middot; EASD
+          {t("standards")}
         </span>
         <span className="text-[0.6875rem] opacity-70">
-          Medical-Standard Reasoning
+          {t("label")}
         </span>
       </div>
     </div>

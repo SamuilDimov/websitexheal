@@ -1,7 +1,10 @@
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 
 export default function AISection() {
+  const t = useTranslations("AI");
+
   return (
     <section>
       <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col gap-[80px] text-xblack max-[991px]:px-[40px] max-[479px]:px-[20px]">
@@ -10,26 +13,20 @@ export default function AISection() {
             {/* Left Column - Text */}
             <div className="grid grid-cols-1 gap-[40px]">
               <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] max-w-[20ch] max-[991px]:text-[3rem]">
-                AI that reasons like a care team{" "}
+                {t("heading")}{" "}
                 <span className="text-xdark-blue">
-                  but knows your full story
+                  {t("headingAccent")}
                 </span>
               </h2>
               <div className="flex flex-col gap-[20px] max-w-[51ch]">
                 <p className="text-xblack-70 text-[1.125rem] max-[767px]:text-[1rem]">
-                  Most health apps track a single metric. xHeal connects all of
-                  them.
+                  {t("paragraph1")}
                 </p>
                 <p className="text-xblack-70 text-[1.125rem] max-[767px]:text-[1rem]">
-                  Our AI interprets your data through clinical guidelines from
-                  the WHO, ADA, and EASD, the same standards your care team uses.
-                  But unlike any single specialist, your Digital Twin sees
-                  everything at once: your labs, your sleep, your symptoms, your
-                  habits, your history.
+                  {t("paragraph2")}
                 </p>
                 <p className="text-xblack-70 text-[1.125rem] max-[767px]:text-[1rem]">
-                  The result? Patterns spotted earlier. Connections made faster.
-                  Answers grounded in your data, not generic advice.
+                  {t("paragraph3")}
                 </p>
               </div>
             </div>
@@ -54,7 +51,7 @@ export default function AISection() {
           >
             <Image
               src="/images/app-store-badge.svg"
-              alt="Download on the App Store"
+              alt={t("downloadOnAppStore")}
               width={200}
               height={67}
             />

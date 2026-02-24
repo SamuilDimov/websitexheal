@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
+import { useTranslations, useLocale } from "next-intl";
 import ScrollReveal from "@/components/ui/ScrollReveal";
-import { testimonials, type Testimonial } from "@/data/testimonials";
+import { getTestimonials, type Testimonial } from "@/data/testimonials";
 
 const StarIcon = () => (
   <svg
@@ -109,18 +110,22 @@ function MarqueeRow({
 }
 
 export default function TestimonialsSection() {
+  const t = useTranslations("Testimonials");
+  const locale = useLocale();
+  const items = getTestimonials(locale);
+
   // Split testimonials into two rows
-  const mid = Math.ceil(testimonials.length / 2);
-  const topRow = testimonials.slice(0, mid);
-  const bottomRow = testimonials.slice(mid);
+  const mid = Math.ceil(items.length / 2);
+  const topRow = items.slice(0, mid);
+  const bottomRow = items.slice(mid);
 
   return (
     <section>
       <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col items-center gap-[80px] text-xblack max-[991px]:px-[40px] max-[479px]:px-[20px]">
         <ScrollReveal>
           <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-center max-[991px]:text-[3rem]">
-            People who stopped guessing{" "}
-            <span className="text-xdark-blue">about their health</span>
+            {t("heading")}{" "}
+            <span className="text-xdark-blue">{t("headingAccent")}</span>
           </h2>
         </ScrollReveal>
 

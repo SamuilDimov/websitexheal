@@ -1,3 +1,6 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 
 type CellValue = "yes" | "no" | "partial" | "n/a" | string;
@@ -17,7 +20,7 @@ interface ComparisonSectionProps {
   highlightColumn?: number; // index of the xHeal column (default: last)
 }
 
-function CellContent({ value }: { value: CellValue }) {
+function CellContent({ value, partialLabel, naLabel }: { value: CellValue; partialLabel: string; naLabel: string }) {
   if (value === "yes") {
     return (
       <span
@@ -41,12 +44,12 @@ function CellContent({ value }: { value: CellValue }) {
   if (value === "partial") {
     return (
       <span className="text-[0.875rem] text-amber-600 font-medium">
-        Partial
+        {partialLabel}
       </span>
     );
   }
   if (value === "n/a") {
-    return <span className="text-[0.875rem] text-[#999]">N/A</span>;
+    return <span className="text-[0.875rem] text-[#999]">{naLabel}</span>;
   }
   // String value
   return (
@@ -63,6 +66,7 @@ export default function ComparisonSection({
   closingLine,
   highlightColumn,
 }: ComparisonSectionProps) {
+  const t = useTranslations("FeatureLanding");
   const xHealCol = highlightColumn ?? columns.length - 1;
 
   return (
@@ -86,7 +90,7 @@ export default function ComparisonSection({
               <thead>
                 <tr>
                   <th className="p-[16px] text-[0.875rem] font-medium tracking-[0.04em] uppercase text-xblack-70 bg-[#f4f5fa] border-b border-xlight-blue-low w-[22%]">
-                    Feature
+                    {t("featureLabel")}
                   </th>
                   {columns.map((col, i) => (
                     <th
@@ -122,7 +126,7 @@ export default function ComparisonSection({
                             : ""
                         }`}
                       >
-                        <CellContent value={val} />
+                        <CellContent value={val} partialLabel={t("partial")} naLabel={t("na")} />
                       </td>
                     ))}
                   </tr>
@@ -159,7 +163,7 @@ export default function ComparisonSection({
                       >
                         {col}
                       </span>
-                      <CellContent value={row.values[ci]} />
+                      <CellContent value={row.values[ci]} partialLabel={t("partial")} naLabel={t("na")} />
                     </div>
                   ))}
                 </div>

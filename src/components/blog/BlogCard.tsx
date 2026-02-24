@@ -1,6 +1,9 @@
+"use client";
+
 import Image from "next/image";
-import Link from "next/link";
-import { getCategoryLabel, type BlogPost } from "@/data/blog-posts";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
+import { type BlogPost, type BlogCategory } from "@/data/blog-posts";
 
 interface BlogCardProps {
   post: BlogPost;
@@ -8,6 +11,8 @@ interface BlogCardProps {
 }
 
 export default function BlogCard({ post, featured }: BlogCardProps) {
+  const t = useTranslations("Blog");
+
   return (
     <Link
       href={`/blog/${post.slug}`}
@@ -36,10 +41,10 @@ export default function BlogCard({ post, featured }: BlogCardProps) {
             className="px-[10px] py-[4px] rounded-full bg-xdark-blue/10 text-xdark-blue"
             style={{ fontSize: "12px", fontWeight: 500 }}
           >
-            {getCategoryLabel(post.category)}
+            {t(`categories.${post.category}`)}
           </span>
           <span className="text-xblack-70" style={{ fontSize: "13px" }}>
-            {post.readingTime} min read
+            {post.readingTime} {t("minRead")}
           </span>
         </div>
 
@@ -75,7 +80,7 @@ export default function BlogCard({ post, featured }: BlogCardProps) {
           <span className="text-xblack-70" style={{ fontSize: "13px" }}>
             {post.author.name}
           </span>
-          <span className="text-xblack-70/50">·</span>
+          <span className="text-xblack-70/50">&middot;</span>
           <span className="text-xblack-70" style={{ fontSize: "13px" }}>
             {post.date}
           </span>

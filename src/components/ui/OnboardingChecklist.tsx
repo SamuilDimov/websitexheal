@@ -1,19 +1,21 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-
-const steps = [
-  { icon: "quiz", label: "Health questionnaire", done: "Done" },
-  { icon: "favorite", label: "Apple Health connected", done: "Synced" },
-  { icon: "upload_file", label: "Medical records uploaded", done: "Uploaded" },
-  { icon: "routine", label: "Personalized routine started", done: "Logging" },
-];
+import { useTranslations } from "next-intl";
 
 export default function OnboardingChecklist() {
+  const t = useTranslations("HowItWorks");
   const [completedCount, setCompletedCount] = useState(0);
   const [isInView, setIsInView] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const hasAnimated = useRef(false);
+
+  const steps = [
+    { icon: "quiz", label: t("onboarding1Label"), done: t("onboarding1Done") },
+    { icon: "favorite", label: t("onboarding2Label"), done: t("onboarding2Done") },
+    { icon: "upload_file", label: t("onboarding3Label"), done: t("onboarding3Done") },
+    { icon: "routine", label: t("onboarding4Label"), done: t("onboarding4Done") },
+  ];
 
   useEffect(() => {
     const el = ref.current;
@@ -40,7 +42,7 @@ export default function OnboardingChecklist() {
       completedCount === 0 ? 600 : 800
     );
     return () => clearTimeout(timer);
-  }, [isInView, completedCount]);
+  }, [isInView, completedCount, steps.length]);
 
   return (
     <div ref={ref} className="flex flex-col gap-[6px]" aria-hidden="true">

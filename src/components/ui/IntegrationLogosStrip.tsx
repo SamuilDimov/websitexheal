@@ -2,14 +2,16 @@
  * IntegrationLogosStrip
  *
  * Horizontal strip showing integration partners: Apple Health, Apple Watch, MyChart, and file imports.
- * All icons rendered as inline SVGs. Uses text-xdark-blue for high contrast on light backgrounds.
- * Intended for hero sections or just below hero on homepage and feature pages.
  */
+import { useTranslations } from "next-intl";
+
 export default function IntegrationLogosStrip({
   className = "",
 }: {
   className?: string;
 }) {
+  const t = useTranslations("Integrations");
+
   return (
     <div className={`flex flex-col gap-[10px] text-xdark-blue ${className}`}>
       <div className="flex items-center gap-[24px] flex-wrap max-[479px]:gap-[16px]">
@@ -29,7 +31,7 @@ export default function IntegrationLogosStrip({
             />
           </svg>
           <span className="text-[0.8125rem] font-medium">
-            Apple Health
+            {t("appleHealth")}
           </span>
         </div>
 
@@ -61,7 +63,7 @@ export default function IntegrationLogosStrip({
             <circle cx="9" cy="12" r="1.5" fill="currentColor" />
           </svg>
           <span className="text-[0.8125rem] font-medium">
-            Apple Watch
+            {t("appleWatch")}
           </span>
         </div>
 
@@ -96,7 +98,7 @@ export default function IntegrationLogosStrip({
             />
           </svg>
           <span className="text-[0.8125rem] font-medium">
-            MyChart by Epic
+            {t("myChart")}
           </span>
         </div>
 
@@ -135,12 +137,12 @@ export default function IntegrationLogosStrip({
             />
           </svg>
           <span className="text-[0.8125rem] font-medium">
-            PDFs &amp; Photos
+            {t("pdfsPhotos")}
           </span>
         </div>
       </div>
       <span className="text-[0.75rem] text-xdark-blue/60 font-medium">
-        Import from your entire health ecosystem
+        {t("importText")}
       </span>
     </div>
   );

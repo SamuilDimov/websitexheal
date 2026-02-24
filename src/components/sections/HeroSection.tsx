@@ -1,9 +1,12 @@
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import MedicalStandardsBadge from "@/components/ui/MedicalStandardsBadge";
 import ComplianceBadges from "@/components/ui/ComplianceBadges";
 import IntegrationLogosStrip from "@/components/ui/IntegrationLogosStrip";
 
 export default function HeroSection() {
+  const t = useTranslations("Hero");
+
   return (
     <section
       className="relative overflow-clip"
@@ -29,39 +32,36 @@ export default function HeroSection() {
           <div className="grid grid-cols-1 gap-[40px]">
             {/* Heading */}
             <h1 className="text-[7em] font-medium leading-[1] tracking-[-0.05em] max-[991px]:text-[3.75rem]">
-              Your health data is everywhere.{" "}
-              <span className="text-xblack">Your answers are here.</span>
+              {t("heading")}{" "}
+              <span className="text-xblack">{t("headingAccent")}</span>
             </h1>
 
             {/* Subtitle */}
             <div className="text-[1.5rem] font-medium leading-[1.35] tracking-[-0.01em] max-w-[48ch]">
-              xHeal builds a Digital Twin of your health, connecting your
-              medical records, lab results, wearables, and daily habits into
-              one AI that actually knows you. Ask it anything. Get answers
-              you can act on.
+              {t("subtitle")}
             </div>
 
             {/* Stats Cards */}
             <div className="grid grid-cols-3 gap-[40px] max-[991px]:grid-cols-1 max-[991px]:gap-[20px]">
               <div className="bg-white/90 backdrop-blur-sm text-xdark-blue rounded-[16px] p-[20px] leading-[1] flex flex-col gap-[10px]">
                 <div className="text-[1.5rem] font-medium text-xdark-blue">
-                  250+ health parameters
+                  {t("stat1Title")}
                 </div>
                 <p className="text-xdark-blue text-[1.125rem] leading-[1.4]">
-                  Sleep, stress, recovery, strain, nutrition, activity, mood, genome, vitals, and more
+                  {t("stat1Text")}
                 </p>
               </div>
               <div className="bg-white/90 backdrop-blur-sm text-xdark-blue rounded-[16px] p-[20px] leading-[1] flex flex-col gap-[10px]">
                 <div className="text-[1.5rem] font-medium text-xdark-blue">
-                  All your sources, one platform
+                  {t("stat2Title")}
                 </div>
                 <p className="text-xdark-blue text-[1.125rem] leading-[1.4]">
-                  Apple Health, wearables, lab PDFs, medical records, genomics, and daily logs
+                  {t("stat2Text")}
                 </p>
               </div>
               <div className="bg-white/90 backdrop-blur-sm text-xdark-blue rounded-[16px] p-[20px] leading-[1] flex flex-col gap-[10px]">
                 <div className="text-[1.5rem] font-medium text-xdark-blue">
-                  Rated 5.0 on the App Store
+                  {t("stat3Title")}
                 </div>
                 <div className="flex items-center gap-[4px]">
                   {[...Array(5)].map((_, i) => (
@@ -103,7 +103,7 @@ export default function HeroSection() {
                 >
                   <Image
                     src="/images/app-store-badge.svg"
-                    alt="Download on the App Store"
+                    alt={t("downloadOnAppStore")}
                     width={200}
                     height={67}
                     priority
@@ -113,7 +113,7 @@ export default function HeroSection() {
                 <ComplianceBadges />
               </div>
               <span className="text-[1rem] text-xdark-blue">
-                Free to download. Your data stays yours.
+                {t("freeToDownload")}
               </span>
               <IntegrationLogosStrip />
             </div>
@@ -123,7 +123,7 @@ export default function HeroSection() {
               <div className="bg-white/90 backdrop-blur-sm rounded-[16px] p-[20px] leading-[1] w-[200px]">
                 <Image
                   src="/images/qr-code.avif"
-                  alt="Download App QR Code"
+                  alt={t("downloadQrAlt")}
                   width={160}
                   height={160}
                   className="w-full"
@@ -136,7 +136,7 @@ export default function HeroSection() {
           <div className="flex justify-end self-start max-[767px]:justify-center">
             <Image
               src="/images/dashboard.png"
-              alt="Smartphone screen displaying a health app dashboard with xHeal Score of 25, flare ups, streak of 5 days, health awareness report score of 75 out of 100, and navigation icons for Home, Routine, Add, Records, and Chat."
+              alt={t("dashboardAlt")}
               width={932}
               height={1600}
               className="w-[28em] max-w-[460px] max-[767px]:w-full max-[767px]:max-w-[300px]"

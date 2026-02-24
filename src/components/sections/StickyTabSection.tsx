@@ -2,40 +2,39 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 
-const tabs = [
-  {
-    id: "prevention",
-    label: "See it before you feel it",
-    description:
-      "Your Digital Twin cross-references sleep, stress, activity, and lab trends every day. When it spots a pattern building toward a flare-up, you know days before symptoms hit.",
-    image: "/images/flare-up.png",
-    alt: "xHeal flare-up prediction showing early warning pattern detection",
-  },
-  {
-    id: "unified",
-    label: "One app instead of five",
-    description:
-      "Ask your Digital Twin about your labs, symptoms, or why your energy dropped this week. Answers grounded in your actual data, from every source you\u2019ve connected.",
-    image: "/images/vitals.png",
-    alt: "xHeal unified health vitals dashboard showing all connected data",
-  },
-  {
-    id: "specialists",
-    label: "Your team of specialists",
-    description:
-      "xHeal builds your nutrition plan, fitness routine, and mindfulness practice from the same health data. Like a nutritionist, trainer, and therapist who actually talk to each other, plus medication and supplement tracking that ties it all together.",
-    image: "/images/routine.png",
-    alt: "xHeal personalized daily routine with nutrition, fitness, and mindfulness tasks",
-  },
-];
-
 export default function StickyTabSection() {
+  const t = useTranslations("StickyTab");
   const [activeTab, setActiveTab] = useState(0);
   const [timerKey, setTimerKey] = useState(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const INTERVAL_MS = 4000;
+
+  const tabs = [
+    {
+      id: "prevention",
+      label: t("tab1Label"),
+      description: t("tab1Description"),
+      image: "/images/flare-up.png",
+      alt: t("tab1Alt"),
+    },
+    {
+      id: "unified",
+      label: t("tab2Label"),
+      description: t("tab2Description"),
+      image: "/images/vitals.png",
+      alt: t("tab2Alt"),
+    },
+    {
+      id: "specialists",
+      label: t("tab3Label"),
+      description: t("tab3Description"),
+      image: "/images/routine.png",
+      alt: t("tab3Alt"),
+    },
+  ];
 
   const switchTab = useCallback((index: number) => {
     setActiveTab(index);
@@ -51,7 +50,7 @@ export default function StickyTabSection() {
         return next;
       });
     }, INTERVAL_MS);
-  }, []);
+  }, [tabs.length]);
 
   useEffect(() => {
     startRotation();
@@ -72,8 +71,8 @@ export default function StickyTabSection() {
           {/* Section heading */}
           <ScrollReveal>
             <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack max-w-[20ch] max-[991px]:text-[3rem]">
-              What changes when your health data{" "}
-              <span className="text-xdark-blue">works together</span>
+              {t("heading")}{" "}
+              <span className="text-xdark-blue">{t("headingAccent")}</span>
             </h2>
           </ScrollReveal>
 

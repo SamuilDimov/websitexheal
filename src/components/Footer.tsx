@@ -2,10 +2,13 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import ComplianceBadges from "@/components/ui/ComplianceBadges";
 
 export default function Footer() {
+  const t = useTranslations("Footer");
+
   return (
     <>
       {/* Newsletter Section */}
@@ -29,7 +32,7 @@ export default function Footer() {
                   />
                 </Link>
                 <span className="text-[1rem] opacity-60">
-                  &copy; {new Date().getFullYear()} xHeal Corp. All rights reserved.
+                  {t("copyright", { year: new Date().getFullYear() })}
                 </span>
                 <ComplianceBadges size="sm" />
               </div>
@@ -37,7 +40,7 @@ export default function Footer() {
               {/* Right — Social Links */}
               <div className="flex flex-col gap-[16px] max-[767px]:items-start">
                 <span className="text-[1.125rem] opacity-70">
-                  This is where you can find us
+                  {t("findUs")}
                 </span>
                 <div className="flex items-center gap-[20px]">
                   <a
@@ -127,19 +130,19 @@ export default function Footer() {
                 href="/terms-conditions"
                 className="text-[1rem] opacity-60 transition-all duration-200 hover:underline hover:opacity-100"
               >
-                Terms &amp; Conditions
+                {t("termsConditions")}
               </Link>
               <Link
                 href="/privacy-policy"
                 className="text-[1rem] opacity-60 transition-all duration-200 hover:underline hover:opacity-100"
               >
-                Privacy Policy
+                {t("privacyPolicy")}
               </Link>
               <Link
                 href="/cookie-policy"
                 className="text-[1rem] opacity-60 transition-all duration-200 hover:underline hover:opacity-100"
               >
-                Cookie Policy
+                {t("cookiePolicy")}
               </Link>
             </div>
           </div>
@@ -150,6 +153,8 @@ export default function Footer() {
 }
 
 function NewsletterSection() {
+  const t = useTranslations("Newsletter");
+  const tFooter = useTranslations("Footer");
   const [step, setStep] = useState(1);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -160,24 +165,24 @@ function NewsletterSection() {
   const topics = [
     {
       id: "chronic",
-      label: "Living with a chronic condition",
-      description: "Flare-up prevention, trigger patterns, energy management",
+      label: t("topicChronic"),
+      description: t("topicChronicDesc"),
     },
     {
       id: "optimize",
-      label: "Optimizing health & performance",
-      description: "Sleep, nutrition, activity, and how they connect",
+      label: t("topicOptimize"),
+      description: t("topicOptimizeDesc"),
     },
     {
       id: "understand",
-      label: "Understanding my body better",
-      description: "Lab results explained, health scores, what to ask your care team",
+      label: t("topicUnderstand"),
+      description: t("topicUnderstandDesc"),
     },
   ];
 
   const toggleTopic = (id: string) => {
     setSelectedTopics((prev) =>
-      prev.includes(id) ? prev.filter((t) => t !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((topic) => topic !== id) : [...prev, id]
     );
   };
 
@@ -200,13 +205,10 @@ function NewsletterSection() {
           <div className="grid grid-cols-[1.2fr_1fr] gap-[80px] max-[991px]:gap-[40px] max-[767px]:grid-cols-1">
             <div>
               <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack max-[991px]:text-[3rem]">
-                Welcome to xHeal!
+                {t("successHeading")}
               </h2>
             <p className="text-[1.375rem] text-xblack-70 max-w-[42ch]">
-              One email per week with patterns, insights, and strategies that
-              help you understand your body better, whether you&apos;re
-              managing a condition, optimizing your wellness, or just paying
-              closer attention.
+              {t("description")}
             </p>
             </div>
           </div>
@@ -222,14 +224,11 @@ function NewsletterSection() {
           {/* Left Column — Heading + Description */}
           <div className="flex flex-col justify-between">
             <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack max-[991px]:text-[3rem]">
-              Get smarter about your health.{" "}
-              <span className="text-xdark-blue">Every week.</span>
+              {t("heading")}{" "}
+              <span className="text-xdark-blue">{t("headingAccent")}</span>
             </h2>
             <p className="text-[1.125rem] text-xblack-70 mt-[20px] max-w-[42ch]">
-              One email per week with patterns, insights, and strategies that
-              help you understand your body better, whether you&apos;re
-              managing a condition, optimizing your wellness, or just paying
-              closer attention.
+              {t("description")}
             </p>
           </div>
 
@@ -246,7 +245,7 @@ function NewsletterSection() {
                       type="text"
                       value={firstName}
                       onChange={(e) => setFirstName(e.target.value)}
-                      placeholder="First Name*"
+                      placeholder={t("firstNamePlaceholder")}
                       required
                       className="border-b border-b-xdark-blue bg-transparent text-xblack text-[1.25rem] h-[3em] px-0 py-0 outline-none placeholder:text-xblack-70 w-full"
                     />
@@ -256,7 +255,7 @@ function NewsletterSection() {
                       type="text"
                       value={lastName}
                       onChange={(e) => setLastName(e.target.value)}
-                      placeholder="Last Name*"
+                      placeholder={t("lastNamePlaceholder")}
                       required
                       className="border-b border-b-xdark-blue bg-transparent text-xblack text-[1.25rem] h-[3em] px-0 py-0 outline-none placeholder:text-xblack-70 w-full"
                     />
@@ -266,7 +265,7 @@ function NewsletterSection() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Email*"
+                  placeholder={t("emailPlaceholder")}
                   required
                   className="border-b border-b-xdark-blue bg-transparent text-xblack text-[1.25rem] h-[3em] px-0 py-0 outline-none placeholder:text-xblack-70 w-full"
                 />
@@ -275,25 +274,28 @@ function NewsletterSection() {
                     type="submit"
                     className="bg-xdark-blue text-xwhite text-[1.125rem] text-center rounded-full px-[48px] py-[14px] transition-all duration-200 hover:opacity-70 active:opacity-50 active:scale-[0.97]"
                   >
-                    Submit
+                    {t("submit")}
                   </button>
                 </div>
                 <p className="text-[0.9rem] text-xblack-70">
-                  By subscribing, I agree to the{" "}
-                  <Link
-                    href="/terms-conditions"
-                    className="text-xblack underline hover:text-xdark-blue"
-                  >
-                    Terms &amp; Conditions
-                  </Link>{" "}
-                  and{" "}
-                  <Link
-                    href="/privacy-policy"
-                    className="text-xblack underline hover:text-xdark-blue"
-                  >
-                    Privacy Policy
-                  </Link>{" "}
-                  and to receive the newsletter.
+                  {t.rich("consent", {
+                    terms: (chunks) => (
+                      <Link
+                        href="/terms-conditions"
+                        className="text-xblack underline hover:text-xdark-blue"
+                      >
+                        {chunks}
+                      </Link>
+                    ),
+                    privacy: (chunks) => (
+                      <Link
+                        href="/privacy-policy"
+                        className="text-xblack underline hover:text-xdark-blue"
+                      >
+                        {chunks}
+                      </Link>
+                    ),
+                  })}
                 </p>
               </form>
             ) : (
@@ -302,7 +304,7 @@ function NewsletterSection() {
                 className="flex flex-col gap-[20px] w-full"
               >
                 <p className="text-xblack font-medium text-[1.25rem]">
-                  What matters most to you?
+                  {t("topicsHeading")}
                 </p>
                 {topics.map((topic) => (
                   <label
@@ -328,7 +330,7 @@ function NewsletterSection() {
                     type="submit"
                     className="bg-xdark-blue text-xwhite text-[1.125rem] text-center rounded-full px-[48px] py-[14px] transition-all duration-200 hover:opacity-70 active:opacity-50 active:scale-[0.97]"
                   >
-                    Subscribe
+                    {t("subscribe")}
                   </button>
                 </div>
               </form>

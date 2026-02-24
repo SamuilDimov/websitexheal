@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import InsightPreview, {
   type InsightItem,
@@ -5,34 +6,36 @@ import InsightPreview, {
 import OnboardingChecklist from "@/components/ui/OnboardingChecklist";
 import OutcomeCarousel from "@/components/ui/OutcomeCarousel";
 
-const step2Items: InsightItem[] = [
-  {
-    icon: "bedtime",
-    label: "Sleep Pattern",
-    text: "Late dinners cut your deep sleep by 40%.",
-    color: "#6366f1",
-  },
-  {
-    icon: "warning",
-    label: "Early Warning",
-    text: "Flare-up signs building since Monday.",
-    color: "#f59e0b",
-  },
-  {
-    icon: "link",
-    label: "Hidden Connection",
-    text: "Magnesium is improving your deep sleep.",
-    color: "#10b981",
-  },
-  {
-    icon: "science",
-    label: "Lab Trend",
-    text: "Your Vitamin D has dropped 3 months straight.",
-    color: "#ef4444",
-  },
-];
-
 export default function HowItWorksSection() {
+  const t = useTranslations("HowItWorks");
+
+  const step2Items: InsightItem[] = [
+    {
+      icon: "bedtime",
+      label: t("insight1Label"),
+      text: t("insight1Text"),
+      color: "#6366f1",
+    },
+    {
+      icon: "warning",
+      label: t("insight2Label"),
+      text: t("insight2Text"),
+      color: "#f59e0b",
+    },
+    {
+      icon: "link",
+      label: t("insight3Label"),
+      text: t("insight3Text"),
+      color: "#10b981",
+    },
+    {
+      icon: "science",
+      label: t("insight4Label"),
+      text: t("insight4Text"),
+      color: "#ef4444",
+    },
+  ];
+
   return (
     <section
       id="how-it-works"
@@ -46,7 +49,7 @@ export default function HowItWorksSection() {
       <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col items-center gap-[80px] text-xblack max-[991px]:px-[40px] max-[479px]:px-[20px]">
         <ScrollReveal>
           <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-center max-[991px]:text-[3rem]">
-            How <span className="text-xdark-blue">xHeal works</span>
+            {t("heading")} <span className="text-xdark-blue">{t("headingAccent")}</span>
           </h2>
         </ScrollReveal>
 
@@ -61,20 +64,19 @@ export default function HowItWorksSection() {
                   className="font-medium leading-[1] tracking-[-0.02em]"
                   style={{ fontSize: "28px" }}
                 >
-                  Connect your health
+                  {t("step1Title")}
                 </h3>
               </div>
               <p
                 className="leading-[1.55]"
                 style={{ fontSize: "18px", color: "rgba(20, 25, 51, 0.6)" }}
               >
-                Answer a few questions, sync your devices, and upload your
-                records. Your full health profile in about 5 minutes.
+                {t("step1Description")}
               </p>
               <OnboardingChecklist />
               <CardFooter
                 icon="lock"
-                text="Encrypted and private. Setup takes about 5 minutes."
+                text={t("step1Footer")}
               />
             </div>
           </ScrollReveal>
@@ -88,21 +90,19 @@ export default function HowItWorksSection() {
                   className="font-medium leading-[1] tracking-[-0.02em]"
                   style={{ fontSize: "28px" }}
                 >
-                  Meet your Digital Twin
+                  {t("step2Title")}
                 </h3>
               </div>
               <p
                 className="leading-[1.55]"
                 style={{ fontSize: "18px", color: "rgba(20, 25, 51, 0.6)" }}
               >
-                xHeal cross-references your clinical data, daily habits, and
-                wearable trends. It learns what&apos;s normal for you and flags
-                what&apos;s not.
+                {t("step2Description")}
               </p>
               <InsightPreview items={step2Items} />
               <CardFooter
                 icon="psychology"
-                text="Analyzing 250+ health signals. Learning yours."
+                text={t("step2Footer")}
                 pulse
               />
             </div>
@@ -120,20 +120,19 @@ export default function HowItWorksSection() {
                   className="font-medium leading-[1] tracking-[-0.02em]"
                   style={{ fontSize: "32px" }}
                 >
-                  See the difference
+                  {t("step3Title")}
                 </h3>
               </div>
               <p
                 className="leading-[1.55]"
                 style={{ fontSize: "18px", color: "rgba(20, 25, 51, 0.6)" }}
               >
-                Real patterns, real outcomes. Here is what changes when your
-                health data finally works together.
+                {t("step3Description")}
               </p>
               <div className="mt-auto max-[991px]:hidden">
                 <CardFooter
                   icon="trending_up"
-                  text="From scattered data to a clear health picture."
+                  text={t("step3Footer")}
                 />
               </div>
             </div>
@@ -147,7 +146,7 @@ export default function HowItWorksSection() {
             <div className="hidden max-[991px]:block">
               <CardFooter
                 icon="trending_up"
-                text="From scattered data to a clear health picture."
+                text={t("step3Footer")}
               />
             </div>
           </div>

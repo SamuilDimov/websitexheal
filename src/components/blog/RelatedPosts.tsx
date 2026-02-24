@@ -1,3 +1,6 @@
+"use client";
+
+import { useTranslations, useLocale } from "next-intl";
 import { getRelatedPosts } from "@/data/blog-posts";
 import BlogCard from "./BlogCard";
 
@@ -6,7 +9,9 @@ interface RelatedPostsProps {
 }
 
 export default function RelatedPosts({ currentSlug }: RelatedPostsProps) {
-  const related = getRelatedPosts(currentSlug, 3);
+  const t = useTranslations("Blog");
+  const locale = useLocale();
+  const related = getRelatedPosts(currentSlug, 3, locale);
   if (related.length === 0) return null;
 
   return (
@@ -15,7 +20,7 @@ export default function RelatedPosts({ currentSlug }: RelatedPostsProps) {
         className="font-medium leading-[1] tracking-[-0.02em] text-xblack mb-[24px]"
         style={{ fontSize: "24px" }}
       >
-        Keep reading
+        {t("keepReading")}
       </h2>
       <div className="grid grid-cols-3 gap-[20px] max-[991px]:grid-cols-2 max-[767px]:grid-cols-1">
         {related.map((post) => (

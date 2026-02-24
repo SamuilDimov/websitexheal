@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, type ReactNode } from "react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import CrossLinkSection from "@/components/feature-landing/CrossLinkSection";
 import ComparisonSection from "@/components/feature-landing/ComparisonSection";
@@ -197,6 +198,7 @@ function useInView(threshold = 0.2) {
 
 export default function FeatureLandingPage(props: FeatureLandingPageProps) {
   const lineAnim = useInView(0.1);
+  const t = useTranslations("FeatureLanding");
 
   return (
     <>
@@ -207,7 +209,7 @@ export default function FeatureLandingPage(props: FeatureLandingPageProps) {
         className="relative overflow-hidden min-h-screen flex items-center"
         style={{
           background:
-            "radial-gradient(ellipse 120% 80% at 30% 40%, #4764ff 0%, #141933 55%, #0a0e1f 100%)",
+            "radial-gradient(ellipse 120% 80% at 30% 40%, #4764ff 0%, #141933 55%, #141933 100%)",
         }}
       >
         <div
@@ -217,6 +219,15 @@ export default function FeatureLandingPage(props: FeatureLandingPageProps) {
             backgroundPosition: "50%",
             backgroundRepeat: "no-repeat",
             backgroundSize: "cover",
+          }}
+        />
+
+        {/* Bottom fade to page background */}
+        <div
+          className="absolute bottom-0 left-0 right-0 pointer-events-none"
+          style={{
+            height: "40%",
+            background: "linear-gradient(to bottom, transparent 0%, #f8f8fa 100%)",
           }}
         />
 
@@ -268,7 +279,7 @@ export default function FeatureLandingPage(props: FeatureLandingPageProps) {
                   ))}
                 </div>
                 <span className="text-[1.125rem]" style={{ color: "#ffffff" }}>
-                  Rated 5.0 on the App Store
+                  {t("rated5")}
                 </span>
               </div>
 
@@ -283,7 +294,7 @@ export default function FeatureLandingPage(props: FeatureLandingPageProps) {
                   >
                     <Image
                       src="/images/app-store-badge.svg"
-                      alt="Download on the App Store"
+                      alt={t("downloadOnAppStore")}
                       width={200}
                       height={67}
                       priority
@@ -296,7 +307,7 @@ export default function FeatureLandingPage(props: FeatureLandingPageProps) {
                   className="text-[0.875rem] mt-[8px]"
                   style={{ color: "#ffffffdd" }}
                 >
-                  Free to download. Your data stays yours.
+                  {t("freeToDownload")}
                 </p>
               </div>
             </div>
@@ -638,7 +649,7 @@ export default function FeatureLandingPage(props: FeatureLandingPageProps) {
             >
               <Image
                 src="/images/app-store-badge.svg"
-                alt="Download on the App Store"
+                alt={t("downloadOnAppStore")}
                 width={200}
                 height={67}
               />
@@ -647,7 +658,7 @@ export default function FeatureLandingPage(props: FeatureLandingPageProps) {
               className="text-[0.875rem] mt-[8px]"
               style={{ color: "#ffffffaa" }}
             >
-              Free to download. Your data stays yours.
+              {t("freeToDownload")}
             </p>
           </ScrollReveal>
         </div>

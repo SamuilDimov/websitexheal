@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
+import { useTranslations } from "next-intl";
 
 interface OutcomeItem {
   icon: string;
@@ -9,56 +10,57 @@ interface OutcomeItem {
   color: string;
 }
 
-const outcomes: OutcomeItem[] = [
-  {
-    icon: "shield",
-    label: "Flare-Up Prevention",
-    text: "Warned 3 days before an inflammation spike hit.",
-    color: "#ef4444",
-  },
-  {
-    icon: "speed",
-    label: "Performance Clarity",
-    text: "Found the sleep pattern cutting my recovery by 30%.",
-    color: "#4764FF",
-  },
-  {
-    icon: "clinical_notes",
-    label: "Doctor Ready",
-    text: "Walked in with a report my doctor actually read. Out in 15 minutes.",
-    color: "#10b981",
-  },
-  {
-    icon: "nights_stay",
-    label: "Peace of Mind",
-    text: "Stopped Googling symptoms at 2 AM. My Digital Twin already had the answer.",
-    color: "#6366f1",
-  },
-  {
-    icon: "mystery",
-    label: "Root Cause Found",
-    text: "Connected months of afternoon crashes to a slow iron drop in my labs.",
-    color: "#ec4899",
-  },
-  {
-    icon: "timeline",
-    label: "Pattern Detected",
-    text: "My flare-ups weren't random. Stress plus poor sleep triggered every one.",
-    color: "#f59e0b",
-  },
-  {
-    icon: "self_improvement",
-    label: "Calm Confidence",
-    text: "Saw my numbers, knew they were normal for me. No more spiraling.",
-    color: "#14b8a6",
-  },
-];
-
 export default function OutcomeCarousel() {
+  const t = useTranslations("HowItWorks");
   const [activeIndex, setActiveIndex] = useState(0);
   const [isInView, setIsInView] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+
+  const outcomes: OutcomeItem[] = [
+    {
+      icon: "shield",
+      label: t("outcome1Label"),
+      text: t("outcome1Text"),
+      color: "#ef4444",
+    },
+    {
+      icon: "speed",
+      label: t("outcome2Label"),
+      text: t("outcome2Text"),
+      color: "#4764FF",
+    },
+    {
+      icon: "clinical_notes",
+      label: t("outcome3Label"),
+      text: t("outcome3Text"),
+      color: "#10b981",
+    },
+    {
+      icon: "nights_stay",
+      label: t("outcome4Label"),
+      text: t("outcome4Text"),
+      color: "#6366f1",
+    },
+    {
+      icon: "mystery",
+      label: t("outcome5Label"),
+      text: t("outcome5Text"),
+      color: "#ec4899",
+    },
+    {
+      icon: "timeline",
+      label: t("outcome6Label"),
+      text: t("outcome6Text"),
+      color: "#f59e0b",
+    },
+    {
+      icon: "self_improvement",
+      label: t("outcome7Label"),
+      text: t("outcome7Text"),
+      color: "#14b8a6",
+    },
+  ];
 
   useEffect(() => {
     const el = ref.current;
@@ -82,7 +84,7 @@ export default function OutcomeCarousel() {
       setActiveIndex((prev) => (prev + 1) % outcomes.length);
       setIsTransitioning(false);
     }, 300);
-  }, []);
+  }, [outcomes.length]);
 
   useEffect(() => {
     if (!isInView) return;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { blogCategories, type BlogCategory } from "@/data/blog-posts";
 
 interface CategoryFilterProps {
@@ -12,6 +12,8 @@ export default function CategoryFilter({
   onCategoryChange,
   activeCategory,
 }: CategoryFilterProps) {
+  const t = useTranslations("Blog");
+
   return (
     <div className="flex flex-wrap gap-[8px] justify-center">
       <button
@@ -23,7 +25,7 @@ export default function CategoryFilter({
         }`}
         style={{ fontSize: "14px" }}
       >
-        All
+        {t("allCategory")}
       </button>
       {blogCategories.map((cat) => (
         <button
@@ -36,7 +38,7 @@ export default function CategoryFilter({
           }`}
           style={{ fontSize: "14px" }}
         >
-          {cat.label}
+          {t(`categories.${cat.slug}`)}
         </button>
       ))}
     </div>

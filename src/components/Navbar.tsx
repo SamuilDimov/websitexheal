@@ -2,19 +2,29 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
-
-const navLinks = [
-  { href: "/about", label: "About" },
-  { href: "/#what-you-get", label: "What you get" },
-  { href: "/#how-it-works", label: "How it works" },
-  { href: "/blog", label: "Blog" },
-  { href: "/support", label: "Support" },
-];
+import { useTranslations, useLocale } from "next-intl";
+import { Link, usePathname, useRouter } from "@/i18n/navigation";
+import { routing } from "@/i18n/routing";
 
 export default function Navbar() {
+  const t = useTranslations("Navbar");
+  const locale = useLocale();
+  const pathname = usePathname();
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+
+  const navLinks = [
+    { href: "/about" as const, label: t("about") },
+    { href: "/#what-you-get" as const, label: t("whatYouGet") },
+    { href: "/#how-it-works" as const, label: t("howItWorks") },
+    { href: "/blog" as const, label: t("blog") },
+    { href: "/support" as const, label: t("support") },
+  ];
+
+  function switchLocale(newLocale: string) {
+    router.replace(pathname, { locale: newLocale as "en" | "bg" });
+  }
 
   useEffect(() => {
     const handleScroll = () => {
@@ -85,6 +95,24 @@ export default function Navbar() {
                 {item.label}
               </Link>
             ))}
+
+            {/* Language Switcher */}
+            <div className="flex items-center gap-[4px] rounded-[10px] border border-white/20 overflow-hidden">
+              {routing.locales.map((loc) => (
+                <button
+                  key={loc}
+                  onClick={() => switchLocale(loc)}
+                  className={`px-[10px] py-[6px] text-[0.875rem] font-medium transition-all duration-200 ${
+                    locale === loc
+                      ? "bg-white text-[#4764ff]"
+                      : "bg-transparent text-white/70 hover:text-white"
+                  }`}
+                >
+                  {loc.toUpperCase()}
+                </button>
+              ))}
+            </div>
+
             <div>
               <a
                 href="https://apps.apple.com/us/app/xheal/id6748074977"
@@ -93,7 +121,7 @@ export default function Navbar() {
                 className="text-center rounded-[16px] px-[28px] py-[12px] transition-all duration-200 hover:shadow-[0_4px_4px_0_var(--light-blue-low)] inline-block"
                 style={{ backgroundColor: "#ffffff", color: "#4764ff", fontSize: "1.1875rem" }}
               >
-                Download App
+                {t("downloadApp")}
               </a>
             </div>
           </div>
@@ -102,7 +130,7 @@ export default function Navbar() {
           <button
             className="md:hidden relative w-[28px] h-[20px] flex flex-col justify-between items-stretch z-[1002]"
             onClick={() => setIsOpen(!isOpen)}
-            aria-label="Toggle menu"
+            aria-label={t("toggleMenu")}
             aria-expanded={isOpen}
           >
             <span
@@ -147,7 +175,7 @@ export default function Navbar() {
             </Link>
             <button
               onClick={() => setIsOpen(false)}
-              aria-label="Close menu"
+              aria-label={t("closeMenu")}
               className="w-[32px] h-[32px] relative"
             >
               <span className="absolute top-1/2 left-0 w-full h-[2.5px] bg-white rounded-full rotate-45 -translate-y-1/2" />
@@ -160,7 +188,7 @@ export default function Navbar() {
 
           {/* Links */}
           <nav className="flex-1 flex flex-col justify-center px-[20px] gap-[4px]">
-            {[{ href: "/", label: "Home" }, ...navLinks].map((item) => (
+            {[{ href: "/" as const, label: t("home") }, ...navLinks].map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
@@ -176,6 +204,26 @@ export default function Navbar() {
               </Link>
             ))}
 
+            {/* Language Switcher (mobile) */}
+            <div className="flex items-center justify-center gap-[4px] mt-[16px] rounded-[10px] border border-white/20 overflow-hidden self-center">
+              {routing.locales.map((loc) => (
+                <button
+                  key={loc}
+                  onClick={() => {
+                    switchLocale(loc);
+                    setIsOpen(false);
+                  }}
+                  className={`px-[16px] py-[10px] text-[1rem] font-medium transition-all duration-200 ${
+                    locale === loc
+                      ? "bg-white text-[#4764ff]"
+                      : "bg-transparent text-white/70 hover:text-white"
+                  }`}
+                >
+                  {loc.toUpperCase()}
+                </button>
+              ))}
+            </div>
+
             {/* CTA button inside nav flow */}
             <div className="mt-[20px]">
               <a
@@ -186,7 +234,7 @@ export default function Navbar() {
                 className="block text-center py-[20px] rounded-[16px] font-medium"
                 style={{ backgroundColor: "#4764ff", color: "#ffffff", fontSize: "24px" }}
               >
-                Download App
+                {t("downloadApp")}
               </a>
             </div>
           </nav>

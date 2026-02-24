@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { useCookieConsent } from "@/hooks/useCookieConsent";
 
 export default function CookieConsentBanner() {
+  const t = useTranslations("CookieConsent");
   const { showBanner, acceptAll, rejectNonEssential, savePreferences } =
     useCookieConsent();
   const [showPreferences, setShowPreferences] = useState(false);
@@ -24,18 +26,16 @@ export default function CookieConsentBanner() {
                 className="font-medium leading-[1.1]"
                 style={{ fontSize: "18px", color: "#f8f8fa" }}
               >
-                We value your privacy
+                {t("title")}
               </h3>
               <p className="leading-[1.5]" style={{ fontSize: "14px", color: "rgba(248,248,250,0.7)" }}>
-                We use cookies to improve your experience, analyze site traffic,
-                and understand how you interact with xHeal. You can choose which
-                cookies to allow.{" "}
+                {t("description")}{" "}
                 <Link
                   href="/cookie-policy"
                   className="underline hover:opacity-80"
                   style={{ fontSize: "14px", color: "rgba(248,248,250,0.9)" }}
                 >
-                  Cookie Policy
+                  {t("cookiePolicy")}
                 </Link>
               </p>
             </div>
@@ -45,21 +45,21 @@ export default function CookieConsentBanner() {
                 className="bg-xdark-blue rounded-full px-[24px] py-[10px] transition-all duration-200 hover:opacity-90"
                 style={{ fontSize: "14px", color: "#f8f8fa" }}
               >
-                Accept all
+                {t("acceptAll")}
               </button>
               <button
                 onClick={rejectNonEssential}
                 className="bg-transparent border border-white/30 rounded-full px-[24px] py-[10px] transition-all duration-200 hover:border-white/60"
                 style={{ fontSize: "14px", color: "#f8f8fa" }}
               >
-                Reject non-essential
+                {t("rejectNonEssential")}
               </button>
               <button
                 onClick={() => setShowPreferences(true)}
                 className="hover:opacity-100 transition-opacity duration-200 underline"
                 style={{ fontSize: "14px", color: "rgba(248,248,250,0.7)" }}
               >
-                Customize
+                {t("customize")}
               </button>
             </div>
           </div>
@@ -71,14 +71,14 @@ export default function CookieConsentBanner() {
                 className="font-medium leading-[1.1]"
                 style={{ fontSize: "18px", color: "#f8f8fa" }}
               >
-                Cookie preferences
+                {t("preferencesTitle")}
               </h3>
               <button
                 onClick={() => setShowPreferences(false)}
                 className="hover:opacity-100 transition-opacity"
                 style={{ fontSize: "14px", color: "rgba(248,248,250,0.7)" }}
               >
-                Back
+                {t("back")}
               </button>
             </div>
 
@@ -86,13 +86,13 @@ export default function CookieConsentBanner() {
             <div className="flex items-center justify-between gap-[16px] pb-[16px] border-b border-white/10">
               <div>
                 <p className="font-medium" style={{ fontSize: "14px", color: "#f8f8fa" }}>
-                  Essential
+                  {t("essentialTitle")}
                 </p>
                 <p
                   className="leading-[1.4]"
                   style={{ fontSize: "13px", color: "rgba(248,248,250,0.6)" }}
                 >
-                  Required for the site to function. Cannot be disabled.
+                  {t("essentialDescription")}
                 </p>
               </div>
               <div
@@ -106,14 +106,13 @@ export default function CookieConsentBanner() {
             <div className="flex items-center justify-between gap-[16px] pb-[16px] border-b border-white/10">
               <div>
                 <p className="font-medium" style={{ fontSize: "14px", color: "#f8f8fa" }}>
-                  Analytics
+                  {t("analyticsTitle")}
                 </p>
                 <p
                   className="leading-[1.4]"
                   style={{ fontSize: "13px", color: "rgba(248,248,250,0.6)" }}
                 >
-                  Help us understand how visitors use the site (Google
-                  Analytics).
+                  {t("analyticsDescription")}
                 </p>
               </div>
               <button
@@ -134,13 +133,13 @@ export default function CookieConsentBanner() {
             <div className="flex items-center justify-between gap-[16px] pb-[16px] border-b border-white/10">
               <div>
                 <p className="font-medium" style={{ fontSize: "14px", color: "#f8f8fa" }}>
-                  Marketing
+                  {t("marketingTitle")}
                 </p>
                 <p
                   className="leading-[1.4]"
                   style={{ fontSize: "13px", color: "rgba(248,248,250,0.6)" }}
                 >
-                  Used for targeted ads and measuring campaign performance.
+                  {t("marketingDescription")}
                 </p>
               </div>
               <button
@@ -167,7 +166,7 @@ export default function CookieConsentBanner() {
               className="bg-xdark-blue rounded-full px-[24px] py-[10px] transition-all duration-200 hover:opacity-90 self-start"
                 style={{ fontSize: "14px", color: "#f8f8fa" }}
             >
-              Save preferences
+              {t("savePreferences")}
             </button>
           </div>
         )}

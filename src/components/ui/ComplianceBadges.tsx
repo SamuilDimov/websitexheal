@@ -11,6 +11,7 @@
  */
 
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 type BadgeSize = "sm" | "md";
 
@@ -21,6 +22,7 @@ export default function ComplianceBadges({
   size?: BadgeSize;
   className?: string;
 }) {
+  const t = useTranslations("Compliance");
   const isSm = size === "sm";
   const imgSize = isSm ? 28 : 32;
   const titleSize = isSm ? "text-[0.75rem]" : "text-[0.8125rem]";
@@ -32,17 +34,17 @@ export default function ComplianceBadges({
       <div className="flex items-center gap-[10px]">
         <Image
           src="/images/hipaa-compliant.png"
-          alt="HIPAA Compliant"
+          alt={`${t("hipaa")} ${t("compliant")}`}
           width={imgSize}
           height={imgSize}
           className={isSm ? "w-[28px] h-[28px]" : "w-[32px] h-[32px]"}
         />
         <div className="flex flex-col leading-[1.15]">
           <span className={`${titleSize} font-medium tracking-[0.06em]`}>
-            HIPAA
+            {t("hipaa")}
           </span>
           <span className={`${subtitleSize} opacity-70`}>
-            Compliant
+            {t("compliant")}
           </span>
         </div>
       </div>
@@ -51,17 +53,17 @@ export default function ComplianceBadges({
       <div className="flex items-center gap-[10px]">
         <Image
           src="/images/gdpr-compliant.png"
-          alt="GDPR Compliant"
+          alt={`${t("gdpr")} ${t("compliant")}`}
           width={imgSize}
           height={imgSize}
           className={isSm ? "w-[28px] h-[28px]" : "w-[32px] h-[32px]"}
         />
         <div className="flex flex-col leading-[1.15]">
           <span className={`${titleSize} font-medium tracking-[0.06em]`}>
-            GDPR
+            {t("gdpr")}
           </span>
           <span className={`${subtitleSize} opacity-70`}>
-            Compliant
+            {t("compliant")}
           </span>
         </div>
       </div>

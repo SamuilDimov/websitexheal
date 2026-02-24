@@ -1,68 +1,65 @@
 import Image from "next/image";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 
-const features = [
-  {
-    image: "/images/chat-landing-card.png",
-    alt: "xHeal Chat - ask your Digital Twin about your health data and get personalized answers",
-    title: "Chat With Your Health",
-    description:
-      "Ask your Digital Twin anything about your vitals, your labs, your symptoms, your patterns. Get answers grounded in your actual health data, not generic web results.",
-    href: "/chat-with-your-health",
-    featured: true,
-  },
-  {
-    image: "/images/flare-up-card.png",
-    alt: "xHeal flare-up trigger pattern detection with calendar and activity charts",
-    title: "Flare-Up Trigger Patterns",
-    description:
-      "xHeal cross-references your symptoms, sleep, stress, and activity to detect what triggers your flare-ups and warns you before the next one hits.",
-    href: "/flare-up-trigger-patterns",
-    featured: true,
-  },
-  {
-    image: "/images/reports-landing-card.png",
-    alt: "xHeal Health Awareness score showing 75 out of 100 across six health domains",
-    title: "Health Awareness Score",
-    description:
-      "A single 0-100 score that reflects your health across six domains. Know exactly where you stand and which area needs attention first.",
-    href: "/health-awareness",
-  },
-  {
-    image: "/images/get-reports-card.png",
-    alt: "xHeal specialist-ready health reports for doctors, nutritionists, trainers, and therapists",
-    title: "Specialist-Ready Reports",
-    description:
-      "Four report types designed for doctors, nutritionists, trainers, and therapists. Walk into your next appointment with the context your care team has never had.",
-    href: "/specialist-ready-reports",
-  },
-  {
-    image: "/images/records-landing-card.png",
-    alt: "xHeal health timeline with organized medical records and lab results",
-    title: "Health Timeline",
-    description:
-      "Every medical record, lab result, and life event organized chronologically in one searchable place. Find anything in seconds.",
-    href: "/health-timeline",
-  },
-  {
-    image: "/images/log-medication-card.png",
-    alt: "xHeal life event logging for medications, supplements, and health context",
-    title: "Log Life Events",
-    description:
-      "Supplements, medications, diet changes, stress. Log the context your wearable can't capture. Every entry makes your Digital Twin smarter.",
-    href: "/log-life-events",
-  },
-];
-
 export default function WhatYouGetSection() {
+  const t = useTranslations("WhatYouGet");
+
+  const features = [
+    {
+      image: "/images/chat-landing-card.png",
+      alt: t("feature1Alt"),
+      title: t("feature1Title"),
+      description: t("feature1Description"),
+      href: "/chat-with-your-health" as const,
+      featured: true,
+    },
+    {
+      image: "/images/flare-up-card.png",
+      alt: t("feature2Alt"),
+      title: t("feature2Title"),
+      description: t("feature2Description"),
+      href: "/flare-up-trigger-patterns" as const,
+      featured: true,
+    },
+    {
+      image: "/images/reports-landing-card.png",
+      alt: t("feature3Alt"),
+      title: t("feature3Title"),
+      description: t("feature3Description"),
+      href: "/health-awareness" as const,
+    },
+    {
+      image: "/images/get-reports-card.png",
+      alt: t("feature4Alt"),
+      title: t("feature4Title"),
+      description: t("feature4Description"),
+      href: "/specialist-ready-reports" as const,
+    },
+    {
+      image: "/images/records-landing-card.png",
+      alt: t("feature5Alt"),
+      title: t("feature5Title"),
+      description: t("feature5Description"),
+      href: "/health-timeline" as const,
+    },
+    {
+      image: "/images/log-medication-card.png",
+      alt: t("feature6Alt"),
+      title: t("feature6Title"),
+      description: t("feature6Description"),
+      href: "/log-life-events" as const,
+    },
+  ];
+
   return (
     <section id="what-you-get">
       <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col items-center gap-[80px] text-xblack max-[991px]:px-[40px] max-[479px]:px-[20px]">
         <ScrollReveal>
           <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-center max-[991px]:text-[3rem]">
-            Everything your health app{" "}
-            <span className="text-xdark-blue">is missing</span>
+            {t("heading")}{" "}
+            <span className="text-xdark-blue">{t("headingAccent")}</span>
           </h2>
         </ScrollReveal>
 
@@ -97,7 +94,7 @@ export default function WhatYouGetSection() {
             const cardClass =
               "border border-xlight-blue-low bg-xwhite text-xdark-blue rounded-[16px] flex flex-col gap-[20px] shadow-[0_4px_4px_#1419330d] max-w-[36rem] overflow-hidden transition-shadow duration-200";
 
-            return feature.href ? (
+            return (
               <Link
                 key={feature.title}
                 href={feature.href}
@@ -105,10 +102,6 @@ export default function WhatYouGetSection() {
               >
                 {cardContent}
               </Link>
-            ) : (
-              <div key={feature.title} className={cardClass}>
-                {cardContent}
-              </div>
             );
           })}
         </div>
@@ -122,7 +115,7 @@ export default function WhatYouGetSection() {
           >
             <Image
               src="/images/app-store-badge.svg"
-              alt="Download on the App Store"
+              alt={t("downloadOnAppStore")}
               width={200}
               height={67}
             />
