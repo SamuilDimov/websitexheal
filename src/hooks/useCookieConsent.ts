@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 
 export type CookieCategory = "essential" | "analytics" | "marketing";
 
@@ -38,18 +38,9 @@ function setConsentCookie(consent: CookieConsent) {
 }
 
 export function useCookieConsent() {
-  const [consent, setConsent] = useState<CookieConsent | null>(null);
-  const [showBanner, setShowBanner] = useState(false);
-
-  useEffect(() => {
-    const stored = getStoredConsent();
-    if (stored) {
-      setConsent(stored);
-      setShowBanner(false);
-    } else {
-      setShowBanner(true);
-    }
-  }, []);
+  const [consent, setConsent] = useState<CookieConsent | null>(() =>
+    getStoredConsent()
+  );
 
   const acceptAll = useCallback(() => {
     const newConsent: CookieConsent = {
@@ -61,7 +52,6 @@ export function useCookieConsent() {
     localStorage.setItem(CONSENT_KEY, JSON.stringify(newConsent));
     setConsentCookie(newConsent);
     setConsent(newConsent);
-    setShowBanner(false);
   }, []);
 
   const rejectNonEssential = useCallback(() => {
@@ -74,7 +64,6 @@ export function useCookieConsent() {
     localStorage.setItem(CONSENT_KEY, JSON.stringify(newConsent));
     setConsentCookie(newConsent);
     setConsent(newConsent);
-    setShowBanner(false);
   }, []);
 
   const savePreferences = useCallback(
@@ -88,7 +77,6 @@ export function useCookieConsent() {
       localStorage.setItem(CONSENT_KEY, JSON.stringify(newConsent));
       setConsentCookie(newConsent);
       setConsent(newConsent);
-      setShowBanner(false);
     },
     []
   );
@@ -97,8 +85,9 @@ export function useCookieConsent() {
     localStorage.removeItem(CONSENT_KEY);
     document.cookie = `${CONSENT_COOKIE}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
     setConsent(null);
-    setShowBanner(true);
   }, []);
+
+  const showBanner = consent === null;
 
   return {
     consent,

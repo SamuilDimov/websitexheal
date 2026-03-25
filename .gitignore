@@ -43,6 +43,12 @@ next-env.d.ts
 # local tool configs
 .opencode/
 
+# dev server logs
+dev-out.log
+dev-err.log
+start-out.log
+start-err.log
+
 # screenshots and generated images
 screenshots/
 generated_imgs/

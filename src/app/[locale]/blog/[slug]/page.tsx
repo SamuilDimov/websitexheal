@@ -25,11 +25,11 @@ export async function generateMetadata({
   const post = posts.find((p) => p.slug === slug);
   return {
     title: post ? `${post.title} | xHeal Blog` : "Blog Post | xHeal",
-    description: post?.excerpt || "xHeal blog post",
+    description: post?.metaDescription || post?.excerpt || "xHeal blog post",
     openGraph: post
       ? {
           title: post.title,
-          description: post.excerpt,
+          description: post.metaDescription || post.excerpt,
           images: [{ url: post.image }],
           type: "article",
           publishedTime: post.date,
@@ -148,6 +148,14 @@ export default async function BlogPostPage({
                       style={{ fontSize: "12px" }}
                     >
                       {post.author.role}
+                    </span>
+                  )}
+                  {post.reviewedBy && (
+                    <span
+                      className="text-xblack-70 block"
+                      style={{ fontSize: "12px" }}
+                    >
+                      Reviewed by {post.reviewedBy}
                     </span>
                   )}
                 </div>

@@ -1,0 +1,22 @@
+Subject: Your xHeal setup starts now (3 minutes)
+Preheader: Connect your data and unlock your first personalized next step.
+
+Hi {{ contact.firstname|default('there') }},
+
+Welcome to xHeal.
+
+You are here to get clarity, not just collect more health data. Let us get your account ready in 3 minutes:
+
+1) Complete your profile
+2) Connect one source (Apple Health, wearable, or manual input)
+3) Run your first check-in
+
+That is enough for xHeal to start building your baseline and detecting patterns earlier.
+
+You do not need perfect data to begin. You just need your first clean setup.
+
+Complete setup:
+https://xheal.ai/en?utm_source=hubspot&utm_medium=email&utm_campaign=welcome_3_email&utm_content=e01_complete_setup_cta
+
+- Team xHeal
+

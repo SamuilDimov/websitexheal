@@ -1,0 +1,100 @@
+# xHeal Ad Messaging Playbook
+
+Last updated: 2026-03-06
+Use case: Paid social, search ads, short-form video hooks, advertorial intros
+
+## 1) Offer-to-Message Mapping
+- Offer: App install / onboarding
+  - Message: Catch patterns early, act before flare-ups escalate.
+- Offer: Quiz funnel
+  - Message: Your symptoms are not random; find your archetype.
+- Offer: Specialist-ready reports
+  - Message: Walk into every appointment with complete context.
+
+## 2) Hook Bank by Angle
+Prevention hooks:
+- What changed 48 hours before your last flare-up?
+- Catch trigger patterns before symptoms hit.
+- Stop reacting late. Start acting early.
+
+Continuity hooks:
+- One health story for every specialist.
+- Stop repeating your history at every visit.
+- Bring one timeline to every appointment.
+
+Clarity hooks:
+- Data overload is not a care plan.
+- One clear next step, every day.
+- Your health data is everywhere. Your answers are here.
+
+## 3) Ad Structure Template
+1. Hook (problem or interrupted assumption)
+2. Mechanism (how xHeal works)
+3. Proof (specific and credible)
+4. CTA (single next action)
+
+Short template:
+"[Hook]. xHeal [mechanism]. [proof]. [CTA]."
+
+Example:
+"Flare-ups aren’t random. xHeal cross-references symptoms, sleep, stress, and labs to detect your trigger patterns early. 250+ parameters connected in one timeline. Start care now."
+
+## 4) Primary Claims (Approved)
+- Connects 250+ health parameters
+- Brings records, labs, wearables, and logs into one timeline
+- Supports specialist-ready reporting
+- Guideline-informed reasoning (WHO/ADA/EASD)
+
+## 5) Claim Safety Rules
+- Do not claim diagnosis, cure, or treatment outcomes
+- Do not promise prevention certainty
+- Avoid absolute language ("always", "guaranteed", "never")
+- Frame as support and pattern recognition
+
+## 6) CTA Rules
+Use one primary CTA per ad:
+- Start care now
+- Get your care plan
+- Build my health timeline
+- Take the pattern quiz
+
+Avoid weak CTAs:
+- Learn more
+- Explore now
+
+## 7) Creative Brief Mini-Template
+- Audience: [one segment only]
+- Pain point: [single pain]
+- Core message: [one pillar]
+- Proof: [one proof statement]
+- CTA: [one CTA]
+- Format: [static/video/carousel]
+- Success metric: [CTR/CVR/CPI]
+
+## 8) 12 Ready-to-Test Headlines
+1. Catch flare-up signals early. Act sooner.
+2. Stop reacting to flare-ups. Start predicting them.
+3. What changed before your last flare-up?
+4. Your symptoms aren’t random. Your data already knows why.
+5. One connected timeline for every appointment.
+6. Stop retelling your health history.
+7. Data overload is not a care plan.
+8. 250+ health signals. One clear next step.
+9. Reports your specialist can use in minutes.
+10. Bring context, not chaos, to your next visit.
+11. Predict patterns. Prevent spirals.
+12. See the full picture of your health.
+
+## 9) 5 Ready-to-Test Primary Text Variants
+1. "xHeal connects your symptoms, sleep, stress, activity, and labs to detect trigger patterns earlier. Get ahead before the next flare-up. Start care now."
+2. "If your tests are ‘normal’ but you still feel off, context may be missing. xHeal connects 250+ signals so you can see what changed and what to do next."
+3. "Most apps track one metric. xHeal connects your full health story so your care team sees the same timeline you do. Build my health timeline."
+4. "Walk into your next appointment prepared. xHeal creates specialist-ready reports from your records, labs, and wearable data."
+5. "You already have data. xHeal helps you use it. See patterns earlier, take clearer action, and follow through with your care team."
+
+## 10) QA Before Launch
+- One audience per ad set
+- One message pillar per ad
+- One proof statement per ad
+- One CTA per ad
+- Compliance-safe disclaimer in LP context

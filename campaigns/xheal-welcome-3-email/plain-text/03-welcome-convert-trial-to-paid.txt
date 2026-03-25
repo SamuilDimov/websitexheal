@@ -1,0 +1,23 @@
+Subject: Keep your progress going (before trial ends)
+Preheader: Your baseline is now forming. Keep continuity and compound results.
+
+Hi {{ contact.firstname|default('there') }},
+
+By now, xHeal has started learning your patterns.
+
+This is where users usually see meaningful value:
+- clearer trend context
+- earlier warning signs
+- better day-to-day decisions
+
+If you stop now, continuity breaks. If you continue, insight quality compounds week by week.
+
+If xHeal has already reduced uncertainty for you, continue with full access.
+
+Upgrade now:
+https://xheal.ai/en?utm_source=hubspot&utm_medium=email&utm_campaign=welcome_3_email&utm_content=e03_upgrade_cta
+
+Need help choosing a plan? Reply to this email and we will guide you directly.
+
+- Team xHeal
+

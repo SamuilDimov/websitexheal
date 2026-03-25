@@ -1,0 +1,24 @@
+Email 01
+Subject options:
+1) Your xHeal setup starts now (3 minutes)
+2) Welcome to xHeal: let's reduce guesswork today
+3) Start here for your first health insight
+Preheader:
+Connect your data and unlock your first personalized next step.
+
+Email 02
+Subject options:
+1) Why symptoms feel random (and what to do instead)
+2) The hidden trigger loop most people miss
+3) Your data is safer and more useful than you think
+Preheader:
+Most flare-ups are patterned. xHeal helps you see the signal sooner.
+
+Email 03
+Subject options:
+1) Keep your progress going (before trial ends)
+2) You're at the point where xHeal gets most valuable
+3) Don't reset momentum right as insights improve
+Preheader:
+Your baseline is now forming. Keep continuity and compound results.
+

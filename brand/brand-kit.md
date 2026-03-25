@@ -1,0 +1,121 @@
+# xHeal Brand Kit
+
+Last updated: 2026-03-06
+Owner: Marketing + Product Marketing
+
+## 1) Brand Core
+- Brand essence: From flare-ups to foresight.
+- Category: AI-supported personal health intelligence.
+- Core promise: Turn fragmented health data into early signals and clear next actions.
+- Brand role: Calm, clinically grounded guide between appointments.
+
+## 2) Positioning
+- Primary angle: Catch flare-up patterns early and act sooner.
+- Secondary angle: One health story for every specialist.
+- Core contrast: Most tools track isolated metrics; xHeal connects 250+ parameters across labs, records, wearables, and logs.
+
+Positioning statement:
+For people managing recurring health uncertainty, xHeal helps detect flare-up patterns early and take clear daily action, so they can stay ahead instead of reacting late.
+
+## 3) Audience Segments
+- Frustrated chronic-condition patient: "Normal tests, real symptoms."
+- Data collector / optimizer: "I track everything but still can’t connect causes."
+- Multi-specialist / family care manager: "My health context is fragmented across systems."
+
+## 4) Messaging Pillars
+1. Early signal detection
+2. Clear daily direction
+3. Continuity across care
+4. Human + clinical trust
+
+## 5) Proof and Claims
+Approved proof language:
+- 250+ health parameters connected
+- 95% alpha accuracy claim against ~5,000 patients (contextualize as historical alpha testing)
+- WHO / ADA / EASD guideline-informed reasoning
+
+Rules:
+- Pair every proof with context (who, what, when)
+- Never imply diagnosis, treatment, or guaranteed outcomes
+
+## 6) Voice System
+Voice profile:
+- Clinically grounded
+- Human and reassuring
+- Action-oriented
+- Plainspoken
+
+Tone:
+- Warm-direct
+- Serious, not fear-driven
+- Moderately formal
+
+Formula:
+Promise -> Proof -> Path
+
+## 7) Vocabulary Guardrails
+Use often:
+- early signal
+- clear next step
+- care plan
+- follow-up
+- specialist-ready
+- continuity of care
+
+Use sparingly:
+- AI
+- optimization
+- integrated
+
+Avoid:
+- revolutionary
+- game-changing
+- world-class
+- one-stop
+- cutting-edge
+
+## 8) Compliance Language
+Always include where relevant:
+- xHeal is a health companion and awareness tool.
+- xHeal supports care decisions and care-team collaboration.
+- xHeal does not diagnose, treat, prescribe, or replace medical professionals.
+
+## 9) CTA System
+Primary CTAs:
+- Start care now
+- Get your care plan
+- Check eligibility
+- Build my health timeline
+
+Secondary CTAs:
+- See how it works
+- View sample report
+- Compare plans
+
+## 10) Visual Identity Tokens
+Typography:
+- Primary font: PPNeueMontreal
+
+Core colors:
+- xblack: #141933
+- xwhite: #f8f8fa
+- xdark-blue: #4764ff
+- xlight-blue: #8c9dff
+
+Design direction:
+- Clinical clarity + modern confidence
+- High contrast, clean whitespace, focused action states
+
+## 11) Channel Priorities
+- Website: prevention + continuity narrative
+- Paid social: strong pattern-hook, single CTA
+- Email: one actionable idea per send
+- Sales/support copy: reassurance + process clarity + next action
+
+## 12) Pre-Publish Checklist
+- Does it map to one primary audience segment?
+- Does it lead with prevention or continuity (not generic all-in-one language)?
+- Is tone plainspoken and evidence-based?
+- Is at least one approved proof statement included?
+- Is compliance-safe language present where needed?
+- Is there exactly one primary CTA?

@@ -98,9 +98,11 @@ export interface BlogPost {
   title: string;
   date: string;
   excerpt: string;
+  metaDescription?: string;
   image: string;
   category: BlogCategory;
   author: BlogAuthor;
+  reviewedBy?: string;
   readingTime: number; // minutes
   featured?: boolean;
   content: string; // HTML content
@@ -228,13 +230,16 @@ const blogPostsEn: BlogPost[] = [
   // ─── CHRONIC CONDITION MANAGEMENT ───────────────────────
   {
     slug: "what-happens-48-hours-before-a-flare-up",
-    title: "What Happens to Your Body 48 Hours Before a Flare-Up",
+    title: "Signs a Flare-Up Is Coming: What Your Body Shows 48 Hours Before",
     date: "Feb 20, 2026",
     excerpt:
       "Your body sends warning signals days before symptoms hit. Here's what the research says about early detection, and how connecting your data can help you prepare.",
+    metaDescription:
+      "Your wearable captures flare-up warning signs 24–48 hours early. Learn the 5 physiological changes that predict a flare before you feel it.",
     image: "/images/blog/flare-up-prediction.jpg",
     category: "chronic-condition-management",
-    author: blogAuthors.team,
+    author: blogAuthors.trifon,
+    reviewedBy: "Dr. Rayna Mihaylova, MD",
     readingTime: 7,
     featured: true,
     relatedSlugs: [
@@ -853,13 +858,14 @@ const blogPostsBg: BlogPost[] = [
   // ─── CHRONIC CONDITION MANAGEMENT ───────────────────────
   {
     slug: "what-happens-48-hours-before-a-flare-up",
-    title: "Какво се случва с тялото ви 48 часа преди обостряне",
+    title: "Signs a Flare-Up Is Coming: What Your Body Shows 48 Hours Before",
     date: "Feb 20, 2026",
     excerpt:
       "Тялото ви изпраща предупредителни сигнали дни преди симптомите да ударят. Ето какво казват проучванията за ранното разпознаване — и как свързването на данните ви може да ви помогне да се подготвите.",
     image: "/images/blog/flare-up-prediction.jpg",
     category: "chronic-condition-management",
-    author: blogAuthorsBg.team,
+    author: blogAuthorsBg.trifon,
+    reviewedBy: "Dr. Rayna Mihaylova, MD",
     readingTime: 7,
     featured: true,
     relatedSlugs: [

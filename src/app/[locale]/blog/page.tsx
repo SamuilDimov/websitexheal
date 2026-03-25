@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
-import { getBlogPosts, blogCategories, type BlogCategory } from "@/data/blog-posts";
+import { getBlogPosts, type BlogCategory } from "@/data/blog-posts";
 import BlogCard from "@/components/blog/BlogCard";
 import CategoryFilter from "@/components/blog/CategoryFilter";
 

@@ -1,0 +1,24 @@
+Subject: Why symptoms feel random (and what to do instead)
+Preheader: Most flare-ups are patterned. xHeal helps you see the signal sooner.
+
+Hi {{ contact.firstname|default('there') }},
+
+Most people with chronic conditions feel this:
+"My bad days come out of nowhere."
+
+Usually, they do not.
+
+A common loop looks like this:
+sleep shift -> stress rise -> routine break -> symptom spike
+
+xHeal helps you spot this earlier by connecting symptom logs, behavior markers, and consistency trends.
+
+Because your data is sensitive, xHeal is built with HIPAA/GDPR-aligned handling and user-controlled sharing.
+
+Today: log one symptom plus one behavior, then review your dashboard trend.
+
+Open xHeal:
+https://xheal.ai/en?utm_source=hubspot&utm_medium=email&utm_campaign=welcome_3_email&utm_content=e02_open_dashboard_cta
+
+- Team xHeal
+

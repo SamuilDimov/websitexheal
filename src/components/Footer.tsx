@@ -165,7 +165,6 @@ export default function Footer() {
 
 function NewsletterSection() {
   const t = useTranslations("Newsletter");
-  const tFooter = useTranslations("Footer");
   const [step, setStep] = useState(1);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");

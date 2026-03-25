@@ -1,0 +1,26 @@
+HubSpot Setup Notes
+
+Brand tokens used from codebase:
+- Primary blue: #4764ff
+- Light blue: #8c9dff
+- Text dark: #141933
+- Background light: #f8f8fa
+- Logo: https://xheal.ai/images/logo.svg
+
+UTM CTA links used:
+- Email 01 CTA:
+  https://xheal.ai/en?utm_source=hubspot&utm_medium=email&utm_campaign=welcome_3_email&utm_content=e01_complete_setup_cta
+
+- Email 02 CTA:
+  https://xheal.ai/en?utm_source=hubspot&utm_medium=email&utm_campaign=welcome_3_email&utm_content=e02_open_dashboard_cta
+
+- Email 03 CTA:
+  https://xheal.ai/en?utm_source=hubspot&utm_medium=email&utm_campaign=welcome_3_email&utm_content=e03_upgrade_cta
+
+Recommended HubSpot workflow names:
+- xHeal Welcome 3-Email
+- xHeal Welcome 3-Email (A/B Subject Test)
+
+Personalization token used in HTML:
+- {{ contact.firstname|default('there') }}
+
