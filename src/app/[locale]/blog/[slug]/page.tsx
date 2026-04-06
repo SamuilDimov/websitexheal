@@ -11,7 +11,7 @@ import RelatedPosts from "@/components/blog/RelatedPosts";
 import MedicalDisclaimer from "@/components/blog/MedicalDisclaimer";
 
 export function generateStaticParams() {
-  // Use English slugs — they're the same for both locales
+  // Use English slugs, they're the same for both locales
   return blogPosts.map((post) => ({ slug: post.slug }));
 }
 
@@ -24,6 +24,7 @@ export async function generateMetadata({
   const posts = getBlogPosts(locale);
   const post = posts.find((p) => p.slug === slug);
   return {
+    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://xheal.com"),
     title: post ? `${post.title} | xHeal Blog` : "Blog Post | xHeal",
     description: post?.metaDescription || post?.excerpt || "xHeal blog post",
     openGraph: post
@@ -173,6 +174,11 @@ export default async function BlogPostPage({
                 </span>
                 <span className="text-xblack-70" style={{ fontSize: "14px" }}>
                   {post.date}
+                  {post.lastUpdated && (
+                    <span className="text-xblack-70/60 ml-1" style={{ fontSize: "12px" }}>
+                      (Updated {post.lastUpdated})
+                    </span>
+                  )}
                 </span>
               </div>
 
@@ -200,6 +206,40 @@ export default async function BlogPostPage({
 
             {/* Medical disclaimer */}
             <MedicalDisclaimer />
+
+            {/* Author byline */}
+            {post.author.name === "Trifon Getsov" && (
+              <div className="flex items-start gap-[20px] p-[24px] rounded-[16px] border border-xlight-blue-low">
+                <Image
+                  src={post.author.image}
+                  alt={post.author.name}
+                  width={72}
+                  height={72}
+                  className="rounded-full object-cover flex-shrink-0"
+                  style={{ width: 72, height: 72 }}
+                />
+                <div className="flex flex-col gap-[6px]">
+                  <span className="font-medium" style={{ fontSize: "15px" }}>
+                    {post.author.name}
+                  </span>
+                  {post.author.role && (
+                    <span className="text-xblack-70" style={{ fontSize: "13px" }}>
+                      {post.author.role}
+                    </span>
+                  )}
+                  <p className="text-xblack-70 leading-[1.5]" style={{ fontSize: "13px" }}>
+                    3x CEO and co-founder of xHeal. After a 4-year personal health crisis, he built xHeal to help people understand their health data before symptoms appear. xHeal AI validated against 5,000+ patients.
+                  </p>
+                  <Link
+                    href="/team/trifon-getsov"
+                    className="text-xdark-blue hover:underline mt-[4px]"
+                    style={{ fontSize: "13px" }}
+                  >
+                    View full bio &rarr;
+                  </Link>
+                </div>
+              </div>
+            )}
 
             {/* Back link */}
             <Link

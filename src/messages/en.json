@@ -18,15 +18,15 @@
     },
     "privacyPolicy": {
       "title": "Privacy Policy | xHeal",
-      "description": "xHeal privacy policy - how we handle your data."
+      "description": "Learn how xHeal collects, stores, and protects your personal health data, including wearable data, lab results, and account information."
     },
     "termsConditions": {
       "title": "Terms & Conditions | xHeal",
-      "description": "xHeal terms and conditions of use."
+      "description": "The terms governing your use of xHeal's health intelligence platform, including data rights, account responsibilities, and service limitations."
     },
     "cookiePolicy": {
       "title": "Cookie Policy | xHeal",
-      "description": "xHeal cookie policy."
+      "description": "How xHeal uses cookies and similar technologies to operate the platform, remember your preferences, and measure performance."
     }
   },
   "Navbar": {
