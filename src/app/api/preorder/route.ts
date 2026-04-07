@@ -148,7 +148,7 @@ function userHtml(firstName: string) {
                 <td>
                   <img src="${LOGO_URL}" alt="xHeal" height="22" style="display:block;margin-bottom:12px;opacity:0.8;" />
                   <p style="margin:0;font-size:12px;color:rgba(255,255,255,0.4);line-height:1.6;">
-                    This is a no-reply email. To cancel your reservation before shipping, reply to
+                    Questions or want to cancel? Just reply to this email or reach us at
                     <a href="mailto:hello@xheal.ai" style="color:rgba(255,255,255,0.6);">hello@xheal.ai</a>.
                     <br />&copy; ${new Date().getFullYear()} xHeal Corp. All rights reserved.
                   </p>
