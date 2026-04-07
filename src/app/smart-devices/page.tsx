@@ -48,9 +48,32 @@ function PreOrderForm() {
     if (!email || !firstName) return;
     setFormState("loading");
 
-    // Simulate API call — swap with real endpoint later
-    await new Promise((r) => setTimeout(r, 1200));
-    setFormState("success");
+    try {
+      const res = await fetch("/api/preorder", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ firstName, email }),
+      });
+      if (!res.ok) throw new Error("Failed");
+      setFormState("success");
+    } catch {
+      setFormState("error");
+    }
+  }
+
+  if (formState === "error") {
+    return (
+      <div className="flex flex-col items-center gap-[16px] text-center py-[32px]">
+        <p className="text-white font-medium text-[1rem]">Something went wrong. Please try again.</p>
+        <button
+          onClick={() => setFormState("idle")}
+          className="text-[0.9rem] underline"
+          style={{ color: "rgba(255,255,255,0.6)" }}
+        >
+          Try again
+        </button>
+      </div>
+    );
   }
 
   if (formState === "success") {
