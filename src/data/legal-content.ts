@@ -32,7 +32,7 @@ const legalEn: LegalPages = {
 <p>We collect personal data in the following ways:</p>
 <ul>
 <li><strong>Directly from you:</strong> When you create an account, fill in your health profile, input health data, use the xHeal Chat, upload medical documents, subscribe to our Services, or contact our support team.</li>
-<li><strong>Automatically:</strong> When you use our Services, we automatically collect certain technical and usage data through cookies, log files, analytics tools, and similar technologies.</li>
+<li><strong>Automatically:</strong> When you use our Services, we automatically collect certain technical and usage data through server logs and privacy-friendly analytics (Vercel Analytics on the Website; in-app analytics in the App). The Website does not use cookies or tracking pixels.</li>
 <li><strong>From third-party sources:</strong> We may receive data from connected health devices and wearables (e.g., Apple Health, Google Health Connect), third-party sign-in providers (e.g., Apple Sign-In, Google Sign-In), payment processors, and analytics providers.</li>
 </ul>
 
@@ -50,7 +50,7 @@ const legalEn: LegalPages = {
 </ul>
 
 <h2>4. Cookies and Similar Technologies</h2>
-<p>We use cookies, pixels, and similar tracking technologies on our Website and in our Services to enhance your experience, analyze usage, and deliver relevant content. For detailed information about the cookies we use and how to manage your preferences, please see our <a href="/cookie-policy">Cookie Policy</a>.</p>
+<p>Our Website does not set, store, or read cookies on your device. We use Vercel Analytics, a privacy-friendly analytics service that does not use cookies and does not collect personal data. The xHeal mobile application uses local device storage to operate (for example, to keep you signed in and to cache your data offline); this is not cookie-based tracking. For details, please see our <a href="/cookie-policy">Cookie Policy</a>.</p>
 
 <h2>5. How We Use Collected Personal Data</h2>
 <p>We use your personal data for the following purposes:</p>
@@ -92,7 +92,7 @@ const legalEn: LegalPages = {
 <ul>
 <li><strong>Account Information:</strong> You can review and update your account information through the App settings at any time.</li>
 <li><strong>Marketing Communications:</strong> You can opt out of marketing emails by clicking the "unsubscribe" link in any marketing email or by updating your communication preferences in the App settings.</li>
-<li><strong>Cookies:</strong> You can manage your cookie preferences through your browser settings or through the cookie consent mechanism on our Website. See our <a href="/cookie-policy">Cookie Policy</a> for more details.</li>
+<li><strong>Cookies:</strong> Our Website does not use cookies, so no consent settings are required. See our <a href="/cookie-policy">Cookie Policy</a> for more details.</li>
 <li><strong>Data Portability:</strong> You may request a copy of your personal data in a structured, commonly used, and machine-readable format by contacting us at <a href="mailto:privacy@xheal.ai">privacy@xheal.ai</a>.</li>
 <li><strong>Account Deletion:</strong> You may request deletion of your account and associated personal data by contacting us at <a href="mailto:privacy@xheal.ai">privacy@xheal.ai</a> or through the account settings in the App. Please note that some data may be retained as required by law or for legitimate business purposes.</li>
 <li><strong>Connected Devices:</strong> You can disconnect health devices and wearables from the App at any time through the App settings.</li>
@@ -332,92 +332,44 @@ const legalEn: LegalPages = {
   cookiePolicy: {
     title: "Cookie Policy",
     metaTitle: "Cookie Policy | xHeal",
-    content: `<p><strong>Effective Date: November 22, 2025</strong></p>
+    content: `<p><strong>Last updated: May 3, 2026</strong></p>
 
-<h2>1. What Are Cookies?</h2>
-<p>Cookies are small text files that are placed on your device (computer, tablet, or mobile phone) when you visit a website. Cookies are widely used to make websites work more efficiently, to provide a better user experience, and to supply information to the website owners.</p>
-<p>Cookies can be "first-party cookies" (set by the website you are visiting) or "third-party cookies" (set by a domain other than the website you are visiting). Cookies can also be classified by their duration: "session cookies" are deleted when you close your browser, while "persistent cookies" remain on your device for a set period or until you delete them.</p>
+<h2>1. What Are Cookies</h2>
+<p>Cookies are small text files placed on your device when you visit a website. They are widely used to make websites work more efficiently and to provide information to website owners.</p>
 
-<h2>2. How xHeal Uses Cookies</h2>
-<p>xHeal Corp. ("xHeal," "we," "us," or "our") uses cookies and similar tracking technologies on our website at <a href="https://xheal.ai">https://xheal.ai</a> (the "Website") for the following purposes:</p>
+<h2>2. Our Approach</h2>
+<p>xHeal Corp. ("xHeal," "we," "us," or "our") does not set, store, or read any cookies on your device when you visit <a href="https://xheal.ai">xheal.ai</a>. This means:</p>
 <ul>
-<li><strong>Essential Cookies:</strong> These cookies are strictly necessary for the operation of our Website. They enable core functionality such as security, network management, and accessibility. You cannot opt out of these cookies as the Website cannot function properly without them.</li>
-<li><strong>Performance and Analytics Cookies:</strong> These cookies collect information about how visitors use our Website, such as which pages are visited most often, how visitors navigate the site, and whether they encounter error messages. The information collected by these cookies is aggregated and anonymous. We use this data to improve the performance and usability of our Website.</li>
-<li><strong>Functional Cookies:</strong> These cookies allow our Website to remember choices you make (such as your preferred language or region) and provide enhanced, personalized features. They may also be used to provide services you have requested, such as watching a video or commenting on a blog post.</li>
-<li><strong>Targeting and Advertising Cookies:</strong> These cookies are used to deliver advertisements that are more relevant to you and your interests. They are also used to limit the number of times you see an advertisement and to measure the effectiveness of advertising campaigns. They are typically placed by advertising networks with the website operator's permission.</li>
+<li>No first-party cookies are used.</li>
+<li>No third-party cookies are used.</li>
+<li>No tracking cookies or advertising pixels are used.</li>
+<li>No cookie consent banner is needed.</li>
 </ul>
 
-<h2>3. Types of Cookies We Use</h2>
-<h3>3.1 First-Party Cookies</h3>
-<p>These are cookies set directly by xHeal when you visit our Website. They include:</p>
+<h2>3. Analytics</h2>
+<p>We use Vercel Analytics to understand how visitors interact with our website. Vercel Analytics is a privacy-friendly service that:</p>
 <ul>
-<li><strong>Session Management:</strong> Cookies that maintain your session state as you navigate the Website, ensuring a seamless browsing experience.</li>
-<li><strong>Preference Cookies:</strong> Cookies that store your preferences and settings, such as language, region, and display options.</li>
-<li><strong>Authentication Cookies:</strong> Cookies that identify you when you log in to your account, so you do not need to re-enter your credentials on each page.</li>
+<li>Does not use cookies or similar storage technologies.</li>
+<li>Does not collect or store personal data.</li>
+<li>Does not track individual users across sessions or sites.</li>
+<li>Collects only aggregated, anonymous page-view and performance data.</li>
 </ul>
-<h3>3.2 Third-Party Cookies</h3>
-<p>These are cookies set by third-party services integrated into our Website. They may include:</p>
-<ul>
-<li><strong>Analytics Providers:</strong> We use third-party analytics services (e.g., Google Analytics, Mixpanel) to understand how visitors interact with our Website. These services use cookies to collect data about your use of the Website, which is then used to compile reports and help us improve the Website.</li>
-<li><strong>Advertising Partners:</strong> We may use third-party advertising partners who set cookies to help deliver targeted advertisements based on your browsing behavior and interests.</li>
-<li><strong>Social Media Plugins:</strong> Our Website may include social media features (e.g., share buttons) provided by third parties. These features may set cookies to enable proper functionality and track your interaction with the feature.</li>
-</ul>
+<p>Because no cookies are involved, no consent is required for this analytics service under the GDPR or the ePrivacy Directive (Cookie Law).</p>
 
-<h2>4. Similar Technologies</h2>
-<p>In addition to cookies, we may use similar technologies including:</p>
-<ul>
-<li><strong>Pixels (Web Beacons):</strong> Small transparent images embedded in web pages or emails that allow us to track whether a page or email has been viewed and to gather certain technical information.</li>
-<li><strong>Local Storage:</strong> Technologies that allow websites to store data locally on your device. Local storage is similar to cookies but can store larger amounts of data.</li>
-<li><strong>Fingerprinting:</strong> A technique that collects information about your device configuration (e.g., browser type, screen resolution, installed plugins) to create a unique identifier. We do not use device fingerprinting for tracking purposes.</li>
-</ul>
+<h2>4. The xHeal Mobile App</h2>
+<p>This Cookie Policy applies only to our website. The xHeal mobile application uses local device storage to operate (for example, to keep you signed in and to cache your health data offline). Those storage mechanisms are not cookies and are described in our <a href="/privacy-policy">Privacy Policy</a>.</p>
 
-<h2>5. How to Manage Your Cookie Preferences</h2>
-<p>You have several options for managing cookies:</p>
-<ul>
-<li><strong>Cookie Consent Banner:</strong> When you first visit our Website, you will be presented with a cookie consent banner that allows you to accept or customize your cookie preferences. You can update your preferences at any time by clicking the cookie settings link in the footer of our Website.</li>
-<li><strong>Browser Settings:</strong> Most web browsers allow you to control cookies through their settings. You can set your browser to refuse all cookies, accept only first-party cookies, or delete cookies when you close your browser. Please note that if you disable cookies, some features of our Website may not function properly.</li>
-</ul>
-<p>For instructions on how to manage cookies in your browser, please visit the support pages for your browser:</p>
-<ul>
-<li><a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener noreferrer">Google Chrome</a></li>
-<li><a href="https://support.apple.com/guide/safari/manage-cookies-sfri11471" target="_blank" rel="noopener noreferrer">Apple Safari</a></li>
-<li><a href="https://support.mozilla.org/en-US/kb/clear-cookies-and-site-data-firefox" target="_blank" rel="noopener noreferrer">Mozilla Firefox</a></li>
-<li><a href="https://support.microsoft.com/en-us/help/17442/windows-internet-explorer-delete-manage-cookies" target="_blank" rel="noopener noreferrer">Microsoft Internet Explorer</a></li>
-</ul>
-<ul>
-<li><strong>Opt-Out Tools:</strong> You can opt out of interest-based advertising from participating companies by visiting the <a href="https://optout.aboutads.info/" target="_blank" rel="noopener noreferrer">Digital Advertising Alliance (DAA)</a> or the <a href="https://www.youronlinechoices.eu/" target="_blank" rel="noopener noreferrer">European Interactive Digital Advertising Alliance (EDAA)</a>.</li>
-<li><strong>Do Not Track:</strong> Some browsers support a "Do Not Track" (DNT) setting that signals to websites that you do not want to be tracked. At this time, our Website does not respond to DNT signals, but we respect your cookie preferences as set through our cookie consent banner.</li>
-</ul>
+<h2>5. Future Changes</h2>
+<p>If we introduce cookies in the future, we will update this policy and implement an appropriate consent mechanism before any non-essential cookies are set on your device.</p>
 
-<h2>6. Data Collected Through Cookies</h2>
-<p>The data collected through cookies may include:</p>
-<ul>
-<li>IP address and general geographic location.</li>
-<li>Browser type and version.</li>
-<li>Operating system.</li>
-<li>Referring URL (the page that directed you to our Website).</li>
-<li>Pages visited and links clicked on our Website.</li>
-<li>Time and date of visits.</li>
-<li>Duration of sessions.</li>
-<li>Device type and screen resolution.</li>
-</ul>
-<p>This data is processed in accordance with our <a href="/privacy-policy">Privacy Policy</a>.</p>
+<h2>6. Browser Cookie Settings</h2>
+<p>Although we do not use cookies, you can control cookie behaviour through your browser settings at any time. Most browsers allow you to refuse or delete cookies. Please refer to your browser's help documentation for instructions.</p>
 
-<h2>7. Cookies and the GDPR / ePrivacy Directive</h2>
-<p>If you are located in the European Economic Area (EEA), United Kingdom (UK), or Switzerland, we comply with the requirements of the General Data Protection Regulation (GDPR) and the ePrivacy Directive (Cookie Law) regarding the use of cookies:</p>
-<ul>
-<li>We obtain your consent before placing non-essential cookies on your device.</li>
-<li>We provide clear and comprehensive information about the cookies we use and their purposes.</li>
-<li>We allow you to withdraw your consent at any time by updating your cookie preferences.</li>
-<li>Essential cookies that are strictly necessary for the operation of the Website do not require consent.</li>
-</ul>
+<h2>7. Contact</h2>
+<p>For any questions about this Cookie Policy, contact us at:</p>
+<p><strong>xHeal Corp.</strong><br>25 SE 2ND AVE, SUITE 550<br>MIAMI, FL 33131, USA<br>Email: <a href="mailto:privacy@xheal.ai">privacy@xheal.ai</a><br>Support: <a href="mailto:support@xheal.ai">support@xheal.ai</a></p>
 
-<h2>8. Changes to This Cookie Policy</h2>
-<p>We may update this Cookie Policy from time to time to reflect changes in our practices, technologies, legal requirements, or other factors. If we make material changes, we will notify you by posting the updated policy on our Website and updating the "Effective Date" at the top of this page. We encourage you to review this Cookie Policy periodically for any changes.</p>
-
-<h2>9. Contact Us</h2>
-<p>If you have any questions about this Cookie Policy or our use of cookies, please contact us at:</p>
-<p><strong>xHeal Corp.</strong><br>25 SE 2ND AVE, SUITE 550<br>MIAMI, FL 33131, USA<br>Email: <a href="mailto:privacy@xheal.ai">privacy@xheal.ai</a><br>Support: <a href="mailto:support@xheal.ai">support@xheal.ai</a><br>Phone: (833) 514-4187</p>`,
+<p>See also our <a href="/terms-conditions">Terms &amp; Conditions</a> and <a href="/privacy-policy">Privacy Policy</a>.</p>`,
   },
 };
 
@@ -440,7 +392,7 @@ const legalBg: LegalPages = {
 <p>Събираме лични данни по следните начини:</p>
 <ul>
 <li><strong>Директно от вас:</strong> Когато създавате акаунт, попълвате здравния си профил, въвеждате здравни данни, използвате xHeal Chat, качвате медицински документи, се абонирате за нашите Услуги или се свързвате с екипа ни за поддръжка.</li>
-<li><strong>Автоматично:</strong> Когато използвате нашите Услуги, ние автоматично събираме определени технически данни и данни за използване чрез бисквитки, лог файлове, аналитични инструменти и подобни технологии.</li>
+<li><strong>Автоматично:</strong> Когато използвате нашите Услуги, ние автоматично събираме определени технически данни и данни за използване чрез сървърни логове и услуги за анализ, защитаващи поверителността (Vercel Analytics на Уебсайта; вграден анализ в Приложението). Уебсайтът не използва бисквитки или проследяващи пиксели.</li>
 <li><strong>От източници на трети страни:</strong> Може да получаваме данни от свързани здравни устройства и носими устройства (напр. Apple Health, Google Health Connect), доставчици на вход от трети страни (напр. Apple Sign-In, Google Sign-In), обработващи плащания и доставчици на аналитика.</li>
 </ul>
 
@@ -458,7 +410,7 @@ const legalBg: LegalPages = {
 </ul>
 
 <h2>4. Бисквитки и подобни технологии</h2>
-<p>Използваме бисквитки, пиксели и подобни технологии за проследяване на нашия Уебсайт и в нашите Услуги, за да подобрим вашето изживяване, анализираме използването и доставяме подходящо съдържание. За подробна информация относно бисквитките, които използваме, и как да управлявате предпочитанията си, моля, вижте нашата <a href="/cookie-policy">Политика за бисквитки</a>.</p>
+<p>Нашият Уебсайт не поставя, не съхранява и не чете бисквитки на устройството ви. Използваме Vercel Analytics — услуга за анализ, защитаваща поверителността, която не използва бисквитки и не събира лични данни. Мобилното приложение xHeal използва локално съхранение на устройството, за да функционира (например да ви поддържа в системата и да кешира данните ви офлайн); това не е проследяване, базирано на бисквитки. За подробности вижте нашата <a href="/cookie-policy">Политика за бисквитки</a>.</p>
 
 <h2>5. Как използваме събраните лични данни</h2>
 <p>Използваме вашите лични данни за следните цели:</p>
@@ -500,7 +452,7 @@ const legalBg: LegalPages = {
 <ul>
 <li><strong>Информация за акаунта:</strong> Можете да преглеждате и актуализирате информацията за акаунта си чрез настройките на Приложението по всяко време.</li>
 <li><strong>Маркетингови комуникации:</strong> Можете да се откажете от маркетингови имейли, като кликнете на линка \u201Eотписване\u201C във всеки маркетингов имейл или като актуализирате комуникационните си предпочитания в настройките на Приложението.</li>
-<li><strong>Бисквитки:</strong> Можете да управлявате предпочитанията си за бисквитки чрез настройките на браузъра или чрез механизма за съгласие за бисквитки на нашия Уебсайт. Вижте нашата <a href="/cookie-policy">Политика за бисквитки</a> за повече подробности.</li>
+<li><strong>Бисквитки:</strong> Нашият Уебсайт не използва бисквитки, така че не са необходими настройки за съгласие. Вижте нашата <a href="/cookie-policy">Политика за бисквитки</a> за повече подробности.</li>
 <li><strong>Преносимост на данните:</strong> Можете да поискате копие на вашите лични данни в структуриран, общоизползван и машинночитаем формат, като се свържете с нас на <a href="mailto:privacy@xheal.ai">privacy@xheal.ai</a>.</li>
 <li><strong>Изтриване на акаунта:</strong> Можете да поискате изтриване на вашия акаунт и свързаните лични данни, като се свържете с нас на <a href="mailto:privacy@xheal.ai">privacy@xheal.ai</a> или чрез настройките на акаунта в Приложението. Моля, имайте предвид, че някои данни могат да бъдат задържани, както се изисква от закона или за легитимни бизнес цели.</li>
 <li><strong>Свързани устройства:</strong> Можете да прекъснете връзката на здравни устройства и носими устройства от Приложението по всяко време чрез настройките на Приложението.</li>
@@ -600,11 +552,46 @@ const legalBg: LegalPages = {
   },
 
   cookiePolicy: {
-    title: "\u041F\u043E\u043B\u0438\u0442\u0438\u043A\u0430 \u0437\u0430 \u0431\u0438\u0441\u043A\u0432\u0438\u0442\u043A\u0438",
-    metaTitle: "\u041F\u043E\u043B\u0438\u0442\u0438\u043A\u0430 \u0437\u0430 \u0431\u0438\u0441\u043A\u0432\u0438\u0442\u043A\u0438 | xHeal",
-    content: `<p><strong>Последна актуализация: 15 декември 2025 г.</strong></p>
-<p>Поради обема на документа, пълният текст на Политиката за бисквитки на български език е наличен при поискване. Моля, свържете се с нас на <a href="mailto:privacy@xheal.ai">privacy@xheal.ai</a> за пълната версия на български. Правно обвързващата версия е на английски език.</p>
-<p>The legally binding version of the Cookie Policy is in English. Please switch to English to read the full Cookie Policy.</p>`,
+    title: "Политика за бисквитки",
+    metaTitle: "Политика за бисквитки | xHeal",
+    content: `<p><strong>Последна актуализация: 3 май 2026 г.</strong></p>
+
+<h2>1. Какво представляват бисквитките</h2>
+<p>Бисквитките са малки текстови файлове, които се поставят на устройството ви при посещение на уебсайт. Те се използват широко, за да накарат уебсайтовете да работят по-ефективно и за да предоставят информация на собствениците им.</p>
+
+<h2>2. Нашият подход</h2>
+<p>xHeal Corp. („xHeal", „ние", „нас" или „наш") не поставя, не съхранява и не чете бисквитки на вашето устройство, когато посещавате <a href="https://xheal.ai">xheal.ai</a>. Това означава:</p>
+<ul>
+<li>Не се използват бисквитки от първа страна.</li>
+<li>Не се използват бисквитки от трети страни.</li>
+<li>Не се използват проследяващи бисквитки или рекламни пиксели.</li>
+<li>Не е необходим банер за съгласие за бисквитки.</li>
+</ul>
+
+<h2>3. Анализ</h2>
+<p>Използваме Vercel Analytics, за да разберем как посетителите взаимодействат с нашия уебсайт. Vercel Analytics е услуга, защитаваща поверителността, която:</p>
+<ul>
+<li>Не използва бисквитки или подобни технологии за съхранение.</li>
+<li>Не събира и не съхранява лични данни.</li>
+<li>Не проследява отделни потребители между сесии или сайтове.</li>
+<li>Събира само агрегирани, анонимни данни за прегледи на страници и производителност.</li>
+</ul>
+<p>Тъй като не са замесени бисквитки, не се изисква съгласие за тази аналитична услуга съгласно GDPR или Директивата за електронната неприкосновеност (Закон за бисквитките).</p>
+
+<h2>4. Мобилно приложение xHeal</h2>
+<p>Тази Политика за бисквитки се отнася само за нашия уебсайт. Мобилното приложение xHeal използва локално съхранение на устройството, за да функционира (например да ви поддържа в системата и да кешира вашите здравни данни офлайн). Тези механизми за съхранение не са бисквитки и са описани в нашата <a href="/privacy-policy">Политика за поверителност</a>.</p>
+
+<h2>5. Бъдещи промени</h2>
+<p>Ако в бъдеще въведем бисквитки, ще актуализираме тази политика и ще въведем подходящ механизъм за съгласие, преди да бъдат поставени каквито и да е несъществени бисквитки на устройството ви.</p>
+
+<h2>6. Настройки на бисквитките в браузъра</h2>
+<p>Въпреки че не използваме бисквитки, можете да контролирате поведението на бисквитките чрез настройките на браузъра си по всяко време. Повечето браузъри ви позволяват да отказвате или изтривате бисквитки. Моля, направете справка с помощната документация на вашия браузър за инструкции.</p>
+
+<h2>7. Контакт</h2>
+<p>За всякакви въпроси относно тази Политика за бисквитки, свържете се с нас на:</p>
+<p><strong>xHeal Corp.</strong><br>25 SE 2ND AVE, SUITE 550<br>MIAMI, FL 33131, USA<br>Имейл: <a href="mailto:privacy@xheal.ai">privacy@xheal.ai</a><br>Поддръжка: <a href="mailto:support@xheal.ai">support@xheal.ai</a></p>
+
+<p>Вижте също нашите <a href="/terms-conditions">Общи условия</a> и <a href="/privacy-policy">Политика за поверителност</a>.</p>`,
   },
 };
 

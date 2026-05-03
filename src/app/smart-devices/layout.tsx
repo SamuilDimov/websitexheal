@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "../[locale]/globals.css";
 
 const manrope = Manrope({
@@ -34,6 +35,7 @@ export default function SmartDevicesLayout({
     <html lang="en" className={manrope.variable}>
       <body className="bg-xbg text-xprimary antialiased" style={{ width: "100%", overflowX: "hidden" }}>
         {children}
+        <Analytics />
       </body>
     </html>
   );

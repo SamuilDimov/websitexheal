@@ -2,11 +2,11 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { Manrope } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { routing } from "@/i18n/routing";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import CookieConsentProvider from "@/components/CookieConsentProvider";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -73,8 +73,8 @@ export default async function LocaleLayout({ children, params }: Props) {
             <main className="main-wrapper">{children}</main>
             <Footer />
           </div>
-          <CookieConsentProvider />
         </NextIntlClientProvider>
+        <Analytics />
       </body>
     </html>
   );
