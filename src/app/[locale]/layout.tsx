@@ -66,6 +66,24 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <html lang={locale} className={manrope.variable}>
+      <head>
+        {/*
+          One-time cleanup of legacy cookie-consent storage from the old
+          deploy. The site is now cookieless and no longer reads or writes
+          these keys; this purges them on first visit so returning users
+          aren't left with stale data. Safe to remove after a few months.
+        */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                localStorage.removeItem('xheal_cookie_consent');
+                document.cookie = 'xheal_consent=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+              } catch (e) {}
+            `,
+          }}
+        />
+      </head>
       <body className="bg-xbg text-xprimary antialiased">
         <NextIntlClientProvider>
           <div className="page-wrapper w-full relative overflow-hidden">

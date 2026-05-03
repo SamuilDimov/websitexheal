@@ -33,6 +33,19 @@ export default function SmartDevicesLayout({
 }) {
   return (
     <html lang="en" className={manrope.variable}>
+      <head>
+        {/* One-time cleanup of legacy cookie-consent storage. Safe to remove after a few months. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                localStorage.removeItem('xheal_cookie_consent');
+                document.cookie = 'xheal_consent=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+              } catch (e) {}
+            `,
+          }}
+        />
+      </head>
       <body className="bg-xbg text-xprimary antialiased" style={{ width: "100%", overflowX: "hidden" }}>
         {children}
         <Analytics />
