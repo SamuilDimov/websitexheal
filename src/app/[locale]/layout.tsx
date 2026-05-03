@@ -1,11 +1,19 @@
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
+import { Manrope } from "next/font/google";
 import { routing } from "@/i18n/routing";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CookieConsentProvider from "@/components/CookieConsentProvider";
+
+const manrope = Manrope({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-manrope",
+  display: "swap",
+});
 
 type Props = {
   children: React.ReactNode;
@@ -57,10 +65,10 @@ export default async function LocaleLayout({ children, params }: Props) {
   setRequestLocale(locale);
 
   return (
-    <html lang={locale}>
-      <body>
+    <html lang={locale} className={manrope.variable}>
+      <body className="bg-xbg text-xprimary antialiased">
         <NextIntlClientProvider>
-          <div className="page-wrapper w-full text-[1em] relative overflow-hidden">
+          <div className="page-wrapper w-full relative overflow-hidden">
             <Navbar />
             <main className="main-wrapper">{children}</main>
             <Footer />

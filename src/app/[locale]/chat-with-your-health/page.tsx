@@ -7,7 +7,7 @@ export default function ChatWithYourHealthPage() {
   const t = useTranslations("Feature_ChatWithYourHealth");
 
   /* Helper: wrap <accent>…</accent> in a coloured span via next-intl rich text */
-  function accent(key: string, color = "text-xlight-blue") {
+  function accent(key: string, color = "text-xbrand-light") {
     return t.rich(key, {
       accent: (chunks) => <span className={color}>{chunks}</span>,
     });
@@ -18,12 +18,12 @@ export default function ChatWithYourHealthPage() {
       heroTitle={accent("heroTitle")}
       heroSubtitle={t("heroSubtitle")}
       heroImage={{
-        src: "/images/chat-landing.png",
+        src: "/images/screenshots/chat-flare-up.png",
         alt: t("heroImageAlt"),
         width: 1058,
         height: 2078,
       }}
-      painHeading={accent("painHeading", "text-xdark-blue")}
+      painHeading={accent("painHeading", "text-xbrand")}
       painPoints={[
         {
           icon: "hub",
@@ -41,7 +41,7 @@ export default function ChatWithYourHealthPage() {
           detail: t("pain3Detail"),
         },
       ]}
-      howHeading={accent("howHeading", "text-xdark-blue")}
+      howHeading={accent("howHeading", "text-xbrand")}
       howItWorks={[
         {
           step: "01",
@@ -59,7 +59,7 @@ export default function ChatWithYourHealthPage() {
           description: t("how3Description"),
         },
       ]}
-      useCasesHeading={accent("useCasesHeading", "text-xdark-blue")}
+      useCasesHeading={accent("useCasesHeading", "text-xbrand")}
       useCases={[
         {
           question: t("uc1Question"),
@@ -132,7 +132,7 @@ export default function ChatWithYourHealthPage() {
           image: "/images/testimonials/t-130.png",
         },
       ]}
-      trustHeading={accent("trustHeading", "text-xdark-blue")}
+      trustHeading={accent("trustHeading", "text-xbrand")}
       trustItems={[
         { title: t("trust1Title"), detail: t("trust1Detail") },
         { title: t("trust2Title"), detail: t("trust2Detail") },

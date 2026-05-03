@@ -107,8 +107,8 @@ export default function OutcomeCarousel() {
         onClick={advance}
         style={{
           padding: "28px",
-          backgroundColor: `${current.color}0a`,
-          border: `1px solid ${current.color}20`,
+          backgroundColor: `${current.color}14`,
+          border: `1px solid ${current.color}40`,
           transition: "background-color 0.4s ease, border-color 0.4s ease",
         }}
       >
@@ -129,7 +129,7 @@ export default function OutcomeCarousel() {
             style={{
               width: "56px",
               height: "56px",
-              backgroundColor: `${current.color}15`,
+              backgroundColor: `${current.color}28`,
               transition: "background-color 0.4s ease",
             }}
           >
@@ -171,7 +171,7 @@ export default function OutcomeCarousel() {
               className="font-medium leading-[1.4]"
               style={{
                 fontSize: "22px",
-                color: "#141933",
+                color: "var(--text-primary)",
               }}
             >
               {current.text}
@@ -218,7 +218,7 @@ export default function OutcomeCarousel() {
             className="leading-[1.3]"
             style={{
               fontSize: "15px",
-              color: "rgba(20, 25, 51, 0.35)",
+              color: "var(--text-tertiary)",
             }}
           >
             {next.label}
@@ -243,7 +243,7 @@ export default function OutcomeCarousel() {
               width: i === activeIndex ? "24px" : "8px",
               height: "8px",
               backgroundColor:
-                i === activeIndex ? current.color : "rgba(71, 100, 255, 0.15)",
+                i === activeIndex ? current.color : "var(--neutral-700)",
               border: "none",
               cursor: "pointer",
               transition:

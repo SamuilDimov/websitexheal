@@ -18,7 +18,8 @@ export default function InsightPreview({ items }: InsightPreviewProps) {
           className="flex items-center gap-[12px] rounded-[10px]"
           style={{
             padding: "10px 12px",
-            backgroundColor: "rgba(71, 100, 255, 0.06)",
+            backgroundColor: "var(--surface-card-inner)",
+            border: "1px solid var(--border-default)",
           }}
         >
           {/* Icon */}
@@ -27,7 +28,7 @@ export default function InsightPreview({ items }: InsightPreviewProps) {
             style={{
               width: "36px",
               height: "36px",
-              backgroundColor: `${item.color}18`,
+              backgroundColor: `${item.color}28`,
             }}
           >
             <span
@@ -44,13 +45,8 @@ export default function InsightPreview({ items }: InsightPreviewProps) {
           {/* Text */}
           <div className="flex flex-col gap-[2px] min-w-0">
             <span
-              className="font-medium leading-[1.2]"
-              style={{
-                fontSize: "12px",
-                color: item.color,
-                textTransform: "uppercase",
-                letterSpacing: "0.05em",
-              }}
+              className="t-overline"
+              style={{ color: item.color }}
             >
               {item.label}
             </span>
@@ -58,7 +54,7 @@ export default function InsightPreview({ items }: InsightPreviewProps) {
               className="leading-[1.4]"
               style={{
                 fontSize: "15px",
-                color: "#141933",
+                color: "var(--text-primary)",
               }}
             >
               {item.text}

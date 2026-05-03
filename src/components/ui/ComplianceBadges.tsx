@@ -17,7 +17,7 @@ type BadgeSize = "sm" | "md";
 
 export default function ComplianceBadges({
   size = "md",
-  className = "text-xblack",
+  className = "text-xprimary",
 }: {
   size?: BadgeSize;
   className?: string;

@@ -8,7 +8,7 @@ export default function SpecialistReadyReportsPage() {
   const t = useTranslations("Feature_SpecialistReadyReports");
 
   /* Helper: wrap <accent>…</accent> in a coloured span via next-intl rich text */
-  function accent(key: string, color = "text-xlight-blue") {
+  function accent(key: string, color = "text-xbrand") {
     return t.rich(key, {
       accent: (chunks) => <span className={color}>{chunks}</span>,
     });
@@ -26,7 +26,7 @@ export default function SpecialistReadyReportsPage() {
       heroTitle={accent("heroTitle")}
       heroSubtitle={t("heroSubtitle")}
       heroImage={{
-        src: "/images/get-reports.png",
+        src: "/images/screenshots/timeline.png",
         alt: t("heroImageAlt"),
         width: 978,
         height: 1998,
@@ -44,24 +44,20 @@ export default function SpecialistReadyReportsPage() {
         { step: "03", title: t("how3Title"), description: t("how3Description") },
       ]}
       extraSection={
-        <section>
-          <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col gap-[80px] max-[991px]:px-[40px] max-[479px]:px-[20px]">
+        <section className="bg-xbg">
+          <div className="w-full max-w-[1440px] mx-auto px-10 py-24 flex flex-col gap-12 max-[991px]:px-8 max-[991px]:py-16 max-[479px]:px-5">
             <ScrollReveal>
-              <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack max-w-[52rem] max-[991px]:text-[3rem]">
-                {accent("extraSectionHeading", "text-xdark-blue")}
+              <h2 className="t-display2 text-xprimary max-w-[52rem]">
+                {accent("extraSectionHeading", "text-xbrand")}
               </h2>
             </ScrollReveal>
 
-            <div className="grid grid-cols-2 gap-[24px] max-[767px]:grid-cols-1">
+            <div className="grid grid-cols-2 gap-6 max-[767px]:grid-cols-1">
               {fourReports.map((r, i) => (
                 <ScrollReveal key={r.title} delay={i * 120}>
-                  <div className="border border-xlight-blue-low bg-xwhite rounded-[16px] p-[32px] shadow-[0_4px_4px_#1419330d] flex flex-col gap-[16px] h-full transition-all duration-300 hover:shadow-[0_12px_40px_#14193318] hover:-translate-y-[4px]">
-                    <h3 className="text-[1.5rem] font-bold leading-[1.1] tracking-[-0.01em] text-xdark-blue">
-                      {r.title}
-                    </h3>
-                    <p className="text-xblack-70 text-[1.125rem] leading-[1.5] max-[767px]:text-[1rem]">
-                      {r.description}
-                    </p>
+                  <div className="surface-card-feature p-8 flex flex-col gap-4 h-full">
+                    <h3 className="t-h3 text-xbrand-light">{r.title}</h3>
+                    <p className="t-body1 text-xsecondary">{r.description}</p>
                   </div>
                 </ScrollReveal>
               ))}

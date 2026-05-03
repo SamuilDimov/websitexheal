@@ -15,46 +15,19 @@ export default function Error({
   }, [error]);
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        display: "grid",
-        placeItems: "center",
-        padding: "24px",
-      }}
-    >
-      <div
-        style={{
-          maxWidth: 900,
-          width: "100%",
-          border: "1px solid #d9dce8",
-          borderRadius: 12,
-          padding: 20,
-          background: "#fff",
-          color: "#141933",
-          fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace",
-          whiteSpace: "pre-wrap",
-          lineHeight: 1.5,
-        }}
-      >
-        <strong>Client runtime error</strong>
-        <div style={{ marginTop: 12 }}>
+    <div className="min-h-screen grid place-items-center p-6 bg-xbg">
+      <div className="surface-card max-w-[900px] w-full p-6 font-mono whitespace-pre-wrap leading-[1.5]">
+        <strong className="t-h5 text-xprimary block">Client runtime error</strong>
+        <div className="mt-3 t-body2 text-xsecondary">
           {error?.message || "Unknown error"}
         </div>
         {error?.digest ? (
-          <div style={{ marginTop: 8 }}>Digest: {error.digest}</div>
+          <div className="mt-2 t-caption text-xtertiary">Digest: {error.digest}</div>
         ) : null}
         <button
+          type="button"
           onClick={reset}
-          style={{
-            marginTop: 16,
-            border: "1px solid #4764ff",
-            color: "#4764ff",
-            background: "transparent",
-            borderRadius: 8,
-            padding: "8px 12px",
-            cursor: "pointer",
-          }}
+          className="mt-4 border border-xbrand text-xbrand bg-transparent rounded-[8px] px-3 py-2 cursor-pointer hover:bg-[rgba(71,100,255,0.08)] transition-colors t-button-sm"
         >
           Try again
         </button>

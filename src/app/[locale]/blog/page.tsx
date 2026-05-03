@@ -25,29 +25,21 @@ export default function BlogPage() {
   return (
     <>
       {/* Hero */}
-      <section
-        className="relative"
-        style={{
-          backgroundImage:
-            "linear-gradient(180deg, var(--dark-blue), #f8f8fa00)",
-        }}
-      >
-        <div className="w-full max-w-[100em] mx-auto px-[5em] pt-[200px] pb-[3em] flex flex-col items-center gap-[16px] text-xwhite max-[991px]:px-[40px] max-[991px]:pt-[140px] max-[479px]:px-[20px]">
-          <h1 className="text-[4.5rem] font-medium leading-[1] tracking-[-0.04em] text-center max-[991px]:text-[3.5rem] max-[479px]:text-[3rem]">
+      <section className="relative bg-xbg overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none bg-radial-glow" aria-hidden />
+        <div className="relative w-full max-w-[1440px] mx-auto px-10 pt-[160px] pb-12 flex flex-col items-center gap-4 max-[991px]:px-8 max-[991px]:pt-[120px] max-[479px]:px-5">
+          <h1 className="t-display1 text-xprimary text-center">
             {t("heroTitle")}
           </h1>
-          <p
-            className="text-center max-w-[600px] leading-[1.5]"
-            style={{ fontSize: "18px", color: "rgba(20, 25, 51, 0.6)" }}
-          >
+          <p className="t-body1 text-xsecondary text-center max-w-[600px]">
             {t("heroSubtitle")}
           </p>
         </div>
       </section>
 
       {/* Category filter + Posts */}
-      <section>
-        <div className="w-full max-w-[100em] mx-auto px-[5em] py-[3em] flex flex-col gap-[40px] text-xblack max-[991px]:px-[40px] max-[479px]:px-[20px]">
+      <section className="bg-xbg">
+        <div className="w-full max-w-[1440px] mx-auto px-10 py-12 flex flex-col gap-10 max-[991px]:px-8 max-[479px]:px-5">
           {/* Category Filter */}
           <CategoryFilter
             onCategoryChange={setActiveCategory}
@@ -62,7 +54,7 @@ export default function BlogPage() {
           )}
 
           {/* Post grid */}
-          <div className="grid grid-cols-3 gap-[20px] max-[991px]:grid-cols-2 max-[767px]:grid-cols-1">
+          <div className="grid grid-cols-3 gap-5 max-[991px]:grid-cols-2 max-[767px]:grid-cols-1">
             {(activeCategory === "all" ? regularPosts : filteredPosts).map(
               (post) => (
                 <BlogCard key={post.slug} post={post} />
@@ -71,10 +63,7 @@ export default function BlogPage() {
           </div>
 
           {filteredPosts.length === 0 && (
-            <p
-              className="text-center text-xblack-70 py-[40px]"
-              style={{ fontSize: "16px" }}
-            >
+            <p className="t-body1 text-xtertiary text-center py-10">
               {t("noPosts")}
             </p>
           )}

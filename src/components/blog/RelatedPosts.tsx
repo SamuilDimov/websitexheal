@@ -15,14 +15,9 @@ export default function RelatedPosts({ currentSlug }: RelatedPostsProps) {
   if (related.length === 0) return null;
 
   return (
-    <div className="mt-[60px] pt-[40px] border-t border-xlight-blue-low">
-      <h2
-        className="font-medium leading-[1] tracking-[-0.02em] text-xblack mb-[24px]"
-        style={{ fontSize: "24px" }}
-      >
-        {t("keepReading")}
-      </h2>
-      <div className="grid grid-cols-3 gap-[20px] max-[991px]:grid-cols-2 max-[767px]:grid-cols-1">
+    <div className="mt-16 pt-10 border-t border-xborder">
+      <h2 className="t-h2 text-xprimary mb-6">{t("keepReading")}</h2>
+      <div className="grid grid-cols-3 gap-5 max-[991px]:grid-cols-2 max-[767px]:grid-cols-1">
         {related.map((post) => (
           <BlogCard key={post.slug} post={post} />
         ))}

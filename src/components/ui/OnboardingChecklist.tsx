@@ -56,9 +56,9 @@ export default function OnboardingChecklist() {
             style={{
               padding: "8px 10px",
               backgroundColor: isDone
-                ? "rgba(16, 185, 129, 0.06)"
+                ? "rgba(46, 216, 163, 0.10)"
                 : isCurrent
-                ? "rgba(71, 100, 255, 0.06)"
+                ? "rgba(71, 100, 255, 0.10)"
                 : "transparent",
               opacity: isDone ? 0.7 : isCurrent ? 1 : 0.35,
               transform:
@@ -72,10 +72,10 @@ export default function OnboardingChecklist() {
                 width: "28px",
                 height: "28px",
                 backgroundColor: isDone
-                  ? "rgba(16, 185, 129, 0.15)"
+                  ? "rgba(46, 216, 163, 0.18)"
                   : isCurrent
-                  ? "rgba(71, 100, 255, 0.12)"
-                  : "rgba(71, 100, 255, 0.05)",
+                  ? "rgba(71, 100, 255, 0.18)"
+                  : "rgba(71, 100, 255, 0.08)",
               }}
             >
               <span
@@ -83,10 +83,10 @@ export default function OnboardingChecklist() {
                   fontFamily: "MaterialSymbolsRounded",
                   fontSize: "16px",
                   color: isDone
-                    ? "#10b981"
+                    ? "var(--status-success)"
                     : isCurrent
-                    ? "#4764FF"
-                    : "rgba(71, 100, 255, 0.35)",
+                    ? "var(--brand-600)"
+                    : "var(--text-tertiary)",
                   transition: "color 0.3s ease",
                 }}
               >
@@ -100,11 +100,11 @@ export default function OnboardingChecklist() {
               style={{
                 fontSize: "14px",
                 color: isDone
-                  ? "rgba(20, 25, 51, 0.5)"
+                  ? "var(--text-tertiary)"
                   : isCurrent
-                  ? "#141933"
-                  : "rgba(20, 25, 51, 0.35)",
-                fontWeight: isCurrent ? 500 : 400,
+                  ? "var(--text-primary)"
+                  : "var(--text-disabled)",
+                fontWeight: isCurrent ? 600 : 500,
               }}
             >
               {step.label}
@@ -115,8 +115,8 @@ export default function OnboardingChecklist() {
                 className="ml-auto flex-shrink-0"
                 style={{
                   fontSize: "12px",
-                  color: "#10b981",
-                  fontWeight: 500,
+                  color: "var(--status-success)",
+                  fontWeight: 600,
                 }}
               >
                 {step.done}

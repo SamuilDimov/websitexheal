@@ -15,28 +15,22 @@ export default function CategoryFilter({
   const t = useTranslations("Blog");
 
   return (
-    <div className="flex flex-wrap gap-[8px] justify-center">
+    <div className="flex flex-wrap gap-2 justify-center">
       <button
+        type="button"
         onClick={() => onCategoryChange("all")}
-        className={`px-[16px] py-[8px] rounded-full transition-all duration-200 ${
-          activeCategory === "all"
-            ? "bg-xdark-blue text-xwhite"
-            : "bg-xwhite text-xblack border border-xlight-blue-low hover:border-xdark-blue"
-        }`}
-        style={{ fontSize: "14px" }}
+        className="chip"
+        data-active={activeCategory === "all"}
       >
         {t("allCategory")}
       </button>
       {blogCategories.map((cat) => (
         <button
           key={cat.slug}
+          type="button"
           onClick={() => onCategoryChange(cat.slug)}
-          className={`px-[16px] py-[8px] rounded-full transition-all duration-200 ${
-            activeCategory === cat.slug
-              ? "bg-xdark-blue text-xwhite"
-              : "bg-xwhite text-xblack border border-xlight-blue-low hover:border-xdark-blue"
-          }`}
-          style={{ fontSize: "14px" }}
+          className="chip"
+          data-active={activeCategory === cat.slug}
         >
           {t(`categories.${cat.slug}`)}
         </button>

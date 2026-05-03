@@ -8,70 +8,65 @@ export default function HeroSection() {
   const t = useTranslations("Hero");
 
   return (
-    <section
-      className="relative overflow-clip"
-      style={{
-        backgroundImage:
-          "url(/images/dot-matrix.svg), linear-gradient(180deg, var(--dark-blue), #f8f8fa00)",
-        backgroundPosition: "50%, 0 0",
-        backgroundRepeat: "no-repeat, repeat",
-        backgroundSize: "contain, auto",
-      }}
-    >
+    <section className="relative overflow-clip bg-xbg">
+      {/* Subtle radial glow backdrop */}
+      <div className="absolute inset-0 pointer-events-none bg-radial-glow" aria-hidden />
+      {/* Optional dot matrix overlay for texture */}
       <div
-        className="w-full max-w-[100em] mx-auto px-[5em] flex flex-col justify-center items-stretch min-h-screen pt-[20em] pb-[10em] text-xwhite max-[991px]:px-[40px] max-[991px]:pt-[140px] max-[991px]:pb-[60px] max-[991px]:min-h-0 max-[479px]:px-[20px]"
+        className="absolute inset-0 pointer-events-none opacity-[0.07]"
+        aria-hidden
         style={{
-          backgroundImage: "url(/images/hero-bg.svg)",
-          backgroundPosition: "0%",
+          backgroundImage: "url(/images/dot-matrix.svg)",
+          backgroundPosition: "50% 0%",
           backgroundRepeat: "no-repeat",
-          backgroundSize: "auto",
+          backgroundSize: "contain",
         }}
-      >
-        <div className="grid grid-cols-[1.65fr_1fr] gap-[80px] rounded-[12px] max-[991px]:gap-[40px] max-[767px]:grid-cols-1">
+      />
+
+      <div className="relative w-full max-w-[1440px] mx-auto px-10 pt-[160px] pb-[100px] max-[991px]:px-8 max-[991px]:pt-[120px] max-[991px]:pb-[60px] max-[479px]:px-5">
+        <div className="grid grid-cols-[1.4fr_1fr] gap-[80px] max-[991px]:gap-[40px] max-[767px]:grid-cols-1">
           {/* Left Column */}
-          <div className="grid grid-cols-1 gap-[40px]">
+          <div className="grid grid-cols-1 gap-10">
             {/* Heading */}
-            <h1 className="text-[7em] font-medium leading-[1] tracking-[-0.05em] max-[991px]:text-[3.75rem]">
+            <h1 className="t-display1 text-xprimary">
               {t("heading")}{" "}
-              <span className="text-xblack">{t("headingAccent")}</span>
+              <span className="text-xbrand">{t("headingAccent")}</span>
             </h1>
 
             {/* Subtitle */}
-            <div className="text-[1.5rem] font-medium leading-[1.35] tracking-[-0.01em] max-w-[48ch]">
+            <p className="t-h4 text-xsecondary max-w-[52ch] font-normal">
               {t("subtitle")}
-            </div>
+            </p>
 
             {/* Stats Cards */}
-            <div className="grid grid-cols-3 gap-[40px] max-[991px]:grid-cols-1 max-[991px]:gap-[20px]">
-              <div className="bg-white/90 backdrop-blur-sm text-xdark-blue rounded-[16px] p-[20px] leading-[1] flex flex-col gap-[10px]">
-                <div className="text-[1.5rem] font-medium text-xdark-blue">
-                  {t("stat1Title")}
-                </div>
-                <p className="text-xdark-blue text-[1.125rem] leading-[1.4]">
-                  {t("stat1Text")}
-                </p>
+            <div className="grid grid-cols-3 gap-4 max-[991px]:grid-cols-1">
+              {/* Stat 1 — purple/brand accent */}
+              <div className="surface-card-feature p-5 flex flex-col gap-2 relative overflow-hidden">
+                <div className="absolute top-0 left-0 right-0 h-[3px] bg-xbrand" />
+                <div className="t-h3 text-xprimary">{t("stat1Title")}</div>
+                <p className="t-body3 text-xsecondary">{t("stat1Text")}</p>
               </div>
-              <div className="bg-white/90 backdrop-blur-sm text-xdark-blue rounded-[16px] p-[20px] leading-[1] flex flex-col gap-[10px]">
-                <div className="text-[1.5rem] font-medium text-xdark-blue">
-                  {t("stat2Title")}
-                </div>
-                <p className="text-xdark-blue text-[1.125rem] leading-[1.4]">
-                  {t("stat2Text")}
-                </p>
+
+              {/* Stat 2 — teal accent */}
+              <div className="surface-card-feature p-5 flex flex-col gap-2 relative overflow-hidden">
+                <div className="absolute top-0 left-0 right-0 h-[3px] bg-theme-teal" />
+                <div className="t-h3 text-xprimary">{t("stat2Title")}</div>
+                <p className="t-body3 text-xsecondary">{t("stat2Text")}</p>
               </div>
-              <div className="bg-white/90 backdrop-blur-sm text-xdark-blue rounded-[16px] p-[20px] leading-[1] flex flex-col gap-[10px]">
-                <div className="text-[1.5rem] font-medium text-xdark-blue">
-                  {t("stat3Title")}
-                </div>
-                <div className="flex items-center gap-[4px]">
+
+              {/* Stat 3 — amber accent (rating + avatars) */}
+              <div className="surface-card-feature p-5 flex flex-col gap-3 relative overflow-hidden">
+                <div className="absolute top-0 left-0 right-0 h-[3px] bg-theme-amber" />
+                <div className="t-h3 text-xprimary">{t("stat3Title")}</div>
+                <div className="flex items-center gap-[2px]">
                   {[...Array(5)].map((_, i) => (
-                    <svg key={i} width="24" height="24" viewBox="0 0 24 24" fill="#FF9500" xmlns="http://www.w3.org/2000/svg">
+                    <svg key={i} width="18" height="18" viewBox="0 0 24 24" fill="#F6A724" xmlns="http://www.w3.org/2000/svg">
                       <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                     </svg>
                   ))}
                 </div>
                 {/* Overlapping avatar bubbles */}
-                <div className="flex items-center -space-x-[8px]">
+                <div className="flex items-center -space-x-2">
                   {[
                     "/images/testimonials/kristiyan.png",
                     "/images/testimonials/james.jpeg",
@@ -83,10 +78,10 @@ export default function HeroSection() {
                       key={i}
                       src={src}
                       alt=""
-                      width={40}
-                      height={40}
-                      className="rounded-full border-[2px] border-white object-cover"
-                      style={{ width: 40, height: 40, zIndex: 5 - i }}
+                      width={32}
+                      height={32}
+                      className="rounded-full border-2 border-xcard object-cover"
+                      style={{ width: 32, height: 32, zIndex: 5 - i }}
                     />
                   ))}
                 </div>
@@ -94,8 +89,8 @@ export default function HeroSection() {
             </div>
 
             {/* App Store Badge + Trust Signals */}
-            <div className="flex flex-col gap-[16px]">
-              <div className="flex items-center gap-[24px] flex-wrap">
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center gap-6 flex-wrap">
                 <a
                   href="https://apps.apple.com/us/app/xheal/id6748074977"
                   target="_blank"
@@ -104,44 +99,40 @@ export default function HeroSection() {
                   <Image
                     src="/images/app-store-badge.svg"
                     alt={t("downloadOnAppStore")}
-                    width={200}
-                    height={67}
+                    width={180}
+                    height={60}
                     priority
                   />
                 </a>
                 <MedicalStandardsBadge />
                 <ComplianceBadges />
               </div>
-              <span className="text-[1rem] text-xdark-blue">
-                {t("freeToDownload")}
-              </span>
+              <span className="t-body3 text-xtertiary">{t("freeToDownload")}</span>
               <IntegrationLogosStrip />
-            </div>
-
-            {/* QR Code - Desktop only */}
-            <div className="hidden lg:flex">
-              <div className="bg-white/90 backdrop-blur-sm rounded-[16px] p-[20px] leading-[1] w-[200px]">
-                <Image
-                  src="/images/qr-code.avif"
-                  alt={t("downloadQrAlt")}
-                  width={160}
-                  height={160}
-                  className="w-full"
-                />
-              </div>
             </div>
           </div>
 
-          {/* Right Column - Phone */}
+          {/* Right Column - Phone (new device-framed mockup) */}
           <div className="flex justify-end self-start max-[767px]:justify-center">
-            <Image
-              src="/images/dashboard.png"
-              alt={t("dashboardAlt")}
-              width={932}
-              height={1600}
-              className="w-[28em] max-w-[460px] max-[767px]:w-full max-[767px]:max-w-[300px]"
-              priority
-            />
+            <div className="relative">
+              {/* Subtle blue glow behind phone */}
+              <div
+                className="absolute inset-0 -z-10 blur-[60px] opacity-50"
+                aria-hidden
+                style={{
+                  background:
+                    "radial-gradient(ellipse 60% 60% at 50% 50%, rgba(71, 100, 255, 0.4) 0%, transparent 70%)",
+                }}
+              />
+              <Image
+                src="/images/screenshots/routine.png"
+                alt={t("dashboardAlt")}
+                width={808}
+                height={1660}
+                className="w-[420px] max-w-full max-[767px]:max-w-[320px] animate-[floatPhone_6s_ease-in-out_infinite]"
+                priority
+              />
+            </div>
           </div>
         </div>
       </div>

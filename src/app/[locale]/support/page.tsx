@@ -17,24 +17,28 @@ function FAQItem({
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="border-b border-b-xlight-blue-low">
+    <div className="border-b border-xborder">
       <button
-        className="w-full text-left py-[20px] flex justify-between items-center gap-[20px]"
+        type="button"
+        className="w-full text-left py-6 flex justify-between items-start gap-5 group"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <h3 className="text-[1.5rem] font-medium leading-[1] tracking-[-0.01em] text-xblack">
+        <h3 className="t-h4 text-xprimary group-hover:text-xbrand transition-colors duration-200">
           {question}
         </h3>
-        <span className="text-xdark-blue text-[1.5rem] font-medium flex-shrink-0 transition-transform duration-200" style={{ transform: isOpen ? 'rotate(45deg)' : 'rotate(0deg)' }}>
+        <span
+          className="text-xbrand text-[24px] font-light leading-none flex-shrink-0 mt-1 transition-transform duration-300"
+          style={{ transform: isOpen ? "rotate(45deg)" : "rotate(0deg)" }}
+        >
           +
         </span>
       </button>
       <div
         className={`overflow-hidden transition-all duration-300 ${
-          isOpen ? "max-h-[500px] pb-[20px]" : "max-h-0"
+          isOpen ? "max-h-[500px] pb-6" : "max-h-0"
         }`}
       >
-        <p className="text-xblack-70 text-[1.125rem]">{answer}</p>
+        <p className="t-body1 text-xsecondary">{answer}</p>
       </div>
     </div>
   );
@@ -46,32 +50,25 @@ export default function SupportPage() {
   return (
     <>
       {/* Hero */}
-      <section
-        className="relative"
-        style={{
-          backgroundImage:
-            "linear-gradient(180deg, var(--dark-blue), #f8f8fa00)",
-        }}
-      >
-        <div className="w-full max-w-[100em] mx-auto px-[5em] pt-[200px] pb-[5em] flex flex-col items-center gap-[40px] text-xwhite max-[991px]:px-[40px] max-[991px]:pt-[140px] max-[479px]:px-[20px]">
-          <h1 className="text-[4.5rem] font-medium leading-[1] tracking-[-0.04em] text-center max-[991px]:text-[3.5rem] max-[479px]:text-[3rem]">
+      <section className="relative bg-xbg overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none bg-radial-glow" aria-hidden />
+        <div className="relative w-full max-w-[1440px] mx-auto px-10 pt-[160px] pb-16 flex flex-col items-center gap-10 max-[991px]:px-8 max-[991px]:pt-[120px] max-[479px]:px-5">
+          <h1 className="t-display1 text-xprimary text-center">
             {t("heroTitle")}
           </h1>
         </div>
       </section>
 
       {/* FAQ Section */}
-      <section>
-        <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col items-center gap-[40px] text-xblack max-[991px]:px-[40px] max-[479px]:px-[20px]">
+      <section className="bg-xbg">
+        <div className="w-full max-w-[1440px] mx-auto px-10 py-24 flex flex-col items-center gap-10 max-[991px]:px-8 max-[991px]:py-16 max-[479px]:px-5">
           <div className="w-full max-w-[800px]">
-            <h2 className="text-[2rem] font-medium leading-[1] tracking-[-0.02em] mb-[20px]">
-              {t("faqTitle")}
-            </h2>
-            <p className="text-xblack-70 text-[1.125rem] mb-[40px]">
+            <h2 className="t-h1 text-xprimary mb-5">{t("faqTitle")}</h2>
+            <p className="t-body1 text-xsecondary mb-10">
               {t("faqDescription")}{" "}
               <a
                 href={`mailto:${t("faqEmail")}`}
-                className="text-xlight-blue hover:underline"
+                className="text-xbrand hover:underline"
               >
                 {t("faqEmail")}
               </a>

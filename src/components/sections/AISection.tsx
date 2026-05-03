@@ -6,39 +6,52 @@ export default function AISection() {
   const t = useTranslations("AI");
 
   return (
-    <section>
-      <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col gap-[80px] text-xblack max-[991px]:px-[40px] max-[479px]:px-[20px]">
+    <section className="bg-xbg relative overflow-hidden">
+      <div
+        className="absolute inset-0 pointer-events-none opacity-60"
+        aria-hidden
+        style={{
+          background:
+            "radial-gradient(ellipse 50% 40% at 70% 50%, rgba(232, 68, 127, 0.08) 0%, transparent 70%)",
+        }}
+      />
+      <div className="relative w-full max-w-[1440px] mx-auto px-10 py-24 flex flex-col gap-16 max-[991px]:px-8 max-[991px]:py-16 max-[479px]:px-5">
         <ScrollReveal>
-          <div className="grid grid-cols-[1.65fr_1fr] gap-[80px] rounded-[12px] max-[991px]:gap-[40px] max-[767px]:grid-cols-1">
+          <div className="grid grid-cols-[1.4fr_1fr] gap-16 items-center max-[991px]:gap-10 max-[767px]:grid-cols-1">
             {/* Left Column - Text */}
-            <div className="grid grid-cols-1 gap-[40px]">
-              <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] max-w-[20ch] max-[991px]:text-[3rem]">
+            <div className="grid grid-cols-1 gap-8">
+              <span className="badge badge-ai self-start">{t("headingAccent")}</span>
+              <h2 className="t-display2 text-xprimary max-w-[20ch]">
                 {t("heading")}{" "}
-                <span className="text-xdark-blue">
-                  {t("headingAccent")}
-                </span>
+                <span className="text-xbrand">{t("headingAccent")}</span>
               </h2>
-              <div className="flex flex-col gap-[20px] max-w-[51ch]">
-                <p className="text-xblack-70 text-[1.125rem] max-[767px]:text-[1rem]">
-                  {t("paragraph1")}
-                </p>
-                <p className="text-xblack-70 text-[1.125rem] max-[767px]:text-[1rem]">
-                  {t("paragraph2")}
-                </p>
-                <p className="text-xblack-70 text-[1.125rem] max-[767px]:text-[1rem]">
-                  {t("paragraph3")}
-                </p>
+              <div className="flex flex-col gap-4 max-w-[58ch]">
+                <p className="t-body1 text-xsecondary">{t("paragraph1")}</p>
+                <p className="t-body1 text-xsecondary">{t("paragraph2")}</p>
+                <p className="t-body1 text-xsecondary">{t("paragraph3")}</p>
               </div>
             </div>
 
-            {/* Right Column - 360 SVG */}
-            <Image
-              src="/images/xheal-360.svg"
-              alt="xHeal 360"
-              width={600}
-              height={600}
-              className="w-full"
-            />
+            {/* Right Column - chat-flare-up screenshot */}
+            <div className="flex justify-center max-[767px]:mt-6">
+              <div className="relative">
+                <div
+                  className="absolute inset-0 -z-10 blur-[60px] opacity-50"
+                  aria-hidden
+                  style={{
+                    background:
+                      "radial-gradient(ellipse 60% 60% at 50% 50%, rgba(232, 68, 127, 0.4) 0%, transparent 70%)",
+                  }}
+                />
+                <Image
+                  src="/images/screenshots/chat-flare-up.png"
+                  alt={t("downloadOnAppStore")}
+                  width={808}
+                  height={1660}
+                  className="w-[360px] max-w-full max-[767px]:max-w-[300px]"
+                />
+              </div>
+            </div>
           </div>
         </ScrollReveal>
 
