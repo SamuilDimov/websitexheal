@@ -13,7 +13,7 @@ export default function IntegrationLogosStrip({
   const t = useTranslations("Integrations");
 
   return (
-    <div className={`flex flex-col gap-[10px] text-xdark-blue ${className}`}>
+    <div className={`flex flex-col gap-[10px] text-xsecondary ${className}`}>
       <div className="flex items-center gap-[24px] flex-wrap max-[479px]:gap-[16px]">
         {/* Apple Health */}
         <div className="flex items-center gap-[6px]">
@@ -36,7 +36,7 @@ export default function IntegrationLogosStrip({
         </div>
 
         {/* Divider */}
-        <div className="w-px h-[14px] bg-xdark-blue/30" />
+        <div className="w-px h-[14px] bg-xborder" />
 
         {/* Apple Watch */}
         <div className="flex items-center gap-[6px]">
@@ -68,7 +68,7 @@ export default function IntegrationLogosStrip({
         </div>
 
         {/* Divider */}
-        <div className="w-px h-[14px] bg-xdark-blue/30" />
+        <div className="w-px h-[14px] bg-xborder" />
 
         {/* MyChart */}
         <div className="flex items-center gap-[6px]">
@@ -103,7 +103,7 @@ export default function IntegrationLogosStrip({
         </div>
 
         {/* Divider */}
-        <div className="w-px h-[14px] bg-xdark-blue/30" />
+        <div className="w-px h-[14px] bg-xborder" />
 
         {/* PDFs & Photos */}
         <div className="flex items-center gap-[6px]">
@@ -141,7 +141,7 @@ export default function IntegrationLogosStrip({
           </span>
         </div>
       </div>
-      <span className="text-[0.75rem] text-xdark-blue/60 font-medium">
+      <span className="text-[0.75rem] text-xsecondary/60 font-medium">
         {t("importText")}
       </span>
     </div>

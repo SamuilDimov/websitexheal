@@ -129,7 +129,7 @@ export default function VerticalDrum({
               width: i === activeIndex ? "22px" : "7px",
               height: "7px",
               backgroundColor:
-                i === activeIndex ? "#4764FF" : "rgba(71, 100, 255, 0.25)",
+                i === activeIndex ? "var(--brand-600)" : "var(--neutral-700)",
             }}
             aria-label={`Go to item ${i + 1}`}
           />
@@ -137,32 +137,34 @@ export default function VerticalDrum({
       </div>
 
       {/* Navigation arrows */}
-      <div className="flex justify-center gap-[8px]">
+      <div className="flex justify-center gap-2">
         <button
+          type="button"
           onClick={() => goTo("prev")}
-          className="w-[36px] h-[36px] rounded-full border border-xlight-blue-low flex items-center justify-center transition-all duration-200 hover:bg-xdark-blue/10 active:scale-95"
+          className="w-9 h-9 rounded-full border border-xborder bg-xcard flex items-center justify-center transition-all duration-200 hover:border-xborder-medium hover:bg-xbg-3 active:scale-95"
           aria-label="Previous"
         >
           <span
             style={{
               fontFamily: "MaterialSymbolsRounded",
               fontSize: "20px",
-              color: "#4764FF",
+              color: "var(--brand-600)",
             }}
           >
             keyboard_arrow_up
           </span>
         </button>
         <button
+          type="button"
           onClick={() => goTo("next")}
-          className="w-[36px] h-[36px] rounded-full border border-xlight-blue-low flex items-center justify-center transition-all duration-200 hover:bg-xdark-blue/10 active:scale-95"
+          className="w-9 h-9 rounded-full border border-xborder bg-xcard flex items-center justify-center transition-all duration-200 hover:border-xborder-medium hover:bg-xbg-3 active:scale-95"
           aria-label="Next"
         >
           <span
             style={{
               fontFamily: "MaterialSymbolsRounded",
               fontSize: "20px",
-              color: "#4764FF",
+              color: "var(--brand-600)",
             }}
           >
             keyboard_arrow_down
@@ -201,15 +203,15 @@ function DrumSlot({
           width: "48px",
           height: "48px",
           backgroundColor: isActive
-            ? "rgba(71, 100, 255, 0.12)"
-            : "rgba(71, 100, 255, 0.06)",
+            ? "rgba(71, 100, 255, 0.20)"
+            : "rgba(71, 100, 255, 0.10)",
         }}
       >
         <span
           style={{
             fontFamily: "MaterialSymbolsRounded",
             fontSize: "24px",
-            color: "#4764FF",
+            color: "var(--brand-600)",
           }}
         >
           {item.icon}
@@ -218,10 +220,10 @@ function DrumSlot({
       {/* Text */}
       <div className="flex flex-col gap-[3px] min-w-0">
         <span
-          className="font-medium leading-[1.2] tracking-[-0.01em]"
+          className="font-semibold leading-[1.2] tracking-[-0.01em]"
           style={{
             fontSize: "17px",
-            color: "#141933",
+            color: "var(--text-primary)",
           }}
         >
           {item.label}
@@ -231,7 +233,7 @@ function DrumSlot({
             className="leading-[1.4]"
             style={{
               fontSize: "14px",
-              color: "rgba(20, 25, 51, 0.55)",
+              color: "var(--text-tertiary)",
             }}
           >
             {item.description}

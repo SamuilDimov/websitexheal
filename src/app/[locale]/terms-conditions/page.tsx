@@ -14,23 +14,18 @@ export default async function TermsConditionsPage() {
   return (
     <>
       {/* Hero */}
-      <section
-        className="relative"
-        style={{
-          backgroundImage:
-            "linear-gradient(180deg, var(--dark-blue), #f8f8fa00)",
-        }}
-      >
-        <div className="w-full max-w-[100em] mx-auto px-[5em] pt-[200px] pb-[5em] flex flex-col items-center gap-[40px] text-xwhite max-[991px]:px-[40px] max-[991px]:pt-[140px] max-[479px]:px-[20px]">
-          <h1 className="text-[4.5rem] font-medium leading-[1] tracking-[-0.04em] text-center max-[991px]:text-[3.5rem] max-[479px]:text-[3rem]">
+      <section className="relative bg-xbg overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none bg-radial-glow" aria-hidden />
+        <div className="relative w-full max-w-[1440px] mx-auto px-10 pt-[160px] pb-16 flex flex-col items-center gap-10 max-[991px]:px-8 max-[991px]:pt-[120px] max-[479px]:px-5">
+          <h1 className="t-display1 text-xprimary text-center">
             {legal.termsConditions.title}
           </h1>
         </div>
       </section>
 
       {/* Content */}
-      <section>
-        <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col items-center gap-[40px] text-xblack max-[991px]:px-[40px] max-[479px]:px-[20px]">
+      <section className="bg-xbg">
+        <div className="w-full max-w-[1440px] mx-auto px-10 py-24 flex flex-col items-center gap-10 max-[991px]:px-8 max-[991px]:py-16 max-[479px]:px-5">
           <div
             className="rich-text w-full max-w-[800px]"
             dangerouslySetInnerHTML={{ __html: legal.termsConditions.content }}

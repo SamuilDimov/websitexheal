@@ -45,26 +45,21 @@ export default function AboutPage({
   return (
     <>
       {/* Hero */}
-      <section
-        className="relative"
-        style={{
-          backgroundImage:
-            "linear-gradient(180deg, var(--dark-blue), #f8f8fa00)",
-        }}
-      >
-        <div className="w-full max-w-[100em] mx-auto px-[5em] pt-[200px] pb-[5em] flex flex-col items-center gap-[80px] text-xwhite max-[991px]:px-[40px] max-[991px]:pt-[140px] max-[479px]:px-[20px]">
-          <h1 className="text-[4.5rem] font-medium leading-[1] tracking-[-0.04em] text-center max-[991px]:text-[3.5rem] max-[479px]:text-[3rem]">
+      <section className="relative bg-xbg overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none bg-radial-glow" aria-hidden />
+        <div className="relative w-full max-w-[1440px] mx-auto px-10 pt-[160px] pb-16 flex flex-col items-center gap-12 max-[991px]:px-8 max-[991px]:pt-[120px] max-[479px]:px-5">
+          <h1 className="t-display1 text-xprimary text-center">
             {t("heroTitle")}
           </h1>
         </div>
       </section>
 
       {/* Timeline */}
-      <section>
-        <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col items-center gap-[80px] text-xblack max-[991px]:px-[40px] max-[479px]:px-[20px]">
+      <section className="bg-xbg">
+        <div className="w-full max-w-[1440px] mx-auto px-10 py-24 flex flex-col items-center gap-12 max-[991px]:px-8 max-[991px]:py-16 max-[479px]:px-5">
           <div className="timeline relative w-full">
             {/* Vertical divider line */}
-            <div className="absolute left-1/2 top-0 bottom-0 w-[0.125rem] -ml-[0.0625rem] bg-xlight-blue-low max-[767px]:hidden" />
+            <div className="absolute left-1/2 top-0 bottom-0 w-[2px] -ml-px bg-xborder max-[767px]:hidden" />
 
             {timelineKeys.map((eventKey, index) => {
               const isLeft = index % 2 === 0;
@@ -75,40 +70,32 @@ export default function AboutPage({
               return (
                 <div
                   key={index}
-                  className="timeline-item grid grid-cols-[1fr_1fr] gap-[60px] py-[20px] relative max-[767px]:grid-cols-1 max-[767px]:gap-[20px]"
+                  className="timeline-item grid grid-cols-[1fr_1fr] gap-16 py-5 relative max-[767px]:grid-cols-1 max-[767px]:gap-5"
                 >
                   {isLeft ? (
                     <>
-                      {/* Left card */}
-                      <div className="border border-xlight-blue-low bg-xwhite rounded-[16px] p-[20px] shadow-[0_4px_4px_#1419330d] text-right flex flex-col gap-[10px] leading-[1] relative max-[767px]:text-left">
-                        <p className="text-xdark-blue text-[1rem]">{date}</p>
-                        <h3 className="text-[1.5rem] font-medium leading-[1] tracking-[-0.01em] max-w-[42ch] ml-auto max-[767px]:ml-0">
+                      <div className="surface-card-feature p-6 text-right flex flex-col gap-2 relative max-[767px]:text-left">
+                        <p className="t-overline text-xbrand">{date}</p>
+                        <h3 className="t-h4 text-xprimary max-w-[42ch] ml-auto max-[767px]:ml-0">
                           {title}
                         </h3>
-                        <p className="text-xblack-70 text-[1.125rem] max-[767px]:text-[1rem]">
-                          {description}
-                        </p>
+                        <p className="t-body2 text-xsecondary">{description}</p>
                         {/* Dot */}
-                        <div className="absolute top-1/2 -mt-[4px] -right-[35px] w-[8px] h-[8px] bg-xdark-blue rounded-full max-[767px]:hidden" />
+                        <div className="absolute top-1/2 -mt-1 -right-[39px] w-2 h-2 bg-xbrand rounded-full ring-2 ring-xbg max-[767px]:hidden" />
                       </div>
-                      {/* Empty right column */}
                       <div className="max-[767px]:hidden" />
                     </>
                   ) : (
                     <>
-                      {/* Empty left column */}
                       <div className="max-[767px]:hidden" />
-                      {/* Right card */}
-                      <div className="border border-xlight-blue-low bg-xwhite rounded-[16px] p-[20px] shadow-[0_4px_4px_#1419330d] text-left flex flex-col gap-[10px] leading-[1] relative">
-                        <p className="text-xdark-blue text-[1rem]">{date}</p>
-                        <h3 className="text-[1.5rem] font-medium leading-[1] tracking-[-0.01em] max-w-[42ch]">
+                      <div className="surface-card-feature p-6 text-left flex flex-col gap-2 relative">
+                        <p className="t-overline text-xbrand">{date}</p>
+                        <h3 className="t-h4 text-xprimary max-w-[42ch]">
                           {title}
                         </h3>
-                        <p className="text-xblack-70 text-[1.125rem] max-[767px]:text-[1rem]">
-                          {description}
-                        </p>
+                        <p className="t-body2 text-xsecondary">{description}</p>
                         {/* Dot */}
-                        <div className="absolute top-1/2 -mt-[4px] -left-[35px] w-[8px] h-[8px] bg-xdark-blue rounded-full max-[767px]:hidden" />
+                        <div className="absolute top-1/2 -mt-1 -left-[39px] w-2 h-2 bg-xbrand rounded-full ring-2 ring-xbg max-[767px]:hidden" />
                       </div>
                     </>
                   )}
@@ -120,33 +107,33 @@ export default function AboutPage({
       </section>
 
       {/* Team */}
-      <section>
-        <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col items-center gap-[80px] text-xblack max-[991px]:px-[40px] max-[479px]:px-[20px]">
-          <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-center max-[991px]:text-[3rem]">
+      <section className="bg-xbg-2">
+        <div className="w-full max-w-[1440px] mx-auto px-10 py-24 flex flex-col items-center gap-12 max-[991px]:px-8 max-[991px]:py-16 max-[479px]:px-5">
+          <h2 className="t-display2 text-xprimary text-center">
             {t("teamHeading")}
           </h2>
 
-          <div className="grid grid-cols-2 gap-[40px] max-[767px]:grid-cols-1">
+          <div className="grid grid-cols-2 gap-10 w-full max-[767px]:grid-cols-1">
             {teamKeys.map((member) => (
               <div
                 key={member.key}
-                className="grid grid-cols-[auto_1fr] gap-[40px] max-[767px]:grid-cols-1"
+                className="grid grid-cols-[auto_1fr] gap-6 max-[767px]:grid-cols-1"
               >
                 <Image
                   src={member.image}
                   alt={t(`team.${member.key}.name`)}
                   width={200}
                   height={280}
-                  className="w-[10em] h-[14em] object-cover rounded-[16px] max-[767px]:w-[20em] max-[767px]:h-[26em]"
+                  className="w-[160px] h-[224px] object-cover rounded-[16px] ring-1 ring-xborder max-[767px]:w-full max-[767px]:h-auto max-[767px]:max-w-[280px]"
                 />
-                <div className="flex flex-col gap-[10px]">
-                  <h3 className="text-[2rem] font-medium leading-[1] tracking-[-0.02em]">
+                <div className="flex flex-col gap-2">
+                  <h3 className="t-h2 text-xprimary">
                     {t(`team.${member.key}.name`)}
                   </h3>
-                  <p className="text-xdark-blue font-medium text-[1.125rem]">
+                  <p className="t-h6 text-xbrand">
                     {t(`team.${member.key}.role`)}
                   </p>
-                  <p className="text-xblack-70 text-[1.125rem] max-[767px]:text-[1rem]">
+                  <p className="t-body1 text-xsecondary">
                     {t(`team.${member.key}.bio`)}
                   </p>
                 </div>
@@ -157,33 +144,33 @@ export default function AboutPage({
       </section>
 
       {/* Advisors */}
-      <section>
-        <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col items-center gap-[80px] text-xblack max-[991px]:px-[40px] max-[479px]:px-[20px]">
-          <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-center max-[991px]:text-[3rem]">
+      <section className="bg-xbg">
+        <div className="w-full max-w-[1440px] mx-auto px-10 py-24 flex flex-col items-center gap-12 max-[991px]:px-8 max-[991px]:py-16 max-[479px]:px-5">
+          <h2 className="t-display2 text-xprimary text-center">
             {t("advisorsHeading")}
           </h2>
 
-          <div className="grid grid-cols-2 gap-[40px] max-[767px]:grid-cols-1">
+          <div className="grid grid-cols-2 gap-10 w-full max-[767px]:grid-cols-1">
             {advisorKeys.map((advisor) => (
               <div
                 key={advisor.key}
-                className="grid grid-cols-[auto_1fr] gap-[40px] max-[767px]:grid-cols-1"
+                className="grid grid-cols-[auto_1fr] gap-6 max-[767px]:grid-cols-1"
               >
                 <Image
                   src={advisor.image}
                   alt={t(`advisors.${advisor.key}.name`)}
                   width={200}
                   height={280}
-                  className="w-[10em] h-[14em] object-cover rounded-[16px] max-[767px]:w-[20em] max-[767px]:h-[26em]"
+                  className="w-[160px] h-[224px] object-cover rounded-[16px] ring-1 ring-xborder max-[767px]:w-full max-[767px]:h-auto max-[767px]:max-w-[280px]"
                 />
-                <div className="flex flex-col gap-[10px]">
-                  <h3 className="text-[2rem] font-medium leading-[1] tracking-[-0.02em]">
+                <div className="flex flex-col gap-2">
+                  <h3 className="t-h2 text-xprimary">
                     {t(`advisors.${advisor.key}.name`)}
                   </h3>
-                  <p className="text-xdark-blue font-medium text-[1.125rem]">
+                  <p className="t-h6 text-xbrand">
                     {t(`advisors.${advisor.key}.role`)}
                   </p>
-                  <p className="text-xblack-70 text-[1.125rem] max-[767px]:text-[1rem]">
+                  <p className="t-body1 text-xsecondary">
                     {t(`advisors.${advisor.key}.bio`)}
                   </p>
                 </div>

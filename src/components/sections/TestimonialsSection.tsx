@@ -22,40 +22,31 @@ const StarIcon = () => (
 function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
   return (
     <div className="flex-none w-[22rem] p-[10px] max-[991px]:w-[18rem] max-[767px]:w-[16rem]">
-      <div className="border border-xlight-blue-low bg-xwhite rounded-[16px] grid grid-cols-1 place-items-start gap-[1rem] p-[2rem] shadow-[0_4px_4px_#1419330d] h-full">
-        <div className="flex flex-col gap-[1rem]">
+      <div className="surface-card grid grid-cols-1 place-items-start gap-4 p-7 h-full">
+        <div className="flex flex-col gap-4">
           {/* Stars */}
-          <div className="flex gap-[0.75rem] max-[767px]:gap-[0.5rem]">
+          <div className="flex gap-2 text-[#F6A724]">
             {[...Array(5)].map((_, i) => (
-              <div
-                key={i}
-                className="text-xdark-blue w-[1.25rem] flex items-center justify-center"
-              >
+              <div key={i} className="w-[18px] flex items-center justify-center">
                 <StarIcon />
               </div>
             ))}
           </div>
 
           {/* Quote */}
-          <p className="text-xblack-70 font-medium text-[1.125rem] max-[767px]:text-[1rem]">
-            {testimonial.quote}
-          </p>
+          <p className="t-body1 text-xprimary">{testimonial.quote}</p>
 
           {/* Author */}
-          <div className="flex items-center gap-[1rem]">
+          <div className="flex items-center gap-4">
             <Image
               src={testimonial.image}
               alt={testimonial.name}
               width={48}
               height={48}
-              className="w-[3rem] h-[3rem] rounded-full object-cover aspect-square"
+              className="w-[44px] h-[44px] rounded-full object-cover aspect-square ring-1 ring-xborder"
               loading="lazy"
             />
-            <div className="flex flex-col gap-[0.25rem]">
-              <span className="text-xblack-70 text-[1.125rem] font-medium max-[767px]:text-[1rem]">
-                {testimonial.name}
-              </span>
-            </div>
+            <span className="t-h6 text-xprimary">{testimonial.name}</span>
           </div>
         </div>
       </div>
@@ -78,9 +69,10 @@ function MarqueeRow({
     <div className="w-full relative overflow-clip -mx-[0.5rem] min-h-[1rem]">
       {/* Left fade */}
       <div
-        className="absolute left-[-0.5rem] top-0 w-[30px] h-full z-10 pointer-events-none"
+        className="absolute left-[-0.5rem] top-0 w-[80px] h-full z-10 pointer-events-none"
         style={{
-          backgroundImage: "linear-gradient(91deg, var(--white), #fff0)",
+          backgroundImage:
+            "linear-gradient(90deg, var(--bg-primary) 0%, rgba(0,14,27,0) 100%)",
         }}
       />
 
@@ -100,9 +92,10 @@ function MarqueeRow({
 
       {/* Right fade */}
       <div
-        className="absolute right-[-0.5rem] top-0 w-[30px] h-full z-10 pointer-events-none"
+        className="absolute right-[-0.5rem] top-0 w-[80px] h-full z-10 pointer-events-none"
         style={{
-          backgroundImage: "linear-gradient(270deg, var(--white), #fff0)",
+          backgroundImage:
+            "linear-gradient(270deg, var(--bg-primary) 0%, rgba(0,14,27,0) 100%)",
         }}
       />
     </div>
@@ -120,17 +113,17 @@ export default function TestimonialsSection() {
   const bottomRow = items.slice(mid);
 
   return (
-    <section>
-      <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col items-center gap-[80px] text-xblack max-[991px]:px-[40px] max-[479px]:px-[20px]">
+    <section className="bg-xbg">
+      <div className="w-full max-w-[1440px] mx-auto px-10 py-24 flex flex-col items-center gap-16 max-[991px]:px-8 max-[991px]:py-16 max-[479px]:px-5">
         <ScrollReveal>
-          <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-center max-[991px]:text-[3rem]">
+          <h2 className="t-display2 text-xprimary text-center">
             {t("heading")}{" "}
-            <span className="text-xdark-blue">{t("headingAccent")}</span>
+            <span className="text-xbrand">{t("headingAccent")}</span>
           </h2>
         </ScrollReveal>
 
         {/* Two-row marquee */}
-        <div className="w-full flex flex-col gap-[20px] mb-[-80px] max-[767px]:mb-[-40px]">
+        <div className="w-full flex flex-col gap-3">
           <MarqueeRow items={topRow} />
           <MarqueeRow items={bottomRow} reverse />
         </div>

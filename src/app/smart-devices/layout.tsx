@@ -1,5 +1,14 @@
 import type { Metadata } from "next";
+import { Manrope } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "../[locale]/globals.css";
+
+const manrope = Manrope({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-manrope",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "xHeal Band — Pre-Order | xHeal",
@@ -23,9 +32,23 @@ export default function SmartDevicesLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body style={{ width: "100%", overflowX: "hidden" }}>
+    <html lang="en" className={manrope.variable}>
+      <head>
+        {/* One-time cleanup of legacy cookie-consent storage. Safe to remove after a few months. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                localStorage.removeItem('xheal_cookie_consent');
+                document.cookie = 'xheal_consent=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+              } catch (e) {}
+            `,
+          }}
+        />
+      </head>
+      <body className="bg-xbg text-xprimary antialiased" style={{ width: "100%", overflowX: "hidden" }}>
         {children}
+        <Analytics />
       </body>
     </html>
   );

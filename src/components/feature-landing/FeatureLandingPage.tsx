@@ -116,34 +116,28 @@ export interface FeatureLandingPageProps {
 function FAQItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="border-b border-[#ffffff1a]">
+    <div className="border-b border-xborder">
       <button
+        type="button"
         onClick={() => setOpen(!open)}
-        className="w-full text-left py-[28px] flex justify-between items-start gap-[20px] group"
+        className="w-full text-left py-7 flex justify-between items-start gap-5 group"
       >
-        <h3
-          className="text-[1.25rem] font-medium leading-[1.3] tracking-[-0.01em] text-xwhite group-hover:text-xlight-blue transition-colors duration-200"
-        >
+        <h3 className="t-h4 text-xprimary group-hover:text-xbrand transition-colors duration-200">
           {q}
         </h3>
         <span
-          className="text-xlight-blue text-[1.5rem] font-light leading-[1] flex-shrink-0 mt-[2px] transition-transform duration-300"
+          className="text-xbrand text-[24px] font-light leading-none flex-shrink-0 mt-1 transition-transform duration-300"
           style={{ transform: open ? "rotate(45deg)" : "rotate(0deg)" }}
         >
           +
         </span>
       </button>
       <div
-        className={`overflow-hidden transition-all duration-400 ${
-          open ? "max-h-[500px] pb-[28px]" : "max-h-0"
+        className={`overflow-hidden transition-all duration-300 ${
+          open ? "max-h-[500px] pb-7" : "max-h-0"
         }`}
       >
-        <p
-          className="text-[1.125rem] leading-[1.6] max-w-[60ch]"
-          style={{ color: "#ffffffcc" }}
-        >
-          {a}
-        </p>
+        <p className="t-body1 text-xsecondary max-w-[60ch]">{a}</p>
       </div>
     </div>
   );
@@ -151,12 +145,12 @@ function FAQItem({ q, a }: { q: string; a: string }) {
 
 function StarRating() {
   return (
-    <div className="flex gap-[6px]">
+    <div className="flex gap-1.5 text-[#F6A724]">
       {[...Array(5)].map((_, i) => (
         <svg
           key={i}
-          width="18"
-          height="17"
+          width="16"
+          height="15"
           viewBox="0 0 18 17"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -205,15 +199,12 @@ export default function FeatureLandingPage(props: FeatureLandingPageProps) {
       {/* ============================================================ */}
       {/* 1. HERO                                                       */}
       {/* ============================================================ */}
-      <section
-        className="relative overflow-hidden min-h-screen flex items-center"
-        style={{
-          background:
-            "radial-gradient(ellipse 120% 80% at 30% 40%, #4764ff 0%, #141933 55%, #141933 100%)",
-        }}
-      >
+      <section className="relative overflow-hidden bg-xbg">
+        {/* Subtle radial glow backdrop */}
+        <div className="absolute inset-0 pointer-events-none bg-radial-glow" aria-hidden />
         <div
-          className="absolute inset-0 opacity-30 pointer-events-none"
+          className="absolute inset-0 opacity-[0.06] pointer-events-none"
+          aria-hidden
           style={{
             backgroundImage: "url(/images/dot-matrix.svg)",
             backgroundPosition: "50%",
@@ -222,47 +213,33 @@ export default function FeatureLandingPage(props: FeatureLandingPageProps) {
           }}
         />
 
-        {/* Bottom fade to page background */}
-        <div
-          className="absolute bottom-0 left-0 right-0 pointer-events-none"
-          style={{
-            height: "40%",
-            background: "linear-gradient(to bottom, transparent 0%, #f8f8fa 100%)",
-          }}
-        />
-
         <div
           className="absolute right-[10%] top-[50%] -translate-y-[50%] w-[500px] h-[500px] rounded-full pointer-events-none max-[767px]:right-[50%] max-[767px]:translate-x-[50%] max-[767px]:top-[60%]"
+          aria-hidden
           style={{
-            background:
-              "radial-gradient(circle, #4764ff44 0%, transparent 70%)",
+            background: "radial-gradient(circle, rgba(71,100,255,0.25) 0%, transparent 70%)",
             animation: "pulseGlow 4s ease-in-out infinite",
           }}
         />
 
-        <div className="w-full max-w-[100em] mx-auto px-[5em] pt-[16em] pb-[10em] relative z-10 max-[991px]:px-[40px] max-[991px]:pt-[140px] max-[991px]:pb-[80px] max-[479px]:px-[20px]">
-          <div className="grid grid-cols-[1.4fr_1fr] gap-[60px] items-center max-[767px]:grid-cols-1 max-[767px]:gap-[60px]">
+        <div className="relative z-10 w-full max-w-[1440px] mx-auto px-10 pt-[160px] pb-24 max-[991px]:px-8 max-[991px]:pt-[120px] max-[991px]:pb-16 max-[479px]:px-5">
+          <div className="grid grid-cols-[1.4fr_1fr] gap-16 items-center max-[767px]:grid-cols-1 max-[767px]:gap-10">
             <div
-              className="flex flex-col gap-[40px] text-xwhite"
+              className="flex flex-col gap-8 text-xprimary"
               style={{ animation: "slideInLeft 0.8s ease-out both" }}
             >
-              <h1 className="text-[7em] font-medium leading-[0.95] tracking-[-0.05em] max-[991px]:text-[3.75rem] max-[479px]:text-[2.75rem]">
-                {props.heroTitle}
-              </h1>
+              <h1 className="t-display1 text-xprimary">{props.heroTitle}</h1>
 
-              <div
-                className="text-[1.75rem] font-medium leading-[1.35] tracking-[-0.01em] max-w-[38ch] max-[479px]:text-[1.25rem]"
-                style={{ color: "#ffffff" }}
-              >
+              <div className="t-h3 text-xsecondary max-w-[44ch] font-normal">
                 {props.heroSubtitle}
               </div>
 
               {/* Social proof */}
               <div
-                className="flex items-center gap-[16px] flex-wrap"
+                className="flex items-center gap-4 flex-wrap"
                 style={{ animation: "fadeInUp 0.6s ease-out 0.4s both" }}
               >
-                <div className="flex -space-x-[10px]">
+                <div className="flex -space-x-2">
                   {[
                     "/images/testimonial-kris.jpeg",
                     "/images/testimonial-jessica.jpeg",
@@ -272,20 +249,18 @@ export default function FeatureLandingPage(props: FeatureLandingPageProps) {
                       key={i}
                       src={src}
                       alt=""
-                      width={44}
-                      height={44}
-                      className="w-[44px] h-[44px] rounded-full border-[2px] border-[#4764ff] object-cover"
+                      width={36}
+                      height={36}
+                      className="w-9 h-9 rounded-full border-2 border-xcard object-cover"
                     />
                   ))}
                 </div>
-                <span className="text-[1.125rem]" style={{ color: "#ffffff" }}>
-                  {t("rated5")}
-                </span>
+                <span className="t-body2 text-xsecondary">{t("rated5")}</span>
               </div>
 
               {/* CTA */}
               <div style={{ animation: "fadeInUp 0.6s ease-out 0.6s both" }}>
-                <div className="flex items-center gap-[24px] flex-wrap">
+                <div className="flex items-center gap-6 flex-wrap">
                   <a
                     href="https://apps.apple.com/us/app/xheal/id6748074977"
                     target="_blank"
@@ -295,20 +270,15 @@ export default function FeatureLandingPage(props: FeatureLandingPageProps) {
                     <Image
                       src="/images/app-store-badge.svg"
                       alt={t("downloadOnAppStore")}
-                      width={200}
-                      height={67}
+                      width={180}
+                      height={60}
                       priority
                     />
                   </a>
-                  <MedicalStandardsBadge className="text-xwhite" />
-                  <ComplianceBadges className="text-xwhite" />
+                  <MedicalStandardsBadge />
+                  <ComplianceBadges />
                 </div>
-                <p
-                  className="text-[0.875rem] mt-[8px]"
-                  style={{ color: "#ffffffdd" }}
-                >
-                  {t("freeToDownload")}
-                </p>
+                <p className="t-body3 text-xtertiary mt-2">{t("freeToDownload")}</p>
               </div>
             </div>
 
@@ -317,56 +287,55 @@ export default function FeatureLandingPage(props: FeatureLandingPageProps) {
               className="relative flex justify-end self-start max-[767px]:justify-center"
               style={{ animation: "slideInRight 0.8s ease-out 0.3s both" }}
             >
-              <div style={{ animation: "floatPhone 5s ease-in-out infinite" }}>
+              <div
+                className="relative"
+                style={{ animation: "floatPhone 5s ease-in-out infinite" }}
+              >
+                <div
+                  className="absolute inset-0 -z-10 blur-[60px] opacity-50"
+                  aria-hidden
+                  style={{
+                    background:
+                      "radial-gradient(ellipse 60% 60% at 50% 50%, rgba(71,100,255,0.4) 0%, transparent 70%)",
+                  }}
+                />
                 <Image
                   src={props.heroImage.src}
                   alt={props.heroImage.alt}
                   width={props.heroImage.width}
                   height={props.heroImage.height}
-                  className="w-[28em] max-w-[460px] drop-shadow-[0_20px_60px_#4764ff55] max-[767px]:w-full max-[767px]:max-w-[300px] max-[767px]:mx-auto"
+                  className="w-[420px] max-w-full max-[767px]:max-w-[300px] max-[767px]:mx-auto"
                   priority
                 />
               </div>
             </div>
           </div>
         </div>
-
-        <div
-          className="absolute bottom-0 left-0 right-0 h-[200px] pointer-events-none"
-          style={{
-            backgroundImage:
-              "linear-gradient(to top, var(--white) 0%, transparent 100%)",
-          }}
-        />
       </section>
 
       {/* ============================================================ */}
       {/* 2. PAIN POINTS                                                */}
       {/* ============================================================ */}
-      <section>
-        <div className="w-full max-w-[100em] mx-auto px-[5em] pt-[5em] pb-[5em] flex flex-col gap-[80px] max-[991px]:px-[40px] max-[479px]:px-[20px]">
+      <section className="bg-xbg">
+        <div className="w-full max-w-[1440px] mx-auto px-10 py-24 flex flex-col gap-12 max-[991px]:px-8 max-[991px]:py-16 max-[479px]:px-5">
           <ScrollReveal>
-            <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack max-w-[52rem] max-[991px]:text-[3rem]">
+            <h2 className="t-display2 text-xprimary max-w-[52rem]">
               {props.painHeading}
             </h2>
           </ScrollReveal>
 
-          <div className="grid grid-cols-3 gap-[24px] max-[991px]:grid-cols-1">
+          <div className="grid grid-cols-3 gap-6 max-[991px]:grid-cols-1">
             {props.painPoints.map((p, i) => (
               <ScrollReveal key={p.title} delay={i * 120}>
-                <div className="border border-xlight-blue-low bg-xwhite rounded-[16px] p-[32px] shadow-[0_4px_4px_#1419330d] flex flex-col gap-[20px] h-full transition-all duration-300 hover:shadow-[0_12px_40px_#14193318] hover:-translate-y-[4px]">
+                <div className="surface-card-feature p-8 flex flex-col gap-5 h-full">
                   <span
-                    className="text-xdark-blue text-[2rem]"
-                    style={{ fontFamily: "MaterialSymbolsRounded" }}
+                    className="text-xbrand"
+                    style={{ fontFamily: "MaterialSymbolsRounded", fontSize: 32 }}
                   >
                     {p.icon}
                   </span>
-                  <h3 className="text-[1.5rem] font-medium leading-[1.1] tracking-[-0.01em] text-xblack">
-                    {p.title}
-                  </h3>
-                  <p className="text-xblack-70 text-[1.125rem] leading-[1.5] max-[767px]:text-[1rem]">
-                    {p.detail}
-                  </p>
+                  <h3 className="t-h3 text-xprimary">{p.title}</h3>
+                  <p className="t-body1 text-xsecondary">{p.detail}</p>
                 </div>
               </ScrollReveal>
             ))}
@@ -377,26 +346,26 @@ export default function FeatureLandingPage(props: FeatureLandingPageProps) {
       {/* ============================================================ */}
       {/* 3. HOW IT WORKS                                               */}
       {/* ============================================================ */}
-      <section
-        className="relative"
-        style={{
-          backgroundImage: "url(/images/wave.svg)",
-          backgroundPosition: "50% 60%",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "auto 24em",
-        }}
-      >
-        <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col items-center gap-[80px] max-[991px]:px-[40px] max-[479px]:px-[20px]">
+      <section className="relative bg-xbg">
+        <div
+          className="absolute inset-0 pointer-events-none opacity-60"
+          aria-hidden
+          style={{
+            background:
+              "radial-gradient(ellipse 60% 40% at 50% 50%, rgba(71, 100, 255, 0.08) 0%, transparent 70%)",
+          }}
+        />
+        <div className="relative w-full max-w-[1440px] mx-auto px-10 py-24 flex flex-col items-center gap-12 max-[991px]:px-8 max-[991px]:py-16 max-[479px]:px-5">
           <ScrollReveal>
-            <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack text-center max-[991px]:text-[3rem]">
+            <h2 className="t-display2 text-xprimary text-center">
               {props.howHeading}
             </h2>
           </ScrollReveal>
 
           <div className="relative w-full max-w-[900px]" ref={lineAnim.ref}>
-            <div className="absolute left-[32px] top-[20px] bottom-[20px] w-[2px] bg-xlight-blue-low overflow-hidden max-[767px]:left-[24px]">
+            <div className="absolute left-[32px] top-5 bottom-5 w-[2px] bg-xborder overflow-hidden max-[767px]:left-6">
               <div
-                className="w-full bg-xdark-blue"
+                className="w-full bg-xbrand"
                 style={{
                   height: lineAnim.visible ? "100%" : "0%",
                   transition: "height 1.5s ease-out 0.3s",
@@ -404,20 +373,18 @@ export default function FeatureLandingPage(props: FeatureLandingPageProps) {
               />
             </div>
 
-            <div className="flex flex-col gap-[40px]">
+            <div className="flex flex-col gap-10">
               {props.howItWorks.map((s, i) => (
                 <ScrollReveal key={s.step} delay={i * 200}>
-                  <div className="grid grid-cols-[64px_1fr] gap-[32px] items-start max-[767px]:grid-cols-[48px_1fr] max-[767px]:gap-[20px]">
-                    <div className="w-[64px] h-[64px] rounded-full bg-xdark-blue text-xwhite flex items-center justify-center text-[1.25rem] font-medium flex-shrink-0 relative z-10 shadow-[0_4px_20px_#4764ff44] max-[767px]:w-[48px] max-[767px]:h-[48px] max-[767px]:text-[1rem]">
+                  <div className="grid grid-cols-[64px_1fr] gap-8 items-start max-[767px]:grid-cols-[48px_1fr] max-[767px]:gap-5">
+                    <div className="w-16 h-16 rounded-full bg-xbrand text-white flex items-center justify-center t-h5 flex-shrink-0 relative z-10 shadow-[0_8px_24px_rgba(71,100,255,0.4)] max-[767px]:w-12 max-[767px]:h-12 max-[767px]:text-[14px]">
                       {s.step}
                     </div>
-                    <div className="border border-xlight-blue-low bg-xwhite rounded-[16px] p-[32px] shadow-[0_4px_4px_#1419330d] flex flex-col gap-[12px]">
-                      <h3 className="text-[2rem] font-medium leading-[1.1] tracking-[-0.02em] text-xblack max-[767px]:text-[1.5rem]">
+                    <div className="surface-card-feature p-8 flex flex-col gap-3">
+                      <h3 className="t-h2 text-xprimary max-[767px]:text-[24px]">
                         {s.title}
                       </h3>
-                      <p className="text-xblack-70 text-[1.125rem] leading-[1.5] max-[767px]:text-[1rem]">
-                        {s.description}
-                      </p>
+                      <p className="t-body1 text-xsecondary">{s.description}</p>
                     </div>
                   </div>
                 </ScrollReveal>
@@ -433,27 +400,23 @@ export default function FeatureLandingPage(props: FeatureLandingPageProps) {
       {/* ============================================================ */}
       {/* 4. USE CASES                                                  */}
       {/* ============================================================ */}
-      <section>
-        <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col gap-[80px] max-[991px]:px-[40px] max-[479px]:px-[20px]">
+      <section className="bg-xbg">
+        <div className="w-full max-w-[1440px] mx-auto px-10 py-24 flex flex-col gap-12 max-[991px]:px-8 max-[991px]:py-16 max-[479px]:px-5">
           <ScrollReveal>
-            <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack max-w-[52rem] max-[991px]:text-[3rem]">
+            <h2 className="t-display2 text-xprimary max-w-[52rem]">
               {props.useCasesHeading}
             </h2>
           </ScrollReveal>
 
-          <div className="grid grid-cols-3 gap-[20px] max-[991px]:grid-cols-2 max-[767px]:grid-cols-1">
+          <div className="grid grid-cols-3 gap-5 max-[991px]:grid-cols-2 max-[767px]:grid-cols-1">
             {props.useCases.map((uc, i) => (
               <ScrollReveal key={uc.question} delay={i * 80}>
-                <div className="group border border-xlight-blue-low bg-xwhite rounded-[16px] p-[28px] shadow-[0_4px_4px_#1419330d] flex flex-col gap-[16px] h-full transition-all duration-300 hover:shadow-[0_8px_32px_#4764ff22] hover:-translate-y-[3px] hover:border-xlight-blue">
-                  <span className="text-xdark-blue text-[0.85rem] font-medium tracking-[0.04em] uppercase">
-                    {uc.tag}
-                  </span>
-                  <h3 className="text-[1.375rem] font-medium leading-[1.2] tracking-[-0.01em] text-xblack">
+                <div className="group surface-card-feature p-7 flex flex-col gap-4 h-full">
+                  <span className="t-overline text-xbrand">{uc.tag}</span>
+                  <h3 className="t-h4 text-xprimary">
                     &ldquo;{uc.question}&rdquo;
                   </h3>
-                  <p className="text-xblack-70 text-[1.125rem] leading-[1.5] max-[767px]:text-[1rem]">
-                    {uc.description}
-                  </p>
+                  <p className="t-body2 text-xsecondary">{uc.description}</p>
                 </div>
               </ScrollReveal>
             ))}
@@ -477,56 +440,42 @@ export default function FeatureLandingPage(props: FeatureLandingPageProps) {
       {/* ============================================================ */}
       {/* TESTIMONIALS                                                  */}
       {/* ============================================================ */}
-      <section
-        className="relative overflow-hidden"
-        style={{
-          background:
-            "linear-gradient(135deg, #141933 0%, #1e2548 50%, #141933 100%)",
-        }}
-      >
+      <section className="relative overflow-hidden bg-xbg-2">
         <div
           className="absolute top-[-100px] left-[20%] w-[400px] h-[400px] rounded-full pointer-events-none"
+          aria-hidden
           style={{
-            background:
-              "radial-gradient(circle, #4764ff22 0%, transparent 70%)",
+            background: "radial-gradient(circle, rgba(71,100,255,0.15) 0%, transparent 70%)",
           }}
         />
 
-        <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col items-center gap-[60px] relative z-10 max-[991px]:px-[40px] max-[479px]:px-[20px]">
+        <div className="relative w-full max-w-[1440px] mx-auto px-10 py-24 flex flex-col items-center gap-12 max-[991px]:px-8 max-[991px]:py-16 max-[479px]:px-5">
           <ScrollReveal>
-            <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xwhite text-center max-[991px]:text-[3rem]">
+            <h2 className="t-display2 text-xprimary text-center">
               {props.testimonialsHeading}
             </h2>
           </ScrollReveal>
 
-          <div className="grid grid-cols-3 gap-[24px] w-full max-[991px]:grid-cols-1">
-            {props.testimonials.map((t, i) => (
-              <ScrollReveal key={t.name} delay={i * 150}>
-                <div className="border border-[#ffffff14] bg-[#ffffff0a] backdrop-blur-sm rounded-[16px] p-[32px] flex flex-col justify-between gap-[28px] h-full transition-all duration-300 hover:border-[#ffffff22] hover:bg-[#ffffff10]">
-                  <div className="flex flex-col gap-[16px]">
-                    <div className="text-xlight-blue">
-                      <StarRating />
-                    </div>
-                    <p
-                      className="text-[1.125rem] leading-[1.6] font-medium max-[767px]:text-[1rem]"
-                      style={{ color: "#ffffff" }}
-                    >
-                      &ldquo;{t.quote}&rdquo;
+          <div className="grid grid-cols-3 gap-6 w-full max-[991px]:grid-cols-1">
+            {props.testimonials.map((tm, i) => (
+              <ScrollReveal key={tm.name} delay={i * 150}>
+                <div className="border border-xborder bg-xcard rounded-[20px] p-8 flex flex-col justify-between gap-7 h-full transition-all duration-300 hover:border-xborder-medium hover:-translate-y-1 hover:shadow-lg">
+                  <div className="flex flex-col gap-4">
+                    <StarRating />
+                    <p className="t-body1 text-xprimary">
+                      &ldquo;{tm.quote}&rdquo;
                     </p>
                   </div>
-                  <div className="flex items-center gap-[12px]">
+                  <div className="flex items-center gap-3">
                     <Image
-                      src={t.image}
-                      alt={t.name}
-                      width={48}
-                      height={48}
-                      className="w-[48px] h-[48px] rounded-full object-cover border border-[#ffffff22]"
+                      src={tm.image}
+                      alt={tm.name}
+                      width={44}
+                      height={44}
+                      className="w-11 h-11 rounded-full object-cover ring-1 ring-xborder"
                     />
-                    <span
-                      className="text-[1rem] font-medium"
-                      style={{ color: "#ffffff" }}
-                    >
-                      {t.name}, {t.age}
+                    <span className="t-h6 text-xprimary">
+                      {tm.name}, {tm.age}
                     </span>
                   </div>
                 </div>
@@ -539,26 +488,22 @@ export default function FeatureLandingPage(props: FeatureLandingPageProps) {
       {/* ============================================================ */}
       {/* TRUST & SECURITY                                              */}
       {/* ============================================================ */}
-      <section>
-        <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] max-[991px]:px-[40px] max-[479px]:px-[20px]">
-          <div className="grid grid-cols-[1.4fr_1fr] gap-[80px] items-center max-[991px]:gap-[40px] max-[767px]:grid-cols-1">
+      <section className="bg-xbg">
+        <div className="w-full max-w-[1440px] mx-auto px-10 py-24 max-[991px]:px-8 max-[991px]:py-16 max-[479px]:px-5">
+          <div className="grid grid-cols-[1.4fr_1fr] gap-16 items-center max-[991px]:gap-10 max-[767px]:grid-cols-1">
             <ScrollReveal>
-              <div className="flex flex-col gap-[40px]">
-                <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xblack max-[991px]:text-[3rem]">
-                  {props.trustHeading}
-                </h2>
+              <div className="flex flex-col gap-8">
+                <h2 className="t-display2 text-xprimary">{props.trustHeading}</h2>
 
-                <div className="flex flex-col gap-[28px]">
+                <div className="flex flex-col gap-7">
                   {props.trustItems.map((item) => (
-                    <div key={item.title} className="flex gap-[16px]">
-                      <div className="w-[3px] bg-xdark-blue rounded-full flex-shrink-0 mt-[6px] self-stretch" />
+                    <div key={item.title} className="flex gap-4">
+                      <div className="w-[3px] bg-xbrand rounded-full flex-shrink-0 mt-1.5 self-stretch" />
                       <div>
-                        <h3 className="text-xblack text-[1.25rem] font-medium leading-[1.3] mb-[6px]">
+                        <h3 className="t-h4 text-xprimary mb-1.5">
                           {item.title}
                         </h3>
-                        <p className="text-xblack-70 text-[1.125rem] leading-[1.5] max-[767px]:text-[1rem]">
-                          {item.detail}
-                        </p>
+                        <p className="t-body1 text-xsecondary">{item.detail}</p>
                       </div>
                     </div>
                   ))}
@@ -569,13 +514,23 @@ export default function FeatureLandingPage(props: FeatureLandingPageProps) {
             </ScrollReveal>
 
             <ScrollReveal delay={200}>
-              <Image
-                src="/images/xheal-360.svg"
-                alt="xHeal 360-degree health analysis"
-                width={600}
-                height={600}
-                className="w-full max-w-[500px] mx-auto"
-              />
+              <div className="relative">
+                <div
+                  className="absolute inset-0 -z-10 blur-[80px] opacity-50"
+                  aria-hidden
+                  style={{
+                    background:
+                      "radial-gradient(ellipse 60% 60% at 50% 50%, rgba(71,100,255,0.3) 0%, transparent 70%)",
+                  }}
+                />
+                <Image
+                  src="/images/xheal-360.svg"
+                  alt="xHeal 360-degree health analysis"
+                  width={600}
+                  height={600}
+                  className="w-full max-w-[500px] mx-auto"
+                />
+              </div>
             </ScrollReveal>
           </div>
         </div>
@@ -584,15 +539,10 @@ export default function FeatureLandingPage(props: FeatureLandingPageProps) {
       {/* ============================================================ */}
       {/* FAQ                                                           */}
       {/* ============================================================ */}
-      <section
-        style={{
-          background:
-            "linear-gradient(180deg, #141933 0%, #1a2040 50%, #141933 100%)",
-        }}
-      >
-        <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col items-center gap-[60px] max-[991px]:px-[40px] max-[479px]:px-[20px]">
+      <section className="bg-xbg-2">
+        <div className="w-full max-w-[1440px] mx-auto px-10 py-24 flex flex-col items-center gap-12 max-[991px]:px-8 max-[991px]:py-16 max-[479px]:px-5">
           <ScrollReveal>
-            <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-xwhite text-center max-[991px]:text-[3rem]">
+            <h2 className="t-display2 text-xprimary text-center">
               {props.faqHeading}
             </h2>
           </ScrollReveal>
@@ -610,33 +560,32 @@ export default function FeatureLandingPage(props: FeatureLandingPageProps) {
       {/* ============================================================ */}
       {/* FINAL CTA                                                     */}
       {/* ============================================================ */}
-      <section
-        className="relative overflow-hidden"
-        style={{
-          background:
-            "radial-gradient(ellipse 100% 120% at 50% 100%, #4764ff 0%, #141933 60%, #0a0e1f 100%)",
-        }}
-      >
+      <section className="relative overflow-hidden bg-xbg">
         <div
-          className="absolute bottom-[-100px] left-[50%] -translate-x-[50%] w-[600px] h-[300px] rounded-full pointer-events-none"
+          className="absolute inset-0 pointer-events-none"
+          aria-hidden
           style={{
             background:
-              "radial-gradient(ellipse, #4764ff33 0%, transparent 70%)",
+              "radial-gradient(ellipse 80% 60% at 50% 100%, rgba(71,100,255,0.18) 0%, transparent 60%), radial-gradient(ellipse 60% 40% at 80% 50%, rgba(168,85,247,0.08) 0%, transparent 60%)",
+          }}
+        />
+        <div
+          className="absolute bottom-[-100px] left-[50%] -translate-x-[50%] w-[600px] h-[300px] rounded-full pointer-events-none"
+          aria-hidden
+          style={{
+            background: "radial-gradient(ellipse, rgba(71,100,255,0.25) 0%, transparent 70%)",
             animation: "pulseGlow 5s ease-in-out infinite",
           }}
         />
 
-        <div className="w-full max-w-[100em] mx-auto px-[5em] py-[10em] flex flex-col items-center gap-[40px] text-center relative z-10 max-[991px]:px-[40px] max-[991px]:py-[6em] max-[479px]:px-[20px]">
+        <div className="relative z-10 w-full max-w-[1440px] mx-auto px-10 py-32 flex flex-col items-center gap-8 text-center max-[991px]:px-8 max-[991px]:py-24 max-[479px]:px-5">
           <ScrollReveal>
-            <h2 className="text-[4.5rem] font-medium leading-[1] tracking-[-0.04em] text-xwhite max-w-[48rem] mx-auto max-[991px]:text-[3rem]">
+            <h2 className="t-display1 text-xprimary max-w-[48rem] mx-auto">
               {props.ctaHeading}
             </h2>
           </ScrollReveal>
           <ScrollReveal delay={150}>
-            <p
-              className="text-[1.25rem] max-w-[44ch] leading-[1.5] mx-auto"
-              style={{ color: "#ffffffcc" }}
-            >
+            <p className="t-h4 text-xsecondary max-w-[44ch] mx-auto font-normal">
               {props.ctaSubtitle}
             </p>
           </ScrollReveal>
@@ -654,12 +603,7 @@ export default function FeatureLandingPage(props: FeatureLandingPageProps) {
                 height={67}
               />
             </a>
-            <p
-              className="text-[0.875rem] mt-[8px]"
-              style={{ color: "#ffffffaa" }}
-            >
-              {t("freeToDownload")}
-            </p>
+            <p className="t-body3 text-xtertiary mt-2">{t("freeToDownload")}</p>
           </ScrollReveal>
         </div>
       </section>

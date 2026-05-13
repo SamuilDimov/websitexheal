@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 // ─────────────────────────────────────────────
 // Small reusable atoms
@@ -9,7 +10,7 @@ import Image from "next/image";
 
 function Logo() {
   return (
-    <a href="/" aria-label="xHeal home">
+    <Link href="/" aria-label="xHeal home">
       <Image
         src="/images/logo.svg"
         alt="xHeal logo"
@@ -18,7 +19,7 @@ function Logo() {
         className="w-[7.5em] min-w-[120px]"
         priority
       />
-    </a>
+    </Link>
   );
 }
 
@@ -149,9 +150,9 @@ function PreOrderForm() {
         No payment now. We&rsquo;ll contact you to confirm before shipping.
         <br />
         By joining you agree to our{" "}
-        <a href="/privacy-policy" className="underline hover:text-white/70 transition-colors">
+        <Link href="/privacy-policy" className="underline hover:text-white/70 transition-colors">
           Privacy Policy
-        </a>
+        </Link>
         .
       </p>
     </form>
@@ -302,42 +303,33 @@ export default function SmartDevicesPage() {
       {/* ══════════════════════════════════════════
           FEATURES
       ══════════════════════════════════════════ */}
-      <section className="w-full bg-xwhite py-[7em] max-[991px]:py-[4em]">
-        <div className="w-full max-w-[100em] mx-auto px-[5em] max-[991px]:px-[40px] max-[479px]:px-[20px]">
-          <div className="flex flex-col gap-[16px] mb-[60px] max-w-[56ch]">
-            <h2
-              className="text-[3.5rem] font-medium leading-[1.05] tracking-[-0.04em] text-xblack max-[991px]:text-[2.5rem]"
-            >
+      <section className="w-full bg-xbg-2 py-24 max-[991px]:py-16">
+        <div className="w-full max-w-[1440px] mx-auto px-10 max-[991px]:px-8 max-[479px]:px-5">
+          <div className="flex flex-col gap-4 mb-12 max-w-[56ch]">
+            <h2 className="t-display2 text-xprimary">
               Built for people who
               <br />
-              <span className="text-xdark-blue">want answers, not noise.</span>
+              <span className="text-xbrand">want answers, not noise.</span>
             </h2>
-            <p className="text-[1.125rem] text-xblack leading-[1.5]">
+            <p className="t-body1 text-xsecondary">
               Every sensor on the xHeal Band was chosen because it directly feeds
               the pattern-detection engine inside the xHeal app.
             </p>
           </div>
 
-          <div className="grid grid-cols-3 gap-[24px] max-[991px]:grid-cols-2 max-[767px]:grid-cols-1">
+          <div className="grid grid-cols-3 gap-6 max-[991px]:grid-cols-2 max-[767px]:grid-cols-1">
             {features.map((f) => (
-              <div
-                key={f.title}
-                className="rounded-[20px] border border-xlight-blue-low bg-white p-[28px] flex flex-col gap-[16px] shadow-[0_4px_4px_#1419330d] hover:shadow-[0_12px_24px_#1419331a] hover:-translate-y-[4px] transition-all duration-200"
-              >
+              <div key={f.title} className="surface-card-feature p-7 flex flex-col gap-4">
                 <span
-                  className="font-icons text-xdark-blue"
+                  className="font-icons text-xbrand"
                   style={{ fontSize: "28px" }}
                   aria-hidden
                 >
                   {f.icon}
                 </span>
-                <div className="flex flex-col gap-[8px]">
-                  <h3 className="text-[1.125rem] font-medium text-xblack tracking-[-0.01em]">
-                    {f.title}
-                  </h3>
-                  <p className="text-[1rem] text-xblack leading-[1.6]" style={{ opacity: 0.65 }}>
-                    {f.detail}
-                  </p>
+                <div className="flex flex-col gap-2">
+                  <h3 className="t-h5 text-xprimary">{f.title}</h3>
+                  <p className="t-body2 text-xsecondary">{f.detail}</p>
                 </div>
               </div>
             ))}
@@ -571,20 +563,20 @@ export default function SmartDevicesPage() {
       >
         <div className="w-full max-w-[100em] mx-auto px-[5em] flex items-center justify-between flex-wrap gap-[20px] max-[991px]:px-[40px] max-[479px]:px-[20px]">
           <Logo />
-          <div className="flex items-center gap-[32px] flex-wrap">
-            <a
+          <div className="flex items-center gap-8 flex-wrap">
+            <Link
               href="/privacy-policy"
-              className="text-[0.875rem] text-xblack-70 hover:text-xblack transition-colors"
+              className="t-body3 text-xtertiary hover:text-xprimary transition-colors"
             >
               Privacy Policy
-            </a>
-            <a
+            </Link>
+            <Link
               href="/terms-conditions"
-              className="text-[0.875rem] text-xblack-70 hover:text-xblack transition-colors"
+              className="t-body3 text-xtertiary hover:text-xprimary transition-colors"
             >
               Terms &amp; Conditions
-            </a>
-            <span className="text-[0.875rem] text-xblack-70">
+            </Link>
+            <span className="t-body3 text-xtertiary">
               © {new Date().getFullYear()} xHeal Corp.
             </span>
           </div>

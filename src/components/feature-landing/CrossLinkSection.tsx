@@ -64,15 +64,15 @@ export default function CrossLinkSection({
   if (features.length === 0) return null;
 
   return (
-    <section>
-      <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col items-center gap-[80px] text-xblack max-[991px]:px-[40px] max-[479px]:px-[20px]">
+    <section className="bg-xbg">
+      <div className="w-full max-w-[1440px] mx-auto px-10 py-24 flex flex-col items-center gap-12 max-[991px]:px-8 max-[991px]:py-16 max-[479px]:px-5">
         <ScrollReveal>
-          <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] text-center max-[991px]:text-[3rem]">
+          <h2 className="t-display2 text-xprimary text-center">
             {tLanding("crossLinksHeading")}
           </h2>
         </ScrollReveal>
 
-        <div className="grid grid-cols-3 gap-[24px] w-full max-[991px]:grid-cols-1">
+        <div className="grid grid-cols-3 gap-6 w-full max-[991px]:grid-cols-1">
           {features.map((feature, i) => {
             const titleKey = titleKeyMap[feature.slug];
             const title = titleKey ? tCross(titleKey) : feature.title;
@@ -83,10 +83,16 @@ export default function CrossLinkSection({
               <ScrollReveal key={feature.slug} delay={i * 120}>
                 <Link
                   href={`/${feature.slug}`}
-                  className="group border border-xlight-blue-low bg-xwhite rounded-[16px] p-[32px] shadow-[0_4px_4px_#1419330d] flex flex-col gap-[20px] h-full transition-all duration-300 hover:shadow-[0_12px_40px_#14193318] hover:-translate-y-[4px] no-underline"
+                  className="group surface-card-feature p-7 flex flex-col gap-5 h-full no-underline"
                 >
                   {/* Feature image */}
-                  <div className="w-full aspect-[4/3] rounded-[12px] overflow-hidden bg-[#f0f2ff] flex items-center justify-center">
+                  <div
+                    className="w-full aspect-[4/3] rounded-[12px] overflow-hidden flex items-center justify-center"
+                    style={{
+                      background:
+                        "linear-gradient(180deg, rgba(71,100,255,0.08) 0%, transparent 100%)",
+                    }}
+                  >
                     <Image
                       src={feature.image}
                       alt={title}
@@ -97,29 +103,24 @@ export default function CrossLinkSection({
                   </div>
 
                   {/* Icon + Title */}
-                  <div className="flex items-center gap-[12px]">
+                  <div className="flex items-center gap-3">
                     <span
-                      className="text-xdark-blue text-[1.5rem]"
-                      style={{ fontFamily: "MaterialSymbolsRounded" }}
+                      className="text-xbrand"
+                      style={{ fontFamily: "MaterialSymbolsRounded", fontSize: 24 }}
                     >
                       {feature.icon}
                     </span>
-                    <h3 className="text-[1.5rem] font-medium leading-[1.1] tracking-[-0.01em] text-xblack">
-                      {title}
-                    </h3>
+                    <h3 className="t-h4 text-xprimary">{title}</h3>
                   </div>
 
                   {/* One-liner */}
-                  <p className="text-xblack-70 text-[1.125rem] leading-[1.5] max-[767px]:text-[1rem]">
-                    {oneLiner}
-                  </p>
+                  <p className="t-body2 text-xsecondary">{oneLiner}</p>
 
                   {/* Learn more link */}
-                  <div className="mt-auto flex items-center gap-[6px] text-xdark-blue text-[1rem] font-medium group-hover:gap-[10px] transition-all duration-300">
+                  <div className="mt-auto flex items-center gap-1.5 text-xbrand t-button-sm group-hover:gap-2.5 transition-all duration-300">
                     {tLanding("learnMore")}
                     <span
-                      className="text-[1.25rem]"
-                      style={{ fontFamily: "MaterialSymbolsRounded" }}
+                      style={{ fontFamily: "MaterialSymbolsRounded", fontSize: 20 }}
                     >
                       arrow_forward
                     </span>

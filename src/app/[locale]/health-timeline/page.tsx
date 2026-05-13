@@ -7,7 +7,7 @@ export default function HealthTimelinePage() {
   const t = useTranslations("Feature_HealthTimeline");
 
   /* Helper: wrap <accent>…</accent> in a coloured span via next-intl rich text */
-  function accent(key: string, color = "text-xlight-blue") {
+  function accent(key: string, color = "text-xbrand-light") {
     return t.rich(key, {
       accent: (chunks) => <span className={color}>{chunks}</span>,
     });
@@ -18,24 +18,24 @@ export default function HealthTimelinePage() {
       heroTitle={accent("heroTitle")}
       heroSubtitle={t("heroSubtitle")}
       heroImage={{
-        src: "/images/records-landing.png",
+        src: "/images/screenshots/timeline.png",
         alt: t("heroImageAlt"),
         width: 1058,
         height: 2078,
       }}
-      painHeading={accent("painHeading", "text-xdark-blue")}
+      painHeading={accent("painHeading", "text-xbrand")}
       painPoints={[
         { icon: "folder_off", title: t("pain1Title"), detail: t("pain1Detail") },
         { icon: "search_off", title: t("pain2Title"), detail: t("pain2Detail") },
         { icon: "trending_flat", title: t("pain3Title"), detail: t("pain3Detail") },
       ]}
-      howHeading={accent("howHeading", "text-xdark-blue")}
+      howHeading={accent("howHeading", "text-xbrand")}
       howItWorks={[
         { step: "01", title: t("how1Title"), description: t("how1Description") },
         { step: "02", title: t("how2Title"), description: t("how2Description") },
         { step: "03", title: t("how3Title"), description: t("how3Description") },
       ]}
-      useCasesHeading={accent("useCasesHeading", "text-xdark-blue")}
+      useCasesHeading={accent("useCasesHeading", "text-xbrand")}
       useCases={[
         { question: t("uc1Question"), tag: t("uc1Tag"), description: t("uc1Description") },
         { question: t("uc2Question"), tag: t("uc2Tag"), description: t("uc2Description") },
@@ -69,7 +69,7 @@ export default function HealthTimelinePage() {
         { quote: t("test2Quote"), name: t("test2Name"), age: Number(t("test2Age")), image: "/images/testimonials/t-080.png" },
         { quote: t("test3Quote"), name: t("test3Name"), age: Number(t("test3Age")), image: "/images/testimonials/t-083.png" },
       ]}
-      trustHeading={accent("trustHeading", "text-xdark-blue")}
+      trustHeading={accent("trustHeading", "text-xbrand")}
       trustItems={[
         { title: t("trust1Title"), detail: t("trust1Detail") },
         { title: t("trust2Title"), detail: t("trust2Detail") },

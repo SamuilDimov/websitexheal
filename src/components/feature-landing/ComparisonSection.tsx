@@ -20,11 +20,19 @@ interface ComparisonSectionProps {
   highlightColumn?: number; // index of the xHeal column (default: last)
 }
 
-function CellContent({ value, partialLabel, naLabel }: { value: CellValue; partialLabel: string; naLabel: string }) {
+function CellContent({
+  value,
+  partialLabel,
+  naLabel,
+}: {
+  value: CellValue;
+  partialLabel: string;
+  naLabel: string;
+}) {
   if (value === "yes") {
     return (
       <span
-        className="text-[1.25rem] text-green-600"
+        className="text-xsuccess text-[20px]"
         style={{ fontFamily: "MaterialSymbolsRounded" }}
       >
         check_circle
@@ -34,7 +42,7 @@ function CellContent({ value, partialLabel, naLabel }: { value: CellValue; parti
   if (value === "no") {
     return (
       <span
-        className="text-[1.25rem] text-[#999]"
+        className="text-xtertiary text-[20px]"
         style={{ fontFamily: "MaterialSymbolsRounded" }}
       >
         cancel
@@ -43,18 +51,16 @@ function CellContent({ value, partialLabel, naLabel }: { value: CellValue; parti
   }
   if (value === "partial") {
     return (
-      <span className="text-[0.875rem] text-amber-600 font-medium">
+      <span className="t-caption text-xwarning font-bold uppercase">
         {partialLabel}
       </span>
     );
   }
   if (value === "n/a") {
-    return <span className="text-[0.875rem] text-[#999]">{naLabel}</span>;
+    return <span className="t-caption text-xtertiary uppercase">{naLabel}</span>;
   }
   // String value
-  return (
-    <span className="text-[0.875rem] leading-[1.4]">{value}</span>
-  );
+  return <span className="t-body3 text-xsecondary leading-[1.4]">{value}</span>;
 }
 
 export default function ComparisonSection({
@@ -70,35 +76,32 @@ export default function ComparisonSection({
   const xHealCol = highlightColumn ?? columns.length - 1;
 
   return (
-    <section>
-      <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col items-center gap-[60px] text-xblack max-[991px]:px-[40px] max-[479px]:px-[20px]">
+    <section className="bg-xbg-2">
+      <div className="w-full max-w-[1440px] mx-auto px-10 py-24 flex flex-col items-center gap-12 max-[991px]:px-8 max-[991px]:py-16 max-[479px]:px-5">
         {/* Heading + Intro */}
-        <ScrollReveal className="flex flex-col items-center gap-[24px] max-w-[52rem] text-center">
-          <h2 className="text-[4rem] font-medium leading-[1] tracking-[-0.04em] max-[991px]:text-[3rem]">
-            {heading}{" "}
-            <span className="text-xdark-blue">{headingAccent}</span>
+        <ScrollReveal className="flex flex-col items-center gap-6 max-w-[52rem] text-center">
+          <h2 className="t-display2 text-xprimary">
+            {heading} <span className="text-xbrand">{headingAccent}</span>
           </h2>
-          <p className="text-xblack-70 text-[1.125rem] leading-[1.5] max-[767px]:text-[1rem]">
-            {intro}
-          </p>
+          <p className="t-body1 text-xsecondary">{intro}</p>
         </ScrollReveal>
 
         {/* Comparison Table (desktop) */}
         <ScrollReveal className="w-full hidden md:block">
-          <div className="w-full overflow-x-auto rounded-[16px] border border-xlight-blue-low shadow-[0_4px_4px_#1419330d]">
+          <div className="w-full overflow-x-auto rounded-[20px] border border-xborder bg-xcard">
             <table className="w-full border-collapse text-left">
               <thead>
                 <tr>
-                  <th className="p-[16px] text-[0.875rem] font-medium tracking-[0.04em] uppercase text-xblack-70 bg-[#f4f5fa] border-b border-xlight-blue-low w-[22%]">
+                  <th className="p-4 t-overline text-xtertiary bg-xbg-3 border-b border-xborder w-[22%]">
                     {t("featureLabel")}
                   </th>
                   {columns.map((col, i) => (
                     <th
                       key={col}
-                      className={`p-[16px] text-[0.875rem] font-medium tracking-[0.04em] uppercase border-b border-xlight-blue-low text-center ${
+                      className={`p-4 t-overline border-b border-xborder text-center ${
                         i === xHealCol
-                          ? "bg-xdark-blue text-white"
-                          : "bg-[#f4f5fa] text-xblack-70"
+                          ? "bg-xbrand text-white"
+                          : "bg-xbg-3 text-xtertiary"
                       }`}
                     >
                       {col}
@@ -110,23 +113,23 @@ export default function ComparisonSection({
                 {rows.map((row, ri) => (
                   <tr
                     key={row.feature}
-                    className={
-                      ri % 2 === 0 ? "bg-xwhite" : "bg-[#f8f8fc]"
-                    }
+                    className={ri % 2 === 0 ? "bg-xcard" : "bg-xbg-2"}
                   >
-                    <td className="p-[16px] text-[1rem] font-medium text-xblack border-b border-[#f0f0f5]">
+                    <td className="p-4 t-h6 text-xprimary border-b border-xborder">
                       {row.feature}
                     </td>
                     {row.values.map((val, ci) => (
                       <td
                         key={ci}
-                        className={`p-[16px] text-center border-b border-[#f0f0f5] ${
-                          ci === xHealCol
-                            ? "bg-[#4764ff08]"
-                            : ""
+                        className={`p-4 text-center border-b border-xborder ${
+                          ci === xHealCol ? "bg-[rgba(71,100,255,0.06)]" : ""
                         }`}
                       >
-                        <CellContent value={val} partialLabel={t("partial")} naLabel={t("na")} />
+                        <CellContent
+                          value={val}
+                          partialLabel={t("partial")}
+                          naLabel={t("na")}
+                        />
                       </td>
                     ))}
                   </tr>
@@ -137,33 +140,35 @@ export default function ComparisonSection({
         </ScrollReveal>
 
         {/* Comparison Cards (mobile) */}
-        <div className="w-full flex flex-col gap-[16px] md:hidden">
+        <div className="w-full flex flex-col gap-4 md:hidden">
           {rows.map((row, ri) => (
             <ScrollReveal key={row.feature} delay={ri * 80}>
-              <div className="border border-xlight-blue-low bg-xwhite rounded-[16px] p-[20px] shadow-[0_4px_4px_#1419330d]">
-                <h4 className="text-[1rem] font-medium text-xblack mb-[12px]">
-                  {row.feature}
-                </h4>
-                <div className="flex flex-col gap-[8px]">
+              <div className="border border-xborder bg-xcard rounded-[16px] p-5">
+                <h4 className="t-h6 text-xprimary mb-3">{row.feature}</h4>
+                <div className="flex flex-col gap-2">
                   {columns.map((col, ci) => (
                     <div
                       key={col}
-                      className={`flex items-center justify-between py-[6px] px-[12px] rounded-[8px] ${
+                      className={`flex items-center justify-between py-1.5 px-3 rounded-lg ${
                         ci === xHealCol
-                          ? "bg-[#4764ff0d] border border-[#4764ff22]"
+                          ? "bg-[rgba(71,100,255,0.08)] border border-[rgba(71,100,255,0.2)]"
                           : ""
                       }`}
                     >
                       <span
-                        className={`text-[0.875rem] ${
+                        className={`t-body3 ${
                           ci === xHealCol
-                            ? "font-medium text-xdark-blue"
-                            : "text-xblack-70"
+                            ? "text-xbrand-light font-semibold"
+                            : "text-xtertiary"
                         }`}
                       >
                         {col}
                       </span>
-                      <CellContent value={row.values[ci]} partialLabel={t("partial")} naLabel={t("na")} />
+                      <CellContent
+                        value={row.values[ci]}
+                        partialLabel={t("partial")}
+                        naLabel={t("na")}
+                      />
                     </div>
                   ))}
                 </div>
@@ -174,9 +179,7 @@ export default function ComparisonSection({
 
         {/* Closing line */}
         <ScrollReveal className="text-center max-w-[48rem]">
-          <p className="text-[1.5rem] font-medium leading-[1.3] tracking-[-0.01em] text-xblack max-[767px]:text-[1.25rem]">
-            {closingLine}
-          </p>
+          <p className="t-h3 text-xprimary">{closingLine}</p>
         </ScrollReveal>
       </div>
     </section>

@@ -54,30 +54,21 @@ export default async function BlogPostPage({
   if (!post) {
     return (
       <>
-        <section
-          className="relative"
-          style={{
-            backgroundImage:
-              "linear-gradient(180deg, var(--dark-blue), #f8f8fa00)",
-          }}
-        >
-          <div className="w-full max-w-[100em] mx-auto px-[5em] pt-[200px] pb-[5em] flex flex-col items-center gap-[40px] text-xwhite max-[991px]:px-[40px] max-[991px]:pt-[140px] max-[479px]:px-[20px]">
-            <h1 className="text-[4.5rem] font-medium leading-[1] tracking-[-0.04em] text-center max-[991px]:text-[3.5rem] max-[479px]:text-[3rem]">
+        <section className="relative bg-xbg overflow-hidden">
+          <div className="absolute inset-0 pointer-events-none bg-radial-glow" aria-hidden />
+          <div className="relative w-full max-w-[1440px] mx-auto px-10 pt-[160px] pb-16 flex flex-col items-center gap-10 max-[991px]:px-8 max-[991px]:pt-[120px] max-[479px]:px-5">
+            <h1 className="t-display1 text-xprimary text-center">
               {t("postNotFoundTitle")}
             </h1>
           </div>
         </section>
-        <section>
-          <div className="w-full max-w-[100em] mx-auto px-[5em] py-[5em] flex flex-col items-center gap-[40px] text-xblack max-[991px]:px-[40px] max-[479px]:px-[20px]">
+        <section className="bg-xbg">
+          <div className="w-full max-w-[1440px] mx-auto px-10 py-16 flex flex-col items-center gap-10 max-[991px]:px-8 max-[479px]:px-5">
             <div className="max-w-[800px] mx-auto w-full">
-              <p className="text-xblack-70 mb-[20px]" style={{ fontSize: "16px" }}>
+              <p className="t-body1 text-xsecondary mb-5">
                 {t("postNotFoundDescription")}
               </p>
-              <Link
-                href="/blog"
-                className="text-xdark-blue hover:underline"
-                style={{ fontSize: "16px" }}
-              >
+              <Link href="/blog" className="t-button text-xbrand hover:underline">
                 &larr; {t("backToBlog")}
               </Link>
             </div>
@@ -90,109 +81,86 @@ export default async function BlogPostPage({
   return (
     <>
       {/* Hero */}
-      <section
-        className="relative"
-        style={{
-          backgroundImage:
-            "linear-gradient(180deg, var(--dark-blue), #f8f8fa00)",
-        }}
-      >
-        <div className="w-full max-w-[100em] mx-auto px-[5em] pt-[200px] pb-[5em] flex flex-col items-center gap-[20px] text-xwhite max-[991px]:px-[40px] max-[991px]:pt-[140px] max-[479px]:px-[20px]">
+      <section className="relative bg-xbg overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none bg-radial-glow" aria-hidden />
+        <div className="relative w-full max-w-[1440px] mx-auto px-10 pt-[160px] pb-16 flex flex-col items-center gap-5 max-[991px]:px-8 max-[991px]:pt-[120px] max-[479px]:px-5">
           {/* Category badge */}
-          <span
-            className="px-[12px] py-[5px] rounded-full border border-white/30"
-            style={{ fontSize: "13px", color: "rgba(248,248,250,0.8)" }}
-          >
+          <span className="badge badge-new">
             {t(`categories.${post.category}`)}
           </span>
-          <h1 className="text-[4rem] font-medium leading-[1.05] tracking-[-0.04em] text-center max-w-[18ch] max-[991px]:text-[3rem] max-[479px]:text-[2.5rem]">
+          <h1 className="t-display1 text-xprimary text-center max-w-[20ch]">
             {post.title}
           </h1>
         </div>
       </section>
 
       {/* Content */}
-      <section>
-        <div className="w-full max-w-[100em] mx-auto px-[5em] py-[3em] flex flex-col items-center text-xblack max-[991px]:px-[40px] max-[479px]:px-[20px]">
-          <div className="max-w-[800px] mx-auto w-full flex flex-col gap-[24px]">
+      <section className="bg-xbg">
+        <div className="w-full max-w-[1440px] mx-auto px-10 py-12 flex flex-col items-center max-[991px]:px-8 max-[479px]:px-5">
+          <div className="max-w-[800px] mx-auto w-full flex flex-col gap-6">
             {/* Cover image */}
             <Image
               src={post.image}
               alt={post.title}
               width={800}
               height={400}
-              className="w-full object-cover rounded-[16px] max-h-[28rem]"
+              className="w-full object-cover rounded-[16px] max-h-[28rem] ring-1 ring-xborder"
             />
 
             {/* Meta row */}
-            <div className="flex items-center gap-[16px] flex-wrap pb-[8px] border-b border-xlight-blue-low/50">
+            <div className="flex items-center gap-4 flex-wrap pb-3 border-b border-xborder">
               {/* Author */}
-              <div className="flex items-center gap-[8px]">
+              <div className="flex items-center gap-2">
                 <Image
                   src={post.author.image}
                   alt={post.author.name}
                   width={36}
                   height={36}
-                  className="rounded-full object-cover"
+                  className="rounded-full object-cover ring-1 ring-xborder"
                   style={{ width: 36, height: 36 }}
                 />
                 <div>
-                  <span
-                    className="font-medium block"
-                    style={{ fontSize: "14px" }}
-                  >
+                  <span className="t-body3 font-semibold text-xprimary block">
                     {post.author.name}
                   </span>
                   {post.author.role && (
-                    <span
-                      className="text-xblack-70 block"
-                      style={{ fontSize: "12px" }}
-                    >
+                    <span className="t-caption text-xtertiary block">
                       {post.author.role}
                     </span>
                   )}
                   {post.reviewedBy && (
-                    <span
-                      className="text-xblack-70 block"
-                      style={{ fontSize: "12px" }}
-                    >
+                    <span className="t-caption text-xtertiary block">
                       Reviewed by {post.reviewedBy}
                     </span>
                   )}
                 </div>
               </div>
 
-              <span className="text-xblack-70/30">|</span>
+              <span className="text-xtertiary opacity-50">|</span>
 
               {/* Date */}
-              <div className="flex items-center gap-[6px]">
-                <span
-                  className="font-icons text-xblack-70"
-                  style={{ fontSize: "16px" }}
-                >
+              <div className="flex items-center gap-1.5 text-xtertiary">
+                <span className="font-icons" style={{ fontSize: "16px" }}>
                   calendar_today
                 </span>
-                <span className="text-xblack-70" style={{ fontSize: "14px" }}>
+                <span className="t-body3">
                   {post.date}
                   {post.lastUpdated && (
-                    <span className="text-xblack-70/60 ml-1" style={{ fontSize: "12px" }}>
+                    <span className="t-caption ml-1 opacity-60">
                       (Updated {post.lastUpdated})
                     </span>
                   )}
                 </span>
               </div>
 
-              <span className="text-xblack-70/30">|</span>
+              <span className="text-xtertiary opacity-50">|</span>
 
               {/* Reading time */}
-              <div className="flex items-center gap-[6px]">
-                <span
-                  className="font-icons text-xblack-70"
-                  style={{ fontSize: "16px" }}
-                >
+              <div className="flex items-center gap-1.5 text-xtertiary">
+                <span className="font-icons" style={{ fontSize: "16px" }}>
                   schedule
                 </span>
-                <span className="text-xblack-70" style={{ fontSize: "14px" }}>
+                <span className="t-body3">
                   {post.readingTime} {t("minRead")}
                 </span>
               </div>
@@ -209,31 +177,30 @@ export default async function BlogPostPage({
 
             {/* Author byline */}
             {post.author.name === "Trifon Getsov" && (
-              <div className="flex items-start gap-[20px] p-[24px] rounded-[16px] border border-xlight-blue-low">
+              <div className="flex items-start gap-5 p-6 rounded-[16px] border border-xborder bg-xcard">
                 <Image
                   src={post.author.image}
                   alt={post.author.name}
                   width={72}
                   height={72}
-                  className="rounded-full object-cover flex-shrink-0"
+                  className="rounded-full object-cover flex-shrink-0 ring-1 ring-xborder"
                   style={{ width: 72, height: 72 }}
                 />
-                <div className="flex flex-col gap-[6px]">
-                  <span className="font-medium" style={{ fontSize: "15px" }}>
+                <div className="flex flex-col gap-1.5">
+                  <span className="t-h6 text-xprimary">
                     {post.author.name}
                   </span>
                   {post.author.role && (
-                    <span className="text-xblack-70" style={{ fontSize: "13px" }}>
+                    <span className="t-body3 text-xtertiary">
                       {post.author.role}
                     </span>
                   )}
-                  <p className="text-xblack-70 leading-[1.5]" style={{ fontSize: "13px" }}>
+                  <p className="t-body3 text-xsecondary">
                     3x CEO and co-founder of xHeal. After a 4-year personal health crisis, he built xHeal to help people understand their health data before symptoms appear. xHeal AI validated against 5,000+ patients.
                   </p>
                   <Link
                     href="/team/trifon-getsov"
-                    className="text-xdark-blue hover:underline mt-[4px]"
-                    style={{ fontSize: "13px" }}
+                    className="t-body3 text-xbrand hover:underline mt-1"
                   >
                     View full bio &rarr;
                   </Link>
@@ -244,8 +211,7 @@ export default async function BlogPostPage({
             {/* Back link */}
             <Link
               href="/blog"
-              className="text-xdark-blue hover:underline mt-[20px]"
-              style={{ fontSize: "16px" }}
+              className="t-button text-xbrand hover:underline mt-5"
             >
               &larr; {t("backToBlog")}
             </Link>
