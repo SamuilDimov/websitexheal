@@ -2,15 +2,11 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { useTranslations, useLocale } from "next-intl";
-import { Link, usePathname, useRouter } from "@/i18n/navigation";
-import { routing } from "@/i18n/routing";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 
 export default function Navbar() {
   const t = useTranslations("Navbar");
-  const locale = useLocale();
-  const pathname = usePathname();
-  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -21,10 +17,6 @@ export default function Navbar() {
     { href: "/blog" as const, label: t("blog") },
     { href: "/support" as const, label: t("support") },
   ];
-
-  function switchLocale(newLocale: string) {
-    router.replace(pathname, { locale: newLocale as "en" | "bg" });
-  }
 
   useEffect(() => {
     const handleScroll = () => {
@@ -88,24 +80,7 @@ export default function Navbar() {
               </Link>
             ))}
 
-            {/* Language Switcher */}
-            <div className="flex items-center gap-1 ml-3 rounded-full border border-xborder p-[3px] bg-xcard">
-              {routing.locales.map((loc) => (
-                <button
-                  key={loc}
-                  onClick={() => switchLocale(loc)}
-                  className={`px-3 py-1 text-[12px] font-bold tracking-[0.5px] uppercase rounded-full transition-all duration-200 ${
-                    locale === loc
-                      ? "bg-xbrand text-white"
-                      : "bg-transparent text-xtertiary hover:text-xprimary"
-                  }`}
-                >
-                  {loc}
-                </button>
-              ))}
-            </div>
-
-            <div className="ml-2">
+            <div className="ml-3">
               <a
                 href="https://apps.apple.com/us/app/xheal/id6748074977"
                 target="_blank"
@@ -179,26 +154,6 @@ export default function Navbar() {
                 <span className="t-h3 text-xprimary">{item.label}</span>
               </Link>
             ))}
-
-            {/* Language Switcher (mobile) */}
-            <div className="flex items-center justify-center gap-1 mt-6 rounded-full border border-xborder bg-xcard p-[3px] self-center">
-              {routing.locales.map((loc) => (
-                <button
-                  key={loc}
-                  onClick={() => {
-                    switchLocale(loc);
-                    setIsOpen(false);
-                  }}
-                  className={`px-4 py-2 text-[14px] font-bold tracking-[0.5px] uppercase rounded-full transition-all duration-200 ${
-                    locale === loc
-                      ? "bg-xbrand text-white"
-                      : "bg-transparent text-xtertiary"
-                  }`}
-                >
-                  {loc}
-                </button>
-              ))}
-            </div>
 
             {/* CTA button inside nav flow */}
             <div className="mt-6">
