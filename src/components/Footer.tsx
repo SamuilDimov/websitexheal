@@ -138,6 +138,12 @@ export default function Footer() {
             {/* Bottom row - legal links */}
             <div className="flex flex-wrap items-center gap-10 border-t border-xborder pt-8 max-[767px]:flex-col max-[767px]:items-start max-[767px]:gap-5">
               <Link
+                href="/guides"
+                className="t-body3 text-xtertiary transition-colors duration-200 hover:text-xprimary"
+              >
+                {t("guides")}
+              </Link>
+              <Link
                 href="/terms-conditions"
                 className="t-body3 text-xtertiary transition-colors duration-200 hover:text-xprimary"
               >

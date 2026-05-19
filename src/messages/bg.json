@@ -33,6 +33,7 @@
     "about": "За нас",
     "whatYouGet": "Какво получавате",
     "howItWorks": "Как работи",
+    "guides": "Ръководства",
     "blog": "Блог",
     "support": "Поддръжка",
     "downloadApp": "Изтеглете приложението",
@@ -43,6 +44,7 @@
   "Footer": {
     "copyright": "© {year} xHeal Corp. Всички права запазени.",
     "findUs": "Тук можете да ни намерите",
+    "guides": "Ръководства",
     "termsConditions": "Общи условия",
     "privacyPolicy": "Политика за поверителност",
     "cookiePolicy": "Политика за бисквитките"
