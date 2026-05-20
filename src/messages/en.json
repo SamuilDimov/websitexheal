@@ -33,6 +33,7 @@
     "about": "About",
     "whatYouGet": "What you get",
     "howItWorks": "How it works",
+    "guides": "Guides",
     "blog": "Blog",
     "support": "Support",
     "downloadApp": "Download App",
@@ -43,6 +44,7 @@
   "Footer": {
     "copyright": "© {year} xHeal Corp. All rights reserved.",
     "findUs": "This is where you can find us",
+    "guides": "Guides",
     "termsConditions": "Terms & Conditions",
     "privacyPolicy": "Privacy Policy",
     "cookiePolicy": "Cookie Policy"

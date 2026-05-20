@@ -1,9 +1,10 @@
 import type { MetadataRoute } from "next";
 import { blogPosts } from "@/data/blog-posts";
+import { guides } from "@/data/guides";
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://xheal.com";
 const LOCALES = ["en", "bg"] as const;
-const LAST_MOD = new Date("2026-03-26");
+const LAST_MOD = new Date("2026-05-19");
 
 function url(path: string) {
   return `${BASE_URL}${path}`;
@@ -78,5 +79,23 @@ export default function sitemap(): MetadataRoute.Sitemap {
       }));
     });
 
-  return [...staticPages, ...blogPages];
+  // Guides landing page
+  const guidesLanding: MetadataRoute.Sitemap = LOCALES.map((locale) => ({
+    url: url(`/${locale}/guides`),
+    lastModified: LAST_MOD,
+    changeFrequency: "weekly" as const,
+    priority: 0.9,
+  }));
+
+  // Individual guide pages
+  const guidePages: MetadataRoute.Sitemap = guides.flatMap((guide) =>
+    LOCALES.map((locale) => ({
+      url: url(`/${locale}/guides/${guide.category}/${guide.slug}`),
+      lastModified: LAST_MOD,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    }))
+  );
+
+  return [...staticPages, ...blogPages, ...guidesLanding, ...guidePages];
 }
