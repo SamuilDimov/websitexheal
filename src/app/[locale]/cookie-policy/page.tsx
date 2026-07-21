@@ -1,14 +1,31 @@
-import { getLocale } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 import { getLegalContent } from "@/data/legal-content";
+import { buildMetadata } from "@/lib/site";
 
-export async function generateMetadata() {
-  const locale = await getLocale();
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
   const legal = getLegalContent(locale);
-  return { title: legal.cookiePolicy.metaTitle };
+  const t = await getTranslations({ locale, namespace: "Metadata" });
+
+  return buildMetadata({
+    locale,
+    path: "/cookie-policy",
+    title: legal.cookiePolicy.metaTitle,
+    description: t("cookiePolicy.description"),
+    translated: true,
+  });
 }
 
-export default async function CookiePolicyPage() {
-  const locale = await getLocale();
+export default async function CookiePolicyPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
   const legal = getLegalContent(locale);
 
   return (

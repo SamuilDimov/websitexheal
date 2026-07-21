@@ -59,7 +59,6 @@ export default function HowItWorksSection() {
           {/* Step 1: INPUT - Checklist */}
           <ScrollReveal delay={0} className="flex">
             <div className="surface-card-feature flex flex-col gap-5 p-8 pt-10 w-full relative overflow-hidden">
-              <div className="absolute top-0 left-0 right-0 h-[3px] bg-theme-purple" />
               <div className="flex items-center gap-3">
                 <StepBadge number={1} />
                 <h3 className="t-h3 text-xprimary">{t("step1Title")}</h3>
@@ -73,7 +72,6 @@ export default function HowItWorksSection() {
           {/* Step 2: INTELLIGENCE - Cycling insights */}
           <ScrollReveal delay={100} className="flex">
             <div className="surface-card-feature flex flex-col gap-5 p-8 pt-10 w-full relative overflow-hidden">
-              <div className="absolute top-0 left-0 right-0 h-[3px] bg-theme-pink" />
               <div className="flex items-center gap-3">
                 <StepBadge number={2} />
                 <h3 className="t-h3 text-xprimary">{t("step2Title")}</h3>
@@ -88,7 +86,6 @@ export default function HowItWorksSection() {
         {/* Step 3: OUTPUT - Outcome carousel (full width) */}
         <ScrollReveal delay={200} className="w-full">
           <div className="surface-card-feature flex gap-10 p-10 w-full max-[991px]:flex-col max-[991px]:gap-5 max-[991px]:p-7 relative overflow-hidden">
-            <div className="absolute top-0 left-0 right-0 h-[3px] bg-theme-teal" />
             {/* Left: header + description */}
             <div className="flex flex-col gap-4 flex-shrink-0 max-[991px]:max-w-none" style={{ maxWidth: "380px" }}>
               <div className="flex items-center gap-3">

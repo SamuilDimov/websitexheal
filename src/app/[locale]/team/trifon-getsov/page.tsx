@@ -1,18 +1,39 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
-import { getLocale } from "next-intl/server";
 import { getBlogPosts } from "@/data/blog-posts";
+import { buildMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://xheal.com"),
-  title: "Trifon Getsov — Author & Co-founder | xHeal",
-  description:
-    "CEO & Co-founder of xHeal. After a 4-year personal health crisis, Trifon built xHeal to help people understand their health data before symptoms appear. xHeal AI validated against 5,000+ patients.",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
 
-export default async function TrifonBioPage() {
-  const locale = await getLocale();
+  return buildMetadata({
+    locale,
+    path: "/team/trifon-getsov",
+    title: "Trifon Getsov — Author & Co-founder | xHeal",
+    description:
+      "CEO & Co-founder of xHeal. After a 4-year personal health crisis, Trifon built xHeal to help people understand their health data before symptoms appear. xHeal AI validated against 5,000+ patients.",
+    image: "/images/trifon.png",
+    robots:
+      locale === "bg"
+        ? {
+            index: false,
+            follow: true,
+          }
+        : undefined,
+  });
+}
+
+export default async function TrifonBioPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
   const posts = getBlogPosts(locale);
   const trifonPosts = posts.filter(
     (p) =>

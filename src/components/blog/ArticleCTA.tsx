@@ -1,10 +1,8 @@
-"use client";
-
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 
-export default function ArticleCTA() {
-  const t = useTranslations("Blog");
+export default async function ArticleCTA() {
+  const t = await getTranslations("Blog");
 
   return (
     <div className="cta-surface p-8 flex flex-col items-center gap-4 text-center my-10">

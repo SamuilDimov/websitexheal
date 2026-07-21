@@ -1,25 +1,41 @@
 "use client";
 
 import Image from "next/image";
-import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import { type BlogPost } from "@/data/blog-posts";
+import type { BlogCategory, BlogSummary } from "@/types/content";
 
 interface BlogCardProps {
-  post: BlogPost;
+  post: BlogSummary;
   featured?: boolean;
+  clinical?: boolean;
+  categoryLabels: Record<BlogCategory, string>;
+  minReadLabel: string;
 }
 
-export default function BlogCard({ post, featured }: BlogCardProps) {
-  const t = useTranslations("Blog");
-
-  return (
+export default function BlogCard({
+  post,
+  featured,
+  clinical,
+  categoryLabels,
+  minReadLabel,
+}: BlogCardProps) {
+  const card = (
     <Link
       href={`/blog/${post.slug}`}
-      className={`surface-card-feature flex flex-col overflow-hidden no-underline ${
-        featured ? "col-span-full max-[767px]:col-span-1" : ""
+      className={`surface-card-feature flex flex-col overflow-hidden no-underline ${clinical ? "blog-card-clinical relative h-full" : ""} ${
+        featured && !clinical ? "col-span-full max-[767px]:col-span-1" : ""
       }`}
     >
+      {clinical && (
+        <>
+          <span className="blog-card-clinical-scan" aria-hidden="true" />
+          <span
+            className="blog-card-clinical-node absolute top-4 right-4 z-20 w-2 h-2 bg-xbrand rounded-full ring-2 ring-xbg"
+            aria-hidden="true"
+          />
+        </>
+      )}
+
       {/* Cover image */}
       <div className="overflow-hidden">
         <Image
@@ -38,10 +54,10 @@ export default function BlogCard({ post, featured }: BlogCardProps) {
         {/* Category + Reading time */}
         <div className="flex items-center gap-2.5 flex-wrap">
           <span className="badge badge-new">
-            {t(`categories.${post.category}`)}
+            {categoryLabels[post.category]}
           </span>
           <span className="t-body3 text-xtertiary">
-            {post.readingTime} {t("minRead")}
+            {post.readingTime} {minReadLabel}
           </span>
         </div>
 
@@ -75,5 +91,15 @@ export default function BlogCard({ post, featured }: BlogCardProps) {
         </div>
       </div>
     </Link>
+  );
+
+  if (!clinical) return card;
+
+  return (
+    <article
+      className={`blog-card-clinical-entry h-full ${featured ? "col-span-full max-[767px]:col-span-1" : ""}`}
+    >
+      {card}
+    </article>
   );
 }

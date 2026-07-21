@@ -1,12 +1,13 @@
-import { NextIntlClientProvider, hasLocale } from "next-intl";
+import { hasLocale } from "next-intl";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { Manrope } from "next/font/google";
-import { Analytics } from "@vercel/analytics/next";
 import { routing } from "@/i18n/routing";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ClientMessagesProvider from "@/components/ClientMessagesProvider";
+import { buildMetadata } from "@/lib/site";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -33,19 +34,12 @@ export async function generateMetadata({
   const t = await getTranslations({ locale, namespace: "Metadata" });
 
   return {
-    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://xheal.com"),
-    title: t("home.title"),
-    description: t("home.description"),
-    openGraph: {
+    ...buildMetadata({
+      locale,
       title: t("home.title"),
       description: t("home.description"),
-      type: "website",
-    },
-    twitter: {
-      title: t("home.title"),
-      description: t("home.description"),
-      card: "summary_large_image",
-    },
+      translated: true,
+    }),
     icons: {
       icon: "/favicon.png",
       apple: "/apple-touch-icon.png",
@@ -65,7 +59,7 @@ export default async function LocaleLayout({ children, params }: Props) {
   setRequestLocale(locale);
 
   return (
-    <html lang={locale} className={manrope.variable}>
+    <html lang={locale} className={manrope.variable} data-scroll-behavior="smooth">
       <head>
         {/*
           One-time cleanup of legacy cookie-consent storage from the old
@@ -85,14 +79,16 @@ export default async function LocaleLayout({ children, params }: Props) {
         />
       </head>
       <body className="bg-xbg text-xprimary antialiased">
-        <NextIntlClientProvider>
-          <div className="page-wrapper w-full relative overflow-hidden">
+        <ClientMessagesProvider
+          locale={locale}
+          namespaces={["Navbar", "Footer", "Newsletter", "Compliance"]}
+        >
+          <div className="page-wrapper w-full relative overflow-x-clip">
             <Navbar />
             <main className="main-wrapper">{children}</main>
             <Footer />
           </div>
-        </NextIntlClientProvider>
-        <Analytics />
+        </ClientMessagesProvider>
       </body>
     </html>
   );

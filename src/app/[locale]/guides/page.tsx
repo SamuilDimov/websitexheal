@@ -1,4 +1,8 @@
-import { guideCategories, getGuidesByCategory, type GuideCategory } from "@/data/guides";
+import {
+  guideCategories,
+  getGuideNavigation,
+  getGuidesByCategory,
+} from "@/data/guides";
 import { GuideCategoryCard, GuideListCard } from "@/components/guides/GuideCard";
 import GuidesSidebar from "@/components/guides/GuidesSidebar";
 import { Link } from "@/i18n/navigation";
@@ -6,6 +10,7 @@ import { Link } from "@/i18n/navigation";
 export default function GuidesPage() {
   // Get first 4 guides from "getting-started" for featured section
   const gettingStartedGuides = getGuidesByCategory("getting-started").slice(0, 4);
+  const navigation = getGuideNavigation();
 
   return (
     <div className="bg-xbg min-h-screen">
@@ -26,11 +31,7 @@ export default function GuidesPage() {
       <section className="w-full max-w-[1440px] mx-auto px-10 py-12 max-[991px]:px-8 max-[479px]:px-5">
         <div className="flex gap-8 lg:gap-12">
           {/* Sidebar */}
-          <div className="hidden lg:block w-[280px] flex-shrink-0">
-            <div className="sticky top-[80px]">
-              <GuidesSidebar />
-            </div>
-          </div>
+          <GuidesSidebar navigation={navigation} />
 
           {/* Content */}
           <div className="flex-1 min-w-0">
@@ -98,10 +99,6 @@ export default function GuidesPage() {
         </div>
       </section>
 
-      {/* Mobile sidebar */}
-      <div className="lg:hidden">
-        <GuidesSidebar />
-      </div>
     </div>
   );
 }

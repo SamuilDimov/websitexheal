@@ -18,14 +18,22 @@ interface ComparisonSectionProps {
   rows: ComparisonRow[];
   closingLine: string;
   highlightColumn?: number; // index of the xHeal column (default: last)
+  highlightLabel?: string;
+  methodology?: string;
+  sources?: { label: string; url: string }[];
+  disclaimer?: string;
 }
 
 function CellContent({
   value,
+  yesLabel,
+  noLabel,
   partialLabel,
   naLabel,
 }: {
   value: CellValue;
+  yesLabel: string;
+  noLabel: string;
   partialLabel: string;
   naLabel: string;
 }) {
@@ -34,8 +42,9 @@ function CellContent({
       <span
         className="text-xsuccess text-[20px]"
         style={{ fontFamily: "MaterialSymbolsRounded" }}
+        aria-label={yesLabel}
       >
-        check_circle
+        <span aria-hidden>check_circle</span>
       </span>
     );
   }
@@ -44,8 +53,9 @@ function CellContent({
       <span
         className="text-xtertiary text-[20px]"
         style={{ fontFamily: "MaterialSymbolsRounded" }}
+        aria-label={noLabel}
       >
-        cancel
+        <span aria-hidden>cancel</span>
       </span>
     );
   }
@@ -71,6 +81,10 @@ export default function ComparisonSection({
   rows,
   closingLine,
   highlightColumn,
+  highlightLabel,
+  methodology,
+  sources,
+  disclaimer,
 }: ComparisonSectionProps) {
   const t = useTranslations("FeatureLanding");
   const xHealCol = highlightColumn ?? columns.length - 1;
@@ -104,7 +118,14 @@ export default function ComparisonSection({
                           : "bg-xbg-3 text-xtertiary"
                       }`}
                     >
-                      {col}
+                      <span className="flex flex-col items-center gap-1">
+                        <span>{col}</span>
+                        {i === xHealCol && highlightLabel && (
+                          <span className="rounded-full bg-white/20 px-2 py-0.5 text-[9px] font-bold tracking-[0.08em] text-white">
+                            {highlightLabel}
+                          </span>
+                        )}
+                      </span>
                     </th>
                   ))}
                 </tr>
@@ -127,6 +148,8 @@ export default function ComparisonSection({
                       >
                         <CellContent
                           value={val}
+                          yesLabel={t("yes")}
+                          noLabel={t("no")}
                           partialLabel={t("partial")}
                           naLabel={t("na")}
                         />
@@ -149,26 +172,35 @@ export default function ComparisonSection({
                   {columns.map((col, ci) => (
                     <div
                       key={col}
-                      className={`flex items-center justify-between py-1.5 px-3 rounded-lg ${
+                      className={`flex items-start justify-between gap-3 py-1.5 px-3 rounded-lg ${
                         ci === xHealCol
                           ? "bg-[rgba(71,100,255,0.08)] border border-[rgba(71,100,255,0.2)]"
                           : ""
                       }`}
                     >
                       <span
-                        className={`t-body3 ${
+                        className={`t-body3 flex min-w-0 flex-wrap items-center gap-2 ${
                           ci === xHealCol
                             ? "text-xbrand-light font-semibold"
                             : "text-xtertiary"
                         }`}
                       >
-                        {col}
+                        <span>{col}</span>
+                        {ci === xHealCol && highlightLabel && (
+                          <span className="rounded-full bg-[rgba(71,100,255,0.14)] px-2 py-0.5 text-[9px] font-bold tracking-[0.06em] text-xbrand">
+                            {highlightLabel}
+                          </span>
+                        )}
                       </span>
-                      <CellContent
-                        value={row.values[ci]}
-                        partialLabel={t("partial")}
-                        naLabel={t("na")}
-                      />
+                      <span className="max-w-[52%] text-right">
+                        <CellContent
+                          value={row.values[ci]}
+                          yesLabel={t("yes")}
+                          noLabel={t("no")}
+                          partialLabel={t("partial")}
+                          naLabel={t("na")}
+                        />
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -181,6 +213,38 @@ export default function ComparisonSection({
         <ScrollReveal className="text-center max-w-[48rem]">
           <p className="t-h3 text-xprimary">{closingLine}</p>
         </ScrollReveal>
+
+        {(methodology || sources?.length || disclaimer) && (
+          <ScrollReveal className="w-full max-w-[64rem] border-t border-xborder pt-6">
+            <div className="flex flex-col items-center gap-2 text-center">
+              {methodology && (
+                <p className="t-body3 text-xtertiary">{methodology}</p>
+              )}
+              {sources && sources.length > 0 && (
+                <p className="t-body3 text-xtertiary">
+                  {t("sourcesLabel")}{" "}
+                  {sources.map((source, index) => (
+                    <span key={source.url}>
+                      {index > 0 && ", "}
+                      <a
+                        href={source.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xbrand underline underline-offset-2 hover:text-xbrand-light"
+                      >
+                        {source.label}
+                      </a>
+                    </span>
+                  ))}
+                  .
+                </p>
+              )}
+              {disclaimer && (
+                <p className="t-caption text-xtertiary">{disclaimer}</p>
+              )}
+            </div>
+          </ScrollReveal>
+        )}
       </div>
     </section>
   );

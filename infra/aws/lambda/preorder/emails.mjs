@@ -1,16 +1,25 @@
-import { NextRequest, NextResponse } from "next/server";
-import { Resend } from "resend";
-
-const resend = new Resend("re_Mr9EK1Qi_5dBofM3QgWBFBZpjf8i9PTyA");
-
-// ─── shared brand constants ────────────────────────────────────────────────
 const BRAND_BLUE = "#4764ff";
 const BRAND_DARK = "#141933";
-const BRAND_WHITE = "#f8f8fa";
 const LOGO_URL = "https://xheal.ai/images/logo.svg";
 
-// ─── internal notification ─────────────────────────────────────────────────
-function internalHtml(firstName: string, email: string) {
+export function escapeHtml(value) {
+  return value.replace(
+    /[&<>"']/g,
+    (character) =>
+      ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;",
+      })[character],
+  );
+}
+
+export function internalHtml(firstName, email) {
+  const safeFirstName = escapeHtml(firstName);
+  const safeEmail = escapeHtml(email);
+
   return `<!DOCTYPE html>
 <html lang="en">
 <head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width,initial-scale=1" /></head>
@@ -18,15 +27,11 @@ function internalHtml(firstName: string, email: string) {
   <table width="100%" cellpadding="0" cellspacing="0" style="padding:40px 0;">
     <tr><td align="center">
       <table width="560" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(71,100,255,0.10);">
-
-        <!-- header -->
         <tr>
           <td style="background:${BRAND_BLUE};padding:28px 40px;">
             <img src="${LOGO_URL}" alt="xHeal" height="28" style="display:block;" />
           </td>
         </tr>
-
-        <!-- body -->
         <tr>
           <td style="padding:36px 40px;">
             <h1 style="margin:0 0 24px;font-size:22px;font-weight:700;color:${BRAND_DARK};">
@@ -35,12 +40,12 @@ function internalHtml(firstName: string, email: string) {
             <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
               <tr>
                 <td style="padding:10px 0;border-bottom:1px solid #eef0ff;color:#888;font-size:13px;width:100px;">Name</td>
-                <td style="padding:10px 0;border-bottom:1px solid #eef0ff;font-weight:600;color:${BRAND_DARK};font-size:15px;">${firstName}</td>
+                <td style="padding:10px 0;border-bottom:1px solid #eef0ff;font-weight:600;color:${BRAND_DARK};font-size:15px;">${safeFirstName}</td>
               </tr>
               <tr>
                 <td style="padding:10px 0;border-bottom:1px solid #eef0ff;color:#888;font-size:13px;">Email</td>
                 <td style="padding:10px 0;border-bottom:1px solid #eef0ff;font-weight:600;color:${BRAND_DARK};font-size:15px;">
-                  <a href="mailto:${email}" style="color:${BRAND_BLUE};text-decoration:none;">${email}</a>
+                  <a href="mailto:${safeEmail}" style="color:${BRAND_BLUE};text-decoration:none;">${safeEmail}</a>
                 </td>
               </tr>
               <tr>
@@ -50,14 +55,11 @@ function internalHtml(firstName: string, email: string) {
             </table>
           </td>
         </tr>
-
-        <!-- footer -->
         <tr>
           <td style="padding:20px 40px;background:#f8f9ff;border-top:1px solid #eef0ff;">
             <p style="margin:0;font-size:12px;color:#aaa;">xHeal Band pre-order system &middot; <a href="https://xheal.ai" style="color:${BRAND_BLUE};">xheal.ai</a></p>
           </td>
         </tr>
-
       </table>
     </td></tr>
   </table>
@@ -65,8 +67,9 @@ function internalHtml(firstName: string, email: string) {
 </html>`;
 }
 
-// ─── user confirmation ─────────────────────────────────────────────────────
-function userHtml(firstName: string) {
+export function userHtml(firstName, year = new Date().getUTCFullYear()) {
+  const safeFirstName = escapeHtml(firstName);
+
   return `<!DOCTYPE html>
 <html lang="en">
 <head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width,initial-scale=1" /></head>
@@ -74,21 +77,17 @@ function userHtml(firstName: string) {
   <table width="100%" cellpadding="0" cellspacing="0" style="padding:40px 0;">
     <tr><td align="center">
       <table width="560" cellpadding="0" cellspacing="0" style="border-radius:20px;overflow:hidden;box-shadow:0 8px 40px rgba(71,100,255,0.18);">
-
-        <!-- hero header -->
         <tr>
           <td style="background:linear-gradient(145deg,${BRAND_BLUE} 0%,${BRAND_DARK} 100%);padding:48px 40px 40px;">
             <img src="${LOGO_URL}" alt="xHeal" height="32" style="display:block;margin-bottom:28px;" />
             <h1 style="margin:0 0 12px;font-size:32px;font-weight:700;color:#ffffff;line-height:1.15;">
-              You&rsquo;re in, ${firstName}.
+              You&rsquo;re in, ${safeFirstName}.
             </h1>
             <p style="margin:0;font-size:16px;color:rgba(255,255,255,0.75);line-height:1.6;">
               Your xHeal Band spot is reserved. No payment has been taken.
             </p>
           </td>
         </tr>
-
-        <!-- value callout -->
         <tr>
           <td style="background:#ffffff;padding:0 40px;">
             <div style="margin:28px 0;padding:20px 24px;background:#f0f2ff;border-radius:12px;border-left:4px solid ${BRAND_BLUE};">
@@ -97,8 +96,6 @@ function userHtml(firstName: string) {
             </div>
           </td>
         </tr>
-
-        <!-- what happens next -->
         <tr>
           <td style="background:#ffffff;padding:0 40px 36px;">
             <h2 style="margin:0 0 20px;font-size:16px;font-weight:700;color:${BRAND_DARK};text-transform:uppercase;letter-spacing:0.06em;">What happens next</h2>
@@ -130,8 +127,6 @@ function userHtml(firstName: string) {
             </table>
           </td>
         </tr>
-
-        <!-- cta -->
         <tr>
           <td style="background:#ffffff;padding:0 40px 40px;text-align:center;">
             <a href="https://xheal.ai" style="display:inline-block;background:${BRAND_BLUE};color:#ffffff;text-decoration:none;font-size:15px;font-weight:600;padding:14px 36px;border-radius:12px;">
@@ -139,8 +134,6 @@ function userHtml(firstName: string) {
             </a>
           </td>
         </tr>
-
-        <!-- footer -->
         <tr>
           <td style="background:${BRAND_DARK};padding:24px 40px;">
             <table width="100%" cellpadding="0" cellspacing="0">
@@ -150,56 +143,16 @@ function userHtml(firstName: string) {
                   <p style="margin:0;font-size:12px;color:rgba(255,255,255,0.4);line-height:1.6;">
                     Questions or want to cancel? Just reply to this email or reach us at
                     <a href="mailto:hello@xheal.ai" style="color:rgba(255,255,255,0.6);">hello@xheal.ai</a>.
-                    <br />&copy; ${new Date().getFullYear()} xHeal Corp. All rights reserved.
+                    <br />&copy; ${year} xHeal Corp. All rights reserved.
                   </p>
                 </td>
               </tr>
             </table>
           </td>
         </tr>
-
       </table>
     </td></tr>
   </table>
 </body>
 </html>`;
-}
-
-// ─── route handler ─────────────────────────────────────────────────────────
-export async function POST(req: NextRequest) {
-  try {
-    const { firstName, email } = await req.json();
-
-    if (!firstName || !email) {
-      return NextResponse.json(
-        { error: "firstName and email are required" },
-        { status: 400 }
-      );
-    }
-
-    // 1. Internal notification to the team
-    await resend.emails.send({
-      from: `xHeal Band <hello@xheal.ai>`,
-      to: "hello@xheal.ai",
-      subject: `New Band Pre-Order: ${firstName} (${email})`,
-      html: internalHtml(firstName, email),
-    });
-
-    // 2. Branded no-reply confirmation to the user
-    await resend.emails.send({
-      from: `xHeal Band <hello@xheal.ai>`,
-      replyTo: "hello@xheal.ai",
-      to: email,
-      subject: `Your xHeal Band spot is reserved, ${firstName}`,
-      html: userHtml(firstName),
-    });
-
-    return NextResponse.json({ success: true });
-  } catch (err) {
-    console.error("Preorder API error:", err);
-    return NextResponse.json(
-      { error: "Failed to process reservation" },
-      { status: 500 }
-    );
-  }
 }

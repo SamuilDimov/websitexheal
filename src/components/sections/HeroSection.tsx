@@ -2,6 +2,7 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import MedicalStandardsBadge from "@/components/ui/MedicalStandardsBadge";
 import ComplianceBadges from "@/components/ui/ComplianceBadges";
+import HeroVideo from "@/components/ui/HeroVideo";
 import IntegrationLogosStrip from "@/components/ui/IntegrationLogosStrip";
 
 export default function HeroSection() {
@@ -26,37 +27,34 @@ export default function HeroSection() {
       <div className="relative w-full max-w-[1440px] mx-auto px-10 pt-[160px] pb-[100px] max-[991px]:px-8 max-[991px]:pt-[120px] max-[991px]:pb-[60px] max-[479px]:px-5">
         <div className="grid grid-cols-[1.4fr_1fr] gap-[80px] max-[991px]:gap-[40px] max-[767px]:grid-cols-1">
           {/* Left Column */}
-          <div className="grid grid-cols-1 gap-10">
+          <div className="grid grid-cols-1 gap-10 max-[767px]:contents">
             {/* Heading */}
-            <h1 className="t-display1 text-xprimary">
+            <h1 className="t-display1 text-xprimary max-[767px]:order-1">
               {t("heading")}{" "}
               <span className="text-xbrand">{t("headingAccent")}</span>
             </h1>
 
             {/* Subtitle */}
-            <p className="t-h4 text-xsecondary max-w-[52ch] font-normal">
+            <p className="t-h4 text-xsecondary max-w-[52ch] font-normal max-[767px]:order-2">
               {t("subtitle")}
             </p>
 
             {/* Stats Cards */}
-            <div className="grid grid-cols-3 gap-4 max-[991px]:grid-cols-1">
-              {/* Stat 1 — purple/brand accent */}
+            <div className="grid grid-cols-3 gap-4 max-[991px]:grid-cols-1 max-[767px]:order-4">
+              {/* Stat 1 */}
               <div className="surface-card-feature p-5 flex flex-col gap-2 relative overflow-hidden">
-                <div className="absolute top-0 left-0 right-0 h-[3px] bg-xbrand" />
                 <div className="t-h3 text-xprimary">{t("stat1Title")}</div>
                 <p className="t-body3 text-xsecondary">{t("stat1Text")}</p>
               </div>
 
-              {/* Stat 2 — teal accent */}
+              {/* Stat 2 */}
               <div className="surface-card-feature p-5 flex flex-col gap-2 relative overflow-hidden">
-                <div className="absolute top-0 left-0 right-0 h-[3px] bg-theme-teal" />
                 <div className="t-h3 text-xprimary">{t("stat2Title")}</div>
                 <p className="t-body3 text-xsecondary">{t("stat2Text")}</p>
               </div>
 
-              {/* Stat 3 — amber accent (rating + avatars) */}
+              {/* Stat 3 (rating + avatars) */}
               <div className="surface-card-feature p-5 flex flex-col gap-3 relative overflow-hidden">
-                <div className="absolute top-0 left-0 right-0 h-[3px] bg-theme-amber" />
                 <div className="t-h3 text-xprimary">{t("stat3Title")}</div>
                 <div className="flex items-center gap-[2px]">
                   {[...Array(5)].map((_, i) => (
@@ -89,7 +87,7 @@ export default function HeroSection() {
             </div>
 
             {/* App Store Badge + Trust Signals */}
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 max-[767px]:order-5">
               <div className="flex items-center gap-6 flex-wrap">
                 <a
                   href="https://apps.apple.com/us/app/xheal/id6748074977"
@@ -112,10 +110,10 @@ export default function HeroSection() {
             </div>
           </div>
 
-          {/* Right Column - Phone (new device-framed mockup) */}
-          <div className="flex justify-end self-start max-[767px]:justify-center">
-            <div className="relative">
-              {/* Subtle blue glow behind phone */}
+          {/* Right Column - Product hero artwork */}
+          <div className="flex justify-end self-start max-[767px]:justify-center max-[767px]:order-3">
+            <div className="relative w-[500px] max-w-full max-[767px]:w-full max-[767px]:max-w-[380px]">
+              {/* Subtle blue glow behind artwork */}
               <div
                 className="absolute inset-0 -z-10 blur-[60px] opacity-50"
                 aria-hidden
@@ -124,14 +122,7 @@ export default function HeroSection() {
                     "radial-gradient(ellipse 60% 60% at 50% 50%, rgba(71, 100, 255, 0.4) 0%, transparent 70%)",
                 }}
               />
-              <Image
-                src="/images/screenshots/routine.png"
-                alt={t("dashboardAlt")}
-                width={808}
-                height={1660}
-                className="w-[420px] max-w-full max-[767px]:max-w-[320px] animate-[floatPhone_6s_ease-in-out_infinite]"
-                priority
-              />
+              <HeroVideo description={t("dashboardAlt")} />
             </div>
           </div>
         </div>

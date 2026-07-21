@@ -17,12 +17,6 @@ export default function ChatWithYourHealthPage() {
     <FeatureLandingPage
       heroTitle={accent("heroTitle")}
       heroSubtitle={t("heroSubtitle")}
-      heroImage={{
-        src: "/images/screenshots/chat-flare-up.png",
-        alt: t("heroImageAlt"),
-        width: 1058,
-        height: 2078,
-      }}
       painHeading={accent("painHeading", "text-xbrand")}
       painPoints={[
         {

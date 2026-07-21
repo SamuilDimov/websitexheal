@@ -1,18 +1,22 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { notFound } from "next/navigation";
 import { Link } from "@/i18n/navigation";
-import { getTranslations, getLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import {
-  blogPosts,
+  BLOG_IMAGE_SLIDER_MARKER,
   getBlogPosts,
 } from "@/data/blog-posts";
 import ArticleCTA from "@/components/blog/ArticleCTA";
+import ChatScreenshotSlider from "@/components/blog/ChatScreenshotSlider";
 import RelatedPosts from "@/components/blog/RelatedPosts";
 import MedicalDisclaimer from "@/components/blog/MedicalDisclaimer";
+import { buildMetadata } from "@/lib/site";
+
+export const dynamicParams = false;
 
 export function generateStaticParams() {
-  // Use English slugs, they're the same for both locales
-  return blogPosts.map((post) => ({ slug: post.slug }));
+  return getBlogPosts("en").map(({ slug }) => ({ slug }));
 }
 
 export async function generateMetadata({
@@ -23,58 +27,53 @@ export async function generateMetadata({
   const { slug, locale } = await params;
   const posts = getBlogPosts(locale);
   const post = posts.find((p) => p.slug === slug);
-  return {
-    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://xheal.com"),
-    title: post ? `${post.title} | xHeal Blog` : "Blog Post | xHeal",
-    description: post?.metaDescription || post?.excerpt || "xHeal blog post",
-    openGraph: post
-      ? {
-          title: post.title,
-          description: post.metaDescription || post.excerpt,
-          images: [{ url: post.image }],
-          type: "article",
-          publishedTime: post.date,
-          authors: [post.author.name],
-        }
-      : undefined,
-  };
+
+  if (!post) {
+    notFound();
+  }
+
+  const title = `${post.seoTitle || post.title} | xHeal Blog`;
+  const description = post.metaDescription || post.excerpt;
+
+  return buildMetadata({
+    locale,
+    path: `/blog/${post.slug}`,
+    title,
+    description,
+    image: post.image,
+    translated: true,
+    article: {
+      publishedTime: new Date(post.publishAt || post.date).toISOString(),
+      modifiedTime: post.lastUpdated
+        ? new Date(post.lastUpdated).toISOString()
+        : undefined,
+      authors: [post.author.name],
+    },
+  });
 }
 
 export default async function BlogPostPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string; locale: string }>;
 }) {
-  const { slug } = await params;
-  const t = await getTranslations("Blog");
-  const locale = await getLocale();
+  const { slug, locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations({ locale, namespace: "Blog" });
   const posts = getBlogPosts(locale);
   const post = posts.find((p) => p.slug === slug);
 
   if (!post) {
-    return (
-      <>
-        <section className="relative bg-xbg overflow-hidden">
-          <div className="absolute inset-0 pointer-events-none bg-radial-glow" aria-hidden />
-          <div className="relative w-full max-w-[1440px] mx-auto px-10 pt-[160px] pb-16 flex flex-col items-center gap-10 max-[991px]:px-8 max-[991px]:pt-[120px] max-[479px]:px-5">
-            <h1 className="t-display1 text-xprimary text-center">
-              {t("postNotFoundTitle")}
-            </h1>
-          </div>
-        </section>
-        <section className="bg-xbg">
-          <div className="w-full max-w-[1440px] mx-auto px-10 py-16 flex flex-col items-center gap-10 max-[991px]:px-8 max-[479px]:px-5">
-            <div className="max-w-[800px] mx-auto w-full">
-              <p className="t-body1 text-xsecondary mb-5">
-                {t("postNotFoundDescription")}
-              </p>
-              <Link href="/blog" className="t-button text-xbrand hover:underline">
-                &larr; {t("backToBlog")}
-              </Link>
-            </div>
-          </div>
-        </section>
-      </>
+    notFound();
+  }
+
+  const sliderContent = post.imageSlider
+    ? post.content.split(BLOG_IMAGE_SLIDER_MARKER)
+    : null;
+
+  if (sliderContent && sliderContent.length !== 2) {
+    throw new Error(
+      `Blog post ${post.slug} must contain exactly one image slider marker`,
     );
   }
 
@@ -167,10 +166,35 @@ export default async function BlogPostPage({
             </div>
 
             {/* Article content */}
-            <div
-              className="rich-text"
-              dangerouslySetInnerHTML={{ __html: post.content }}
-            />
+            {post.imageSlider && sliderContent ? (
+              <div className="rich-text">
+                <div
+                  dangerouslySetInnerHTML={{ __html: sliderContent[0] }}
+                />
+                <ChatScreenshotSlider
+                  slides={post.imageSlider.slides}
+                  labels={{
+                    ariaLabel: t("sliderAriaLabel"),
+                    carouselDescription: t("sliderCarouselDescription"),
+                    slideDescription: t("sliderSlideDescription"),
+                    eyebrow: t("sliderEyebrow"),
+                    previous: t("sliderPrevious"),
+                    next: t("sliderNext"),
+                    screenshot: t("sliderScreenshot"),
+                    of: t("sliderOf"),
+                    hint: t("sliderHint"),
+                  }}
+                />
+                <div
+                  dangerouslySetInnerHTML={{ __html: sliderContent[1] }}
+                />
+              </div>
+            ) : (
+              <div
+                className="rich-text"
+                dangerouslySetInnerHTML={{ __html: post.content }}
+              />
+            )}
 
             {/* Medical disclaimer */}
             <MedicalDisclaimer />

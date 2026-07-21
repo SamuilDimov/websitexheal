@@ -1,4 +1,6 @@
 import { getTranslations } from "next-intl/server";
+import { buildMetadata } from "@/lib/site";
+import ClientMessagesProvider from "@/components/ClientMessagesProvider";
 
 export async function generateMetadata({
   params,
@@ -7,16 +9,26 @@ export async function generateMetadata({
 }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Metadata" });
-  return {
+  return buildMetadata({
+    locale,
+    path: "/support",
     title: t("support.title"),
     description: t("support.description"),
-  };
+    translated: true,
+  });
 }
 
-export default function SupportLayout({
+export default async function SupportLayout({
   children,
+  params,
 }: {
   children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 }) {
-  return <>{children}</>;
+  const { locale } = await params;
+  return (
+    <ClientMessagesProvider locale={locale} namespaces={["Support"]}>
+      {children}
+    </ClientMessagesProvider>
+  );
 }

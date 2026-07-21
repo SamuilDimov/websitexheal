@@ -1,6 +1,8 @@
 // Guides data - centralized source of truth for user guides and tutorials
 // Organized by category with full content
 
+import type { GuideNavigationCategory } from "@/types/content";
+
 export type GuideCategory =
   | "getting-started"
   | "understanding-your-health"
@@ -94,6 +96,62 @@ export interface Guide {
   prerequisites?: string[];
 }
 
+const guideOverrides: Record<
+  string,
+  Partial<Pick<Guide, "title" | "description" | "content">>
+> = {
+  "nutrition/nutrition-overview": {
+    content: "<h2>Your Nutrition Hub</h2><p>xHeal combines calorie and macro tracking with seven-day meal planning.</p><h3>Nutrition Dashboard</h3><p>See calories, protein, carbohydrates, and fat against your daily targets, review logged meals, and open an active meal plan.</p><h3>Meal Planning</h3><p>Build a plan from your eating style, calorie and macro targets, allergies, dietary restrictions, and ingredient preferences. Swap individual meals and view the aggregated shopping list.</p><h3>Food Logging</h3><p>Log calories and macros manually or photograph a meal for AI-estimated foods, portions, calories, and macros. You can edit the resulting meal after analysis.</p><h3>Recipe Catalog</h3><p>Browse nearly 500 recipes whose nutrition is calculated from USDA-based ingredient data.</p><blockquote><strong>Current scope:</strong> Database search, barcode lookup, favorites, and a dedicated hydration workflow are not currently available.</blockquote>",
+  },
+  "nutrition/creating-meal-plans": {
+    content: "<h2>Personalized Meal Planning</h2><p>xHeal creates a seven-day plan around the nutrition profile you provide.</p><h3>Set Your Profile</h3><p>Choose an eating style, record allergies and dietary restrictions, set calorie and macro targets, and mark ingredient and food preferences.</p><h3>Generate and Review</h3><p>xHeal selects recipes that fit those requirements and shows daily meals with nutrition totals.</p><h3>Customize the Week</h3><p>Swap an individual meal for an available alternative without rebuilding the rest of the plan.</p><h3>Activate the Plan</h3><p>Activating saves the week as your current plan and produces an aggregated shopping list.</p><blockquote><strong>Note:</strong> Meal plans are informational wellness tools, not medical nutrition therapy.</blockquote>",
+  },
+  "nutrition/logging-food": {
+    title: "Logging Food and Meals",
+    description: "Track meals with photo analysis or manual calorie and macro entry.",
+    content: "<h2>Track What You Eat</h2><p>The current logging flow supports AI photo analysis and manual calorie and macro entry.</p><h3>Photo Analysis</h3><p>Take or upload a meal photo. xHeal estimates foods, portions, calories, protein, carbohydrates, and fat, then creates a food log you can review and edit.</p><h3>Manual Entry</h3><p>Choose the meal and date, then enter calories and macros for the meal.</p><h3>History</h3><p>Review previous food logs and edit or remove entries when needed.</p><blockquote><strong>Current scope:</strong> Food-database search, product lookup from a barcode, recent foods, favorites, and reusable custom foods are not currently available.</blockquote>",
+  },
+  "nutrition/calorie-tracker": {
+    title: "Using Photo Food Analysis",
+    description: "Understand xHeal photo-based calorie and macro estimates.",
+    content: "<h2>Photo-Based Food Analysis</h2><p>xHeal can analyze a meal photo to estimate visible food items, portions, calories, and macronutrients.</p><h3>Taking a Useful Photo</h3><p>Use even lighting, include the whole plate, and keep foods visible where possible.</p><h3>Reviewing the Log</h3><p>Photo analysis creates a food log after processing. Review the estimate and edit the resulting meal if the foods, portion, or totals need correction.</p><h3>Limits</h3><p>Mixed dishes, hidden ingredients, sauces, and unusual portions can reduce estimate quality. Treat photo results as estimates rather than laboratory measurements.</p>",
+  },
+  "nutrition/shopping-list": {
+    content: "<h2>Your Plan Shopping List</h2><p>When a nutrition plan is active, xHeal aggregates the ingredients required by its recipes into a shopping list.</p><h3>Open the List</h3><p>Use the shopping-list action from the active meal plan to review the ingredients needed for the week.</p><h3>How It Is Built</h3><p>Ingredients from planned recipes are combined so repeated items appear together.</p><blockquote><strong>Current scope:</strong> Manual list editing, quantity adjustment, pantry management, reliable clipboard export, and sharing are not currently available.</blockquote>",
+  },
+  "workouts/workout-overview": {
+    content: "<h2>Your Fitness Companion</h2><p>xHeal combines readiness-based workout guidance, session logging, and strength progress.</p><h3>Body Today</h3><p>Readiness uses HRV, resting heart rate, sleep, stress, recent active-energy training load, and relevant health constraints.</p><h3>Workout Guidance</h3><p>Recommendations consider readiness fit, goals, equipment, recent movement balance, safety restrictions, and saved plans.</p><h3>Following a Workout</h3><p>Track exercises, sets, reps, weight, duration, distance, rest, notes, and photos as supported by the exercise type.</p><h3>Progress</h3><p>Review workout history, personal records, max weight, volume, and estimated 1RM charts.</p><h3>Apple Health</h3><p>Completed sessions can save workout type, duration, estimated active calories, and optional distance to Apple Health.</p>",
+  },
+  "workouts/readiness-score": {
+    content: "<h2>Train with More Context</h2><p>Body Today is an informational readiness score that helps frame today's training decision.</p><h3>Current Inputs</h3><p>HRV contributes 30%, resting heart rate 10%, sleep 20%, stress 10%, training load 20%, and relevant health constraints 10%. Availability and confidence depend on the data in your profile.</p><h3>Health Context</h3><p>Active flare-ups and selected surgery or medication contexts can cap readiness and steer recommendations toward a more conservative option.</p><h3>Using the Score</h3><p>Use readiness with how you feel and the advice of qualified professionals. It is not medical clearance and does not diagnose fatigue, illness, or injury.</p>",
+  },
+  "workouts/following-workouts": {
+    content: "<h2>Guided Workout Sessions</h2><p>Start a recommended or saved workout and log the session as you go.</p><h3>During the Session</h3><p>Complete exercises and record the supported fields, including sets, reps, weight, duration, distance, rest, notes, and photos.</p><h3>Adjusting the Workout</h3><p>Replace an exercise when the movement or available equipment does not fit. Rest timers help pace strength sets.</p><h3>Completing the Session</h3><p>Finish the workout to save its duration, completed work, notes, and detected personal records. The app can also save a workout summary to Apple Health.</p><blockquote><strong>Note:</strong> Live heart rate can be displayed during a session, but heart-rate samples are not currently attached to the saved Apple Health workout.</blockquote>",
+  },
+  "workouts/tracking-progress": {
+    content: "<h2>See Your Training Progress</h2><p>xHeal keeps completed sessions and exercise history together.</p><h3>Workout History</h3><p>Review previous sessions, completed exercises, sets, reps, weights, duration, notes, and photos when available.</p><h3>Exercise Charts</h3><p>Exercise detail views can chart max weight, total volume, and estimated one-rep max over time.</p><h3>Personal Records</h3><p>xHeal detects supported personal records from logged sets and surfaces them in your training history.</p><blockquote><strong>Current scope:</strong> Body-measurement tracking, deadline-based strength goals, trainer PDF exports, and social sharing are not currently part of this progress flow.</blockquote>",
+  },
+  "mindfulness/mindfulness-overview": {
+    content: "<h2>Mindfulness and Wellbeing</h2><p>xHeal combines guided breathing, mood check-ins, activity history, and Mind Readiness.</p><h3>Mind Readiness</h3><p>Readiness uses recent mood and stress check-ins and other supported context when available to provide informational guidance for a suggested action.</p><h3>Breathing</h3><p>Follow timed phases with animation, haptic transitions, and optional ambient audio. Completed sessions can be written to Apple Health as Mindful Minutes.</p><h3>Mood Check-Ins</h3><p>Record mood, energy, stress, and anxiety on a five-point scale.</p><h3>Activity</h3><p>Review breathing and mood entries by date.</p><blockquote><strong>Current scope:</strong> xHeal does not currently provide real-time HRV biofeedback, a guided meditation library, journaling, or mindfulness plans.</blockquote>",
+  },
+  "mindfulness/breathing-exercises": {
+    content: "<h2>Guided Breathing</h2><p>xHeal guides each breathing phase with animation, timing, haptic transitions, and optional ambient sound.</p><h3>Starting a Session</h3><p>Open Mindfulness, choose one of the available patterns and duration options, select an ambient sound if desired, and start.</p><h3>During the Session</h3><p>Follow the on-screen inhale, hold, exhale, and rest phases. Stop if you feel dizzy or uncomfortable.</p><h3>Completion</h3><p>The session is saved to xHeal activity history and can be written to Apple Health as Mindful Minutes when permission is enabled.</p><blockquote><strong>Current scope:</strong> Custom patterns, arbitrary 1-20 minute duration selection, pause and resume, and live HRV biofeedback are not currently available.</blockquote>",
+  },
+  "mindfulness/mood-check-ins": {
+    content: "<h2>Track Your Emotional Context</h2><p>A full xHeal check-in records four dimensions on a five-point scale.</p><h3>The Four Dimensions</h3><p>Record mood, energy, stress, and anxiety. The shorter dashboard flow records mood, energy, and stress while leaving anxiety neutral.</p><h3>Reviewing Activity</h3><p>Use the Mindfulness dashboard to review mood and breathing entries by date.</p><h3>Using Check-Ins</h3><p>Check-ins can contribute context to Mind Readiness when available. They support awareness and do not diagnose a mental-health condition.</p><blockquote><strong>Current scope:</strong> Focus ratings, mood notes, and 7/30/90-day trend charts are not currently available.</blockquote>",
+  },
+  "mindfulness/hrv-biofeedback": {
+    title: "HRV and Live Biofeedback Boundaries",
+    description: "Understand what xHeal does and does not measure during mindfulness.",
+    content: "<h2>No Live HRV Biofeedback</h2><p>Mind Readiness provides informational guidance from supported check-in context. It is not a live measurement of your nervous system.</p><h3>During Breathing</h3><p>The breathing screen guides timed phases with animation, haptics, and ambient audio, but it does not display real-time HRV or calculate coherence.</p><h3>After a Session</h3><p>Completed breathing is retained in activity history and can be written to Apple Health as Mindful Minutes when permission is enabled.</p><blockquote><strong>Current scope:</strong> xHeal does not connect to Apple Watch for live HRV, display an HRV trend during breathing, calculate coherence, or provide a post-session HRV summary.</blockquote>",
+  },
+};
+
+function applyGuideOverride(guide: Guide): Guide {
+  const override = guideOverrides[`${guide.category}/${guide.slug}`];
+  return override ? { ...guide, ...override } : guide;
+}
+
 export function getCategoryLabel(slug: GuideCategory): string {
   return guideCategories.find((c) => c.slug === slug)?.label || slug;
 }
@@ -114,6 +172,18 @@ export function getGuide(category: string, slug: string): Guide | undefined {
 
 export function getAllGuides(): Guide[] {
   return guides;
+}
+
+export function getGuideNavigation(): GuideNavigationCategory[] {
+  return guideCategories.map(({ slug, label, icon }) => ({
+    slug,
+    label,
+    icon,
+    guides: getGuidesByCategory(slug).map((guide) => ({
+      slug: guide.slug,
+      title: guide.title,
+    })),
+  }));
 }
 
 export function getNextGuide(currentCategory: string, currentSlug: string): Guide | undefined {
@@ -160,7 +230,7 @@ export function getPreviousGuide(currentCategory: string, currentSlug: string): 
   return undefined;
 }
 
-export const guides: Guide[] = [
+const guideDefinitions: Guide[] = [
   {
     slug: "welcome",
     category: "getting-started",
@@ -486,3 +556,5 @@ export const guides: Guide[] = [
     content: "<h2>Customize Your xHeal Experience</h2><p>The Settings menu gives you control over your account, preferences, connected services, and app behavior.</p><h3>Accessing Settings</h3><p>Tap the gear icon in the top corner of Dashboard or navigate to Settings tab.</p><h3>Account Settings</h3><p>Edit Profile: update name, date of birth, height, weight, sex, and photo. Email and Password: change email, update password, manage auth methods. Subscription: view plan, upgrade, view usage, manage payment.</p><h3>Health Settings</h3><p>Medications: add medications, set dosages and schedules, mark current/past, set reminders. Supplements: add supplements, set dosages, configure reminders. Allergies: record food, medication, and environmental allergies. Conditions: add diagnosed conditions, mark active/resolved. Life Events: log surgeries, injuries, and major changes for health context.</p><h3>Data Sources</h3><p>Apple Health: view connection, manage permissions, force sync. Integrations: connect health systems, manage FHIR connections. Documents: view uploaded documents, upload new, delete old.</p><h3>Notifications</h3><p>Control task reminders (morning, afternoon, evening), streak reminders, health insights, report alerts, and weekly summaries.</p><h3>Preferences</h3><p>Units: weight (kg/lbs), height (cm/ft-in), temperature (C/F), distance (km/miles). Week Start: Sunday or Monday. Appearance: dark mode (default) or match system.</p><h3>Support and Info</h3><p>FAQs, Contact Support, and About (version, legal, licenses).</p><h3>Account Actions</h3><p>Log Out signs out on this device. Delete Account permanently deletes account and all data (cannot be undone).</p><h3>Privacy Controls</h3><p>Download your data, review data sharing settings, and manage analytics preferences.</p><blockquote><strong>Tip:</strong> Review notification settings after initial setup. Adjust to find the right balance - enough reminders to stay on track without feeling overwhelmed.</blockquote>",
   },
 ];
+
+export const guides: Guide[] = guideDefinitions.map(applyGuideOverride);

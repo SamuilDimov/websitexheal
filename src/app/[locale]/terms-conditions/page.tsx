@@ -1,14 +1,32 @@
-import { getLocale } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 import { getLegalContent } from "@/data/legal-content";
+import { buildMetadata } from "@/lib/site";
 
-export async function generateMetadata() {
-  const locale = await getLocale();
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
   const legal = getLegalContent(locale);
-  return { title: legal.termsConditions.metaTitle };
+  const t = await getTranslations({ locale, namespace: "Metadata" });
+
+  return buildMetadata({
+    locale,
+    path: "/terms-conditions",
+    title: legal.termsConditions.metaTitle,
+    description: t("termsConditions.description"),
+    // The Bulgarian page is a summary pointing to the English legal text.
+    translated: false,
+  });
 }
 
-export default async function TermsConditionsPage() {
-  const locale = await getLocale();
+export default async function TermsConditionsPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
   const legal = getLegalContent(locale);
 
   return (

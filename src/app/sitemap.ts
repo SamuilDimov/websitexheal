@@ -1,101 +1,90 @@
 import type { MetadataRoute } from "next";
-import { blogPosts } from "@/data/blog-posts";
+import { getBlogPosts } from "@/data/blog-posts";
 import { guides } from "@/data/guides";
+import { routing } from "@/i18n/routing";
+import { absoluteUrl, localizedPath } from "@/lib/site";
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://xheal.com";
-const LOCALES = ["en", "bg"] as const;
-const LAST_MOD = new Date("2026-05-19");
+const LOCALES = routing.locales;
+const ENGLISH_LOCALE = routing.defaultLocale;
+const LAST_MODIFIED = new Date("2026-07-13");
 
-function url(path: string) {
-  return `${BASE_URL}${path}`;
+export const dynamic = "force-static";
+
+type StaticPage = {
+  path: string;
+  changeFrequency: "weekly" | "monthly" | "yearly";
+  priority: number;
+};
+
+const TRANSLATED_STATIC_PAGES: StaticPage[] = [
+  { path: "/", changeFrequency: "weekly", priority: 1.0 },
+  { path: "/about", changeFrequency: "monthly", priority: 0.8 },
+  { path: "/blog", changeFrequency: "weekly", priority: 0.9 },
+  { path: "/support", changeFrequency: "monthly", priority: 0.5 },
+  { path: "/privacy-policy", changeFrequency: "yearly", priority: 0.3 },
+  { path: "/terms-conditions", changeFrequency: "yearly", priority: 0.3 },
+  { path: "/cookie-policy", changeFrequency: "yearly", priority: 0.3 },
+  { path: "/workouts", changeFrequency: "monthly", priority: 0.8 },
+  { path: "/nutrition", changeFrequency: "monthly", priority: 0.8 },
+  { path: "/mindfulness", changeFrequency: "monthly", priority: 0.8 },
+  { path: "/chat-with-your-health", changeFrequency: "monthly", priority: 0.8 },
+  { path: "/flare-up-trigger-patterns", changeFrequency: "monthly", priority: 0.8 },
+  { path: "/health-awareness", changeFrequency: "monthly", priority: 0.8 },
+  { path: "/health-timeline", changeFrequency: "monthly", priority: 0.8 },
+  { path: "/log-life-events", changeFrequency: "monthly", priority: 0.8 },
+  { path: "/specialist-ready-reports", changeFrequency: "monthly", priority: 0.8 },
+];
+
+const ENGLISH_ONLY_STATIC_PAGES: StaticPage[] = [
+  { path: "/team/trifon-getsov", changeFrequency: "monthly", priority: 0.7 },
+  { path: "/guides", changeFrequency: "weekly", priority: 0.9 },
+];
+
+function staticEntry(
+  page: StaticPage,
+  locale: string
+): MetadataRoute.Sitemap[number] {
+  return {
+    url: absoluteUrl(localizedPath(locale, page.path)),
+    lastModified: LAST_MODIFIED,
+    changeFrequency: page.changeFrequency,
+    priority: page.priority,
+  };
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  // Static pages — both locales
-  const staticPages: MetadataRoute.Sitemap = [
-    ...LOCALES.map((locale) => ({
-      url: url(`/${locale}`),
-      lastModified: LAST_MOD,
-      changeFrequency: "monthly" as const,
-      priority: 1.0,
-    })),
-    ...LOCALES.map((locale) => ({
-      url: url(`/${locale}/about`),
-      lastModified: LAST_MOD,
-      changeFrequency: "monthly" as const,
-      priority: 0.8,
-    })),
-    ...LOCALES.map((locale) => ({
-      url: url(`/${locale}/blog`),
-      lastModified: LAST_MOD,
-      changeFrequency: "weekly" as const,
-      priority: 0.9,
-    })),
-    ...LOCALES.map((locale) => ({
-      url: url(`/${locale}/team/trifon-getsov`),
-      lastModified: LAST_MOD,
-      changeFrequency: "monthly" as const,
-      priority: 0.7,
-    })),
-    ...LOCALES.map((locale) => ({
-      url: url(`/${locale}/support`),
-      lastModified: LAST_MOD,
-      changeFrequency: "monthly" as const,
-      priority: 0.5,
-    })),
-    ...LOCALES.map((locale) => ({
-      url: url(`/${locale}/privacy-policy`),
-      lastModified: LAST_MOD,
-      changeFrequency: "yearly" as const,
-      priority: 0.3,
-    })),
-    ...LOCALES.map((locale) => ({
-      url: url(`/${locale}/terms-conditions`),
-      lastModified: LAST_MOD,
-      changeFrequency: "yearly" as const,
-      priority: 0.3,
-    })),
-    ...LOCALES.map((locale) => ({
-      url: url(`/${locale}/cookie-policy`),
-      lastModified: LAST_MOD,
-      changeFrequency: "yearly" as const,
-      priority: 0.3,
-    })),
-  ];
-
-  // Blog posts — same slugs for both locales
-  const blogPages: MetadataRoute.Sitemap = blogPosts
-    .filter((post) => !post.slug.startsWith("newsletter"))
-    .flatMap((post) => {
-      const lastMod = post.lastUpdated
-        ? new Date(post.lastUpdated)
-        : new Date(post.date);
-
-      return LOCALES.map((locale) => ({
-        url: url(`/${locale}/blog/${post.slug}`),
-        lastModified: lastMod,
-        changeFrequency: "monthly" as const,
-        priority: post.featured ? 0.9 : 0.7,
-      }));
-    });
-
-  // Guides landing page
-  const guidesLanding: MetadataRoute.Sitemap = LOCALES.map((locale) => ({
-    url: url(`/${locale}/guides`),
-    lastModified: LAST_MOD,
-    changeFrequency: "weekly" as const,
-    priority: 0.9,
-  }));
-
-  // Individual guide pages
-  const guidePages: MetadataRoute.Sitemap = guides.flatMap((guide) =>
-    LOCALES.map((locale) => ({
-      url: url(`/${locale}/guides/${guide.category}/${guide.slug}`),
-      lastModified: LAST_MOD,
-      changeFrequency: "monthly" as const,
-      priority: 0.7,
-    }))
+  const staticPages = TRANSLATED_STATIC_PAGES.flatMap((page) =>
+    LOCALES.map((locale) => staticEntry(page, locale))
   );
 
-  return [...staticPages, ...blogPages, ...guidesLanding, ...guidePages];
+  const englishOnlyStaticPages = ENGLISH_ONLY_STATIC_PAGES.map((page) =>
+    staticEntry(page, ENGLISH_LOCALE)
+  );
+
+  const blogPages: MetadataRoute.Sitemap = getBlogPosts("en").flatMap((post) => {
+    const lastMod = post.lastUpdated
+      ? new Date(post.lastUpdated)
+      : new Date(post.date);
+
+    return LOCALES.map((locale) => ({
+      url: absoluteUrl(localizedPath(locale, `/blog/${post.slug}`)),
+      lastModified: lastMod,
+      changeFrequency: "monthly" as const,
+      priority: post.featured ? 0.9 : 0.7,
+    }));
+  });
+
+  const guidePages: MetadataRoute.Sitemap = guides.map((guide) => ({
+    url: absoluteUrl(`/guides/${guide.category}/${guide.slug}`),
+    lastModified: LAST_MODIFIED,
+    changeFrequency: "monthly" as const,
+    priority: 0.7,
+  }));
+
+  return [
+    ...staticPages,
+    ...englishOnlyStaticPages,
+    ...blogPages,
+    ...guidePages,
+  ];
 }

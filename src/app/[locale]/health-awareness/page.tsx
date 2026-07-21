@@ -17,12 +17,6 @@ export default function HealthAwarenessPage() {
     <FeatureLandingPage
       heroTitle={accent("heroTitle")}
       heroSubtitle={t("heroSubtitle")}
-      heroImage={{
-        src: "/images/screenshots/routine.png",
-        alt: t("heroImageAlt"),
-        width: 932,
-        height: 1830,
-      }}
       painHeading={accent("painHeading", "text-xbrand")}
       painPoints={[
         { icon: "pie_chart", title: t("pain1Title"), detail: t("pain1Detail") },

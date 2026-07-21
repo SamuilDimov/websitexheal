@@ -1,0 +1,177 @@
+name: Deploy to AWS
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+  schedule:
+    - cron: "17 * * * *"
+
+concurrency:
+  group: aws-production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  AWS_REGION: eu-central-1
+  CLOUDFRONT_DOMAIN: ${{ vars.AWS_CLOUDFRONT_DOMAIN }}
+  CLOUDFRONT_FUNCTION_NAME: ${{ vars.AWS_CLOUDFRONT_FUNCTION_NAME }}
+  DISTRIBUTION_ID: ${{ vars.AWS_CLOUDFRONT_DISTRIBUTION_ID }}
+  LAMBDA_FUNCTION_NAME: ${{ vars.AWS_LAMBDA_FUNCTION_NAME }}
+  S3_BUCKET: ${{ vars.AWS_S3_BUCKET }}
+
+jobs:
+  deploy:
+    name: Validate and deploy static site
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Validate deployment configuration
+        env:
+          AWS_DEPLOY_ROLE_ARN: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+        run: |
+          for name in AWS_DEPLOY_ROLE_ARN CLOUDFRONT_DOMAIN CLOUDFRONT_FUNCTION_NAME DISTRIBUTION_ID LAMBDA_FUNCTION_NAME S3_BUCKET; do
+            if [ -z "${!name}" ]; then
+              echo "Missing required GitHub Actions variable: $name" >&2
+              exit 1
+            fi
+          done
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate source and infrastructure handlers
+        run: |
+          npm run lint
+          npm run validate:source
+          npm run test:infra
+
+      - name: Build and validate static export
+        run: |
+          npm run build
+          npm run validate:export
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Test static site in Chromium
+        run: npx playwright test --project=chromium
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+          role-session-name: xheal-website-${{ github.run_id }}
+          aws-region: ${{ env.AWS_REGION }}
+          allowed-account-ids: 569380617479
+
+      - name: Deploy preorder Lambda
+        run: |
+          mkdir -p "$RUNNER_TEMP/preorder"
+          cp infra/aws/lambda/preorder/index.mjs "$RUNNER_TEMP/preorder/"
+          cp infra/aws/lambda/preorder/emails.mjs "$RUNNER_TEMP/preorder/"
+          (
+            cd "$RUNNER_TEMP/preorder"
+            zip -q "$RUNNER_TEMP/preorder.zip" index.mjs emails.mjs
+          )
+          VERSION="$(aws lambda update-function-code \
+            --function-name "$LAMBDA_FUNCTION_NAME" \
+            --zip-file "fileb://$RUNNER_TEMP/preorder.zip" \
+            --publish \
+            --query Version \
+            --output text)"
+          aws lambda wait function-updated-v2 \
+            --function-name "$LAMBDA_FUNCTION_NAME"
+          aws lambda update-alias \
+            --function-name "$LAMBDA_FUNCTION_NAME" \
+            --name live \
+            --function-version "$VERSION" \
+            >/dev/null
+
+      - name: Upload immutable Next.js assets
+        run: |
+          aws s3 sync out/_next/static/ \
+            "s3://$S3_BUCKET/_next/static/" \
+            --cache-control "public,max-age=31536000,immutable" \
+            --only-show-errors
+
+      - name: Upload website
+        run: |
+          aws s3 sync out/ "s3://$S3_BUCKET/" \
+            --delete \
+            --exclude "_next/static/*" \
+            --cache-control "public,max-age=3600" \
+            --only-show-errors
+          aws s3 cp out/ "s3://$S3_BUCKET/" \
+            --recursive \
+            --exclude "*" \
+            --include "*.html" \
+            --include "*.json" \
+            --include "*.txt" \
+            --include "*.xml" \
+            --cache-control "public,max-age=0,must-revalidate" \
+            --only-show-errors
+
+      - name: Publish CloudFront URL router
+        run: |
+          ETAG="$(aws cloudfront describe-function \
+            --name "$CLOUDFRONT_FUNCTION_NAME" \
+            --stage DEVELOPMENT \
+            --query ETag \
+            --output text)"
+          aws cloudfront update-function \
+            --name "$CLOUDFRONT_FUNCTION_NAME" \
+            --if-match "$ETAG" \
+            --function-config "Comment=xHeal static URL router,Runtime=cloudfront-js-2.0" \
+            --function-code "fileb://infra/aws/cloudfront/url-router.js" \
+            >/dev/null
+          ETAG="$(aws cloudfront describe-function \
+            --name "$CLOUDFRONT_FUNCTION_NAME" \
+            --stage DEVELOPMENT \
+            --query ETag \
+            --output text)"
+          aws cloudfront publish-function \
+            --name "$CLOUDFRONT_FUNCTION_NAME" \
+            --if-match "$ETAG" \
+            >/dev/null
+
+      - name: Invalidate CloudFront
+        run: |
+          INVALIDATION_ID="$(aws cloudfront create-invalidation \
+            --distribution-id "$DISTRIBUTION_ID" \
+            --paths "/*" \
+            --query Invalidation.Id \
+            --output text)"
+          aws cloudfront wait invalidation-completed \
+            --distribution-id "$DISTRIBUTION_ID" \
+            --id "$INVALIDATION_ID"
+
+      - name: Validate deployed distribution
+        env:
+          VALIDATION_ORIGIN: https://${{ env.CLOUDFRONT_DOMAIN }}
+        run: |
+          npm run validate:production
+          API_STATUS="$(curl --silent --show-error \
+            --output "$RUNNER_TEMP/preorder-smoke.json" \
+            --write-out "%{http_code}" \
+            --request POST \
+            --header "Content-Type: application/json" \
+            --data '{}' \
+            "$VALIDATION_ORIGIN/api/preorder")"
+          if [ "$API_STATUS" != "400" ]; then
+            echo "Preorder smoke check returned HTTP $API_STATUS instead of 400" >&2
+            exit 1
+          fi

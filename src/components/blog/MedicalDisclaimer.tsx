@@ -1,9 +1,7 @@
-"use client";
+import { getTranslations } from "next-intl/server";
 
-import { useTranslations } from "next-intl";
-
-export default function MedicalDisclaimer() {
-  const t = useTranslations("Blog");
+export default async function MedicalDisclaimer() {
+  const t = await getTranslations("Blog");
 
   return (
     <div className="rounded-[12px] p-4 mt-8 border border-xborder bg-xbg-3 text-xsecondary">

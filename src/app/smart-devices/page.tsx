@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import ApplauseLabBadge from "@/components/ui/ApplauseLabBadge";
 
 // ─────────────────────────────────────────────
 // Small reusable atoms
@@ -579,6 +580,7 @@ export default function SmartDevicesPage() {
             <span className="t-body3 text-xtertiary">
               © {new Date().getFullYear()} xHeal Corp.
             </span>
+            <ApplauseLabBadge />
           </div>
         </div>
       </footer>

@@ -15,6 +15,21 @@ export const featureMeta: Record<
   string,
   { title: string; icon: string; image: string }
 > = {
+  workouts: {
+    title: "Workouts & Recovery",
+    icon: "fitness_center",
+    image: "/images/screenshots/workout-dashboard.png",
+  },
+  nutrition: {
+    title: "Nutrition",
+    icon: "nutrition",
+    image: "/images/screenshots/nutrition-dashboard.png",
+  },
+  mindfulness: {
+    title: "Mindfulness & Wellbeing",
+    icon: "self_improvement",
+    image: "/images/screenshots/mindfulness-dashboard.png",
+  },
   "chat-with-your-health": {
     title: "Chat with Your Health",
     icon: "chat_bubble",
@@ -51,6 +66,48 @@ export const crossLinks: Record<
   string,
   { slug: string; oneLiner: string }[]
 > = {
+  workouts: [
+    {
+      slug: "nutrition",
+      oneLiner: "Plan meals alongside training and recovery.",
+    },
+    {
+      slug: "mindfulness",
+      oneLiner: "Bring stress, mood, and breathing into your recovery routine.",
+    },
+    {
+      slug: "health-awareness",
+      oneLiner: "See training in your wider health picture.",
+    },
+  ],
+  nutrition: [
+    {
+      slug: "workouts",
+      oneLiner: "Keep meals, training, and recovery in one routine.",
+    },
+    {
+      slug: "mindfulness",
+      oneLiner: "View food, mood, and stress in the same health workspace.",
+    },
+    {
+      slug: "flare-up-trigger-patterns",
+      oneLiner: "Compare food logs with recurring symptom patterns.",
+    },
+  ],
+  mindfulness: [
+    {
+      slug: "nutrition",
+      oneLiner: "Keep mood, stress, and nutrition in the same daily picture.",
+    },
+    {
+      slug: "workouts",
+      oneLiner: "Use mental and physical readiness side by side.",
+    },
+    {
+      slug: "health-awareness",
+      oneLiner: "See wellbeing as part of your wider health picture.",
+    },
+  ],
   "chat-with-your-health": [
     {
       slug: "flare-up-trigger-patterns",

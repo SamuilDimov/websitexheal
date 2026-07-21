@@ -25,12 +25,6 @@ export default function SpecialistReadyReportsPage() {
     <FeatureLandingPage
       heroTitle={accent("heroTitle")}
       heroSubtitle={t("heroSubtitle")}
-      heroImage={{
-        src: "/images/screenshots/timeline.png",
-        alt: t("heroImageAlt"),
-        width: 978,
-        height: 1998,
-      }}
       painHeading={accent("painHeading", "text-xdark-blue")}
       painPoints={[
         { icon: "timer", title: t("pain1Title"), detail: t("pain1Detail") },

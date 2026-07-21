@@ -1,26 +1,23 @@
-"use client";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { blogCategories, getBlogSummaries } from "@/data/blog-posts";
+import BlogGrid from "@/components/blog/BlogGrid";
 
-import { useState } from "react";
-import { useTranslations, useLocale } from "next-intl";
-import { getBlogPosts, type BlogCategory } from "@/data/blog-posts";
-import BlogCard from "@/components/blog/BlogCard";
-import CategoryFilter from "@/components/blog/CategoryFilter";
-
-export default function BlogPage() {
-  const t = useTranslations("Blog");
-  const locale = useLocale();
-  const posts = getBlogPosts(locale);
-  const [activeCategory, setActiveCategory] = useState<BlogCategory | "all">(
-    "all"
-  );
-
-  const filteredPosts =
-    activeCategory === "all"
-      ? posts
-      : posts.filter((p) => p.category === activeCategory);
-
-  const featuredPost = filteredPosts.find((p) => p.featured);
-  const regularPosts = filteredPosts.filter((p) => p !== featuredPost);
+export default async function BlogPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations({ locale, namespace: "Blog" });
+  const posts = getBlogSummaries(locale);
+  const availableCategories = new Set(posts.map((post) => post.category));
+  const categories = blogCategories
+    .filter(({ slug }) => availableCategories.has(slug))
+    .map(({ slug }) => ({
+      slug,
+      label: t(`categories.${slug}`),
+    }));
 
   return (
     <>
@@ -40,33 +37,15 @@ export default function BlogPage() {
       {/* Category filter + Posts */}
       <section className="bg-xbg">
         <div className="w-full max-w-[1440px] mx-auto px-10 py-12 flex flex-col gap-10 max-[991px]:px-8 max-[479px]:px-5">
-          {/* Category Filter */}
-          <CategoryFilter
-            onCategoryChange={setActiveCategory}
-            activeCategory={activeCategory}
+          <BlogGrid
+            posts={posts}
+            categories={categories}
+            labels={{
+              allCategory: t("allCategory"),
+              minRead: t("minRead"),
+              noPosts: t("noPosts"),
+            }}
           />
-
-          {/* Featured post */}
-          {featuredPost && activeCategory === "all" && (
-            <div className="grid grid-cols-1">
-              <BlogCard post={featuredPost} featured />
-            </div>
-          )}
-
-          {/* Post grid */}
-          <div className="grid grid-cols-3 gap-5 max-[991px]:grid-cols-2 max-[767px]:grid-cols-1">
-            {(activeCategory === "all" ? regularPosts : filteredPosts).map(
-              (post) => (
-                <BlogCard key={post.slug} post={post} />
-              )
-            )}
-          </div>
-
-          {filteredPosts.length === 0 && (
-            <p className="t-body1 text-xtertiary text-center py-10">
-              {t("noPosts")}
-            </p>
-          )}
         </div>
       </section>
     </>

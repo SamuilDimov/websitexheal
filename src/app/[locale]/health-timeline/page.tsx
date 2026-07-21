@@ -17,12 +17,6 @@ export default function HealthTimelinePage() {
     <FeatureLandingPage
       heroTitle={accent("heroTitle")}
       heroSubtitle={t("heroSubtitle")}
-      heroImage={{
-        src: "/images/screenshots/timeline.png",
-        alt: t("heroImageAlt"),
-        width: 1058,
-        height: 2078,
-      }}
       painHeading={accent("painHeading", "text-xbrand")}
       painPoints={[
         { icon: "folder_off", title: t("pain1Title"), detail: t("pain1Detail") },

@@ -5,6 +5,7 @@ import {
   guides,
   getGuide,
   getCategoryInfo,
+  getGuideNavigation,
   getNextGuide,
   getPreviousGuide,
   type GuideCategory,
@@ -12,6 +13,7 @@ import {
 import GuidesSidebar from "@/components/guides/GuidesSidebar";
 import GuideBreadcrumb from "@/components/guides/GuideBreadcrumb";
 import GuideNav from "@/components/guides/GuideNav";
+import { buildMetadata } from "@/lib/site";
 
 // Generate static params for all guides
 export function generateStaticParams() {
@@ -25,9 +27,9 @@ export function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ category: string; slug: string }>;
+  params: Promise<{ category: string; slug: string; locale: string }>;
 }): Promise<Metadata> {
-  const { category, slug } = await params;
+  const { category, slug, locale } = await params;
   const guide = getGuide(category, slug);
   const categoryInfo = getCategoryInfo(category as GuideCategory);
 
@@ -37,10 +39,19 @@ export async function generateMetadata({
     };
   }
 
-  return {
+  return buildMetadata({
+    locale,
+    path: `/guides/${category}/${slug}`,
     title: `${guide.title} | ${categoryInfo?.label || "Guides"} | xHeal`,
     description: guide.description,
-  };
+    robots:
+      locale === "bg"
+        ? {
+            index: false,
+            follow: true,
+          }
+        : undefined,
+  });
 }
 
 export default async function GuidePage({
@@ -58,6 +69,7 @@ export default async function GuidePage({
 
   const previousGuide = getPreviousGuide(category, slug);
   const nextGuide = getNextGuide(category, slug);
+  const navigation = getGuideNavigation();
 
   return (
     <div className="bg-xbg min-h-screen">
@@ -68,11 +80,11 @@ export default async function GuidePage({
       <section className="w-full max-w-[1440px] mx-auto px-10 py-8 max-[991px]:px-8 max-[479px]:px-5">
         <div className="flex gap-8 lg:gap-12">
           {/* Sidebar */}
-          <div className="hidden lg:block w-[280px] flex-shrink-0">
-            <div className="sticky top-[80px]">
-              <GuidesSidebar currentCategory={category} currentSlug={slug} />
-            </div>
-          </div>
+          <GuidesSidebar
+            navigation={navigation}
+            currentCategory={category}
+            currentSlug={slug}
+          />
 
           {/* Content */}
           <article className="flex-1 min-w-0 max-w-[800px]">
@@ -183,10 +195,6 @@ export default async function GuidePage({
         </div>
       </section>
 
-      {/* Mobile sidebar */}
-      <div className="lg:hidden">
-        <GuidesSidebar currentCategory={category} currentSlug={slug} />
-      </div>
     </div>
   );
 }

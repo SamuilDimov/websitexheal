@@ -2,20 +2,18 @@
 
 import { useState } from "react";
 import { Link, usePathname } from "@/i18n/navigation";
-import {
-  guideCategories,
-  getGuidesByCategory,
-  type GuideCategory,
-} from "@/data/guides";
+import type { GuideNavigationCategory } from "@/types/content";
 
 interface GuidesSidebarProps {
   currentCategory?: string;
   currentSlug?: string;
+  navigation: GuideNavigationCategory[];
 }
 
 export default function GuidesSidebar({
   currentCategory,
   currentSlug,
+  navigation,
 }: GuidesSidebarProps) {
   const pathname = usePathname();
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(
@@ -41,8 +39,8 @@ export default function GuidesSidebar({
 
   const sidebarContent = (
     <nav className="flex flex-col gap-1">
-      {guideCategories.map((category) => {
-        const guides = getGuidesByCategory(category.slug as GuideCategory);
+      {navigation.map((category) => {
+        const guides = category.guides;
         const isExpanded = expandedCategories.has(category.slug);
         const hasActiveGuide =
           currentCategory === category.slug && guides.length > 0;

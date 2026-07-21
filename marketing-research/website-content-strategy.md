@@ -1111,7 +1111,7 @@ Before running any test, ensure tracking for:
 - Email capture submissions
 - Newsletter sign-ups
 
-**Recommended tool**: PostHog (open-source, self-hostable, A/B testing built-in) or Vercel Analytics + custom events.
+**Current limitation**: CloudFront's aggregate operational metrics do not support this A/B measurement plan. If the roadmap resumes, select and approve a dedicated product analytics tool before implementation.
 
 ---
 

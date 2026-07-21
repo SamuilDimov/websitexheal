@@ -3,11 +3,16 @@
 import { useState, useEffect, useRef, type ReactNode } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import FeatureImageSlideshow from "@/components/sections/FeatureImageSlideshow";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import CrossLinkSection from "@/components/feature-landing/CrossLinkSection";
 import ComparisonSection from "@/components/feature-landing/ComparisonSection";
 import MedicalStandardsBadge from "@/components/ui/MedicalStandardsBadge";
 import ComplianceBadges from "@/components/ui/ComplianceBadges";
+import {
+  featureVisuals,
+  type FeatureVisualSlug,
+} from "@/data/feature-visuals";
 
 /* ------------------------------------------------------------------ */
 /*  TYPES                                                              */
@@ -56,20 +61,16 @@ interface ComparisonData {
   rows: { feature: string; values: string[] }[];
   closingLine: string;
   highlightColumn?: number;
-}
-
-interface HeroImage {
-  src: string;
-  alt: string;
-  width: number;
-  height: number;
+  highlightLabel?: string;
+  methodology?: string;
+  sources?: { label: string; url: string }[];
+  disclaimer?: string;
 }
 
 export interface FeatureLandingPageProps {
   /* Hero */
   heroTitle: ReactNode;
   heroSubtitle: ReactNode;
-  heroImage: HeroImage;
 
   /* Section 2: Pain Points */
   painHeading: ReactNode;
@@ -102,7 +103,7 @@ export interface FeatureLandingPageProps {
   faqs: FAQ[];
 
   /* Cross-link */
-  pageSlug: string;
+  pageSlug: FeatureVisualSlug;
 
   /* Final CTA */
   ctaHeading: ReactNode;
@@ -193,6 +194,14 @@ function useInView(threshold = 0.2) {
 export default function FeatureLandingPage(props: FeatureLandingPageProps) {
   const lineAnim = useInView(0.1);
   const t = useTranslations("FeatureLanding");
+  const visualT = useTranslations("WhatYouGet");
+  const visual = featureVisuals[props.pageSlug];
+  const heroImages = visual.images.map((image) => ({
+    src: image.src,
+    alt: visualT(image.altKey),
+    width: image.width,
+    height: image.height,
+  }));
 
   return (
     <>
@@ -289,6 +298,7 @@ export default function FeatureLandingPage(props: FeatureLandingPageProps) {
             >
               <div
                 className="relative"
+                data-feature-hero={props.pageSlug}
                 style={{ animation: "floatPhone 5s ease-in-out infinite" }}
               >
                 <div
@@ -299,12 +309,11 @@ export default function FeatureLandingPage(props: FeatureLandingPageProps) {
                       "radial-gradient(ellipse 60% 60% at 50% 50%, rgba(71,100,255,0.4) 0%, transparent 70%)",
                   }}
                 />
-                <Image
-                  src={props.heroImage.src}
-                  alt={props.heroImage.alt}
-                  width={props.heroImage.width}
-                  height={props.heroImage.height}
-                  className="w-[420px] max-w-full max-[767px]:max-w-[300px] max-[767px]:mx-auto"
+                <FeatureImageSlideshow
+                  images={heroImages}
+                  deviceFrame={visual.deviceFrame}
+                  intervalMs={2500}
+                  variant="landing"
                   priority
                 />
               </div>
@@ -435,6 +444,10 @@ export default function FeatureLandingPage(props: FeatureLandingPageProps) {
         rows={props.comparison.rows}
         closingLine={props.comparison.closingLine}
         highlightColumn={props.comparison.highlightColumn ?? 3}
+        highlightLabel={props.comparison.highlightLabel}
+        methodology={props.comparison.methodology}
+        sources={props.comparison.sources}
+        disclaimer={props.comparison.disclaimer}
       />
 
       {/* ============================================================ */}

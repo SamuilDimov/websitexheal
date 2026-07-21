@@ -2,17 +2,13 @@ import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 
 const nextConfig: NextConfig = {
+  output: "export",
+  distDir: process.env.NEXT_DIST_DIR ?? ".next",
+  images: {
+    unoptimized: true,
+  },
   turbopack: {
     root: __dirname,
-  },
-  async redirects() {
-    return [
-      {
-        source: "/:locale/blog/how-xheal-guided-me-to-the-right-lab-tests",
-        destination: "/:locale/blog/how-to-know-which-lab-tests-to-order",
-        permanent: true,
-      },
-    ];
   },
 };
 

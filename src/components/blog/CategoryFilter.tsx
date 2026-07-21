@@ -1,19 +1,20 @@
 "use client";
 
-import { useTranslations } from "next-intl";
-import { blogCategories, type BlogCategory } from "@/data/blog-posts";
+import type { BlogCategory } from "@/types/content";
 
 interface CategoryFilterProps {
   onCategoryChange: (category: BlogCategory | "all") => void;
   activeCategory: BlogCategory | "all";
+  categories: Array<{ slug: BlogCategory; label: string }>;
+  allLabel: string;
 }
 
 export default function CategoryFilter({
   onCategoryChange,
   activeCategory,
+  categories,
+  allLabel,
 }: CategoryFilterProps) {
-  const t = useTranslations("Blog");
-
   return (
     <div className="flex flex-wrap gap-2 justify-center">
       <button
@@ -22,17 +23,17 @@ export default function CategoryFilter({
         className="chip"
         data-active={activeCategory === "all"}
       >
-        {t("allCategory")}
+        {allLabel}
       </button>
-      {blogCategories.map((cat) => (
+      {categories.map((category) => (
         <button
-          key={cat.slug}
+          key={category.slug}
           type="button"
-          onClick={() => onCategoryChange(cat.slug)}
+          onClick={() => onCategoryChange(category.slug)}
           className="chip"
-          data-active={activeCategory === cat.slug}
+          data-active={activeCategory === category.slug}
         >
-          {t(`categories.${cat.slug}`)}
+          {category.label}
         </button>
       ))}
     </div>

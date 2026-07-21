@@ -5,18 +5,27 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
+    "start": "node scripts/serve-static-export.mjs",
+    "lint": "eslint",
+    "test:infra": "node --test infra/aws/cloudfront/url-router.test.mjs infra/aws/lambda/preorder/index.test.mjs",
+    "test:e2e": "npm run build && playwright test",
+    "test:e2e:showcase": "npm run build && playwright test tests/feature-showcase.spec.ts",
+    "validate:seo": "node scripts/validate-seo.mjs",
+    "validate:boundaries": "node scripts/validate-client-boundaries.mjs",
+    "validate:secrets": "node scripts/validate-secrets.mjs",
+    "validate:source": "npm run validate:seo && npm run validate:boundaries && npm run validate:secrets",
+    "validate:export": "node scripts/validate-static-export.mjs",
+    "validate:production": "node scripts/validate-production.mjs",
+    "validate:release": "npm run lint && npm run validate:source && npm run test:infra && npm run build && npm run validate:export && npm run validate:production"
   },
   "dependencies": {
-    "@vercel/analytics": "^2.0.1",
     "next": "16.1.6",
     "next-intl": "^4.8.3",
     "react": "19.2.3",
-    "react-dom": "19.2.3",
-    "resend": "^6.10.0"
+    "react-dom": "19.2.3"
   },
   "devDependencies": {
+    "@playwright/test": "^1.61.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

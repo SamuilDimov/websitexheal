@@ -1,14 +1,9 @@
 // Blog post data - centralized source of truth
 // Categories, authors, and all post metadata + content
 
-export type BlogCategory =
-  | "chronic-condition-management"
-  | "fitness-recovery"
-  | "lifestyle-wellness"
-  | "lab-results-records"
-  | "doctor-specialist-visits"
-  | "product-stories"
-  | "newsletter";
+import type { BlogCategory, BlogSummary } from "@/types/content";
+
+export type { BlogCategory } from "@/types/content";
 
 export interface BlogCategoryInfo {
   slug: BlogCategory;
@@ -48,6 +43,12 @@ export const blogCategories: BlogCategoryInfo[] = [
       "Preparing for appointments, sharing data with your care team, and better health communication.",
   },
   {
+    slug: "product-updates",
+    label: "Product Updates",
+    description:
+      "What we are building, how we test it, and what is ready for xHeal users.",
+  },
+  {
     slug: "product-stories",
     label: "Product Stories",
     description:
@@ -67,11 +68,30 @@ export interface BlogAuthor {
   role?: string;
 }
 
+export const BLOG_IMAGE_SLIDER_MARKER = "<!--blog-image-slider-->";
+
+export interface BlogImageSlide {
+  src: string;
+  alt: string;
+  caption: string;
+  width: number;
+  height: number;
+}
+
+export interface BlogImageSlider {
+  slides: BlogImageSlide[];
+}
+
 export const blogAuthors: Record<string, BlogAuthor> = {
   trifon: {
     name: "Trifon Getsov",
     image: "/images/trifon.png",
     role: "Founder, xHeal",
+  },
+  kalin: {
+    name: "Kalin Stoev",
+    image: "/images/kalin.png",
+    role: "Head of Engineering",
   },
   team: {
     name: "xHeal Team",
@@ -86,6 +106,11 @@ const blogAuthorsBg: Record<string, BlogAuthor> = {
     image: "/images/trifon.png",
     role: "\u041E\u0441\u043D\u043E\u0432\u0430\u0442\u0435\u043B, xHeal",
   },
+  kalin: {
+    name: "Kalin Stoev",
+    image: "/images/kalin.png",
+    role: "Ръководител на инженерния екип",
+  },
   team: {
     name: "xHeal Team",
     image: "/images/xheal-team-avatar.svg",
@@ -96,7 +121,9 @@ const blogAuthorsBg: Record<string, BlogAuthor> = {
 export interface BlogPost {
   slug: string;
   title: string;
+  seoTitle?: string;
   date: string;
+  publishAt?: string;
   lastUpdated?: string;
   excerpt: string;
   metaDescription?: string;
@@ -107,6 +134,7 @@ export interface BlogPost {
   readingTime: number; // minutes
   featured?: boolean;
   content: string; // HTML content
+  imageSlider?: BlogImageSlider;
   relatedSlugs?: string[];
 }
 
@@ -114,8 +142,36 @@ export function getCategoryLabel(slug: BlogCategory): string {
   return blogCategories.find((c) => c.slug === slug)?.label || slug;
 }
 
+export function isPostPublished(post: BlogPost, now = Date.now()): boolean {
+  return !post.publishAt || Date.parse(post.publishAt) <= now;
+}
+
+function publicationTime(post: BlogPost): number {
+  return Date.parse(post.publishAt || post.date);
+}
+
 export function getBlogPosts(locale: string = "en"): BlogPost[] {
-  return locale === "bg" ? blogPostsBg : blogPostsEn;
+  const posts = locale === "bg" ? blogPostsBg : blogPostsEn;
+
+  return posts
+    .filter((post) => isPostPublished(post))
+    .sort((a, b) => publicationTime(b) - publicationTime(a));
+}
+
+export function getBlogSummaries(locale: string = "en"): BlogSummary[] {
+  return getBlogPosts(locale).map(
+    ({ slug, title, date, excerpt, image, category, author, readingTime, featured }) => ({
+      slug,
+      title,
+      date,
+      excerpt,
+      image,
+      category,
+      author: { name: author.name, image: author.image },
+      readingTime,
+      featured,
+    })
+  );
 }
 
 export function getPostsByCategory(category: BlogCategory, locale: string = "en"): BlogPost[] {
@@ -127,23 +183,21 @@ export function getRelatedPosts(currentSlug: string, limit = 3, locale: string =
   const current = posts.find((p) => p.slug === currentSlug);
   if (!current) return posts.slice(0, limit);
 
-  // First try related slugs
-  if (current.relatedSlugs?.length) {
-    const related = current.relatedSlugs
-      .map((s) => posts.find((p) => p.slug === s))
-      .filter(Boolean) as BlogPost[];
-    if (related.length >= limit) return related.slice(0, limit);
-  }
+  const related: BlogPost[] = [];
+  const usedSlugs = new Set([currentSlug]);
 
-  // Then same category
-  const sameCategory = posts.filter(
-    (p) => p.category === current.category && p.slug !== currentSlug
-  );
-  if (sameCategory.length >= limit) return sameCategory.slice(0, limit);
+  const addPost = (post: BlogPost | undefined) => {
+    if (post && !usedSlugs.has(post.slug) && related.length < limit) {
+      related.push(post);
+      usedSlugs.add(post.slug);
+    }
+  };
 
-  // Fill with other posts
-  const others = posts.filter((p) => p.slug !== currentSlug);
-  return others.slice(0, limit);
+  current.relatedSlugs?.forEach((slug) => addPost(posts.find((p) => p.slug === slug)));
+  posts.filter((p) => p.category === current.category).forEach(addPost);
+  posts.forEach(addPost);
+
+  return related;
 }
 
 // ============================================================
@@ -151,7 +205,431 @@ export function getRelatedPosts(currentSlug: string, limit = 3, locale: string =
 // ============================================================
 
 const blogPostsEn: BlogPost[] = [
+  // ─── PRODUCT UPDATES ────────────────────────────────────
+  {
+    slug: "xheal-v2-launches-ios-eu-us",
+    title: "xHeal v2 Launches on iOS in the EU and US",
+    seoTitle: "xHeal v2 Launches July 20 on iOS in the EU and US",
+    date: "Jul 20, 2026",
+    publishAt: "2026-07-20T09:00:00+03:00",
+    excerpt:
+      "The new xHeal experience brings your daily Snapshot, routines, Timeline, chat, reports, nutrition, workouts, and mindfulness into one iOS app.",
+    metaDescription:
+      "xHeal v2 launches July 20, 2026 on iOS in the European Union and United States, bringing its core daily wellness journeys into one app.",
+    image: "/images/xheal-v2-hero-poster-v6.png",
+    category: "product-updates",
+    author: blogAuthors.team,
+    readingTime: 4,
+    featured: true,
+    relatedSlugs: [
+      "four-everyday-journeys-xheal-v2",
+      "six-months-building-xheal-v2",
+    ],
+    content: `<p>Today, xHeal v2 begins its launch on iOS in the European Union and the United States. This release is the result of six months spent rebuilding the everyday experience around a straightforward question: how can health information become easier to understand and use?</p>
+
+<p>The answer is not one score or one AI response. It is a connected set of daily journeys that helps you see your current context, follow a routine, keep a useful history, and prepare better questions.</p>
+
+<h2>What is included in xHeal v2</h2>
+<ul>
+<li><strong>Today's Snapshot:</strong> See Body, Mind, and Food together in one daily view.</li>
+<li><strong>Personal routines:</strong> Build a daily routine around your pace, selected health conditions, and enabled health areas.</li>
+<li><strong>Timeline:</strong> Keep documents, reports, health stories, and trackers in a searchable history.</li>
+<li><strong>AI-assisted chat:</strong> Ask questions, organize information, and confirm supported actions before they are saved.</li>
+<li><strong>Nutrition:</strong> Log food and macros, use meal plans and recipes, and analyze meal photos.</li>
+<li><strong>Workouts:</strong> Review readiness-aware suggestions, log sessions, save plans, and follow progress.</li>
+<li><strong>Mindfulness:</strong> Practice guided breathing, record mood check-ins, and review Mind readiness.</li>
+<li><strong>Flare-ups and reports:</strong> Record flare-ups, explore patterns, and generate wellness reports from the information you choose to add.</li>
+</ul>
+
+<h2>Built around user control</h2>
+<p>xHeal proposes context and next steps, but important health-record actions remain visible and confirmable. You decide what information to connect, upload, record, or save.</p>
+
+<p>The app is designed for informational and wellness use. It does not provide a medical diagnosis, replace professional care, or guarantee that a pattern has a specific cause.</p>
+
+<h2>How we prepared this release</h2>
+<p>During the rebuild, we combined internal daily use with automated domain, workflow, API, and mobile tests. We also ran physical-device technical checks, introduced privacy-filtered product analytics, completed a broad continuous-integration pass, tagged version 2.0.0, built the backend release containers, and prepared the iOS build through TestFlight.</p>
+
+<p>These checks validate engineering behavior and release readiness. They are not clinical validation, and we will continue to describe that distinction directly.</p>
+
+<h2>What comes next</h2>
+<p>Version 2 is a new foundation, not a finish line. We will continue publishing product updates that explain what changed, how it was checked, and any important limitations users should know.</p>`,
+  },
+  {
+    slug: "four-everyday-journeys-xheal-v2",
+    title: "Four Everyday Journeys at the Center of xHeal v2",
+    seoTitle: "A Preview of the Four Core Journeys in xHeal v2",
+    date: "Jul 19, 2026",
+    publishAt: "2026-07-19T09:00:00+03:00",
+    excerpt:
+      "A closer look at how setup, Today's Snapshot, routines, Timeline, chat, and reports work together in xHeal v2.",
+    metaDescription:
+      "Preview the four core user journeys in xHeal v2 before its July 20 iOS launch in the EU and United States.",
+    image: "/images/blog/medical-records-timeline.jpg",
+    category: "product-updates",
+    author: blogAuthors.team,
+    readingTime: 5,
+    featured: true,
+    relatedSlugs: [
+      "six-months-building-xheal-v2",
+      "xheal-v2-launches-ios-eu-us",
+    ],
+    content: `<p>xHeal v2 launches on iOS in the European Union and the United States on July 20. Before launch, we want to show the product through the everyday journeys it supports rather than through a long list of disconnected features.</p>
+
+<h2>1. Connect the context you choose</h2>
+<p>Guided setup collects your profile, preferences, goals, pace, selected conditions, and enabled health areas. On iOS, you can grant access to supported Apple Health data and request a historical import.</p>
+
+<p>You remain in control of those permissions. xHeal only receives the Health categories you approve, and access can be changed through iOS settings.</p>
+
+<h2>2. Understand today and decide what to do</h2>
+<p>Today's Snapshot brings Body, Mind, and Food into one view. It combines workout readiness, mindfulness readiness, and nutrition summaries so that daily context is easier to scan.</p>
+
+<p>Your routine turns that context into concrete tasks. Routine generation is reproducible and currently uses factors including your pace, selected health conditions, enabled areas, and available nutrition plan data. It is not a diagnosis or a promise of a particular health outcome.</p>
+
+<h2>3. Keep a health history you can return to</h2>
+<p>Timeline brings reports, uploaded documents, Health Stories, and active trackers into a searchable view. You can filter and sort the history while document-processing states remain visible.</p>
+
+<p>Flare-up tracking lets you record an event and explore patterns across your available history. xHeal presents possible associations for investigation, not proven causes.</p>
+
+<h2>4. Explore context and prepare next steps</h2>
+<p>The AI-assisted chat can answer wellness questions, retrieve supported information, and propose confirmable actions such as recording a flare-up or medication. Proposed changes remain visible before they are saved.</p>
+
+<p>Wellness reports use the information you choose to add. Report types can summarize your current information, highlight gaps, explore possible patterns, or help organize context for a healthcare conversation.</p>
+
+<h2>One app, with clear boundaries</h2>
+<p>Nutrition, workouts, mindfulness, Timeline, reports, and chat are connected because health context rarely fits into one category. That connection is the purpose of xHeal v2.</p>
+
+<p>xHeal remains an informational wellness product. It does not diagnose conditions, replace a clinician, or establish that a correlation is a medical cause.</p>`,
+  },
+  {
+    slug: "six-months-building-xheal-v2",
+    title: "Six Months Building xHeal v2: What Changed and How We Tested It",
+    seoTitle: "How We Built and Tested xHeal v2 in Six Months",
+    date: "Jul 18, 2026",
+    publishAt: "2026-07-18T09:00:00+03:00",
+    excerpt:
+      "A transparent account of the features, internal validation, automated checks, and release work behind xHeal v2.",
+    metaDescription:
+      "Follow the xHeal v2 rebuild from January to July 2026, including its core feature milestones and the engineering checks used along the way.",
+    image: "/images/hero-health-data.jpg",
+    category: "product-updates",
+    author: blogAuthors.team,
+    readingTime: 7,
+    featured: true,
+    relatedSlugs: [
+      "four-everyday-journeys-xheal-v2",
+      "xheal-v2-launches-ios-eu-us",
+    ],
+    content: `<p>On July 20, xHeal v2 is scheduled to launch on iOS in the European Union and the United States. The date matters, but the work between the first version and this release matters more.</p>
+
+<p>This is a retrospective account of what we built from January through July 2026 and how we checked it. We are publishing it now rather than presenting past development milestones as old news articles.</p>
+
+<h2>January: putting the daily experience into our own hands</h2>
+<p>The team began a 12-week internal program with xHeal while refining guided routine setup, daily tasks, completion feedback, and rewards. This was internal dogfooding, not an external user or clinical study. Its purpose was to expose friction through repeated daily use.</p>
+
+<p>In parallel, the engineering team established a baseline of 576 automated Python tests across five backend packages. That baseline gave later workflow changes a repeatable safety net.</p>
+
+<h2>February: coordinating onboarding behind the scenes</h2>
+<p>Onboarding moved toward one completion journey for profile details, goals, Health access, preferences, account resources, and initial plan setup. Automated workflow tests exercised the coordinated process, and a follow-up race-condition fix improved reliability when setup operations competed.</p>
+
+<h2>March: connecting health data with useful context</h2>
+<p>The Apple Health pipeline gained historical synchronization, aggregation, charts, and live computed wellness indicators. Documents, report processing, flare-up context, and chat actions also became more closely connected.</p>
+
+<p>We expanded deterministic and integration testing and performed an internal physical-device technical check. These checks focused on whether the software behaved as designed; they did not establish medical accuracy or clinical effectiveness.</p>
+
+<h2>April: dedicated nutrition, workout, and mindfulness experiences</h2>
+<p>Nutrition grew to include food and macro logging, plans, recipes, and meal-photo analysis. Workouts added readiness-aware recommendations, session tracking, saved plans, history, and progress. Mindfulness added breathing patterns, mood check-ins, readiness, ambient audio, and activity history.</p>
+
+<p>Each area was checked through combinations of API, domain, workflow, and mobile-component tests. Features that were not complete, such as barcode food lookup or a full meditation library, were not treated as launch capabilities.</p>
+
+<p>Interest in Doctor Ready and Health Gaps also led to structured product pilots with US physicians and participating xHeal users. Together, we began evaluating how xHeal could help people organize their health context before appointments and identify missing information for more prepared care conversations.</p>
+
+<h2>May: assembling the daily experience</h2>
+<p>Today's Snapshot brought Body, Mind, and Food into one view. A deterministic routine builder made daily task generation reproducible from factors such as pace, selected conditions, enabled areas, and nutrition-plan data.</p>
+
+<p>The routine workflow was exercised through a 37-case end-to-end workflow suite alongside focused domain tests. Goals were stored during this phase, but were not presented as a factor that independently changed task selection.</p>
+
+<h2>June: unifying the core journeys</h2>
+<p>Root onboarding became resumable and gained feature explanations. Timeline moved to a unified experience for reports, documents, Health Stories, and trackers, with search, filters, sorting, uploads, and visible processing states.</p>
+
+<p>We also added privacy-filtered product analytics and verified canonical events in GA4 Realtime. At the end of June, a broad continuous-integration run covered backend packages, mobile unit tests, and Maestro flow syntax. Syntax validation confirms that automation definitions are structurally valid; it is not the same as proving every mobile journey passed on a simulator.</p>
+
+<h2>July: preparing the release</h2>
+<p>After final interface and feature refinements, version 2.0.0 was tagged on July 14. Backend release containers were built successfully, followed by a local iOS build and TestFlight upload step.</p>
+
+<h2>What we mean by validation</h2>
+<p>For this release, validation means internal daily use, automated software tests, workflow checks, physical-device technical checks, privacy-filtered analytics verification, and release-build preparation.</p>
+
+<p>It does not mean that xHeal v2 has completed a clinical trial, proven a medical outcome, or replaced evaluation by a qualified healthcare professional. xHeal is designed for informational and wellness use, and we will keep that boundary visible as the product evolves.</p>`,
+  },
+  {
+    slug: "why-we-added-workouts-nutrition-mindfulness",
+    title: "Why We Added Workouts, Nutrition, and Mindfulness to xHeal",
+    seoTitle: "Why xHeal Added Workouts, Nutrition, and Mindfulness",
+    date: "May 1, 2026",
+    excerpt:
+      "Why we chose to bring movement, food, and mental wellbeing into one app, turning connected daily context into practical next steps for body and mind.",
+    metaDescription:
+      "Learn why xHeal connects readiness-aware workouts, adjustable nutrition plans, and short mindfulness actions in one 360-degree health platform.",
+    image: "/images/blog/sleep-stress-nutrition.jpg",
+    category: "product-updates",
+    author: blogAuthors.team,
+    readingTime: 6,
+    relatedSlugs: [
+      "four-everyday-journeys-xheal-v2",
+      "xheal-v2-launches-ios-eu-us",
+      "how-sleep-stress-nutrition-connect",
+    ],
+    content: `<p>Most people do not have one health app. They have a workout app, a food tracker, a meditation app, wearable dashboards, medical portals, and notes stored somewhere else. Each tool can be useful, but each usually understands only one part of the person using it.</p>
+
+<p>Your body does not work in those separate tabs. Sleep and stress can be relevant when deciding how hard to train. Food choices shape the routine you can realistically maintain. Mood, energy, and physical recovery belong to the same day, even when different apps record them.</p>
+
+<p>That gap became our incentive to add dedicated Workouts, Nutrition, and Mindfulness experiences to xHeal. We wanted one application where people could monitor the daily context that matters to both body and mind, then turn that context into a practical next step.</p>
+
+<h2>The missing layer between health data and daily life</h2>
+<p>xHeal was already designed to bring records, lab results, wearable data, symptoms, and personal health history into one profile. That history can help someone understand what has happened, but understanding the past is only part of caring for health.</p>
+
+<p>Every day still brings immediate questions: Should I train hard or recover? What should I eat this week? What can I do when stress is high and I need a short reset?</p>
+
+<p>We chose these three areas because movement, food, and mental wellbeing are recurring parts of everyday life. Instead of adding three isolated trackers, we built each experience around the same idea: use the context available in xHeal to make the next decision clearer, while keeping the user in control.</p>
+
+<h2>Workouts &amp; Recovery: train for the body you have today</h2>
+<p>A fixed training calendar cannot always reflect a poor night of sleep, a stressful week, recent training load, or a relevant health constraint. <a href="/workouts">Workouts &amp; Recovery</a> starts with Body Today readiness and uses supported context such as HRV, resting heart rate, sleep, stress, and recent activity to explain whether more or less intensity may fit the day.</p>
+
+<p>From there, xHeal can offer a matched workout based on goals and available equipment. Users can replace movements, record exercises, sets, weight, duration, distance, notes, and photos, then review workout history, personal records, volume, and estimated one-repetition maximum.</p>
+
+<p>The goal is not to replace a trainer, physiotherapist, or doctor, and the guidance is not medical clearance. The incentive is simpler: recovery signals become more useful when they lead to an understandable training choice instead of ending as another score in another app.</p>
+
+<h2>Nutrition: turn targets and preferences into a real week</h2>
+<p>Nutrition tools often stop at counting what has already been eaten. We wanted <a href="/nutrition">Nutrition</a> in xHeal to help with the decisions that happen before the meal as well.</p>
+
+<p>Users can set editable calorie and macro targets, choose an eating style, add allergies or restrictions, and record ingredient preferences. xHeal can turn those inputs into an adjustable seven-day plan, let a single meal be swapped without rebuilding the week, and aggregate the active plan into a shopping list.</p>
+
+<p>Meals can be logged manually or analyzed from a photo, with the photo result presented as an editable estimate. Daily calories, protein, carbohydrates, and fat remain visible beside the wider health workspace rather than being locked inside a separate food diary.</p>
+
+<p>This is not medical nutrition therapy, and it does not guarantee allergen safety or laboratory-level accuracy. It is a practical path from personal targets and preferences to meals a person can actually plan, shop for, and track.</p>
+
+<h2>Mindfulness &amp; Wellbeing: make the next action easier</h2>
+<p>When someone feels stressed, asking them to browse a large content library can create one more decision. <a href="/mindfulness">Mindfulness &amp; Wellbeing</a> takes a shorter route: check in with mood, energy, stress, and anxiety, review Mind Readiness, and choose a suggested breathing or check-in action for that moment.</p>
+
+<p>Structured breathing patterns guide inhale, hold, exhale, and rest phases with timed visuals, haptics, and ambient audio. Mood check-ins and completed breathing sessions create a date-based history, and supported sessions can be saved to Apple Health as Mindful Minutes when permission is enabled.</p>
+
+<p>Mind Readiness is informational guidance, not a mental-health assessment. xHeal does not diagnose anxiety or depression, provide therapy, or replace professional support. We added the experience so mental wellbeing could be part of the same daily picture as physical readiness and nutrition.</p>
+
+<h2>Body, Mind, and Food in one daily picture</h2>
+<p>The value of these experiences is not only what each one can do alone. Today's Snapshot brings Body, Mind, and Food into one view, making it easier to see workout readiness, mindfulness readiness, and nutrition summaries without reconstructing the day across several applications.</p>
+
+<p>That shared view does not claim that one signal proves the cause of another. It gives people a more complete starting point for noticing context, asking better questions, and choosing a reasonable next action.</p>
+
+<p>One profile also means less repeated setup. The preferences, permissions, goals, records, and supported health data a person chooses to add can remain part of one health workspace. Users still decide what to connect, record, or save.</p>
+
+<h2>What a 360-degree health platform means to us</h2>
+<p>A 360-degree platform should not claim to know everything the body and mind need. It should reduce fragmentation and help the person see more of their own picture without hiding important limits.</p>
+
+<p>For xHeal, that means connecting long-term health information with the daily routines that shape life: how we move, how we eat, and how we recover mentally. It means turning context into useful options while keeping those options understandable and their limits visible.</p>
+
+<p>That is why we added Workouts, Nutrition, and Mindfulness. They are not three unrelated apps placed under one icon. They are three connected ways to help people care for body and mind from one application, in one health workspace and with one clearer view of today.</p>`,
+  },
+  {
+    slug: "xheal-structured-us-product-pilots",
+    title:
+      "Building Better Care Conversations: xHeal Begins Structured US Product Pilots",
+    seoTitle: "xHeal Begins Structured US Product Pilots",
+    date: "Apr 30, 2026",
+    excerpt:
+      "US physicians and participating xHeal users are helping us evaluate Doctor Ready and Health Gaps in real appointment-preparation workflows.",
+    metaDescription:
+      "xHeal begins structured product pilots with US physicians and users to evaluate Doctor Ready, Health Gaps, and more prepared care conversations.",
+    image: "/images/blog/specialist-report.jpg",
+    category: "product-updates",
+    author: blogAuthors.kalin,
+    readingTime: 5,
+    relatedSlugs: [
+      "the-doctor-visit-cheat-sheet",
+      "what-your-specialist-wishes-you-brought",
+      "four-everyday-journeys-xheal-v2",
+    ],
+    content: `<p>Interest in Doctor Ready and Health Gaps has led to an important next step for xHeal: structured product pilots with US physicians and participating xHeal users.</p>
+
+<p>Together, we have begun evaluating how xHeal can help people organize their health context before appointments, recognize information that may be missing, and arrive ready for a more focused conversation with their care team. The goal is not to assume that a feature creates value because it sounds useful. The goal is to validate where it helps, where it creates friction, and what must improve.</p>
+
+<h2>Starting with two practical care problems</h2>
+<p>Preparing for an appointment often means reconstructing a health story from memory, patient portals, lab files, medication lists, wearable data, and notes kept in different places. Patients know how difficult that preparation can be. Physicians know which parts of the resulting context are useful and which parts create more noise.</p>
+
+<p>The pilots bring those perspectives into the same feedback loop. We are beginning with two focused use cases:</p>
+<ul>
+<li><strong>Doctor Ready:</strong> Can xHeal help a person turn their available health information into an organized starting point for an appointment?</li>
+<li><strong>Health Gaps:</strong> Can xHeal make absent, incomplete, or outdated information easier to notice and discuss with a healthcare professional?</li>
+</ul>
+
+<p>These are deliberately practical questions. Neither report is intended to make a diagnosis, decide what is medically relevant on a physician's behalf, or replace a professional review.</p>
+
+<h2>What we are evaluating with physicians and users</h2>
+<p>A useful report has to work for both sides of a care conversation. It should be understandable to the person preparing for the visit while remaining focused enough for a physician to review without sorting through unnecessary detail.</p>
+
+<p>During the pilots, we are looking at questions such as:</p>
+<ul>
+<li>Can users gather and organize the context they intended to share?</li>
+<li>Is the report structure clear, scannable, and appropriately focused?</li>
+<li>Are missing inputs and limitations visible rather than hidden?</li>
+<li>Does the experience help users prepare better questions?</li>
+<li>Which details help a physician orient to the conversation, and which create noise?</li>
+<li>Where does the application add unnecessary work instead of reducing it?</li>
+</ul>
+
+<p>Feedback from each use informs the next product iteration. We can refine the structure, language, prioritization, and workflow, then evaluate the changes again. That repeated loop is what makes the pilots structured rather than a collection of informal reactions.</p>
+
+<h2>What validation means at this stage</h2>
+<p>For these pilots, validation means testing whether a defined feature is understandable, usable, and valuable in the workflow it was designed to support. It also means learning where that workflow differs across people. Someone managing recurring symptoms, someone coordinating several specialists, and someone preparing for a routine visit may need very different levels of context.</p>
+
+<p>We want xHeal to bring real value to many kinds of users, but that does not come from treating every user or appointment as the same. It comes from identifying specific needs, testing the application against them, and preserving the differences that matter.</p>
+
+<p>This product validation is not a clinical trial and does not establish clinical effectiveness or a medical outcome. Those are different standards, and we will continue to describe that distinction clearly.</p>
+
+<h2>Partnering around one validated use case at a time</h2>
+<p>We look forward to partnering with hospitals, independent practices, and physicians around use cases that can be evaluated through the application. A partnership might begin with appointment preparation, organizing records before a referral, identifying missing context, or supporting clearer follow-up questions.</p>
+
+<p>For each use case, we want to understand the real workflow first, define what useful support would look like, and validate it with the people involved before expanding it. This approach can reduce avoidable back-and-forth and help patients and care teams reach the useful part of a conversation sooner. It is not about rushing clinical judgment or removing necessary safeguards.</p>
+
+<h2>Building with the people who will use it</h2>
+<p>The most valuable outcome of these pilots is not simply confirmation that our first idea was right. It is evidence that helps us decide what to keep, what to change, and what not to build.</p>
+
+<p>Physicians bring the perspective of real care workflows. Users bring the reality of preparing, remembering, and coordinating their own health context. By building with both, we can make Doctor Ready, Health Gaps, and future xHeal use cases more focused, more transparent, and more useful.</p>
+
+<p>xHeal remains a health companion and awareness tool. It supports preparation and care-team collaboration, but it does not diagnose, treat, prescribe, or replace medical professionals.</p>`,
+  },
   // ─── PRODUCT STORIES ────────────────────────────────────
+  {
+    slug: "how-xheal-connected-my-headaches-to-my-eyes",
+    title:
+      "I Thought My Headaches Were Stress. xHeal Told Me to Check My Eyes.",
+    seoTitle: "How xHeal Connected My Headaches to My Eyes",
+    date: "Apr 04, 2026",
+    excerpt:
+      "After a month of recurring headaches and red eyes, xHeal connected my symptoms with my daily patterns and prompted an eye exam that confirmed I needed vision correction.",
+    metaDescription:
+      "After a month of headaches and red eyes, xHeal prompted an eye exam. My doctor confirmed -0.75 D in my right eye and -0.50 D in my left.",
+    image: "/images/blog/headaches-eye-exam-cover.jpg",
+    category: "product-stories",
+    author: blogAuthors.kalin,
+    readingTime: 6,
+    featured: true,
+    relatedSlugs: [
+      "the-doctor-visit-cheat-sheet",
+      "how-sleep-stress-nutrition-connect",
+      "case-study-how-xheal-helped-me-reduce-early-insulin-resistance",
+    ],
+    imageSlider: {
+      slides: [
+        {
+          src: "/images/blog/headache-problems-1.png",
+          alt: "xHeal chat connecting recurring headaches and red eyes with screen time, poor sleep, stress, and possible dehydration",
+          caption:
+            "xHeal reviews the active headache triggers and suggests immediate steps.",
+          width: 923,
+          height: 2000,
+        },
+        {
+          src: "/images/blog/headache-problems-2.png",
+          alt: "xHeal chat recommending an eye doctor for frequent headaches, red eyes, eye strain, or difficulty focusing",
+          caption:
+            "I ask whether an eye exam could help, and xHeal explains what an eye specialist can check.",
+          width: 923,
+          height: 2000,
+        },
+        {
+          src: "/images/blog/headache-problems-3.png",
+          alt: "xHeal chat explaining that an eye exam could address the vision component while sleep, stress, and screen habits still matter",
+          caption:
+            "xHeal recommends starting with an eye exam without claiming it will solve every headache trigger.",
+          width: 923,
+          height: 2000,
+        },
+      ],
+    },
+    content: `<p>For most of March, I kept getting headaches. A midday walk might give me a short break, but the buzzing pressure would return. My eyes were often red, and after long days in front of screens, everything felt harder to focus on.</p>
+
+<p>I initially treated each headache as an isolated bad day. Maybe I was stressed. Maybe I needed more water. Maybe I had slept badly. All of those explanations sounded plausible, but the pattern had continued for almost a month.</p>
+
+<h2>The conversation that changed my next step</h2>
+<p>I opened xHeal and described what was happening: another headache, red eyes, and symptoms that had not improved after a walk. Instead of jumping to one conclusion, xHeal looked at the context I had already shared.</p>
+
+<p>It pointed out several factors that were active at the same time: more than eight hours of daily screen use, late bedtimes around 2-3 AM, recurring stress, and possible dehydration. It explained that eye strain was one possibility, but it did not present it as the only cause.</p>
+
+<p>The screenshots below show the conversation in its original order.</p>
+
+<!--blog-image-slider-->
+
+<h2>xHeal did not diagnose me - it told me what deserved checking</h2>
+<p>The most useful part of the response was its boundary. xHeal did not say, "You need this prescription." It could not measure my eyesight through a chat. It said that frequent headaches with screen use, red eyes, blurry vision, eye strain, or difficulty focusing were reasons to see an eye specialist.</p>
+
+<p>It also kept the wider context visible. An eye doctor could investigate the vision component, while poor sleep, stress, hydration, and screen habits still needed attention. That distinction mattered because headaches can have many causes, and one plausible explanation should not erase the others.</p>
+
+<p>According to the <a href="https://www.nei.nih.gov/learn-about-eye-health/eye-conditions-and-diseases/refractive-errors" target="_blank" rel="noopener noreferrer">National Eye Institute</a>, refractive errors can cause headaches, eye strain, blurry vision, and trouble focusing when reading or using a computer. They are diagnosed through an eye exam, not through symptoms alone.</p>
+
+<h2>What the eye doctor confirmed</h2>
+<p>I booked the appointment. During the eye exam, the doctor confirmed that I needed vision correction: <strong>-0.75 D in my right eye and -0.50 D in my left eye</strong>.</p>
+
+<p>xHeal had not predicted those numbers. What it got right was the next step. It connected a month of repeated complaints with the patterns around them and stopped me from dismissing the problem as "just another headache." The clinical confirmation came from the eye doctor.</p>
+
+<h2>Why that early prompt mattered to me</h2>
+<p>When I say xHeal helped save my eyes, I do not mean it diagnosed an eye condition or proved that my vision would have become permanently worse. I mean it helped me act before I kept ignoring a correction I needed and continuing the same strain without an examination.</p>
+
+<p>The value was not a dramatic prediction. It was a practical nudge based on my own history: this has happened repeatedly, several relevant factors are active, and it is time to ask the right specialist.</p>
+
+<p>If headaches, red eyes, blurry vision, or focusing problems keep returning, logging the pattern can make the next conversation more useful. But the evaluation still belongs with a qualified healthcare professional. xHeal helped me recognize when to have that conversation.</p>
+
+<h2>Frequently asked questions</h2>
+<div itemscope itemtype="https://schema.org/FAQPage">
+<div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+<h3 itemprop="name">Can an uncorrected refractive error contribute to headaches?</h3>
+<div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+<p itemprop="text">Yes. The National Eye Institute lists headaches, eye strain, blurry vision, and trouble focusing among the possible symptoms of refractive errors. Those symptoms can also have other causes, so an eye exam is needed to determine whether vision correction is appropriate.</p>
+</div></div>
+<div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+<h3 itemprop="name">Did xHeal diagnose Kalin's prescription?</h3>
+<div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+<p itemprop="text">No. xHeal recognized that the recurring symptoms and daily context made an eye exam a sensible next step. The eye doctor performed the examination and confirmed correction values of -0.75 D in the right eye and -0.50 D in the left eye.</p>
+</div></div>
+<div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+<h3 itemprop="name">Should recurring screen-related headaches be checked by an eye doctor?</h3>
+<div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+<p itemprop="text">An eye exam is worth discussing when headaches repeatedly occur with screen use, red eyes, blurry vision, eye strain, or difficulty focusing. Because headaches can have many causes, persistent or worsening symptoms should also be discussed with an appropriate healthcare professional.</p>
+</div></div>
+</div>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Can an uncorrected refractive error contribute to headaches?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The National Eye Institute lists headaches, eye strain, blurry vision, and trouble focusing among the possible symptoms of refractive errors. Those symptoms can also have other causes, so an eye exam is needed to determine whether vision correction is appropriate."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Did xHeal diagnose Kalin's prescription?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. xHeal recognized that the recurring symptoms and daily context made an eye exam a sensible next step. The eye doctor performed the examination and confirmed correction values of -0.75 D in the right eye and -0.50 D in the left eye."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should recurring screen-related headaches be checked by an eye doctor?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "An eye exam is worth discussing when headaches repeatedly occur with screen use, red eyes, blurry vision, eye strain, or difficulty focusing. Because headaches can have many causes, persistent or worsening symptoms should also be discussed with an appropriate healthcare professional."
+      }
+    }
+  ]
+}
+</script>`,
+  },
   {
     slug: "case-study-how-xheal-helped-me-reduce-early-insulin-resistance",
     title: "I Felt Perfectly Healthy. My Data Said Otherwise.",
@@ -250,6 +728,7 @@ const blogPostsEn: BlogPost[] = [
     slug: "how-to-know-which-lab-tests-to-order",
     title:
       "The Lab Tests My Doctor Never Ordered (And Why They Changed Everything)",
+    seoTitle: "Lab Tests My Doctor Never Ordered",
     date: "Nov 02, 2025",
     lastUpdated: "Mar 26, 2026",
     excerpt:
@@ -292,12 +771,13 @@ const blogPostsEn: BlogPost[] = [
   {
     slug: "what-happens-48-hours-before-a-flare-up",
     title: "Signs a Flare-Up Is Coming: What Your Body Shows 48 Hours Before",
+    seoTitle: "Flare-Up Warning Signs 48 Hours Before",
     date: "Feb 20, 2026",
     lastUpdated: "Mar 26, 2026",
     excerpt:
       "Your body sends warning signals days before symptoms hit. Here's what the research says about early detection, and how connecting your data can help you prepare.",
     metaDescription:
-      "Your wearable captures flare-up warning signs 24–48 hours early. Learn the 5 physiological changes that predict a flare before you feel it.",
+      "Wearable trends can change before a rheumatoid arthritis flare. Learn which physiological signals researchers observed and how to track your baseline.",
     image: "/images/blog/flare-up-prediction.jpg",
     category: "chronic-condition-management",
     author: blogAuthors.trifon,
@@ -308,18 +788,17 @@ const blogPostsEn: BlogPost[] = [
       "five-flare-up-triggers-hiding-in-plain-sight",
       "case-study-how-xheal-helped-me-reduce-early-insulin-resistance",
     ],
-    content: `<p>If you live with a chronic condition, you know the feeling. One day you're fine. The next, you're in the middle of a flare-up wondering what went wrong. But here's what most people don't realize: your body was sending signals 24 to 48 hours before you felt anything.</p>
+    content: `<p>If you live with a chronic condition, you know the feeling. One day you're fine. The next, you're in the middle of a flare-up wondering what went wrong. But physiological changes can sometimes begin before symptoms become obvious.</p>
 
-<h2>How wearables detect flare-up warning signs 48 hours early</h2>
-<p>Research published in <a href="https://www.jmir.org/2020/6/e19864/" target="_blank" rel="noopener noreferrer">the Journal of Medical Internet Research</a> found that wearable data can detect physiological changes up to 48 hours before symptom onset in conditions ranging from Crohn's disease to rheumatoid arthritis. The signals are subtle, too subtle to feel, but measurable:</p>
+<h2>What research shows about wearable flare-up signals</h2>
+<p>A prospective study published in <a href="https://www.nature.com/articles/s41598-025-29748-y" target="_blank" rel="noopener noreferrer">Scientific Reports</a> followed 53 people with rheumatoid arthritis and found that commercially available wearables captured physiological differences around symptomatic and inflammatory flares. The study observed:</p>
 <ul>
-<li><strong>Heart rate variability (HRV) drops 3-7%</strong> before an inflammatory flare</li>
-<li><strong>Resting heart rate increases by 2-5 BPM</strong> as the immune system ramps up</li>
-<li><strong>Sleep efficiency decreases</strong> even when total sleep time stays the same</li>
-<li><strong>Skin temperature shifts</strong> by fractions of a degree</li>
-<li><strong>Activity patterns change</strong> as fatigue sets in before conscious awareness</li>
+<li><strong>Heart rate and resting heart rate were higher</strong> during inflammatory flares than during remission</li>
+<li><strong>Circadian HRV patterns differed</strong> between flare and remission periods</li>
+<li><strong>Step counts were lower</strong> during symptomatic flares</li>
+<li><strong>Several metrics changed before flare onset</strong>, although larger studies are needed before these signals can guide individual clinical decisions</li>
 </ul>
-<p>Individually, none of these changes would raise an alarm. Together, they form a pattern that's remarkably consistent.</p>
+<p>Individually, none of these changes diagnoses a flare. Their value is as a pattern relative to a person's own baseline and alongside symptoms and clinical assessment.</p>
 
 <h2>Why most people miss early flare-up warning signs</h2>
 <p>The problem isn't a lack of data. Your Apple Watch, your sleep tracker, and your symptom logs all capture pieces of the puzzle. The problem is that no single device or app connects them.</p>
@@ -328,13 +807,13 @@ const blogPostsEn: BlogPost[] = [
 <h2>How connecting your health data reveals hidden patterns</h2>
 <p>When you connect all your health data into one system, patterns emerge that would be invisible otherwise. For example:</p>
 <ul>
-<li>A drop in HRV combined with decreased sleep efficiency and increased resting heart rate might indicate an incoming flare with 70-80% accuracy</li>
+<li>A change in HRV combined with shifts in activity and resting heart rate may be worth comparing with your symptom history</li>
 <li>Stress markers rising alongside specific food log entries might reveal triggers unique to your body</li>
 <li>Seasonal barometric pressure changes correlated with your symptom history can predict weather-related flares</li>
 </ul>
 
 <h2>From reactive to preventive: what to do with early warning data</h2>
-<p>Catching a flare-up 48 hours early doesn't prevent it entirely, but it transforms your response. Instead of being blindsided, you can:</p>
+<p>Recognizing a familiar pre-flare pattern does not guarantee that a flare can be prevented, but it can help you prepare. Instead of being blindsided, you can:</p>
 <ul>
 <li>Adjust your schedule to include more rest</li>
 <li>Avoid known dietary triggers during vulnerable periods</li>
@@ -342,7 +821,7 @@ const blogPostsEn: BlogPost[] = [
 <li>Notify your specialist before symptoms escalate</li>
 <li>Reduce physical strain to support your immune system</li>
 </ul>
-<p>The difference between reacting to a flare-up and preparing for one is the difference between losing a week and losing a day.</p>
+<p>The practical goal is not to self-diagnose from a wearable. It is to notice changes early enough to follow the plan you have agreed with your care team.</p>
 
 <h2>How to start tracking flare-up warning signs today</h2>
 <p>Even before adopting any new tools, you can improve your early detection by consistently tracking three things: sleep quality (not just duration), daily stress levels, and any subtle changes in energy or appetite. These are often the first dominos to fall.</p>
@@ -353,22 +832,22 @@ const blogPostsEn: BlogPost[] = [
 <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
 <h3 itemprop="name">Can wearables actually predict flare-ups before symptoms appear?</h3>
 <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-<p itemprop="text">Yes: research published in the Journal of Medical Internet Research found that wearable data can detect physiological changes up to 48 hours before symptom onset in conditions including Crohn's disease and rheumatoid arthritis. The signal comes from a combination of metrics (HRV drop, elevated resting heart rate, reduced sleep efficiency) trending together, not any single number in isolation.</p>
+<p itemprop="text">They may help. A prospective rheumatoid arthritis study found that heart rate, resting heart rate, HRV patterns, and activity differed around flares and that several metrics changed before flare onset. This is promising research, not a validated diagnosis from any single wearable reading.</p>
 </div></div>
 <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
 <h3 itemprop="name">What metrics should I track to detect an incoming flare-up?</h3>
 <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-<p itemprop="text">The five most predictive signals are: heart rate variability (a drop of 3–7% from your baseline), resting heart rate (an increase of 2–5 BPM), sleep efficiency (not total sleep duration, but percentage of time in restorative stages), skin temperature (small shifts measurable by some wearables), and subtle changes in activity level driven by pre-symptomatic fatigue.</p>
+<p itemprop="text">Track trends your device measures consistently, such as resting heart rate, heart rate variability, and activity, then compare them with a dated symptom log. Research has not established universal percentage thresholds that work across conditions or devices.</p>
 </div></div>
 <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
 <h3 itemprop="name">How far in advance can a flare-up be predicted?</h3>
 <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-<p itemprop="text">Current research points to a 24–48 hour early warning window for many inflammatory and autoimmune conditions. The exact lead time depends on your condition, how long you've been tracking your baseline, and how many data sources are being cross-referenced. Some individuals see consistent 72-hour patterns with enough historical data.</p>
+<p itemprop="text">There is no universal warning window. A recent rheumatoid arthritis cohort observed physiological changes in the weeks before some flares, but the timing and usefulness of those changes vary by person, condition, device, and flare definition.</p>
 </div></div>
 <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
 <h3 itemprop="name">What should I do when my data shows early warning signs?</h3>
 <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-<p itemprop="text">Use the window to reduce physical strain, adjust your schedule to allow more rest, avoid your known dietary triggers, and if you have a care team protocol for flare management, initiate it early. The goal isn't to prevent every flare. It's to meet it prepared rather than blindsided, which significantly reduces severity and recovery time for most people.</p>
+<p itemprop="text">Compare the change with your symptoms and follow the flare plan agreed with your care team. A wearable trend alone should not be used to change medication or make a diagnosis.</p>
 </div></div>
 </div>
 
@@ -382,7 +861,7 @@ const blogPostsEn: BlogPost[] = [
       "name": "Can wearables actually predict flare-ups before symptoms appear?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes: research published in the Journal of Medical Internet Research found that wearable data can detect physiological changes up to 48 hours before symptom onset in conditions including Crohn's disease and rheumatoid arthritis. The signal comes from a combination of metrics (HRV drop, elevated resting heart rate, reduced sleep efficiency) trending together, not any single number in isolation."
+        "text": "They may help. A prospective rheumatoid arthritis study found that heart rate, resting heart rate, HRV patterns, and activity differed around flares and that several metrics changed before flare onset. This is promising research, not a diagnosis from a single wearable reading."
       }
     },
     {
@@ -390,7 +869,7 @@ const blogPostsEn: BlogPost[] = [
       "name": "What metrics should I track to detect an incoming flare-up?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The five most predictive signals are: heart rate variability (a drop of 3–7% from your baseline), resting heart rate (an increase of 2–5 BPM), sleep efficiency (not total sleep duration, but percentage of time in restorative stages), skin temperature (small shifts measurable by some wearables), and subtle changes in activity level driven by pre-symptomatic fatigue."
+        "text": "Track trends your device measures consistently, such as resting heart rate, heart rate variability, and activity, then compare them with a dated symptom log. Research has not established universal percentage thresholds."
       }
     },
     {
@@ -398,7 +877,7 @@ const blogPostsEn: BlogPost[] = [
       "name": "How far in advance can a flare-up be predicted?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Current research points to a 24–48 hour early warning window for many inflammatory and autoimmune conditions. The exact lead time depends on your condition, how long you've been tracking your baseline, and how many data sources are being cross-referenced. Some individuals see consistent 72-hour patterns with enough historical data."
+        "text": "There is no universal warning window. A recent rheumatoid arthritis cohort observed physiological changes before some flares, but timing and usefulness vary by person, condition, device, and flare definition."
       }
     },
     {
@@ -406,7 +885,7 @@ const blogPostsEn: BlogPost[] = [
       "name": "What should I do when my data shows early warning signs?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Use the window to reduce physical strain, adjust your schedule to allow more rest, avoid your known dietary triggers, and if you have a care team protocol for flare management, initiate it early. The goal isn't to prevent every flare. It's to meet it prepared rather than blindsided, which significantly reduces severity and recovery time for most people."
+        "text": "Compare the change with your symptoms and follow the flare plan agreed with your care team. A wearable trend alone should not be used to change medication or make a diagnosis."
       }
     }
   ]
@@ -416,6 +895,7 @@ const blogPostsEn: BlogPost[] = [
   {
     slug: "five-flare-up-triggers-hiding-in-plain-sight",
     title: "5 Hidden Flare-Up Triggers You're Probably Not Tracking (But Should Be)",
+    seoTitle: "5 Hidden Flare-Up Triggers to Track",
     date: "Feb 17, 2026",
     lastUpdated: "Mar 26, 2026",
     excerpt:
@@ -434,12 +914,12 @@ const blogPostsEn: BlogPost[] = [
     content: `<p>When a flare-up hits, the first question is always "why?" Sometimes the answer is obvious: you ate something you shouldn't have, you pushed too hard at the gym, or you caught a virus. But more often, the trigger is something you'd never suspect.</p>
 
 <h2>1. Sleep efficiency: the flare trigger hiding in your sleep data</h2>
-<p>You slept eight hours. You should feel great, right? Not necessarily. Sleep efficiency, the percentage of time in bed actually spent in restorative sleep stages, matters more than total hours. Research shows that people with chronic conditions who have sleep efficiency below 85% are <a href="https://pubmed.ncbi.nlm.nih.gov/26156950/" target="_blank" rel="noopener noreferrer">2.3x more likely to experience a flare-up within 72 hours</a>, regardless of total sleep time.</p>
+<p>You slept eight hours. You should feel great, right? Not necessarily. Sleep continuity and quality add information that total hours alone can miss. A <a href="https://pubmed.ncbi.nlm.nih.gov/26140821/" target="_blank" rel="noopener noreferrer">systematic review and meta-analysis</a> found that sleep disturbance was associated with higher CRP and IL-6 levels, but it did not establish a universal sleep-efficiency threshold or a short-term flare risk.</p>
 <p>The tricky part: you can't feel sleep efficiency. You need data to see it. Wearables that track sleep stages can reveal when your "eight hours" actually contains only five hours of quality rest.</p>
 
 <h2>2. Barometric pressure changes: how weather triggers flare-ups</h2>
-<p>For conditions like rheumatoid arthritis, fibromyalgia, and migraines, barometric pressure shifts are a well-documented but poorly tracked trigger. A study in <a href="https://bmcmusculoskeletdisord.biomedcentral.com/articles/10.1186/s12891-019-2407-3" target="_blank" rel="noopener noreferrer">BMC Musculoskeletal Disorders</a> found that rapid drops in barometric pressure preceded symptom flares in 68% of participants.</p>
-<p>Most people notice this as "my joints hurt when it rains," but the actual trigger often occurs 12-24 hours before the weather visibly changes. By tracking weather data alongside your symptoms over months, you can identify your specific pressure sensitivity threshold.</p>
+<p>Some people with rheumatoid arthritis report weather-sensitive pain, but the evidence is mixed and effects vary between individuals. A daily diary study of 75 patients found <a href="https://pubmed.ncbi.nlm.nih.gov/10353505/" target="_blank" rel="noopener noreferrer">small associations between weather variables and pain that were not clinically meaningful</a>.</p>
+<p>If you suspect a weather relationship, tracking conditions alongside symptoms over several months can help you test whether the pattern is meaningful for you rather than assuming pressure changes affect everyone.</p>
 
 <h2>3. Cumulative stress: why flares hit on weekends and vacations</h2>
 <p>A single stressful day rarely triggers a flare. What triggers it is three to five days of elevated stress without adequate recovery. Your body can handle spikes. It struggles with sustained elevation.</p>
@@ -467,7 +947,7 @@ const blogPostsEn: BlogPost[] = [
 <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
 <h3 itemprop="name">How does barometric pressure cause flare-ups?</h3>
 <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-<p itemprop="text">For conditions like rheumatoid arthritis, fibromyalgia, and migraines, rapid drops in barometric pressure are a documented trigger, not the rain itself. The actual trigger often occurs 12–24 hours before weather visibly changes. A study in BMC Musculoskeletal Disorders found that barometric pressure drops preceded symptom flares in 68% of participants. Tracking weather data alongside symptoms over several months can identify your personal sensitivity threshold.</p>
+<p itemprop="text">Some people report weather-sensitive pain, but research in rheumatoid arthritis has found only small average associations that were not clinically meaningful, with substantial differences between individuals. Track weather and symptoms together before treating pressure as one of your personal triggers.</p>
 </div></div>
 <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
 <h3 itemprop="name">Can medication timing cause flare-ups?</h3>
@@ -477,7 +957,7 @@ const blogPostsEn: BlogPost[] = [
 <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
 <h3 itemprop="name">Why does sleep quality matter more than sleep duration for flare prevention?</h3>
 <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-<p itemprop="text">Sleep efficiency, the percentage of time in bed spent in genuinely restorative stages, is what matters for immune regulation, not total hours. Research shows that people with chronic conditions who have sleep efficiency below 85% are 2.3× more likely to experience a flare within 72 hours, even if total sleep time looks normal. You need wearable data to see sleep efficiency; you cannot feel it.</p>
+<p itemprop="text">Sleep duration alone can miss fragmented or poor-quality sleep. A systematic review found associations between sleep disturbance and higher inflammatory markers, but research has not established a universal wearable sleep-efficiency cutoff that predicts a flare.</p>
 </div></div>
 </div>
 
@@ -499,7 +979,7 @@ const blogPostsEn: BlogPost[] = [
       "name": "How does barometric pressure cause flare-ups?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "For conditions like rheumatoid arthritis, fibromyalgia, and migraines, rapid drops in barometric pressure are a documented trigger, not the rain itself. The actual trigger often occurs 12–24 hours before weather visibly changes. A study in BMC Musculoskeletal Disorders found that barometric pressure drops preceded symptom flares in 68% of participants."
+        "text": "Some people report weather-sensitive pain, but research in rheumatoid arthritis has found only small average associations that were not clinically meaningful, with substantial differences between individuals."
       }
     },
     {
@@ -515,7 +995,7 @@ const blogPostsEn: BlogPost[] = [
       "name": "Why does sleep quality matter more than sleep duration for flare prevention?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Sleep efficiency, the percentage of time in bed spent in genuinely restorative stages, is what matters for immune regulation, not total hours. Research shows that people with chronic conditions who have sleep efficiency below 85% are 2.3× more likely to experience a flare within 72 hours, even if total sleep time looks normal."
+        "text": "Sleep duration alone can miss fragmented or poor-quality sleep. A systematic review found associations between sleep disturbance and higher inflammatory markers, but no universal wearable sleep-efficiency cutoff predicts a flare."
       }
     }
   ]
@@ -527,6 +1007,7 @@ const blogPostsEn: BlogPost[] = [
   {
     slug: "overtraining-how-my-data-proved-it",
     title: "How to Know If You're Overtraining: What My Data Showed Before My Body Did",
+    seoTitle: "Overtraining Signs My Data Found First",
     date: "Feb 14, 2026",
     lastUpdated: "Mar 26, 2026",
     excerpt:
@@ -640,6 +1121,7 @@ const blogPostsEn: BlogPost[] = [
   {
     slug: "understanding-hrv-the-number-that-predicts-tomorrow",
     title: "What Does HRV Mean? Heart Rate Variability Explained for Real People",
+    seoTitle: "HRV Explained: What Heart Rate Variability Means",
     date: "Feb 10, 2026",
     lastUpdated: "Mar 26, 2026",
     excerpt:
@@ -788,12 +1270,13 @@ const blogPostsEn: BlogPost[] = [
   {
     slug: "how-sleep-stress-nutrition-connect",
     title: "The Sleep-Stress-Nutrition Triangle: Why Tracking One Metric Isn't Enough",
+    seoTitle: "Sleep, Stress and Nutrition: Why Track All Three",
     date: "Feb 12, 2026",
     lastUpdated: "Mar 26, 2026",
     excerpt:
       "Your sleep affects your stress. Your stress affects your nutrition. Your nutrition affects your sleep. Here's why the cycle matters and how to break it.",
     metaDescription:
-      "Poor sleep raises cortisol by 37%. High cortisol drives sugar cravings. Sugar disrupts sleep. Breaking this cycle requires tracking all three together.",
+      "Sleep, stress, and food choices influence one another. Learn how to track the cycle and find a practical place to intervene.",
     image: "/images/blog/sleep-stress-nutrition.jpg",
     category: "lifestyle-wellness",
     author: blogAuthors.trifon,
@@ -807,7 +1290,7 @@ const blogPostsEn: BlogPost[] = [
 <p>Sound familiar? This isn't a series of unrelated bad choices. It's a single cycle with three interconnected nodes, and tracking any one of them in isolation gives you an incomplete picture.</p>
 
 <h2>How poor sleep drives chronic stress: the biological link</h2>
-<p>Poor sleep increases cortisol (your primary stress hormone) by <a href="https://pubmed.ncbi.nlm.nih.gov/9406315/" target="_blank" rel="noopener noreferrer">37–45% the following day</a>. Elevated cortisol makes you more reactive to stressors that you'd normally handle easily. That annoying email feels catastrophic. The traffic feels unbearable.</p>
+<p>Poor sleep can disrupt the body's stress response, but the effect on cortisol is not a single predictable percentage. A <a href="https://pubmed.ncbi.nlm.nih.gov/38777757/" target="_blank" rel="noopener noreferrer">systematic review and meta-analysis</a> found no significant overall cortisol difference after acute sleep deprivation, although serum-based studies showed an increase. That variability is why your own trends matter more than a universal number.</p>
 <p>Meanwhile, elevated stress makes sleep harder to achieve. Cortisol suppresses melatonin production, delays sleep onset, and reduces time in deep sleep stages. It's a feedback loop: poor sleep creates stress, which creates poor sleep.</p>
 
 <h2>How stress affects what you eat: the cortisol-craving cycle</h2>
@@ -844,7 +1327,7 @@ const blogPostsEn: BlogPost[] = [
 <h2>Frequently Asked Questions</h2>
 
 <h3>Does poor sleep cause stress, or does stress cause poor sleep?</h3>
-<p>Both, and that's the problem. Poor sleep elevates cortisol by <a href="https://pubmed.ncbi.nlm.nih.gov/9406315/" target="_blank" rel="noopener noreferrer">37–45%</a>, increasing reactivity to the next day's stressors. Elevated stress suppresses melatonin, making the following night's sleep worse. This is a bidirectional feedback loop, not a linear cause-and-effect. Breaking it requires addressing both simultaneously.</p>
+<p>Both, and that's the problem. Sleep and stress influence one another, while cortisol findings after sleep loss vary across studies and measurement methods. This is a bidirectional feedback loop, not a simple fixed-percentage response. Breaking it requires addressing both sides.</p>
 
 <h3>How does nutrition affect sleep quality?</h3>
 <p>Three main pathways: (1) Late meals elevate core body temperature, suppressing the cooling needed for deep sleep. (2) High glycemic foods cause overnight glucose drops that trigger cortisol release, fragmenting sleep architecture. (3) Alcohol, which many use as a sleep aid, suppresses REM sleep and reduces total sleep quality by 20–40%.</p>
@@ -864,7 +1347,7 @@ const blogPostsEn: BlogPost[] = [
       "name": "Does poor sleep cause stress, or does stress cause poor sleep?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Both. Poor sleep elevates cortisol by 37–45%, increasing reactivity to stressors. Elevated stress suppresses melatonin, making the following night's sleep worse. This is a bidirectional feedback loop that requires addressing both simultaneously."
+        "text": "Both. Sleep and stress influence one another, while cortisol findings after sleep loss vary across studies and measurement methods. This is a bidirectional feedback loop, not a fixed-percentage response."
       }
     },
     {
@@ -897,6 +1380,7 @@ const blogPostsEn: BlogPost[] = [
   {
     slug: "your-apple-watch-tracks-47-metrics",
     title: "Your Apple Watch Tracks 47 Metrics. Here's What It Still Can't Tell You.",
+    seoTitle: "What Apple Watch Health Metrics Cannot Tell You",
     date: "Feb 08, 2026",
     lastUpdated: "Mar 26, 2026",
     excerpt:
@@ -920,7 +1404,7 @@ const blogPostsEn: BlogPost[] = [
 <ul>
 <li><strong>HRV (SDNN):</strong> Measured nightly during sleep. SDNN (standard deviation of normal-to-normal intervals) captures nervous system recovery, one of the most predictive metrics for next-day readiness.</li>
 <li><strong>VO2 max estimation:</strong> Derived from heart rate and activity data. Directionally useful for tracking cardiorespiratory fitness trends over months.</li>
-<li><strong>Atrial fibrillation detection:</strong> FDA-cleared for irregular rhythm notification. Specificity of 99.6% in the <a href="https://www.nejm.org/doi/full/10.1056/NEJMoa1901183" target="_blank" rel="noopener noreferrer">Apple Heart Study</a>, a genuine clinical-grade capability.</li>
+<li><strong>Irregular rhythm notification:</strong> In the <a href="https://pubmed.ncbi.nlm.nih.gov/31722151/" target="_blank" rel="noopener noreferrer">Apple Heart Study</a>, subsequent notifications that occurred during simultaneous ECG monitoring had an 84% positive predictive value for atrial fibrillation. The study was not designed to measure sensitivity or specificity.</li>
 <li><strong>Sleep staging:</strong> Estimates time in REM, core, and deep sleep using motion and heart rate. Accuracy is comparable to consumer-grade polysomnography for trend tracking.</li>
 <li><strong>Resting heart rate:</strong> A reliable, continuously updated baseline that reflects cardiovascular load, recovery status, and early illness signals.</li>
 </ul>
@@ -972,7 +1456,7 @@ const blogPostsEn: BlogPost[] = [
 <h2>Frequently Asked Questions</h2>
 
 <h3>How accurate is Apple Watch health data?</h3>
-<p>Apple Watch is clinically validated for heart rate during exercise (±3 BPM), atrial fibrillation detection (specificity 99.6% in Apple Heart Study), and sleep staging (accuracy comparable to consumer polysomnography). VO2 max estimates are directionally useful but less precise. Blood oxygen (SpO2) is screening-grade, not medical-grade.</p>
+<p>Apple Watch measurements are most useful as trends. For irregular rhythm notifications, the Apple Heart Study reported an 84% positive predictive value when a subsequent notification occurred during simultaneous ECG monitoring; it did not measure sensitivity or specificity. Other metrics vary by device generation, conditions, and the reference method used.</p>
 
 <h3>What health metrics does Apple Watch NOT track?</h3>
 <p>Apple Watch cannot measure blood glucose, cholesterol, hormone levels, inflammation markers (CRP), or any blood chemistry. It also has no way to know your medications, medical history, dietary intake, or subjective symptoms, all of which are required to interpret its readings accurately.</p>
@@ -992,7 +1476,7 @@ const blogPostsEn: BlogPost[] = [
       "name": "How accurate is Apple Watch health data?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Apple Watch is clinically validated for heart rate during exercise (±3 BPM), atrial fibrillation detection (specificity 99.6% in Apple Heart Study), and sleep staging (accuracy comparable to consumer polysomnography). VO2 max estimates are directionally useful but less precise. Blood oxygen (SpO2) is screening-grade, not medical-grade."
+        "text": "Apple Watch measurements are most useful as trends. The Apple Heart Study reported an 84% positive predictive value for subsequent irregular rhythm notifications during simultaneous ECG monitoring; it did not measure sensitivity or specificity."
       }
     },
     {
@@ -1027,6 +1511,7 @@ const blogPostsEn: BlogPost[] = [
   {
     slug: "the-lab-tests-your-annual-checkup-misses",
     title: "6 Lab Tests Your Annual Checkup Misses (And Why They Matter)",
+    seoTitle: "6 Lab Tests Missing From Your Annual Checkup",
     date: "Feb 06, 2026",
     lastUpdated: "Mar 26, 2026",
     excerpt:
@@ -1061,7 +1546,7 @@ const blogPostsEn: BlogPost[] = [
 <p>Standard panels might check serum iron, but ferritin (iron storage) is often skipped. You can have normal serum iron with depleted ferritin stores. Symptoms: fatigue, brain fog, poor recovery, hair loss. Ferritin below 30 ng/mL causes symptoms in many people despite being "in range" on lab reports.</p>
 
 <h3>4. Vitamin D, 25-Hydroxy</h3>
-<p><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6075634/" target="_blank" rel="noopener noreferrer">Vitamin D deficiency affects an estimated 42% of American adults</a> and is linked to immune dysfunction, mood disorders, bone health, and inflammatory conditions. Most annual panels don't include it unless specifically requested.</p>
+<p>An analysis of 2005–2006 NHANES data estimated that <a href="https://pubmed.ncbi.nlm.nih.gov/21310306/" target="_blank" rel="noopener noreferrer">41.6% of U.S. adults met the study's definition of vitamin D deficiency</a>, with prevalence varying substantially across groups. Vitamin D is important for bone health, but testing decisions should reflect individual risk factors and clinical context.</p>
 
 <h3>5. Thyroid antibodies (TPO-Ab, TG-Ab)</h3>
 <p>Standard thyroid screening checks TSH and sometimes free T4. But thyroid antibodies can be elevated for years before TSH becomes abnormal. Hashimoto's thyroiditis, the most common autoimmune condition, is often caught late because standard screening misses the autoimmune component entirely.</p>
@@ -1141,6 +1626,7 @@ const blogPostsEn: BlogPost[] = [
   {
     slug: "from-four-hospitals-to-one-timeline",
     title: "How to Organize Medical Records from Multiple Hospitals: A Complete Guide",
+    seoTitle: "How to Organize Records From Multiple Hospitals",
     date: "Feb 04, 2026",
     lastUpdated: "Mar 26, 2026",
     excerpt:
@@ -1238,6 +1724,7 @@ const blogPostsEn: BlogPost[] = [
   {
     slug: "the-doctor-visit-cheat-sheet",
     title: "How to Prepare for a Doctor Appointment: The Complete Cheat Sheet",
+    seoTitle: "How to Prepare for a Doctor Appointment",
     date: "Feb 02, 2026",
     lastUpdated: "Mar 26, 2026",
     excerpt:
@@ -1365,6 +1852,7 @@ const blogPostsEn: BlogPost[] = [
   {
     slug: "what-your-specialist-wishes-you-brought",
     title: "What Your Specialist Wishes You Brought to Every Appointment",
+    seoTitle: "What to Bring to Every Specialist Appointment",
     date: "Jan 30, 2026",
     lastUpdated: "Mar 26, 2026",
     excerpt:
@@ -1464,6 +1952,7 @@ const blogPostsEn: BlogPost[] = [
   {
     slug: "newsletter-feb-2026-flareup-awareness-10-helpful-updates",
     title: "Flare-Up Awareness: 10 Helpful Updates for Day-to-Day Health",
+    seoTitle: "Flare-Up Awareness: 10 Day-to-Day Health Updates",
     date: "Feb 15, 2026",
     lastUpdated: "Mar 26, 2026",
     excerpt:
@@ -1475,23 +1964,24 @@ const blogPostsEn: BlogPost[] = [
     relatedSlugs: [
       "what-happens-48-hours-before-a-flare-up",
       "five-flare-up-triggers-hiding-in-plain-sight",
+      "newsletter-jan-2026-health-intelligence-roundup",
     ],
     content: `<p>Staying on top of your health means being aware of the latest developments that could affect your day-to-day wellbeing. Here are ten practical updates to help you spot, prevent, and manage health flare-ups.</p>
 
 <h2>1. Wearable signals can predict flare-ups earlier</h2>
-<p>Recent studies show that subtle changes in heart rate variability (HRV), skin temperature, and sleep patterns detected by wearables can signal an approaching flare-up 24 to 48 hours before symptoms appear. The key isn't any single metric but the combination of multiple signals trending in the same direction simultaneously.</p>
+<p>A prospective <a href="https://www.nature.com/articles/s41598-025-29748-y" target="_blank" rel="noopener noreferrer">rheumatoid arthritis wearable study</a> found that heart rate, resting heart rate, HRV patterns, and activity differed around flares, with several metrics changing before flare onset. The timing varied, and the findings do not create a universal alert threshold. See our <a href="/blog/what-happens-48-hours-before-a-flare-up">guide to interpreting early flare signals</a> for the practical context.</p>
 
 <h2>2. Gut health remains central to inflammation management</h2>
-<p>New research continues to confirm the gut-inflammation connection. Maintaining microbiome diversity through varied fiber intake and fermented foods remains one of the most effective preventive strategies. A study published in <a href="https://www.nature.com/articles/s41591-022-01765-8" target="_blank" rel="noopener noreferrer">Nature Medicine</a> found that gut microbiome diversity correlated with reduced flare-up frequency across multiple autoimmune conditions.</p>
+<p>The gut barrier and microbiome interact with immune and inflammatory pathways. A <a href="https://pubmed.ncbi.nlm.nih.gov/37505311/" target="_blank" rel="noopener noreferrer">review of gut microbiota, intestinal permeability, and systemic inflammation</a> describes links with several metabolic and autoimmune diseases, while emphasizing that mechanisms and effective interventions remain an active research area.</p>
 
 <h2>3. Stress management is measurable, not just something you feel</h2>
-<p>Chronic stress elevates cortisol, which directly triggers inflammatory cascades. Even 10 minutes of daily breathwork or meditation has been shown to reduce flare-up frequency by up to 30%. The important insight: you can measure stress response through HRV, which means you can track whether your stress management practices are actually working.</p>
+<p>Chronic stress can affect autonomic and inflammatory pathways. HRV can add an objective trend to subjective stress tracking, but it is not a direct cortisol measurement or a stand-alone measure of whether a stress-management practice is working.</p>
 
 <h2>4. Sleep quality matters more than sleep quantity</h2>
-<p>It's not just about getting 8 hours. Sleep efficiency, the percentage of time in bed actually spent sleeping, is a stronger predictor of next-day symptoms than total sleep time. People with chronic conditions who maintain sleep efficiency above 85% report significantly fewer symptom days.</p>
+<p>It's not just about time in bed. Sleep continuity and quality can add context that total sleep duration misses. Research links sleep disturbance with inflammatory markers, but no universal wearable sleep-efficiency threshold predicts next-day symptoms across chronic conditions.</p>
 
 <h2>5. Seasonal patterns are predictable once you track them</h2>
-<p>Many chronic conditions show seasonal variation. Tracking your symptoms alongside environmental factors like temperature, humidity, and barometric pressure helps identify these patterns and prepare accordingly. After one full year of data, seasonal predictions become remarkably accurate.</p>
+<p>Some chronic conditions and some individuals show seasonal variation. Tracking symptoms alongside temperature, humidity, and barometric pressure can help test for a personal pattern, but weather effects are often small and should not be assumed in advance.</p>
 
 <h2>6. Medication timing affects efficacy more than most people realize</h2>
 <p>Chronobiology research shows that the same medication taken at different times of day can have significantly different effectiveness. Anti-inflammatory drugs taken in the evening may better target morning stiffness. Some medications have optimal absorption windows that depend on food timing and other supplements.</p>
@@ -1503,10 +1993,10 @@ const blogPostsEn: BlogPost[] = [
 <p>Annual bloodwork works for healthy individuals. For chronic condition management, quarterly monitoring of key markers catches trends earlier and allows for faster intervention. The most useful markers to track quarterly include inflammatory markers (CRP, ESR), condition-specific markers, and nutritional status indicators.</p>
 
 <h2>9. Social connection affects inflammation directly</h2>
-<p><a href="https://pubmed.ncbi.nlm.nih.gov/26024838/" target="_blank" rel="noopener noreferrer">Research from UCLA</a> found that loneliness and social isolation activate the same inflammatory pathways as physical injury. People who maintain strong social connections show lower baseline inflammation markers. This isn't a feel-good platitude. It's measurable biology.</p>
+<p>A <a href="https://pubmed.ncbi.nlm.nih.gov/32092313/" target="_blank" rel="noopener noreferrer">systematic review and meta-analysis</a> found that social isolation and loneliness may be linked with some markers of systemic inflammation, but results were mixed and methodologically heterogeneous. Social connection matters for health without reducing the relationship to a single biological pathway.</p>
 
 <h2>10. Your data patterns become more valuable over time</h2>
-<p>The most powerful health insights come from longitudinal data. A single HRV reading tells you very little. Six months of HRV data alongside your symptoms, labs, and lifestyle inputs tells you everything. If you're just starting to track, the most important thing is consistency. The patterns will emerge.</p>`,
+<p>The most useful health insights come from longitudinal data. A single HRV reading tells you very little; repeated readings alongside symptoms, labs, and lifestyle inputs provide context. If you're just starting to track, consistency matters more than collecting every possible metric. For a broader research and wearable overview, revisit our <a href="/blog/newsletter-jan-2026-health-intelligence-roundup">January health intelligence roundup</a>.</p>`,
   },
   {
     slug: "newsletter-jan-2026-health-intelligence-roundup",
@@ -1544,13 +2034,14 @@ const blogPostsEn: BlogPost[] = [
 <p>Several major lab networks now offer comprehensive panels that go beyond standard bloodwork, available without a doctor's order in most states. This is making it easier for people to monitor markers like HOMA-IR, hs-CRP, full thyroid panels, and vitamin levels between annual checkups. The key is having a system to track these results over time and connect them to your other health data.</p>
 
 <h2>What we're watching next month</h2>
-<p>New research on gut microbiome testing accuracy, updates on continuous glucose monitor accessibility for non-diabetic users, and emerging data on wearable-detected early illness signals. We'll cover the practical implications in our next roundup.</p>`,
+<p>New research on gut microbiome testing accuracy, updates on continuous glucose monitor accessibility for non-diabetic users, and emerging data on wearable-detected early illness signals. Continue with our <a href="/blog/newsletter-feb-2026-flareup-awareness-10-helpful-updates">February roundup on practical flare-up awareness</a>.</p>`,
   },
 
   // ─── PILLAR PAGES ────────────────────────────────────────
   {
     slug: "chronic-condition-management-guide",
     title: "Chronic Condition Management: The Complete Data-Driven Guide",
+    seoTitle: "Data-Driven Chronic Condition Management Guide",
     date: "Mar 26, 2026",
     lastUpdated: "Mar 26, 2026",
     excerpt:
@@ -1569,34 +2060,34 @@ const blogPostsEn: BlogPost[] = [
       "understanding-hrv-the-number-that-predicts-tomorrow",
     ],
     content: `<p>Managing a chronic condition means living with uncertainty. Some days you feel fine. Others, a flare hits without warning, disrupting work, relationships, and everything else. The traditional approach is reactive: wait for symptoms, then respond. A data-driven approach is different. It turns your body's own signals into an early warning system.</p>
-<p>This guide covers everything you need to know about managing a chronic condition using connected health data, from detecting flare-up signals 48 hours early to identifying the hidden triggers most people never find.</p>
+<p>This guide covers how connected health data can support chronic condition management, from recognizing changes that may precede a flare to testing suspected triggers against your own history.</p>
 
 <h2>What chronic condition management with data actually means</h2>
 <p>Every person with a chronic condition already generates enormous amounts of relevant health data. Your smartwatch captures heart rate variability, sleep stages, resting heart rate, and activity patterns. Your lab results track inflammatory markers, disease-specific biomarkers, and metabolic indicators. Your symptom diary records patterns you notice consciously. Your medication log documents what you took and when.</p>
 <p>The problem is that these data streams exist in separate silos. Your watch app knows nothing about your lab results. Your symptom diary doesn't see your HRV. Your doctor sees only what you remember to tell them during a 20-minute appointment.</p>
 <p>Data-driven chronic condition management means connecting these streams so patterns become visible. When your HRV drops while your sleep efficiency falls and your inflammatory markers are trending up, that combination tells a story that no single data point can tell alone.</p>
 
-<h2>How to detect a flare-up 24 to 48 hours before it hits</h2>
-<p>Research published in <a href="https://www.jmir.org/2020/6/e19864/" target="_blank" rel="noopener noreferrer">the Journal of Medical Internet Research</a> found that wearable data can detect physiological changes up to 48 hours before symptom onset in chronic inflammatory conditions. The signals are too subtle to feel, but measurable:</p>
+<h2>What wearable research shows before a flare</h2>
+<p>A prospective study in <a href="https://www.nature.com/articles/s41598-025-29748-y" target="_blank" rel="noopener noreferrer">Scientific Reports</a> followed 53 people with rheumatoid arthritis and found physiological differences around symptomatic and inflammatory flares:</p>
 <ul>
-<li>Heart rate variability drops 3 to 7% below your personal baseline</li>
-<li>Resting heart rate rises 2 to 5 BPM</li>
-<li>Sleep efficiency falls below 85% even when total sleep duration looks normal</li>
-<li>Activity level decreases slightly due to pre-symptomatic fatigue</li>
+<li>Heart rate and resting heart rate were higher during inflammatory flares</li>
+<li>Circadian HRV patterns differed between flare and remission periods</li>
+<li>Step counts were lower during symptomatic flares</li>
+<li>Several physiological metrics changed before flare onset</li>
 </ul>
-<p>None of these changes alone is significant. All four trending together over 24 to 48 hours is a reliable pattern. The key is having enough historical baseline data to recognize when your numbers are deviating from your norm, not from population averages.</p>
-<p>For a detailed breakdown of the early warning signals and what to do with them, see: <a href="/en/blog/what-happens-48-hours-before-a-flare-up">Signs a Flare-Up Is Coming: What Your Body Shows 48 Hours Before</a>.</p>
+<p>None of these changes alone diagnoses a flare, and the study does not establish universal thresholds. The practical value is comparing repeated measurements with your own baseline, symptoms, and clinical assessment.</p>
+<p>For a detailed breakdown of the early warning signals and what to do with them, see: <a href="/blog/what-happens-48-hours-before-a-flare-up">Signs a Flare-Up Is Coming: What Your Body Shows 48 Hours Before</a>.</p>
 
 <h2>The 5 hidden flare triggers most people never identify</h2>
 <p>Obvious triggers (specific foods, overexertion, infections) are the ones most people learn to manage. The harder triggers are the ones that don't feel like triggers at all:</p>
 <ol>
-<li><strong>Sleep efficiency below 85%.</strong> Not total sleep time, but the proportion of restful sleep stages. Research shows this increases flare risk by 2.3x within 72 hours, regardless of how many hours you slept.</li>
-<li><strong>Barometric pressure drops.</strong> A study in <a href="https://bmcmusculoskeletdisord.biomedcentral.com/articles/10.1186/s12891-019-2407-3" target="_blank" rel="noopener noreferrer">BMC Musculoskeletal Disorders</a> found that pressure drops preceded flares in 68% of participants. The trigger typically arrives 12 to 24 hours before visible weather changes.</li>
+<li><strong>Sleep disturbance.</strong> Sleep quality and continuity can add context that total duration misses, but there is no universal wearable threshold that predicts a flare.</li>
+<li><strong>Weather changes.</strong> Some people report weather-sensitive pain, but a <a href="https://pubmed.ncbi.nlm.nih.gov/10353505/" target="_blank" rel="noopener noreferrer">rheumatoid arthritis diary study</a> found only small average associations that were not clinically meaningful.</li>
 <li><strong>Cumulative stress across 3 to 5 days.</strong> Not a single stressful event, but sustained elevated cortisol without recovery. This explains why flares often hit on weekends: the accumulated stress from the week is the real trigger, not the relaxation.</li>
 <li><strong>Medication timing gaps.</strong> Taking medication at a time that doesn't align with your peak inflammation window creates coverage gaps. The right drug at the wrong time can be less effective than a lower dose at the right time.</li>
 <li><strong>Supplement interactions.</strong> Iron supplements within two hours of thyroid medication, calcium with certain antibiotics, high-dose vitamin C affecting drug processing. These don't cause dramatic problems but reduce medication effectiveness over weeks.</li>
 </ol>
-<p>For a detailed look at each trigger and how to track it, see: <a href="/en/blog/five-flare-up-triggers-hiding-in-plain-sight">5 Hidden Flare-Up Triggers You're Probably Not Tracking (But Should Be)</a>.</p>
+<p>For a detailed look at each trigger and how to track it, see: <a href="/blog/five-flare-up-triggers-hiding-in-plain-sight">5 Hidden Flare-Up Triggers You're Probably Not Tracking (But Should Be)</a>.</p>
 
 <h2>How HRV tracks your condition over time</h2>
 <p>Heart rate variability is the single most predictive metric most people with chronic conditions aren't using. HRV reflects your autonomic nervous system's balance between activation and recovery. Chronic inflammation, immune activation, and unmanaged stress all suppress HRV measurably before you feel symptoms.</p>
@@ -1607,7 +2098,7 @@ const blogPostsEn: BlogPost[] = [
 <li>It correlates with inflammatory activity even when specific markers aren't tested</li>
 <li>It provides daily feedback without requiring blood draws</li>
 </ul>
-<p>Your HRV number matters less than your HRV trend relative to your personal 30-day baseline. A 10% sustained drop is meaningful regardless of whether your absolute number is 35 or 65. For a complete explanation of HRV and how to use it, see: <a href="/en/blog/understanding-hrv-the-number-that-predicts-tomorrow">What Does HRV Mean? Heart Rate Variability Explained for Real People</a>.</p>
+<p>Your HRV number matters less than your HRV trend relative to your personal 30-day baseline. A 10% sustained drop is meaningful regardless of whether your absolute number is 35 or 65. For a complete explanation of HRV and how to use it, see: <a href="/blog/understanding-hrv-the-number-that-predicts-tomorrow">What Does HRV Mean? Heart Rate Variability Explained for Real People</a>.</p>
 
 <h2>Building your chronic condition data stack</h2>
 <p>You don't need expensive equipment or a medical degree to build a useful health data system. The minimum effective setup:</p>
@@ -1628,7 +2119,7 @@ const blogPostsEn: BlogPost[] = [
 <li>Connect symptom timing to data shifts to help your specialist see correlations</li>
 <li>Ask specifically about tests that track your disease activity: inflammatory markers, disease-specific biomarkers, not just standard annual panels</li>
 </ul>
-<p>For guidance on preparing for doctor and specialist visits, see: <a href="/en/blog/the-doctor-visit-cheat-sheet">How to Prepare for a Doctor Appointment: The Complete Cheat Sheet</a> and <a href="/en/blog/what-your-specialist-wishes-you-brought">What Your Specialist Wishes You Brought to Every Appointment</a>.</p>
+<p>For guidance on preparing for doctor and specialist visits, see: <a href="/blog/the-doctor-visit-cheat-sheet">How to Prepare for a Doctor Appointment: The Complete Cheat Sheet</a> and <a href="/blog/what-your-specialist-wishes-you-brought">What Your Specialist Wishes You Brought to Every Appointment</a>.</p>
 
 <h2>The long-term payoff of preventive chronic condition management</h2>
 <p>Managing a chronic condition reactively means perpetual catch-up: flare hits, response, recovery, wait for the next one. Managing it preventively means acting on signals before they become symptoms. The difference isn't just comfort. It's disease progression, medication effectiveness, quality of life, and the compounding benefit of intervening earlier rather than later.</p>
@@ -1639,12 +2130,12 @@ const blogPostsEn: BlogPost[] = [
 <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
 <h3 itemprop="name">What is the best way to track a chronic condition at home?</h3>
 <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-<p itemprop="text">The most effective home tracking combines three streams: a wearable that captures HRV, resting heart rate, and sleep stages; a daily symptom log with timing and severity scores; and chronologically organized lab results. None of these alone is sufficient, but together they reveal patterns that predict flare-ups days in advance and identify triggers that would be invisible in any single data source.</p>
+<p itemprop="text">Useful home tracking combines a wearable that captures consistent trends, a dated symptom log, and chronologically organized lab results. Together they can reveal personal associations to discuss with a clinician, but they do not guarantee that a flare can be predicted.</p>
 </div></div>
 <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
 <h3 itemprop="name">Can data really predict chronic condition flare-ups?</h3>
 <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-<p itemprop="text">Research shows that combined wearable signals can detect physiological changes 24 to 48 hours before symptom onset. No system predicts every flare, but consistent tracking builds a personal pattern library that makes future flares increasingly predictable. The accuracy improves with more historical data and more connected data sources.</p>
+<p itemprop="text">A prospective rheumatoid arthritis study found that several wearable metrics changed before some symptomatic and inflammatory flares. The findings are promising, but timing varies and no consumer wearable can reliably predict every flare.</p>
 </div></div>
 <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
 <h3 itemprop="name">How much data do I need before patterns become useful?</h3>
@@ -1663,7 +2154,7 @@ const blogPostsEn: BlogPost[] = [
       "name": "What is the best way to track a chronic condition at home?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The most effective home tracking combines three streams: a wearable that captures HRV, resting heart rate, and sleep stages; a daily symptom log with timing and severity scores; and chronologically organized lab results. Together they reveal patterns that predict flare-ups days in advance and identify triggers that would be invisible in any single data source."
+        "text": "Useful home tracking combines a wearable that captures consistent trends, a dated symptom log, and chronologically organized lab results. Together they can reveal personal associations to discuss with a clinician, but they do not guarantee flare prediction."
       }
     },
     {
@@ -1671,7 +2162,7 @@ const blogPostsEn: BlogPost[] = [
       "name": "Can data really predict chronic condition flare-ups?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Research shows that combined wearable signals can detect physiological changes 24 to 48 hours before symptom onset. No system predicts every flare, but consistent tracking builds a personal pattern library that makes future flares increasingly predictable."
+        "text": "A prospective rheumatoid arthritis study found that several wearable metrics changed before some symptomatic and inflammatory flares. Timing varies and no consumer wearable can reliably predict every flare."
       }
     },
     {
@@ -1689,6 +2180,7 @@ const blogPostsEn: BlogPost[] = [
   {
     slug: "understanding-your-health-data",
     title: "Understanding Your Health Data: A Complete Guide to Wearables, Labs, and What It All Means",
+    seoTitle: "Understanding Health Data: Wearables and Lab Results",
     date: "Mar 26, 2026",
     lastUpdated: "Mar 26, 2026",
     excerpt:
@@ -1713,12 +2205,12 @@ const blogPostsEn: BlogPost[] = [
 <h2>Heart rate variability: the most underused metric on your wrist</h2>
 <p>Heart rate variability measures the variation in time between consecutive heartbeats. Higher variability indicates a nervous system that is flexible and responsive. Lower variability indicates a system under load, whether from physical stress, emotional stress, illness, poor sleep, or accumulated fatigue.</p>
 <p>What makes HRV valuable is not any single reading but your trend relative to your personal baseline. A 10% drop below your 30-day average is a meaningful signal regardless of your absolute number. HRV drops 2 to 3 days before you feel sick. It tracks recovery from training, illness, and stress. It reflects inflammatory activity even when you are not testing specific inflammatory markers.</p>
-<p>The practical rule: check your HRV trend weekly, not daily. Day-to-day variation is noise. Week-over-week trends are the signal. For a complete explanation of what HRV measures and how to use it, see: <a href="/en/blog/understanding-hrv-the-number-that-predicts-tomorrow">What Does HRV Mean? Heart Rate Variability Explained for Real People</a>.</p>
+<p>The practical rule: check your HRV trend weekly, not daily. Day-to-day variation is noise. Week-over-week trends are the signal. For a complete explanation of what HRV measures and how to use it, see: <a href="/blog/understanding-hrv-the-number-that-predicts-tomorrow">What Does HRV Mean? Heart Rate Variability Explained for Real People</a>.</p>
 
 <h2>What your Apple Watch measures well (and what it cannot see)</h2>
-<p>Modern wearables capture genuinely useful physiological data: HRV trends, resting heart rate, sleep efficiency, VO2 max estimates, and irregular rhythm detection. The Apple Heart Study demonstrated 99.6% specificity for atrial fibrillation detection. These are real clinical capabilities.</p>
+<p>Modern wearables capture useful physiological trends such as HRV, resting heart rate, sleep estimates, and irregular rhythm notifications. In the Apple Heart Study, subsequent irregular pulse notifications that occurred during simultaneous ECG monitoring had an 84% positive predictive value for atrial fibrillation; the study did not assess sensitivity or specificity.</p>
 <p>But wearables have fundamental blind spots. They cannot see what is in your blood: cholesterol levels, glucose, hormones, inflammatory markers, thyroid function, vitamin levels. They cannot account for your medications, your medical history, or how you actually feel. The same HRV trend can mean overtraining, illness onset, a medication side effect, or a thyroid problem. Without clinical context, the number is uninterpretable.</p>
-<p>The most valuable use of wearable data is as a signal layer: when something shifts in your wearable data, it prompts investigation. The investigation requires other data sources. For a full breakdown of wearable capabilities and blind spots, see: <a href="/en/blog/your-apple-watch-tracks-47-metrics">Your Apple Watch Tracks 47 Metrics. Here's What It Still Can't Tell You.</a></p>
+<p>The most valuable use of wearable data is as a signal layer: when something shifts in your wearable data, it prompts investigation. The investigation requires other data sources. For a full breakdown of wearable capabilities and blind spots, see: <a href="/blog/your-apple-watch-tracks-47-metrics">Your Apple Watch Tracks 47 Metrics. Here's What It Still Can't Tell You.</a></p>
 
 <h2>The lab tests your annual panel misses</h2>
 <p>Standard annual bloodwork screens for acute disease. It is not designed to catch early-stage metabolic changes, subclinical inflammation, or nutrient deficiencies. The result: you can have a clean annual panel while insulin resistance, low-grade inflammation, or depleted iron stores are silently progressing.</p>
@@ -1727,11 +2219,11 @@ const blogPostsEn: BlogPost[] = [
 <li><strong>HOMA-IR:</strong> Detects insulin resistance years before fasting glucose becomes abnormal</li>
 <li><strong>High-sensitivity CRP:</strong> Measures chronic low-grade inflammation, not just acute infection</li>
 <li><strong>Ferritin:</strong> Iron storage, which can be depleted while serum iron looks normal</li>
-<li><strong>Vitamin D, 25-Hydroxy:</strong> <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6075634/" target="_blank" rel="noopener noreferrer">Deficiency affects an estimated 42% of American adults</a>, but most annual panels skip it</li>
+<li><strong>Vitamin D, 25-Hydroxy:</strong> A 2005–2006 NHANES analysis estimated that <a href="https://pubmed.ncbi.nlm.nih.gov/21310306/" target="_blank" rel="noopener noreferrer">41.6% of U.S. adults met the study's deficiency threshold</a>, with prevalence varying across groups</li>
 <li><strong>Thyroid antibodies (TPO-Ab, TG-Ab):</strong> Can be elevated for years before TSH changes, catching Hashimoto's early</li>
 <li><strong>Hemoglobin A1c:</strong> Reflects 90-day average blood sugar, catching glucose variability a single fasting test misses</li>
 </ul>
-<p>For details on how to request these tests and what the results mean, see: <a href="/en/blog/the-lab-tests-your-annual-checkup-misses">6 Lab Tests Your Annual Checkup Misses (And Why They Matter)</a>.</p>
+<p>For details on how to request these tests and what the results mean, see: <a href="/blog/the-lab-tests-your-annual-checkup-misses">6 Lab Tests Your Annual Checkup Misses (And Why They Matter)</a>.</p>
 
 <h2>How to read lab trends instead of single values</h2>
 <p>A single lab result is a snapshot. A series of results over time is a story. This distinction matters enormously in practice. A ferritin of 35 ng/mL is technically within the normal range. A ferritin that dropped from 80 to 35 over 12 months is a trend that deserves investigation, even if no lab flag was triggered.</p>
@@ -1745,12 +2237,12 @@ const blogPostsEn: BlogPost[] = [
 <p>When you bring trend data to appointments instead of single values, the clinical conversation changes. "My CRP has risen from 1.2 to 4.8 over 18 months" is a more actionable statement than "my CRP is 4.8."</p>
 
 <h2>The sleep-stress-nutrition triangle</h2>
-<p>Sleep, stress, and nutrition are not independent variables. Each affects the others through measurable biological pathways. Poor sleep elevates cortisol by 37 to 45% the following day. Elevated cortisol drives cravings for high-sugar foods. Blood sugar instability from those food choices fragments sleep the following night. The cycle is self-reinforcing.</p>
-<p>Tracking any one of these three in isolation gives you an incomplete picture. Tracking all three together reveals the entry point of your personal cycle and the most effective place to intervene. For most people, improving sleep efficiency has the highest downstream leverage: lower cortisol, better food choices, more energy, less stress reactivity. For more detail, see: <a href="/en/blog/how-sleep-stress-nutrition-connect">The Sleep-Stress-Nutrition Triangle: Why Tracking One Metric Is Not Enough</a>.</p>
+<p>Sleep, stress, and nutrition are not independent variables. Each can affect the others through behavioral and biological pathways. Sleep loss can alter stress regulation, but cortisol findings vary across studies and measurement methods rather than following one fixed percentage. Food choices and meal timing can also affect sleep, making the cycle worth tracking as a whole.</p>
+<p>Tracking any one of these three in isolation gives you an incomplete picture. Tracking all three together reveals the entry point of your personal cycle and the most effective place to intervene. For most people, improving sleep efficiency has the highest downstream leverage: lower cortisol, better food choices, more energy, less stress reactivity. For more detail, see: <a href="/blog/how-sleep-stress-nutrition-connect">The Sleep-Stress-Nutrition Triangle: Why Tracking One Metric Is Not Enough</a>.</p>
 
 <h2>Overtraining: when more data reveals you are doing too much</h2>
 <p>Fitness data is usually framed as an achievement metric: more steps, more active minutes, higher intensity. But recovery data tells a different story. Your body improves during rest, not during training. When recovery is chronically insufficient, performance degrades even as training volume increases.</p>
-<p>The data signature of overtraining: sustained HRV decline over 3 to 4 weeks, resting heart rate rising 5 or more BPM above your norm, deep sleep percentage falling below 15%, and performance decreasing despite consistent effort. Each metric alone might look acceptable. All four declining together is a clear pattern. For the full case study, see: <a href="/en/blog/overtraining-how-my-data-proved-it">How to Know If You're Overtraining: What My Data Showed Before My Body Did</a>.</p>
+<p>The data signature of overtraining: sustained HRV decline over 3 to 4 weeks, resting heart rate rising 5 or more BPM above your norm, deep sleep percentage falling below 15%, and performance decreasing despite consistent effort. Each metric alone might look acceptable. All four declining together is a clear pattern. For the full case study, see: <a href="/blog/overtraining-how-my-data-proved-it">How to Know If You're Overtraining: What My Data Showed Before My Body Did</a>.</p>
 
 <h2>How to connect your data across sources</h2>
 <p>The real value of health data emerges at the intersection of sources. HRV plus lab results plus symptom logs plus medication timing is exponentially more informative than any single stream.</p>
@@ -1771,7 +2263,7 @@ const blogPostsEn: BlogPost[] = [
 <li>Connect symptoms to data shifts. "I logged three flares this month. Each was preceded by a 2-week period of declining HRV and sleep efficiency below 80%." That is a clinical pattern.</li>
 <li>Ask about tests that match your data signals. If your wearable data suggests inflammatory activity, ask specifically about hs-CRP and ESR, not just standard panels.</li>
 </ul>
-<p>For guidance on organizing your medical history and preparing for appointments, see: <a href="/en/blog/from-four-hospitals-to-one-timeline">How to Organize Medical Records from Multiple Hospitals: A Complete Guide</a>.</p>
+<p>For guidance on organizing your medical history and preparing for appointments, see: <a href="/blog/from-four-hospitals-to-one-timeline">How to Organize Medical Records from Multiple Hospitals: A Complete Guide</a>.</p>
 
 <h2>Frequently asked questions</h2>
 <div itemscope itemtype="https://schema.org/FAQPage">
@@ -1832,7 +2324,431 @@ const blogPostsEn: BlogPost[] = [
 // ============================================================
 
 const blogPostsBg: BlogPost[] = [
+  // ─── PRODUCT UPDATES ────────────────────────────────────
+  {
+    slug: "xheal-v2-launches-ios-eu-us",
+    title: "xHeal v2 стартира за iOS в ЕС и САЩ",
+    seoTitle: "xHeal v2 стартира на 20 юли за iOS в ЕС и САЩ",
+    date: "Jul 20, 2026",
+    publishAt: "2026-07-20T09:00:00+03:00",
+    excerpt:
+      "Новото xHeal преживяване събира ежедневния Snapshot, рутините, Timeline, чата, докладите, храненето, тренировките и mindfulness в едно iOS приложение.",
+    metaDescription:
+      "xHeal v2 стартира на 20 юли 2026 за iOS в Европейския съюз и САЩ, като събира основните ежедневни уелнес пътеки в едно приложение.",
+    image: "/images/xheal-v2-hero-poster-v6.png",
+    category: "product-updates",
+    author: blogAuthorsBg.team,
+    readingTime: 4,
+    featured: true,
+    relatedSlugs: [
+      "four-everyday-journeys-xheal-v2",
+      "six-months-building-xheal-v2",
+    ],
+    content: `<p>Днес xHeal v2 започва своя старт за iOS в Европейския съюз и Съединените щати. Тази версия е резултат от шест месеца, посветени на преизграждането на ежедневното преживяване около един ясен въпрос: как здравната информация да стане по-лесна за разбиране и използване?</p>
+
+<p>Отговорът не е една оценка или един AI отговор. Това е свързан набор от ежедневни пътеки, който ви помага да видите настоящия си контекст, да следвате рутина, да пазите полезна история и да подготвяте по-добри въпроси.</p>
+
+<h2>Какво включва xHeal v2</h2>
+<ul>
+<li><strong>Today's Snapshot:</strong> Вижте Body, Mind и Food заедно в един ежедневен изглед.</li>
+<li><strong>Лични рутини:</strong> Изградете ежедневна рутина според темпото, избраните здравни състояния и активираните области.</li>
+<li><strong>Timeline:</strong> Подредете документи, доклади, Health Stories и тракери в история с търсене.</li>
+<li><strong>Чат с AI помощ:</strong> Задавайте въпроси, организирайте информация и потвърждавайте поддържаните действия, преди да бъдат записани.</li>
+<li><strong>Хранене:</strong> Записвайте храна и макроси, използвайте хранителни планове и рецепти и анализирайте снимки на хранения.</li>
+<li><strong>Тренировки:</strong> Вижте предложения според готовността, записвайте сесии, запазвайте планове и следете прогреса.</li>
+<li><strong>Mindfulness:</strong> Практикувайте водено дишане, записвайте настроението си и вижте ежедневната Mind готовност.</li>
+<li><strong>Flare-ups и доклади:</strong> Записвайте flare-up събития, разглеждайте модели и генерирайте уелнес доклади от информацията, която избирате да добавите.</li>
+</ul>
+
+<h2>Създаден около контрола на потребителя</h2>
+<p>xHeal предлага контекст и следващи стъпки, но важните действия със здравни записи остават видими и изискват потвърждение. Вие решавате каква информация да свържете, качите, запишете или запазите.</p>
+
+<p>Приложението е предназначено за информационни и уелнес цели. То не поставя медицинска диагноза, не заменя професионалната грижа и не гарантира, че даден модел има конкретна причина.</p>
+
+<h2>Как подготвихме тази версия</h2>
+<p>По време на преизграждането съчетахме ежедневна вътрешна употреба с автоматизирани domain, workflow, API и mobile тестове. Проведохме и технически проверки на физическо устройство, добавихме продуктови analytics с филтри за поверителност, завършихме широка continuous integration проверка, маркирахме версия 2.0.0, изградихме backend release container-ите и подготвихме iOS билда чрез TestFlight.</p>
+
+<p>Тези проверки валидират инженерното поведение и готовността за release. Те не са клинична валидация и ще продължим да обясняваме тази разлика директно.</p>
+
+<h2>Какво следва</h2>
+<p>Версия 2 е нова основа, а не финална точка. Ще продължим да публикуваме продуктови новини, които обясняват какво се е променило, как е било проверено и кои важни ограничения трябва да знаят потребителите.</p>`,
+  },
+  {
+    slug: "four-everyday-journeys-xheal-v2",
+    title: "Четири ежедневни пътеки в центъра на xHeal v2",
+    seoTitle: "Преглед на четирите основни пътеки в xHeal v2",
+    date: "Jul 19, 2026",
+    publishAt: "2026-07-19T09:00:00+03:00",
+    excerpt:
+      "По-близък поглед към това как настройката, Today's Snapshot, рутините, Timeline, чатът и докладите работят заедно в xHeal v2.",
+    metaDescription:
+      "Вижте четирите основни потребителски пътеки в xHeal v2 преди старта за iOS на 20 юли в ЕС и САЩ.",
+    image: "/images/blog/medical-records-timeline.jpg",
+    category: "product-updates",
+    author: blogAuthorsBg.team,
+    readingTime: 5,
+    featured: true,
+    relatedSlugs: [
+      "six-months-building-xheal-v2",
+      "xheal-v2-launches-ios-eu-us",
+    ],
+    content: `<p>xHeal v2 стартира за iOS в Европейския съюз и Съединените щати на 20 юли. Преди старта искаме да покажем продукта чрез ежедневните пътеки, които поддържа, а не чрез дълъг списък от несвързани функции.</p>
+
+<h2>1. Свържете контекста, който избирате</h2>
+<p>Водената настройка събира вашия профил, предпочитания, цели, темпо, избрани състояния и активирани здравни области. В iOS можете да разрешите достъп до поддържани данни от Apple Health и да заявите исторически импорт.</p>
+
+<p>Вие запазвате контрола върху тези разрешения. xHeal получава само Health категориите, които одобрите, а достъпът може да бъде променен от настройките на iOS.</p>
+
+<h2>2. Разберете днешния ден и решете какво да направите</h2>
+<p>Today's Snapshot събира Body, Mind и Food в един изглед. Той комбинира готовност за тренировка, mindfulness готовност и обобщение на храненето, за да направи ежедневния контекст по-лесен за преглед.</p>
+
+<p>Вашата рутина превръща този контекст в конкретни задачи. Генерирането на рутина е възпроизводимо и в момента използва фактори като вашето темпо, избрани здравни състояния, активирани области и налични данни от хранителен план. Това не е диагноза или обещание за конкретен здравен резултат.</p>
+
+<h2>3. Пазете здравна история, към която можете да се върнете</h2>
+<p>Timeline събира доклади, качени документи, Health Stories и активни тракери в изглед с търсене. Можете да филтрирате и сортирате историята, докато състоянията на обработка на документите остават видими.</p>
+
+<p>Flare-up проследяването ви позволява да запишете събитие и да разгледате модели в наличната история. xHeal показва възможни връзки за проучване, а не доказани причини.</p>
+
+<h2>4. Разгледайте контекста и подгответе следващите стъпки</h2>
+<p>Чатът с AI помощ може да отговаря на уелнес въпроси, да извлича поддържана информация и да предлага потвърждаеми действия, като записване на flare-up или лекарство. Предложените промени остават видими, преди да бъдат запазени.</p>
+
+<p>Уелнес докладите използват информацията, която избирате да добавите. Различните типове могат да обобщят текущата информация, да посочат пропуски, да разгледат възможни модели или да помогнат за организиране на контекст за разговор със здравен специалист.</p>
+
+<h2>Едно приложение с ясни граници</h2>
+<p>Храненето, тренировките, mindfulness, Timeline, докладите и чатът са свързани, защото здравният контекст рядко се побира в една категория. Именно тази връзка е целта на xHeal v2.</p>
+
+<p>xHeal остава информационен уелнес продукт. Той не диагностицира състояния, не заменя лекар и не установява, че дадена корелация е медицинска причина.</p>`,
+  },
+  {
+    slug: "six-months-building-xheal-v2",
+    title: "Шест месеца изграждане на xHeal v2: какво променихме и как го тествахме",
+    seoTitle: "Как изградихме и тествахме xHeal v2 от януари до юли 2026",
+    date: "Jul 18, 2026",
+    publishAt: "2026-07-18T09:00:00+03:00",
+    excerpt:
+      "Прозрачен преглед на функциите, вътрешната валидация, автоматизираните проверки и release работата зад xHeal v2.",
+    metaDescription:
+      "Проследете преизграждането на xHeal v2 от януари до юли 2026, включително основните функционални етапи и инженерните проверки по пътя.",
+    image: "/images/hero-health-data.jpg",
+    category: "product-updates",
+    author: blogAuthorsBg.team,
+    readingTime: 7,
+    featured: true,
+    relatedSlugs: [
+      "four-everyday-journeys-xheal-v2",
+      "xheal-v2-launches-ios-eu-us",
+    ],
+    content: `<p>На 20 юли xHeal v2 трябва да стартира за iOS в Европейския съюз и Съединените щати. Датата е важна, но работата между първата версия и този release е още по-важна.</p>
+
+<p>Това е ретроспективен разказ за създаденото от януари до юли 2026 и начина, по който го проверихме. Публикуваме го сега, вместо да представяме минали етапи от разработката като стари новинарски статии.</p>
+
+<h2>Януари: поставяме ежедневното преживяване в собствените си ръце</h2>
+<p>Екипът започна 12-седмична вътрешна програма с xHeal, докато подобряваше настройката на рутината, ежедневните задачи, обратната връзка при завършване и наградите. Това беше вътрешно dogfooding тестване, а не външно потребителско или клинично проучване. Целта му беше да разкрие затруднения чрез ежедневна употреба.</p>
+
+<p>Успоредно с това инженерният екип установи база от 576 автоматизирани Python теста в пет backend пакета. Тази основа даде повторяема защита за следващите промени по workflow процесите.</p>
+
+<h2>Февруари: координираме onboarding процеса зад кулисите</h2>
+<p>Onboarding-ът се насочи към една пътека за завършване на профил, цели, Health достъп, предпочитания, ресурси на акаунта и начална настройка на плана. Автоматизирани workflow тестове провериха координирания процес, а последваща корекция на race condition подобри надеждността при конкуриращи се операции.</p>
+
+<h2>Март: свързваме здравните данни с полезен контекст</h2>
+<p>Apple Health pipeline-ът получи историческа синхронизация, агрегиране, графики и актуални изчислени уелнес индикатори. Документите, обработката на доклади, flare-up контекстът и действията в чата също станаха по-тясно свързани.</p>
+
+<p>Разширихме детерминистичните и интеграционните тестове и проведохме вътрешна техническа проверка на физическо устройство. Тези проверки се фокусираха върху това дали софтуерът работи по зададения начин; те не установяват медицинска точност или клинична ефективност.</p>
+
+<h2>Април: самостоятелни преживявания за хранене, тренировки и mindfulness</h2>
+<p>Храненето се разшири със записване на храна и макроси, планове, рецепти и анализ на снимки на хранения. Тренировките добавиха препоръки според готовността, проследяване на сесии, запазени планове, история и прогрес. Mindfulness добави модели за дишане, проверки на настроението, готовност, ambient audio и история на активностите.</p>
+
+<p>Всяка област беше проверена чрез комбинации от API, domain, workflow и mobile component тестове. Незавършени функции, като търсене на храни чрез баркод или пълна библиотека за медитация, не бяха третирани като възможности за launch версията.</p>
+
+<p>Интересът към Doctor Ready и Health Gaps доведе и до структурирани продуктови пилоти с американски лекари и участващи потребители на xHeal. Заедно започнахме да оценяваме как xHeal може да помага на хората да организират здравния си контекст преди преглед и да откриват липсваща информация за по-подготвени разговори.</p>
+
+<h2>Май: сглобяваме ежедневното преживяване</h2>
+<p>Today's Snapshot събра Body, Mind и Food в един изглед. Детерминистичен routine builder направи генерирането на ежедневни задачи възпроизводимо чрез фактори като темпо, избрани състояния, активирани области и данни от хранителен план.</p>
+
+<p>Routine workflow-ът беше проверен с 37 end-to-end сценария заедно с фокусирани domain тестове. Целите се съхраняваха през тази фаза, но не бяха представяни като фактор, който самостоятелно променя избора на задачи.</p>
+
+<h2>Юни: обединяваме основните пътеки</h2>
+<p>Основният onboarding стана възстановим и получи обяснения за функциите. Timeline премина към обединено преживяване за доклади, документи, Health Stories и тракери, с търсене, филтри, сортиране, качване и видими състояния на обработка.</p>
+
+<p>Добавихме и продуктови analytics с филтри за поверителност и проверихме основните събития в GA4 Realtime. В края на юни широка continuous integration проверка обхвана backend пакетите, mobile unit тестовете и синтаксиса на Maestro пътеките. Синтактичната проверка потвърждава, че automation дефинициите са структурно валидни; тя не доказва, че всяка mobile пътека е преминала успешно на симулатор.</p>
+
+<h2>Юли: подготвяме release версията</h2>
+<p>След финални подобрения по интерфейса и функциите версия 2.0.0 беше маркирана на 14 юли. Backend release container-ите бяха изградени успешно, последвани от локален iOS билд и стъпка за качване в TestFlight.</p>
+
+<h2>Какво означава валидация за нас</h2>
+<p>За тази версия валидация означава вътрешна ежедневна употреба, автоматизирани софтуерни тестове, workflow проверки, технически проверки на физическо устройство, проверка на analytics с филтри за поверителност и подготовка на release билдове.</p>
+
+<p>Това не означава, че xHeal v2 е завършил клинично изпитване, доказал е медицински резултат или заменя оценката на квалифициран здравен специалист. xHeal е предназначен за информационни и уелнес цели и ще запазим тази граница видима с развитието на продукта.</p>`,
+  },
+  {
+    slug: "why-we-added-workouts-nutrition-mindfulness",
+    title: "Защо добавихме тренировки, хранене и осъзнатост в xHeal",
+    seoTitle: "Защо xHeal добави тренировки, хранене и осъзнатост",
+    date: "May 1, 2026",
+    excerpt:
+      "Защо решихме да съберем движението, храненето и психичното благополучие в едно приложение, което превръща ежедневния контекст в практични следващи стъпки за тялото и ума.",
+    metaDescription:
+      "Научете защо xHeal свързва тренировки според готовността, адаптивни хранителни планове и кратки практики за осъзнатост в една 360-градусова здравна платформа.",
+    image: "/images/blog/sleep-stress-nutrition.jpg",
+    category: "product-updates",
+    author: blogAuthorsBg.team,
+    readingTime: 6,
+    relatedSlugs: [
+      "four-everyday-journeys-xheal-v2",
+      "xheal-v2-launches-ios-eu-us",
+      "how-sleep-stress-nutrition-connect",
+    ],
+    content: `<p>Повечето хора не използват само едно здравно приложение. Те имат приложение за тренировки, дневник за хранене, приложение за медитация, табла от носими устройства, медицински портали и бележки, съхранявани на друго място. Всеки инструмент може да бъде полезен, но обикновено разбира само една част от човека, който го използва.</p>
+
+<p>Тялото не работи в такива отделни раздели. Сънят и стресът могат да имат значение, когато решаваме колко интензивно да тренираме. Изборът на храна оформя рутината, която реално можем да поддържаме. Настроението, енергията и физическото възстановяване принадлежат на един и същ ден, дори когато различни приложения ги записват поотделно.</p>
+
+<p>Именно тази липса ни мотивира да добавим самостоятелни преживявания за тренировки, хранене и осъзнатост в xHeal. Искахме едно приложение, в което хората да могат да следят ежедневния контекст, важен за тялото и ума, и да го превръщат в практична следваща стъпка.</p>
+
+<h2>Липсващият слой между здравните данни и ежедневието</h2>
+<p>xHeal вече беше създаден да събира медицински записи, лабораторни резултати, данни от носими устройства, симптоми и лична здравна история в един профил. Тази история може да помогне на човек да разбере какво се е случило, но разбирането на миналото е само част от грижата за здравето.</p>
+
+<p>Всеки ден продължава да носи непосредствени въпроси: Да тренирам ли интензивно или да се възстановя? Какво да ям тази седмица? Какво мога да направя, когато стресът е висок и имам нужда от кратко успокояване?</p>
+
+<p>Избрахме тези три области, защото движението, храненето и психичното благополучие са постоянна част от ежедневието. Вместо да добавим три изолирани тракера, изградихме всяко преживяване около една и съща идея: наличният в xHeal контекст да направи следващото решение по-ясно, а контролът да остане у потребителя.</p>
+
+<h2>Тренировки и възстановяване: тренирайте според тялото, което имате днес</h2>
+<p>Фиксираният тренировъчен календар невинаги може да отрази лошия сън, напрегнатата седмица, скорошното тренировъчно натоварване или важно здравно ограничение. <a href="/bg/workouts">Тренировки и възстановяване</a> започва с Body Today готовност и използва поддържан контекст като HRV, пулс в покой, сън, стрес и скорошна активност, за да обясни дали по-висока или по-ниска интензивност може да е подходяща за деня.</p>
+
+<p>След това xHeal може да предложи подходяща тренировка според целите и наличното оборудване. Потребителите могат да заменят движения, да записват упражнения, серии, тежест, продължителност, разстояние, бележки и снимки, а после да преглеждат историята си, личните рекорди, обема и прогнозния максимум за едно повторение.</p>
+
+<p>Целта не е да заменим треньор, физиотерапевт или лекар, а насоките не са медицинско разрешение за тренировка. Мотивацията е по-проста: сигналите за възстановяване са по-полезни, когато водят до разбираем избор за тренировка, вместо да завършват като още една оценка в още едно приложение.</p>
+
+<h2>Хранене: превърнете целите и предпочитанията в реална седмица</h2>
+<p>Инструментите за хранене често спират до броенето на вече изяденото. Искахме <a href="/bg/nutrition">Хранене</a> в xHeal да помага и с решенията, които се случват преди храненето.</p>
+
+<p>Потребителите могат да задават редактируеми цели за калории и макронутриенти, да изберат начин на хранене, да добавят алергии или ограничения и да посочат предпочитания към съставки. xHeal може да превърне тази информация в адаптивен седемдневен план, да позволи смяна на едно хранене без преизграждане на цялата седмица и да обедини активния план в списък за пазаруване.</p>
+
+<p>Храненията могат да бъдат записвани ръчно или анализирани от снимка, като резултатът от снимката е редактируема оценка. Дневните калории, протеини, въглехидрати и мазнини остават видими до по-широкия здравен контекст, вместо да бъдат заключени в отделен хранителен дневник.</p>
+
+<p>Това не е медицинска хранителна терапия и не гарантира безопасност при алергии или лабораторна точност. То е практичен път от личните цели и предпочитания към хранения, които човек реално може да планира, купи и проследява.</p>
+
+<h2>Осъзнатост и психично благополучие: направете следващото действие по-лесно</h2>
+<p>Когато човек е под стрес, голяма библиотека със съдържание може да създаде още едно решение. <a href="/bg/mindfulness">Осъзнатост и психично благополучие</a> избира по-кратък път: отбележете настроението, енергията, стреса и тревожността, прегледайте Mind готовността и изберете предложено дихателно упражнение или проверка за момента.</p>
+
+<p>Структурираните дихателни модели водят през фазите на вдишване, задържане, издишване и почивка с времеви визуализации, хаптична обратна връзка и фонов звук. Проверките на настроението и завършените дихателни сесии създават история по дати, а поддържаните сесии могат да бъдат записани в Apple Health като Mindful Minutes, когато разрешението е активирано.</p>
+
+<p>Mind готовността е информационна насока, а не оценка на психичното здраве. xHeal не диагностицира тревожност или депресия, не предоставя терапия и не заменя професионалната подкрепа. Добавихме това преживяване, за да може психичното благополучие да бъде част от същата ежедневна картина като физическата готовност и храненето.</p>
+
+<h2>Body, Mind и Food в една ежедневна картина</h2>
+<p>Стойността на тези преживявания не е само в това, което всяко от тях може да прави самостоятелно. Today's Snapshot събира Body, Mind и Food в един изглед, за да направи готовността за тренировка, Mind готовността и хранителното обобщение по-лесни за преглед, без човек да възстановява деня си от няколко приложения.</p>
+
+<p>Този общ изглед не твърди, че един сигнал доказва причината за друг. Той дава по-пълна отправна точка за забелязване на контекста, задаване на по-добри въпроси и избор на разумно следващо действие.</p>
+
+<p>Един профил означава и по-малко повтарящо се настройване. Предпочитанията, разрешенията, целите, записите и поддържаните здравни данни, които човек избира да добави, могат да останат част от едно здравно пространство. Потребителят продължава да решава какво да свърже, запише или запази.</p>
+
+<h2>Какво означава за нас 360-градусова здравна платформа</h2>
+<p>Една 360-градусова платформа не трябва да твърди, че знае всичко, от което тялото и умът се нуждаят. Тя трябва да намалява разпокъсаността и да помага на човека да вижда повече от собствената си картина, без да скрива важните ограничения.</p>
+
+<p>За xHeal това означава да свържем дългосрочната здравна информация с ежедневните навици, които оформят живота: как се движим, как се храним и как се възстановяваме психически. Означава да превърнем контекста в полезни възможности, като ги запазим разбираеми, а ограниченията им - видими.</p>
+
+<p>Затова добавихме тренировки, хранене и осъзнатост. Това не са три несвързани приложения под една икона. Те са три свързани начина да помогнем на хората да се грижат за тялото и ума си от едно приложение, в едно здравно пространство и с един по-ясен поглед към днешния ден.</p>`,
+  },
+  {
+    slug: "xheal-structured-us-product-pilots",
+    title:
+      "По-добри разговори за здравето: xHeal започва структурирани продуктови пилоти в САЩ",
+    seoTitle: "xHeal започва структурирани пилоти в САЩ",
+    date: "Apr 30, 2026",
+    excerpt:
+      "Лекари в САЩ и участващи потребители на xHeal ни помагат да оценим Doctor Ready и Health Gaps в реални процеси за подготовка преди преглед.",
+    metaDescription:
+      "xHeal започва структурирани продуктови пилоти с лекари и потребители в САЩ за оценка на Doctor Ready, Health Gaps и подготовката за преглед.",
+    image: "/images/blog/specialist-report.jpg",
+    category: "product-updates",
+    author: blogAuthorsBg.kalin,
+    readingTime: 5,
+    relatedSlugs: [
+      "the-doctor-visit-cheat-sheet",
+      "what-your-specialist-wishes-you-brought",
+      "four-everyday-journeys-xheal-v2",
+    ],
+    content: `<p>Интересът към Doctor Ready и Health Gaps доведе до важна следваща стъпка за xHeal: структурирани продуктови пилоти с лекари в САЩ и участващи потребители на xHeal.</p>
+
+<p>Заедно започнахме да оценяваме как xHeal може да помага на хората да организират здравния си контекст преди преглед, да забелязват информация, която може да липсва, и да пристигат по-подготвени за фокусиран разговор със своя медицински екип. Целта не е да приемем, че една функция носи стойност само защото звучи полезно. Целта е да потвърдим къде помага, къде създава затруднения и какво трябва да подобрим.</p>
+
+<h2>Започваме с два практични проблема в грижата</h2>
+<p>Подготовката за преглед често означава да възстановите здравната си история по памет, от пациентски портали, лабораторни файлове, списъци с лекарства, данни от носими устройства и бележки, съхранявани на различни места. Пациентите знаят колко трудна може да бъде тази подготовка. Лекарите знаят кои части от получения контекст са полезни и кои създават допълнителен шум.</p>
+
+<p>Пилотите събират тези гледни точки в един и същ процес за обратна връзка. Започваме с два конкретни случая на употреба:</p>
+<ul>
+<li><strong>Doctor Ready:</strong> Може ли xHeal да помогне на човек да превърне наличната си здравна информация в организирана отправна точка за преглед?</li>
+<li><strong>Health Gaps:</strong> Може ли xHeal да направи липсващата, непълната или остарялата информация по-лесна за забелязване и обсъждане със здравен специалист?</li>
+</ul>
+
+<p>Тези въпроси са умишлено практични. Нито един от двата доклада не е предназначен да поставя диагноза, да решава вместо лекаря кое е медицински значимо или да заменя професионалния преглед.</p>
+
+<h2>Какво оценяваме заедно с лекарите и потребителите</h2>
+<p>Един полезен доклад трябва да работи и за двете страни в разговора за грижа. Той трябва да бъде разбираем за човека, който се подготвя за прегледа, и достатъчно фокусиран, за да може лекарят да го прегледа, без да преминава през ненужни подробности.</p>
+
+<p>По време на пилотите разглеждаме въпроси като:</p>
+<ul>
+<li>Могат ли потребителите да съберат и организират контекста, който възнамеряват да споделят?</li>
+<li>Ясна, лесна за преглед и достатъчно фокусирана ли е структурата на доклада?</li>
+<li>Видими ли са липсващите данни и ограниченията, вместо да остават скрити?</li>
+<li>Помага ли преживяването на потребителите да подготвят по-добри въпроси?</li>
+<li>Кои подробности помагат на лекаря да се ориентира в разговора и кои създават шум?</li>
+<li>Къде приложението добавя ненужна работа, вместо да я намалява?</li>
+</ul>
+
+<p>Обратната връзка от всяко използване насочва следващата продуктова итерация. Можем да подобрим структурата, езика, приоритизирането и процеса, след което отново да оценим промените. Този повтарящ се цикъл прави пилотите структурирани, а не просто сбор от неформални реакции.</p>
+
+<h2>Какво означава валидация на този етап</h2>
+<p>За тези пилоти валидация означава да проверим дали дадена функция е разбираема, използваема и ценна в процеса, за който е създадена. Това означава и да научим къде този процес се различава при отделните хора. Човек с повтарящи се симптоми, човек, който координира няколко специалисти, и човек, който се подготвя за рутинен преглед, може да имат нужда от много различно ниво на контекст.</p>
+
+<p>Искаме xHeal да носи реална стойност на различни видове потребители, но това няма да стане, ако третираме всеки потребител или преглед по един и същ начин. Стойността идва от разпознаването на конкретните нужди, проверката на приложението спрямо тях и запазването на важните различия.</p>
+
+<p>Тази продуктова валидация не е клинично изпитване и не установява клинична ефективност или медицински резултат. Това са различни стандарти и ще продължим да обясняваме ясно разликата.</p>
+
+<h2>Партньорства около един валидиран случай на употреба наведнъж</h2>
+<p>Очакваме с интерес да си партнираме с болници, независими практики и лекари около случаи на употреба, които могат да бъдат оценени чрез приложението. Едно партньорство може да започне с подготовка за преглед, организиране на документи преди направление, откриване на липсващ контекст или подготовка на по-ясни въпроси за проследяване.</p>
+
+<p>За всеки случай на употреба искаме първо да разберем реалния процес, да определим как би изглеждала полезната подкрепа и да я валидираме с участващите хора, преди да я разширим. Този подход може да намали излишното връщане напред-назад и да помогне на пациентите и медицинските екипи да достигнат по-бързо до полезната част от разговора. Той не цели да прибързва клиничната преценка или да премахва необходимите предпазни мерки.</p>
+
+<h2>Изграждаме заедно с хората, които ще използват продукта</h2>
+<p>Най-ценният резултат от тези пилоти не е просто потвърждение, че първата ни идея е била правилна. Това са доказателства, които ни помагат да решим какво да запазим, какво да променим и какво да не изграждаме.</p>
+
+<p>Лекарите носят гледната точка на реалните процеси в грижата. Потребителите носят реалността на подготовката, запомнянето и координирането на собствения си здравен контекст. Като изграждаме и с двете страни, можем да направим Doctor Ready, Health Gaps и бъдещите случаи на употреба на xHeal по-фокусирани, по-прозрачни и по-полезни.</p>
+
+<p>xHeal остава здравен компаньон и инструмент за информираност. Той подпомага подготовката и сътрудничеството с медицинския екип, но не поставя диагнози, не лекува, не предписва и не заменя медицинските специалисти.</p>`,
+  },
   // ─── PRODUCT STORIES ────────────────────────────────────
+  {
+    slug: "how-xheal-connected-my-headaches-to-my-eyes",
+    title:
+      "Мислех, че главоболието ми е от стрес. xHeal ме накара да проверя очите си.",
+    seoTitle: "Как xHeal свърза главоболието ми с очите",
+    date: "Apr 04, 2026",
+    excerpt:
+      "След месец с повтарящи се главоболия и зачервени очи xHeal свърза симптомите с ежедневните ми модели и ме насочи към очен преглед, който потвърди нуждата от корекция на зрението.",
+    metaDescription:
+      "След месец с главоболия и зачервени очи xHeal ме насочи към очен преглед. Лекарят потвърди -0.75 D на дясното и -0.50 D на лявото око.",
+    image: "/images/blog/headaches-eye-exam-cover.jpg",
+    category: "product-stories",
+    author: blogAuthorsBg.kalin,
+    readingTime: 6,
+    featured: true,
+    relatedSlugs: [
+      "the-doctor-visit-cheat-sheet",
+      "how-sleep-stress-nutrition-connect",
+      "case-study-how-xheal-helped-me-reduce-early-insulin-resistance",
+    ],
+    imageSlider: {
+      slides: [
+        {
+          src: "/images/blog/headache-problems-1.png",
+          alt: "Разговор с xHeal, който свързва повтарящите се главоболия и зачервените очи с времето пред екран, лошия сън, стреса и възможната дехидратация",
+          caption:
+            "xHeal преглежда активните фактори за главоболието и предлага незабавни стъпки.",
+          width: 923,
+          height: 2000,
+        },
+        {
+          src: "/images/blog/headache-problems-2.png",
+          alt: "Разговор с xHeal, който препоръчва очен лекар при чести главоболия, зачервени очи, напрежение или затруднено фокусиране",
+          caption:
+            "Питам дали очен преглед може да помогне, а xHeal обяснява какво може да провери специалистът.",
+          width: 923,
+          height: 2000,
+        },
+        {
+          src: "/images/blog/headache-problems-3.png",
+          alt: "Разговор с xHeal, който обяснява, че очният преглед може да адресира зрителния компонент, докато сънят, стресът и екранните навици също остават важни",
+          caption:
+            "xHeal препоръчва да започна с очен преглед, без да твърди, че той ще реши всяка причина за главоболието.",
+          width: 923,
+          height: 2000,
+        },
+      ],
+    },
+    content: `<p>През по-голямата част от март имах повтарящи се главоболия. Разходка по обяд понякога ми даваше кратко облекчение, но пулсиращото напрежение се връщаше. Очите ми често бяха зачервени, а след дълги дни пред екрани ми беше все по-трудно да фокусирам.</p>
+
+<p>Първоначално приемах всяко главоболие като отделен лош ден. Може би бях стресиран. Може би трябваше да пия повече вода. Може би не бях спал добре. Всички тези обяснения звучаха възможни, но моделът продължаваше вече почти месец.</p>
+
+<h2>Разговорът, който промени следващата ми стъпка</h2>
+<p>Отворих xHeal и описах какво се случва: поредното главоболие, зачервени очи и симптоми, които не се бяха подобрили след разходка. Вместо веднага да стигне до едно заключение, xHeal разгледа контекста, който вече бях споделил.</p>
+
+<p>Приложението посочи няколко фактора, активни едновременно: повече от осем часа дневно пред екран, късно лягане около 2-3 часа сутринта, повтарящ се стрес и възможна дехидратация. xHeal обясни, че напрежението в очите е една от възможностите, но не го представи като единствена причина.</p>
+
+<p>Снимките по-долу показват разговора в оригиналната му последователност.</p>
+
+<!--blog-image-slider-->
+
+<h2>xHeal не ми постави диагноза - показа ми какво си струва да проверя</h2>
+<p>Най-полезната част от отговора беше ясната граница. xHeal не каза: „Нуждаеш се от точно този диоптър.“ Приложението не може да измери зрението ми чрез чат. То посочи, че честите главоболия при работа пред екран, зачервените очи, замъгленото зрение, напрежението и затрудненото фокусиране са причини да посетя очен специалист.</p>
+
+<p>xHeal запази видим и по-широкия контекст. Очен лекар можеше да изследва зрителния компонент, докато лошият сън, стресът, хидратацията и екранните навици също изискваха внимание. Това разграничение беше важно, защото главоболието може да има много причини и едно вероятно обяснение не трябва да изключва останалите.</p>
+
+<p>Според <a href="https://www.nei.nih.gov/learn-about-eye-health/eye-conditions-and-diseases/refractive-errors" target="_blank" rel="noopener noreferrer">Националния очен институт на САЩ</a> рефракционните аномалии могат да причинят главоболие, напрежение в очите, замъглено зрение и затруднено фокусиране при четене или работа с компютър. Те се установяват чрез очен преглед, а не само по симптомите.</p>
+
+<h2>Какво потвърди очният лекар</h2>
+<p>Записах си час. По време на прегледа лекарят потвърди, че имам нужда от корекция на зрението: <strong>-0.75 D на дясното око и -0.50 D на лявото</strong>.</p>
+
+<p>xHeal не беше предвидил тези стойности. Това, което определи правилно, беше следващата стъпка. Приложението свърза месец с повтарящи се оплаквания и съпътстващите ги модели и ме спря да отхвърлям проблема като „поредното главоболие“. Клиничното потвърждение дойде от очния лекар.</p>
+
+<h2>Защо този навременен сигнал беше важен за мен</h2>
+<p>Когато казвам, че xHeal ми помогна да опазя очите си, нямам предвид, че приложението е диагностицирало очно състояние или е доказало, че зрението ми щеше да се влоши трайно. Имам предвид, че ми помогна да действам, преди да продължа да пренебрегвам необходима корекция и да натоварвам очите си без преглед.</p>
+
+<p>Стойността не беше в драматична прогноза. Беше в практичен сигнал, основан на собствената ми история: това се случва многократно, няколко свързани фактора са активни и е време да задам правилните въпроси на правилния специалист.</p>
+
+<p>Ако главоболие, зачервени очи, замъглено зрение или затруднено фокусиране продължават да се повтарят, записването на модела може да направи следващия разговор по-полезен. Но оценката остава работа на квалифициран здравен специалист. xHeal ми помогна да разпозная кога да проведа този разговор.</p>
+
+<h2>Често задавани въпроси</h2>
+<div itemscope itemtype="https://schema.org/FAQPage">
+<div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+<h3 itemprop="name">Може ли некоригирана рефракционна аномалия да допринася за главоболие?</h3>
+<div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+<p itemprop="text">Да. Националният очен институт на САЩ посочва главоболието, напрежението в очите, замъгленото зрение и затрудненото фокусиране сред възможните симптоми на рефракционни аномалии. Тези симптоми могат да имат и други причини, затова е необходим очен преглед, за да се прецени дали е подходяща зрителна корекция.</p>
+</div></div>
+<div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+<h3 itemprop="name">xHeal диагностицира ли диоптрите на Kalin?</h3>
+<div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+<p itemprop="text">Не. xHeal разпозна, че повтарящите се симптоми и ежедневният контекст правят очния преглед разумна следваща стъпка. Очен лекар извърши прегледа и потвърди корекция от -0.75 D на дясното око и -0.50 D на лявото.</p>
+</div></div>
+<div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+<h3 itemprop="name">Трябва ли повтарящо се главоболие при работа пред екран да бъде проверено от очен лекар?</h3>
+<div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+<p itemprop="text">Струва си да обсъдите очен преглед, когато главоболието се повтаря при работа пред екран и е придружено от зачервени очи, замъглено зрение, напрежение или затруднено фокусиране. Тъй като главоболието може да има много причини, постоянните или влошаващи се симптоми трябва да бъдат обсъдени и с подходящ здравен специалист.</p>
+</div></div>
+</div>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Може ли некоригирана рефракционна аномалия да допринася за главоболие?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Да. Националният очен институт на САЩ посочва главоболието, напрежението в очите, замъгленото зрение и затрудненото фокусиране сред възможните симптоми на рефракционни аномалии. Тези симптоми могат да имат и други причини, затова е необходим очен преглед."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "xHeal диагностицира ли диоптрите на Kalin?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Не. xHeal разпозна, че повтарящите се симптоми и ежедневният контекст правят очния преглед разумна следваща стъпка. Очен лекар извърши прегледа и потвърди корекция от -0.75 D на дясното око и -0.50 D на лявото."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Трябва ли повтарящо се главоболие при работа пред екран да бъде проверено от очен лекар?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Струва си да обсъдите очен преглед, когато главоболието се повтаря при работа пред екран и е придружено от зачервени очи, замъглено зрение, напрежение или затруднено фокусиране. Постоянните или влошаващи се симптоми трябва да бъдат обсъдени и с подходящ здравен специалист."
+      }
+    }
+  ]
+}
+</script>`,
+  },
   {
     slug: "case-study-how-xheal-helped-me-reduce-early-insulin-resistance",
     title: "Чувствах се напълно здрав. Данните ми казаха друго.",
@@ -1928,6 +2844,7 @@ const blogPostsBg: BlogPost[] = [
   {
     slug: "how-to-know-which-lab-tests-to-order",
     title: "Лабораторните изследвания, които лекарят ми никога не назначи (и защо промениха всичко)",
+    seoTitle: "Изследванията, които лекарят ми не назначи",
     date: "Nov 02, 2025",
     lastUpdated: "Mar 26, 2026",
     excerpt:
@@ -1968,6 +2885,7 @@ const blogPostsBg: BlogPost[] = [
   {
     slug: "what-happens-48-hours-before-a-flare-up",
     title: "Signs a Flare-Up Is Coming: What Your Body Shows 48 Hours Before",
+    seoTitle: "Признаци за обостряне 48 часа по-рано",
     date: "Feb 20, 2026",
     excerpt:
       "Тялото ви изпраща предупредителни сигнали дни преди симптомите да ударят. Ето какво казват проучванията за ранното разпознаване — и как свързването на данните ви може да ви помогне да се подготвите.",
@@ -1981,18 +2899,17 @@ const blogPostsBg: BlogPost[] = [
       "five-flare-up-triggers-hiding-in-plain-sight",
       "case-study-how-xheal-helped-me-reduce-early-insulin-resistance",
     ],
-    content: `<p>Ако живеете с хронично заболяване, познавате усещането. Единият ден сте добре. Следващият сте в средата на обостряне и се чудите какво се обърка. Но ето какво повечето хора не осъзнават: тялото ви е изпращало сигнали 24 до 48 часа преди да усетите каквото и да е.</p>
+    content: `<p>Ако живеете с хронично заболяване, познавате усещането. Единият ден сте добре. Следващият сте в средата на обостряне и се чудите какво се обърка. Но физиологичните промени понякога могат да започнат, преди симптомите да станат очевидни.</p>
 
 <h2>Науката за ранното предупреждение</h2>
-<p>Проучване, публикувано в Journal of Medical Internet Research, установи, че данните от носими устройства могат да засекат физиологични промени до 48 часа преди началото на симптомите при състояния от болестта на Крон до ревматоиден артрит. Сигналите са фини — твърде фини, за да се усетят — но измерими:</p>
+<p>Проспективно проучване, публикувано в <a href="https://www.nature.com/articles/s41598-025-29748-y" target="_blank" rel="noopener noreferrer">Scientific Reports</a>, проследява 53 души с ревматоиден артрит и установява, че масовите носими устройства улавят физиологични разлики около симптоматични и възпалителни обостряния:</p>
 <ul>
-<li><strong>HRV спада с 3-7%</strong> преди възпалително обостряне</li>
-<li><strong>Пулсът в покой се увеличава с 2-5 удара/мин</strong>, докато имунната система се активира</li>
-<li><strong>Ефективността на съня намалява</strong>, дори когато общото време за сън остава същото</li>
-<li><strong>Кожната температура се променя</strong> с части от градуса</li>
-<li><strong>Моделите на активност се променят</strong>, когато умората настъпва преди съзнателното осъзнаване</li>
+<li><strong>Пулсът и пулсът в покой са по-високи</strong> при възпалителни обостряния спрямо ремисия</li>
+<li><strong>Циркадните модели на HRV се различават</strong> между периодите на обостряне и ремисия</li>
+<li><strong>Броят крачки е по-нисък</strong> при симптоматични обостряния</li>
+<li><strong>Няколко показателя се променят преди началото на обострянето</strong>, но са нужни по-големи проучвания, преди тези сигнали да насочват индивидуални клинични решения</li>
 </ul>
-<p>Поотделно нито една от тези промени не би вдигнала аларма. Заедно те образуват модел, който е забележително последователен.</p>
+<p>Нито една от тези промени сама по себе си не диагностицира обостряне. Стойността им е като модел спрямо личната базова линия, разглеждан заедно със симптомите и клиничната оценка.</p>
 
 <h2>Защо повечето хора пропускат знаците</h2>
 <p>Проблемът не е липсата на данни. Apple Watch, тракерът за сън и дневниците за симптоми улавят части от пъзела. Проблемът е, че нито едно устройство или приложение не ги свързва.</p>
@@ -2001,13 +2918,13 @@ const blogPostsBg: BlogPost[] = [
 <h2>Кръстосаната корелация променя всичко</h2>
 <p>Когато свържете всичките си здравни данни в една система, се появяват модели, които иначе биха били невидими. Например:</p>
 <ul>
-<li>Спад в HRV, комбиниран с намалена ефективност на съня и повишен пулс в покой, може да показва предстоящо обостряне с 70-80% точност</li>
+<li>Промяна в HRV заедно с промени в активността и пулса в покой може да се сравни с историята на симптомите ви</li>
 <li>Покачване на маркери за стрес заедно с конкретни записи за храна може да разкрие тригери, уникални за вашето тяло</li>
 <li>Сезонни промени в барометричното налягане, корелирани с вашата история на симптоми, могат да предскажат обостряния, свързани с времето</li>
 </ul>
 
 <h2>От реактивен към превантивен подход</h2>
-<p>Хващането на обостряне 48 часа по-рано не го предотвратява напълно, но трансформира отговора ви. Вместо да бъдете изненадани, можете да:</p>
+<p>Разпознаването на познат модел преди обостряне не гарантира, че то може да бъде предотвратено, но може да ви помогне да се подготвите. Вместо да бъдете изненадани, можете да:</p>
 <ul>
 <li>Коригирате графика си, за да включите повече почивка</li>
 <li>Избягвате известни хранителни тригери по време на уязвими периоди</li>
@@ -2015,7 +2932,7 @@ const blogPostsBg: BlogPost[] = [
 <li>Уведомите специалиста си преди симптомите да ескалират</li>
 <li>Намалите физическото натоварване, за да подкрепите имунната си система</li>
 </ul>
-<p>Разликата между реагирането на обостряне и подготовката за него е разликата между загубата на седмица и загубата на ден.</p>
+<p>Практическата цел не е самодиагностика чрез носимо устройство, а ранно забелязване на промени и следване на плана, уговорен с медицинския ви екип.</p>
 
 <h2>Какво можете да започнете да правите днес</h2>
 <p>Дори преди да приемете нови инструменти, можете да подобрите ранното си разпознаване, като последователно проследявате три неща: качество на съня (не само продължителност), ежедневни нива на стрес и всякакви фини промени в енергията или апетита. Те често са първите доминота, които падат.</p>
@@ -2026,17 +2943,17 @@ const blogPostsBg: BlogPost[] = [
 <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
 <h3 itemprop="name">Могат ли носимите устройства наистина да предскажат обостряния преди симптомите?</h3>
 <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-<p itemprop="text">Да — изследване в Journal of Medical Internet Research установи, че данните от носими устройства могат да засекат физиологични промени до 48 часа преди появата на симптоми при заболявания като болестта на Крон и ревматоиден артрит. Сигналът идва от комбинация от метрики, тренднащи заедно — а не от един изолиран показател.</p>
+<p itemprop="text">Могат да помогнат. Проспективно проучване при ревматоиден артрит установява, че пулсът, пулсът в покой, моделите на HRV и активността се различават около обострянията и че няколко показателя се променят преди началото им. Това е обещаващо изследване, а не диагноза от единично измерване.</p>
 </div></div>
 <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
 <h3 itemprop="name">Какви метрики да проследявам, за да открия предстоящо обостряне?</h3>
 <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-<p itemprop="text">Петте най-предсказуеми сигнала са: HRV (спад от 3–7% под базовата ви линия), пулс в покой (повишение от 2–5 уд/мин), ефективност на съня (процентът в възстановителни фази), кожна температура и фини промени в нивото на активност поради предсимптоматична умора.</p>
+<p itemprop="text">Следете тенденции, които устройството ви измерва последователно, като пулс в покой, HRV и активност, и ги сравнявайте с дневник на симптомите. Изследванията не са установили универсални процентни прагове за всички заболявания и устройства.</p>
 </div></div>
 <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
 <h3 itemprop="name">Какво да направя, когато данните ми показват ранни предупредителни знаци?</h3>
 <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-<p itemprop="text">Използвайте прозореца, за да намалите физическото натоварване, коригирате графика си за повече почивка, избягвате известните си хранителни тригери и ако имате протокол за управление на обострянето, инициирайте го рано. Целта е да посрещнете обострянето подготвени, а не изненадани.</p>
+<p itemprop="text">Сравнете промяната със симптомите си и следвайте плана за обостряне, уговорен с медицинския ви екип. Само тенденция от носимо устройство не трябва да се използва за промяна на лекарства или поставяне на диагноза.</p>
 </div></div>
 </div>
 
@@ -2050,7 +2967,7 @@ const blogPostsBg: BlogPost[] = [
       "name": "Can wearables actually predict flare-ups before symptoms appear?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes: research published in the Journal of Medical Internet Research found that wearable data can detect physiological changes up to 48 hours before symptom onset. The signal comes from a combination of metrics trending together, not any single number in isolation."
+        "text": "Носимите устройства могат да помогнат. Проспективно проучване при ревматоиден артрит установява разлики в пулса, пулса в покой, HRV и активността около обострянията, но единично измерване не е диагноза."
       }
     },
     {
@@ -2058,7 +2975,7 @@ const blogPostsBg: BlogPost[] = [
       "name": "What metrics should I track to detect an incoming flare-up?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The five most predictive signals are: HRV (a drop of 3–7% from baseline), resting heart rate (increase of 2–5 BPM), sleep efficiency (percentage of time in restorative stages), skin temperature shifts, and subtle changes in activity level driven by pre-symptomatic fatigue."
+        "text": "Следете последователно измервани тенденции като пулс в покой, HRV и активност и ги сравнявайте с дневник на симптомите. Няма универсални процентни прагове."
       }
     },
     {
@@ -2066,7 +2983,7 @@ const blogPostsBg: BlogPost[] = [
       "name": "What should I do when my data shows early warning signs?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Use the window to reduce physical strain, allow more rest, avoid your known dietary triggers, and initiate your flare management protocol early. The goal is to meet it prepared rather than blindsided."
+        "text": "Сравнете промяната със симптомите си и следвайте плана, уговорен с медицинския ви екип. Само тенденция от носимо устройство не трябва да променя лечението."
       }
     }
   ]
@@ -2092,12 +3009,12 @@ const blogPostsBg: BlogPost[] = [
     content: `<p>Когато обострянето удари, първият въпрос винаги е „защо?". Понякога отговорът е очевиден: изядохте нещо, което не трябваше, прекалихте във фитнеса или хванахте вирус. Но по-често тригерът е нещо, което никога не бихте заподозрели.</p>
 
 <h2>1. Ефективност на съня, а не продължителност</h2>
-<p>Спали сте осем часа. Трябва да се чувствате страхотно, нали? Не непременно. Ефективността на съня — процентът от времето в леглото, реално прекарано в възстановителни фази на сън — е по-важна от общите часове. Проучвания показват, че хората с хронични заболявания, чиято ефективност на съня е под 85%, са 2.3 пъти по-склонни да изпитат обостряне в рамките на 72 часа, независимо от общото време за сън.</p>
+<p>Спали сте осем часа. Трябва да се чувствате страхотно, нали? Не непременно. Непрекъснатостта и качеството на съня добавят информация, която общият брой часове може да пропусне. <a href="https://pubmed.ncbi.nlm.nih.gov/26140821/" target="_blank" rel="noopener noreferrer">Систематичен обзор и мета-анализ</a> установява връзка между нарушенията на съня и по-високи нива на CRP и IL-6, но не определя универсален праг за ефективност на съня или краткосрочен риск от обостряне.</p>
 <p>Трудната част: не можете да усетите ефективността на съня. Нужни са ви данни, за да я видите. Носими устройства, които проследяват фазите на съня, могат да разкрият кога вашите „осем часа" реално съдържат само пет часа качествена почивка.</p>
 
 <h2>2. Промени в барометричното налягане</h2>
-<p>При състояния като ревматоиден артрит, фибромиалгия и мигрени промените в барометричното налягане са добре документиран, но слабо проследяван тригер. Проучване в BMC Musculoskeletal Disorders установи, че бързите спадове в барометричното налягане предхождат обостряне на симптомите при 68% от участниците.</p>
-<p>Повечето хора забелязват това като „ставите ме болят, когато вали", но реалният тригер често се случва 12-24 часа преди времето видимо да се промени. Проследявайки метеорологичните данни заедно със симптомите си в продължение на месеци, можете да идентифицирате вашия специфичен праг на чувствителност към налягането.</p>
+<p>Някои хора с ревматоиден артрит съобщават за чувствителна към времето болка, но доказателствата са смесени и ефектите се различават между хората. Дневниково проучване с 75 пациенти открива <a href="https://pubmed.ncbi.nlm.nih.gov/10353505/" target="_blank" rel="noopener noreferrer">малки връзки между метеорологичните показатели и болката, които не са клинично значими</a>.</p>
+<p>Ако подозирате връзка с времето, проследявайте условията заедно със симптомите няколко месеца, за да проверите дали моделът е значим лично за вас.</p>
 
 <h2>3. Кумулативен стрес, а не остър стрес</h2>
 <p>Един стресиращ ден рядко предизвиква обостряне. Това, което го предизвиква, са три до пет дни на повишен стрес без адекватно възстановяване. Тялото ви може да се справи с пикове. То се затруднява с продължително повишение.</p>
@@ -2125,12 +3042,12 @@ const blogPostsBg: BlogPost[] = [
 <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
 <h3 itemprop="name">Как барометричното налягане причинява обостряния?</h3>
 <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-<p itemprop="text">При заболявания като ревматоиден артрит, фибромиалгия и мигрена бързите спадове на барометричното налягане са документиран тригер — не самият дъжд. Реалният тригер често настъпва 12–24 часа преди времето видимо да се промени. Проследяването на метеорологичните данни заедно със симптомите за няколко месеца може да разкрие личния ви праг на чувствителност.</p>
+<p itemprop="text">Някои хора съобщават за чувствителна към времето болка, но изследване при ревматоиден артрит открива само малки средни връзки без клинична значимост и големи индивидуални разлики. Проследявайте времето и симптомите заедно, преди да приемете налягането за личен тригер.</p>
 </div></div>
 <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
 <h3 itemprop="name">Защо качеството на съня е по-важно от продължителността за предотвратяване на обостряния?</h3>
 <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-<p itemprop="text">Ефективността на съня — процентът от времето в леглото, прекарано в наистина възстановителни фази — е важна за имунната регулация, а не общите часове. Изследвания показват, че хора с хронични заболявания с ефективност на съня под 85% са 2.3 пъти по-склонни да имат обостряне в рамките на 72 часа, дори ако общото им спане изглежда нормално.</p>
+<p itemprop="text">Продължителността сама по себе си може да пропусне накъсан или некачествен сън. Систематичен обзор открива връзки между нарушенията на съня и по-високи възпалителни маркери, но няма универсален праг от носимо устройство, който да предсказва обостряне.</p>
 </div></div>
 </div>
 
@@ -2152,7 +3069,7 @@ const blogPostsBg: BlogPost[] = [
       "name": "How does barometric pressure cause flare-ups?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "For conditions like rheumatoid arthritis, fibromyalgia, and migraines, rapid drops in barometric pressure are a documented trigger. The actual trigger often occurs 12–24 hours before weather visibly changes."
+        "text": "Някои хора съобщават за чувствителна към времето болка, но изследване при ревматоиден артрит открива само малки средни връзки без клинична значимост и големи индивидуални разлики."
       }
     },
     {
@@ -2160,7 +3077,7 @@ const blogPostsBg: BlogPost[] = [
       "name": "Why does sleep quality matter more than sleep duration for flare prevention?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Sleep efficiency, the percentage of time in bed spent in restorative stages, is what matters for immune regulation. People with chronic conditions who have sleep efficiency below 85% are 2.3× more likely to experience a flare within 72 hours, even if total sleep time looks normal."
+        "text": "Продължителността сама по себе си може да пропусне накъсан или некачествен сън. Няма универсален праг за ефективност на съня от носимо устройство, който да предсказва обостряне."
       }
     }
   ]
@@ -2172,6 +3089,7 @@ const blogPostsBg: BlogPost[] = [
   {
     slug: "overtraining-how-my-data-proved-it",
     title: "Претренирвах се и данните ми го доказаха, преди тялото ми да го направи",
+    seoTitle: "Данните ми показаха, че претренирам",
     date: "Feb 14, 2026",
     lastUpdated: "Mar 26, 2026",
     excerpt:
@@ -2270,6 +3188,7 @@ const blogPostsBg: BlogPost[] = [
   {
     slug: "understanding-hrv-the-number-that-predicts-tomorrow",
     title: "Разбиране на HRV: Числото, което предсказва как ще се чувствате утре",
+    seoTitle: "HRV: Какво показва вариабилността на пулса",
     date: "Feb 10, 2026",
     lastUpdated: "Mar 26, 2026",
     excerpt:
@@ -2378,6 +3297,7 @@ const blogPostsBg: BlogPost[] = [
   {
     slug: "how-sleep-stress-nutrition-connect",
     title: "Как сънят, стресът и храненето се свързват (и защо проследяването на едно не е достатъчно)",
+    seoTitle: "Сън, стрес и хранене: Защо да следим и трите",
     date: "Feb 12, 2026",
     lastUpdated: "Mar 26, 2026",
     excerpt:
@@ -2395,7 +3315,7 @@ const blogPostsBg: BlogPost[] = [
 <p>Звучи познато? Това не е поредица от несвързани лоши решения. Това е единен цикъл с три взаимосвързани възела — и проследяването на който и да е от тях поотделно ви дава непълна картина.</p>
 
 <h2>Връзката сън-стрес</h2>
-<p>Лошият сън увеличава кортизола (основния ви хормон на стреса) с 37-45% на следващия ден, според проучване, публикувано в Sleep. Повишеният кортизол ви прави по-реактивни към стресори, с които нормално бихте се справили лесно. Досадният имейл се чувства катастрофален. Трафикът се усеща непоносим.</p>
+<p>Лошият сън може да наруши стресовия отговор на организма, но ефектът върху кортизола не е един предвидим процент. <a href="https://pubmed.ncbi.nlm.nih.gov/38777757/" target="_blank" rel="noopener noreferrer">Систематичен обзор и мета-анализ</a> не открива значима обща разлика в кортизола след остро лишаване от сън, въпреки че проучванията със серумни проби показват повишение. Тази променливост е причината личните тенденции да са по-полезни от универсално число.</p>
 <p>Междувременно повишеният стрес затруднява постигането на сън. Кортизолът потиска производството на мелатонин, забавя заспиването и намалява времето в дълбоки фази на съня. Това е обратна връзка: лошият сън създава стрес, който създава лош сън.</p>
 
 <h2>Връзката стрес-хранене</h2>
@@ -2420,7 +3340,7 @@ const blogPostsBg: BlogPost[] = [
 <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
 <h3 itemprop="name">Как сънят влияе на стреса и храненето?</h3>
 <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-<p itemprop="text">Лошият сън увеличава кортизола с 37–45% на следващия ден. Повишеният кортизол ви прави по-реактивни към стресори и активно засилва жаждата за захар и висококалорични храни. Получената нестабилност на кръвната захар затруднява заспиването тази нощ — затваряйки цикъла. Прекъсването на цикъла почти винаги е по-ефективно отколкото управляването на само един елемент.</p>
+<p itemprop="text">Сънят и стресът си влияят взаимно, а резултатите за кортизола след загуба на сън се различават според дизайна на проучването и начина на измерване. Това е двупосочен цикъл, а не реакция с фиксиран процент.</p>
 </div></div>
 <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
 <h3 itemprop="name">Кой е най-добрият начин да прекъсна цикъла сън-стрес-хранене?</h3>
@@ -2444,7 +3364,7 @@ const blogPostsBg: BlogPost[] = [
       "name": "How does sleep affect stress and nutrition?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Poor sleep increases cortisol by 37–45% the next day. Elevated cortisol makes you more reactive to stressors and actively amplifies cravings for sugar and high-calorie foods. The resulting blood sugar instability makes it harder to fall asleep that night, closing the cycle."
+        "text": "Сънят и стресът си влияят взаимно, а резултатите за кортизола след загуба на сън се различават според дизайна на проучването и начина на измерване. Това не е реакция с фиксиран процент."
       }
     },
     {
@@ -2470,6 +3390,7 @@ const blogPostsBg: BlogPost[] = [
   {
     slug: "your-apple-watch-tracks-47-metrics",
     title: "Apple Watch проследява 47 метрики. Ето какво не може да ви каже.",
+    seoTitle: "Какво Apple Watch не може да ви каже",
     date: "Feb 08, 2026",
     lastUpdated: "Mar 26, 2026",
     excerpt:
@@ -2573,6 +3494,7 @@ const blogPostsBg: BlogPost[] = [
   {
     slug: "the-lab-tests-your-annual-checkup-misses",
     title: "Лабораторните изследвания, които годишният ви преглед пропуска (и защо имат значение)",
+    seoTitle: "6 изследвания, които годишният преглед пропуска",
     date: "Feb 06, 2026",
     lastUpdated: "Mar 26, 2026",
     excerpt:
@@ -2605,7 +3527,7 @@ const blogPostsBg: BlogPost[] = [
 <p>Стандартните панели може да проверят серумно желязо, но феритинът (запаси от желязо) често се пропуска. Можете да имате нормално серумно желязо с изчерпани запаси от феритин. Симптоми: умора, мъгла в мозъка, лошо възстановяване, загуба на коса. Феритин под 30 ng/mL причинява симптоми при много хора, въпреки че е „в обхвата" в лабораторните доклади.</p>
 
 <h3>4. Витамин D, 25-хидрокси</h3>
-<p>Дефицитът на витамин D засяга приблизително 42% от американските възрастни и е свързан с имунна дисфункция, разстройства на настроението, костно здраве и възпалителни заболявания. Повечето годишни панели не го включват, освен ако не е специално поискан.</p>
+<p>Анализ на данни от NHANES за 2005–2006 г. оценява, че 41,6% от възрастните в САЩ отговарят на използвания в проучването праг за дефицит на витамин D, като разпространението се различава значително между групите. Витамин D е важен за костното здраве, но решението за изследване трябва да отчита индивидуалните рискови фактори и клиничния контекст.</p>
 
 <h3>5. Тиреоидни антитела (TPO-Ab, TG-Ab)</h3>
 <p>Стандартният тиреоиден скрининг проверява TSH и понякога свободен T4. Но тиреоидните антитела могат да бъдат повишени с години преди TSH да стане абнормен. Тиреоидитът на Хашимото, най-честото автоимунно заболяване, често се хваща късно, защото стандартният скрининг пропуска автоимунния компонент изцяло.</p>
@@ -2672,6 +3594,7 @@ const blogPostsBg: BlogPost[] = [
   {
     slug: "from-four-hospitals-to-one-timeline",
     title: "От 4 болници до една хронология: Организиране на медицинските документи за цял живот",
+    seoTitle: "Как да организирате медицинските си документи",
     date: "Feb 04, 2026",
     lastUpdated: "Mar 26, 2026",
     excerpt:
@@ -2767,6 +3690,7 @@ const blogPostsBg: BlogPost[] = [
   {
     slug: "the-doctor-visit-cheat-sheet",
     title: "Пътеводителят за лекарски преглед: Как да извлечете максимума от всеки час",
+    seoTitle: "Как да се подготвите за лекарски преглед",
     date: "Feb 02, 2026",
     lastUpdated: "Mar 26, 2026",
     excerpt:
@@ -2960,6 +3884,7 @@ const blogPostsBg: BlogPost[] = [
   {
     slug: "newsletter-feb-2026-flareup-awareness-10-helpful-updates",
     title: "Осведоменост за обостряния: 10 полезни актуализации за ежедневното здраве",
+    seoTitle: "Осведоменост за обостряния: 10 полезни съвета",
     date: "Feb 15, 2026",
     lastUpdated: "Mar 26, 2026",
     excerpt:
@@ -2971,23 +3896,24 @@ const blogPostsBg: BlogPost[] = [
     relatedSlugs: [
       "what-happens-48-hours-before-a-flare-up",
       "five-flare-up-triggers-hiding-in-plain-sight",
+      "newsletter-jan-2026-health-intelligence-roundup",
     ],
     content: `<p>Да бъдете в течение със здравето си означава да сте наясно с последните развития, които могат да повлияят на ежедневното ви благосъстояние. Ето десет практически актуализации, които да ви помогнат да разпознавате, предотвратявате и управлявате здравни обостряния.</p>
 
 <h2>1. Сигналите от носими устройства могат да предскажат обостряния по-рано</h2>
-<p>Скорошни проучвания показват, че фините промени в HRV, кожната температура и моделите на сън, засечени от носими устройства, могат да сигнализират за приближаващо обостряне 24 до 48 часа преди появата на симптоми. Ключът не е в никоя единична метрика, а в комбинацията от множество сигнали, тренднащи в една и съща посока едновременно.</p>
+<p>Проспективно <a href="https://www.nature.com/articles/s41598-025-29748-y" target="_blank" rel="noopener noreferrer">проучване с носими устройства при ревматоиден артрит</a> установява, че пулсът, пулсът в покой, моделите на HRV и активността се различават около обострянията, като няколко показателя се променят преди началото им. Времето варира и резултатите не определят универсален праг за предупреждение. Вижте нашето <a href="/bg/blog/what-happens-48-hours-before-a-flare-up">ръководство за тълкуване на ранните сигнали</a> за практически контекст.</p>
 
 <h2>2. Чревното здраве остава централно за управлението на възпалението</h2>
-<p>Нови проучвания продължават да потвърждават връзката черво-възпаление. Поддържането на разнообразие на микробиома чрез разнообразен прием на фибри и ферментирали храни остава една от най-ефективните превантивни стратегии. Проучване, публикувано в Nature Medicine, установи, че разнообразието на чревния микробиом корелира с намалена честота на обостряния при множество автоимунни заболявания.</p>
+<p>Чревната бариера и микробиомът взаимодействат с имунните и възпалителните пътища. <a href="https://pubmed.ncbi.nlm.nih.gov/37505311/" target="_blank" rel="noopener noreferrer">Обзор на чревната микробиота, пропускливостта и системното възпаление</a> описва връзки с няколко метаболитни и автоимунни заболявания, като подчертава, че механизмите и ефективните интервенции все още се изследват.</p>
 
 <h2>3. Управлението на стреса е измеримо, а не просто нещо, което чувствате</h2>
-<p>Хроничният стрес повишава кортизола, който директно задейства възпалителни каскади. Дори 10 минути дневна дихателна практика или медитация е доказано, че намалява честотата на обостряния с до 30%. Важният извод: можете да измервате стресовия отговор чрез HRV, което означава, че можете да проследите дали практиките ви за управление на стреса реално работят.</p>
+<p>Хроничният стрес може да влияе на автономните и възпалителните пътища. HRV може да добави обективна тенденция към субективното проследяване на стреса, но не измерва директно кортизола и само по себе си не доказва дали дадена практика работи.</p>
 
 <h2>4. Качеството на съня е по-важно от количеството сън</h2>
-<p>Не е просто въпрос на 8 часа сън. Ефективността на съня — процентът от времето в леглото, реално прекарано в сън — е по-силен предсказвач на следващодневните симптоми от общото време за сън. Хората с хронични заболявания, които поддържат ефективност на съня над 85%, съобщават за значително по-малко дни със симптоми.</p>
+<p>Не става дума само за времето в леглото. Непрекъснатостта и качеството на съня добавят контекст, който общата продължителност пропуска. Изследванията свързват нарушенията на съня с възпалителни маркери, но няма универсален праг за ефективност на съня от носимо устройство, който да предсказва симптомите на следващия ден при всички хронични заболявания.</p>
 
 <h2>5. Сезонните модели са предвидими, след като започнете да ги проследявате</h2>
-<p>Много хронични заболявания показват сезонни вариации. Проследяването на симптомите ви заедно с фактори на околната среда като температура, влажност и барометрично налягане помага да идентифицирате тези модели и да се подготвите съответно. След една пълна година данни сезонните предсказания стават забележително точни.</p>
+<p>Някои хронични заболявания и някои хора показват сезонни вариации. Проследяването на симптомите заедно с температура, влажност и барометрично налягане може да помогне да проверите личен модел, но ефектите на времето често са малки и не трябва да се предполагат предварително.</p>
 
 <h2>6. Времето на прием на лекарства влияе на ефикасността повече, отколкото повечето хора осъзнават</h2>
 <p>Хронобиологичните изследвания показват, че едно и също лекарство, прието по различно време на деня, може да има значително различна ефективност. Противовъзпалителни лекарства, приети вечер, могат по-добре да се справят със сутрешната скованост. Някои лекарства имат оптимални прозорци за абсорбция, зависещи от времето на хранене и други добавки.</p>
@@ -2999,14 +3925,15 @@ const blogPostsBg: BlogPost[] = [
 <p>Годишните кръвни изследвания работят за здрави хора. За управление на хронични заболявания тримесечното наблюдение на ключови маркери хваща тенденции по-рано и позволява по-бърза интервенция. Най-полезните маркери за тримесечно проследяване включват маркери за възпаление (CRP, СУЕ), специфични за заболяването маркери и индикатори за хранителен статус.</p>
 
 <h2>9. Социалната свързаност влияе директно на възпалението</h2>
-<p>Проучване от UCLA установи, че самотата и социалната изолация активират същите възпалителни пътища като физическото нараняване. Хората, които поддържат силни социални връзки, показват по-ниски базови маркери за възпаление. Това не е клише за добро самочувствие. Това е измерима биология.</p>
+<p><a href="https://pubmed.ncbi.nlm.nih.gov/32092313/" target="_blank" rel="noopener noreferrer">Систематичен обзор и мета-анализ</a> установява, че социалната изолация и самотата може да са свързани с някои маркери на системно възпаление, но резултатите са смесени и методологично разнородни. Социалната свързаност има значение за здравето, без връзката да се свежда до един биологичен път.</p>
 
 <h2>10. Моделите от данните ви стават по-ценни с времето</h2>
-<p>Най-мощните здравни прозрения идват от дългосрочни данни. Единично измерване на HRV ви казва много малко. Шест месеца данни за HRV заедно със симптомите, лабораторните ви резултати и входните данни за начина на живот ви казват всичко. Ако тепърва започвате да проследявате, най-важното нещо е последователността. Моделите ще се появят.</p>`,
+<p>Най-полезните здравни прозрения идват от дългосрочни данни. Единично измерване на HRV казва много малко; повтарящите се измервания заедно със симптомите, лабораторните резултати и начина на живот дават контекст. Ако тепърва започвате, последователността е по-важна от събирането на всяка възможна метрика. За по-широк обзор на изследванията и носимите устройства вижте нашия <a href="/bg/blog/newsletter-jan-2026-health-intelligence-roundup">януарски обзор на здравната интелигентност</a>.</p>`,
   },
   {
     slug: "newsletter-jan-2026-health-intelligence-roundup",
     title: "Обзор на здравната интелигентност: Какво имаше значение този месец",
+    seoTitle: "Здравна интелигентност: Месечен обзор",
     date: "Jan 15, 2026",
     lastUpdated: "Mar 26, 2026",
     excerpt:
@@ -3040,13 +3967,14 @@ const blogPostsBg: BlogPost[] = [
 <p>Няколко големи лабораторни мрежи вече предлагат разширени панели, които надхвърлят стандартните кръвни изследвания, достъпни без направление от лекар в повечето щати. Това улеснява хората да наблюдават маркери като HOMA-IR, hs-CRP, пълни тиреоидни панели и витаминни нива между годишните прегледи. Ключът е да имате система за проследяване на тези резултати във времето и свързването им с другите ви здравни данни.</p>
 
 <h2>Какво наблюдаваме следващия месец</h2>
-<p>Нови проучвания за точността на тестване на чревния микробиом, актуализации за достъпността на непрекъснатия глюкозен мониторинг за недиабетици и нововъзникващи данни за ранни сигнали за болест, засечени от носими устройства. Ще покрием практическите им последствия в следващия ни обзор.</p>`,
+<p>Нови проучвания за точността на тестване на чревния микробиом, актуализации за достъпността на непрекъснатия глюкозен мониторинг за недиабетици и нововъзникващи данни за ранни сигнали за болест, засечени от носими устройства. Продължете с нашия <a href="/bg/blog/newsletter-feb-2026-flareup-awareness-10-helpful-updates">февруарски обзор с практични насоки за обострянията</a>.</p>`,
   },
 
   // ─── PILLAR PAGES ────────────────────────────────────────
   {
     slug: "chronic-condition-management-guide",
     title: "Управление на хронични заболявания: Пълното ръководство с данни",
+    seoTitle: "Управление на хронични заболявания с данни",
     date: "Mar 26, 2026",
     lastUpdated: "Mar 26, 2026",
     excerpt:
@@ -3065,27 +3993,27 @@ const blogPostsBg: BlogPost[] = [
       "understanding-hrv-the-number-that-predicts-tomorrow",
     ],
     content: `<p>Управлението на хронично заболяване означава живот с несигурност. Някои дни се чувствате добре. При други обострянето удря без предупреждение, нарушавайки работата, отношенията и всичко останало. Традиционният подход е реактивен: изчакайте симптомите, след това реагирайте. Подходът, основан на данни, е различен. Той превръща собствените сигнали на тялото ви в система за ранно предупреждение.</p>
-<p>Това ръководство обхваща всичко, което трябва да знаете за управлението на хронично заболяване с помощта на свързани здравни данни — от засичане на сигнали за обостряне 48 часа по-рано до идентифициране на скритите тригери, които повечето хора никога не намират.</p>
+<p>Това ръководство обхваща как свързаните здравни данни могат да подпомогнат управлението на хронично заболяване — от разпознаване на промени, които може да предхождат обостряне, до проверка на предполагаеми тригери спрямо личната ви история.</p>
 
 <h2>Какво всъщност означава управление на хронично заболяване с данни</h2>
 <p>Всеки човек с хронично заболяване вече генерира огромно количество подходящи здравни данни. Вашият смарт часовник улавя вариабилността на сърдечната честота, фазите на съня, сърдечната честота в покой и моделите на активност. Лабораторните ви резултати проследяват възпалителни маркери, специфични за болестта биомаркери и метаболитни показатели. Вашият дневник на симптомите записва модели, които забелязвате съзнателно.</p>
 <p>Проблемът е, че тези потоци от данни съществуват в отделни силози. Вашето приложение за часовник нищо не знае за лабораторните ви резултати. Вашият дневник на симптомите не вижда HRV-то ви. Вашият лекар вижда само това, което помните да му кажете по време на 20-минутен преглед. Управлението на хронично заболяване с данни означава свързване на тези потоци, така че моделите да станат видими.</p>
 
-<h2>Как да засечете обостряне 24 до 48 часа преди да удари</h2>
-<p>Проучване, публикувано в <a href="https://www.jmir.org/2020/6/e19864/" target="_blank" rel="noopener noreferrer">Journal of Medical Internet Research</a>, установи, че данните от носими устройства могат да засекат физиологични промени до 48 часа преди появата на симптоми при хронични възпалителни заболявания. Сигналите са твърде фини за усещане, но измерими:</p>
+<h2>Какво показват изследванията с носими устройства преди обостряне</h2>
+<p>Проспективно проучване в <a href="https://www.nature.com/articles/s41598-025-29748-y" target="_blank" rel="noopener noreferrer">Scientific Reports</a> проследява 53 души с ревматоиден артрит и открива физиологични разлики около симптоматични и възпалителни обостряния:</p>
 <ul>
-<li>Вариабилността на сърдечната честота спада с 3 до 7% под личната ви базова линия</li>
-<li>Сърдечната честота в покой се повишава с 2 до 5 удара в минута</li>
-<li>Ефективността на съня пада под 85%, дори когато общата продължителност изглежда нормална</li>
-<li>Нивото на активност намалява леко поради пред-симптоматична умора</li>
+<li>Пулсът и пулсът в покой са по-високи при възпалителни обостряния</li>
+<li>Циркадните модели на HRV се различават между обостряне и ремисия</li>
+<li>Броят крачки е по-нисък при симптоматични обостряния</li>
+<li>Няколко физиологични показателя се променят преди началото на обострянето</li>
 </ul>
-<p>Нито една от тези промени сама по себе си не е значима. Всичките четири заедно за 24 до 48 часа е надежден модел. За подробен преглед на сигналите за ранно предупреждение вижте: <a href="/bg/blog/what-happens-48-hours-before-a-flare-up">Признаци, че наближава обостряне: Какво показва тялото ви 48 часа преди това</a>.</p>
+<p>Нито една от тези промени сама по себе си не диагностицира обостряне и проучването не установява универсални прагове. Практическата стойност е в сравнението на повторни измервания с личната ви базова линия, симптомите и клиничната оценка. За подробен преглед вижте <a href="/bg/blog/what-happens-48-hours-before-a-flare-up">ръководството за ранни сигнали за обостряне</a>.</p>
 
 <h2>5-те скрити тригера за обостряне, които повечето хора никога не идентифицират</h2>
 <p>Очевидните тригери са тези, които повечето хора се научават да управляват. По-трудните тригери са тези, които изобщо не изглеждат като тригери:</p>
 <ol>
-<li><strong>Ефективност на съня под 85%.</strong> Не общото време за сън, а делът на пълноценните фази на съня. Проучванията показват, че това увеличава риска от обостряне с 2,3 пъти в рамките на 72 часа.</li>
-<li><strong>Спадове на атмосферното налягане.</strong> Проучване в <a href="https://bmcmusculoskeletdisord.biomedcentral.com/articles/10.1186/s12891-019-2407-3" target="_blank" rel="noopener noreferrer">BMC Musculoskeletal Disorders</a> установи, че спадовете на налягането са предшествали обостряния при 68% от участниците.</li>
+<li><strong>Нарушения на съня.</strong> Качеството и непрекъснатостта добавят контекст, който общата продължителност пропуска, но няма универсален праг от носимо устройство, който предсказва обостряне.</li>
+<li><strong>Промени във времето.</strong> Някои хора съобщават за чувствителна към времето болка, но <a href="https://pubmed.ncbi.nlm.nih.gov/10353505/" target="_blank" rel="noopener noreferrer">дневниково проучване при ревматоиден артрит</a> открива само малки средни връзки без клинична значимост.</li>
 <li><strong>Натрупан стрес за 3 до 5 дни.</strong> Не единично стресово събитие, а продължително повишен кортизол без възстановяване.</li>
 <li><strong>Пропуски в приема на лекарства.</strong> Приемането на лекарство в момент, несъвместим с вашия пик на възпаление, създава пролуки в покритието.</li>
 <li><strong>Взаимодействия на добавки.</strong> Желязо в рамките на два часа от тиреоидно лекарство, калций с определени антибиотици — тези взаимодействия намаляват ефективността на лекарствата.</li>
@@ -3116,12 +4044,12 @@ const blogPostsBg: BlogPost[] = [
 <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
 <h3 itemprop="name">Какъв е най-добрият начин за проследяване на хронично заболяване у дома?</h3>
 <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-<p itemprop="text">Най-ефективното домашно проследяване комбинира три потока: носимо устройство, което улавя HRV, сърдечна честота в покой и фази на съня; ежедневен дневник на симптомите с времева рамка и оценки на тежестта; и хронологично организирани лабораторни резултати. Заедно те разкриват модели, които предсказват обостряния дни по-рано.</p>
+<p itemprop="text">Полезното домашно проследяване комбинира последователни тенденции от носимо устройство, дневник на симптомите с дати и хронологично организирани лабораторни резултати. Заедно те могат да разкрият лични връзки за обсъждане с лекар, но не гарантират предсказване на обостряне.</p>
 </div></div>
 <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
 <h3 itemprop="name">Могат ли данните наистина да предсказват обостряния при хронични заболявания?</h3>
 <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-<p itemprop="text">Проучванията показват, че комбинираните сигнали от носими устройства могат да засекат физиологични промени 24 до 48 часа преди появата на симптоми. Последователното проследяване изгражда лична библиотека от модели, която прави бъдещите обострявания все по-предсказуеми.</p>
+<p itemprop="text">Проспективно проучване при ревматоиден артрит установява, че няколко показателя от носими устройства се променят преди някои симптоматични и възпалителни обостряния. Резултатите са обещаващи, но времето варира и нито едно потребителско устройство не предсказва надеждно всяко обостряне.</p>
 </div></div>
 <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
 <h3 itemprop="name">Колко данни са ми нужни, преди моделите да станат полезни?</h3>
@@ -3140,7 +4068,7 @@ const blogPostsBg: BlogPost[] = [
       "name": "Какъв е най-добрият начин за проследяване на хронично заболяване у дома?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Най-ефективното домашно проследяване комбинира три потока: носимо устройство, което улавя HRV, сърдечна честота в покой и фази на съня; ежедневен дневник на симптомите; и хронологично организирани лабораторни резултати."
+        "text": "Полезното домашно проследяване комбинира последователни тенденции от носимо устройство, дневник на симптомите с дати и хронологично организирани лабораторни резултати, без да гарантира предсказване на обостряне."
       }
     },
     {
@@ -3148,7 +4076,7 @@ const blogPostsBg: BlogPost[] = [
       "name": "Могат ли данните наистина да предсказват обострявания при хронични заболявания?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Проучванията показват, че комбинираните сигнали от носими устройства могат да засекат физиологични промени 24 до 48 часа преди появата на симптоми."
+        "text": "Проспективно проучване при ревматоиден артрит установява промени в няколко показателя преди някои обостряния, но времето варира и потребителските устройства не предсказват надеждно всяко обостряне."
       }
     },
     {
@@ -3166,6 +4094,7 @@ const blogPostsBg: BlogPost[] = [
   {
     slug: "understanding-your-health-data",
     title: "Разбиране на вашите здравни данни: Пълно ръководство за носими устройства, лаборатории и какво означава всичко",
+    seoTitle: "Как да разбирате здравните си данни",
     date: "Mar 26, 2026",
     lastUpdated: "Mar 26, 2026",
     excerpt:
@@ -3199,7 +4128,7 @@ const blogPostsBg: BlogPost[] = [
 <li><strong>HOMA-IR:</strong> Засича инсулинова резистентност години преди кървеносната глюкоза да стане ненормална</li>
 <li><strong>Високочувствителен CRP:</strong> Измерва хронично нискостепенно възпаление</li>
 <li><strong>Феритин:</strong> Складиране на желязо, което може да бъде изчерпано, докато серумното желязо изглежда нормално</li>
-<li><strong>Витамин D, 25-хидрокси:</strong> <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6075634/" target="_blank" rel="noopener noreferrer">Дефицитът засяга приблизително 42% от американските възрастни</a></li>
+<li><strong>Витамин D, 25-хидрокси:</strong> Анализ на NHANES за 2005–2006 г. оценява, че <a href="https://pubmed.ncbi.nlm.nih.gov/21310306/" target="_blank" rel="noopener noreferrer">41,6% от възрастните в САЩ отговарят на използвания праг за дефицит</a>, като разпространението варира между групите</li>
 <li><strong>Антитела към щитовидната жлеза (TPO-Ab, TG-Ab):</strong> Могат да бъдат повишени с години преди TSH да се промени</li>
 <li><strong>Хемоглобин A1c:</strong> Отразява 90-дневна средна кръвна захар</li>
 </ul>
@@ -3209,7 +4138,7 @@ const blogPostsBg: BlogPost[] = [
 <p>Единичен лабораторен резултат е моментна снимка. Серия от резултати с времето е история. Феритин от 35 нг/мл е технически в нормалните граници. Феритин, спаднал от 80 до 35 за 12 месеца, е тенденция, която заслужава проучване. За да четете данните си като тенденции: пазете всеки лабораторен резултат; организирайте ги хронологично; следете посоката на промяна, не само дали стойностите са в норма.</p>
 
 <h2>Триъгълникът сън-стрес-хранене</h2>
-<p>Сънят, стресът и храненето не са независими променливи. Лошият сън повишава кортизола с 37 до 45% на следващия ден. Повишеният кортизол води до желание за храни с висок гликемичен индекс. Нестабилността на кръвната захар от тези хранителни избори нарушава съня следващата нощ. Цикълът е самоподсилващ. За повече подробности вижте: <a href="/bg/blog/how-sleep-stress-nutrition-connect">Как сънят, стресът и храненето се свързват (и защо проследяването на едно не е достатъчно)</a>.</p>
+<p>Сънят, стресът и храненето не са независими променливи. Загубата на сън може да промени регулирането на стреса, но резултатите за кортизола варират според проучването и начина на измерване, вместо да следват един фиксиран процент. Хранителните избори и времето на хранене също могат да повлияят на съня. За повече подробности вижте: <a href="/bg/blog/how-sleep-stress-nutrition-connect">Как сънят, стресът и храненето се свързват</a>.</p>
 
 <h2>Как да използвате данните при лекарски прегледи</h2>
 <p>Вместо "чувствам се по-зле напоследък", можете да кажете: "HRV-то ми е в низходяща тенденция три седмици, ефективността на съня ми е паднала под 80% и нивото ми на CRP се е повишило." Данните превръщат субективните оплаквания в клинически разговори, върху които вашият лекар може да действа.</p>

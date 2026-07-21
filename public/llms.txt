@@ -6,53 +6,56 @@ xHeal was founded by Trifon Getsov after a 4-year personal health crisis. Its pr
 
 ## Core Product Pages
 
-- [Home](https://xheal.com/en): Overview of xHeal's health intelligence platform
-- [About](https://xheal.com/en/about): Founding story, team, and medical advisors
-- [Chat With Your Health](https://xheal.com/en/chat-with-your-health): AI health assistant
-- [Health Timeline](https://xheal.com/en/health-timeline): Unified view of health history across sources
-- [Flare-Up Trigger Patterns](https://xheal.com/en/flare-up-trigger-patterns): Personalized trigger identification for chronic conditions
-- [Health Awareness](https://xheal.com/en/health-awareness): Early detection and awareness tools
-- [Specialist-Ready Reports](https://xheal.com/en/specialist-ready-reports): Appointment preparation and data summaries
-- [Log Life Events](https://xheal.com/en/log-life-events): Contextual health event logging
+- [Home](https://xheal.ai/): Overview of xHeal's health intelligence platform
+- [About](https://xheal.ai/about): Founding story, team, and medical advisors
+- [Workouts & Recovery](https://xheal.ai/workouts): Readiness-based workout guidance, session logging, and progress tracking
+- [Nutrition](https://xheal.ai/nutrition): Seven-day meal planning based on targets, restrictions, allergies, and preferences
+- [Mindfulness & Wellbeing](https://xheal.ai/mindfulness): Contextual breathing practices, mood check-ins, and mindful activity
+- [Chat With Your Health](https://xheal.ai/chat-with-your-health): AI health assistant
+- [Health Timeline](https://xheal.ai/health-timeline): Unified view of health history across sources
+- [Flare-Up Trigger Patterns](https://xheal.ai/flare-up-trigger-patterns): Personalized trigger identification for chronic conditions
+- [Health Awareness](https://xheal.ai/health-awareness): Early detection and awareness tools
+- [Specialist-Ready Reports](https://xheal.ai/specialist-ready-reports): Appointment preparation and data summaries
+- [Log Life Events](https://xheal.ai/log-life-events): Contextual health event logging
 
 ## Blog — Chronic Condition Management
 
-- [Chronic Condition Management: The Complete Data-Driven Guide](https://xheal.com/en/blog/chronic-condition-management-guide): Pillar guide covering flare prediction, trigger identification, wearable signals, and care team communication
-- [Signs a Flare-Up Is Coming: What Your Body Shows 48 Hours Before](https://xheal.com/en/blog/what-happens-48-hours-before-a-flare-up): 5 measurable physiological changes detectable 24–48 hours before symptom onset
-- [5 Hidden Flare-Up Triggers You're Probably Not Tracking](https://xheal.com/en/blog/five-flare-up-triggers-hiding-in-plain-sight): Sleep efficiency, barometric pressure, cumulative stress, medication timing, supplement interactions
+- [Chronic Condition Management: The Complete Data-Driven Guide](https://xheal.ai/blog/chronic-condition-management-guide): Pillar guide covering flare prediction, trigger identification, wearable signals, and care team communication
+- [Signs a Flare-Up Is Coming: What Your Body Shows 48 Hours Before](https://xheal.ai/blog/what-happens-48-hours-before-a-flare-up): 5 measurable physiological changes detectable 24–48 hours before symptom onset
+- [5 Hidden Flare-Up Triggers You're Probably Not Tracking](https://xheal.ai/blog/five-flare-up-triggers-hiding-in-plain-sight): Sleep efficiency, barometric pressure, cumulative stress, medication timing, supplement interactions
 
 ## Blog — Health Data & Wearables
 
-- [Understanding Your Health Data: A Complete Guide](https://xheal.com/en/blog/understanding-your-health-data): Pillar guide connecting HRV, lab results, wearable blind spots, and sleep-stress-nutrition patterns
-- [What Does HRV Mean? Heart Rate Variability Explained](https://xheal.com/en/blog/understanding-hrv-the-number-that-predicts-tomorrow): HRV basics, age-based reference ranges, 8 causes of HRV drops, how to improve baseline
-- [Your Apple Watch Tracks 47 Metrics. Here's What It Still Can't Tell You.](https://xheal.com/en/blog/your-apple-watch-tracks-47-metrics): 5 wearable blind spots: blood chemistry, medications, nutrition, medical history, subjective experience
-- [The Sleep-Stress-Nutrition Triangle](https://xheal.com/en/blog/how-sleep-stress-nutrition-connect): Bidirectional cortisol-sleep-nutrition feedback loop and 5 entry points to break the cycle
+- [Understanding Your Health Data: A Complete Guide](https://xheal.ai/blog/understanding-your-health-data): Pillar guide connecting HRV, lab results, wearable blind spots, and sleep-stress-nutrition patterns
+- [What Does HRV Mean? Heart Rate Variability Explained](https://xheal.ai/blog/understanding-hrv-the-number-that-predicts-tomorrow): HRV basics, age-based reference ranges, 8 causes of HRV drops, how to improve baseline
+- [Your Apple Watch Tracks 47 Metrics. Here's What It Still Can't Tell You.](https://xheal.ai/blog/your-apple-watch-tracks-47-metrics): 5 wearable blind spots: blood chemistry, medications, nutrition, medical history, subjective experience
+- [The Sleep-Stress-Nutrition Triangle](https://xheal.ai/blog/how-sleep-stress-nutrition-connect): Bidirectional cortisol-sleep-nutrition feedback loop and 5 entry points to break the cycle
 
 ## Blog — Lab Results & Medical Records
 
-- [6 Lab Tests Your Annual Checkup Misses](https://xheal.com/en/blog/the-lab-tests-your-annual-checkup-misses): HOMA-IR, hs-CRP, ferritin, vitamin D, thyroid antibodies, HbA1c — why they matter and how to request them
-- [How to Organize Medical Records from Multiple Hospitals](https://xheal.com/en/blog/from-four-hospitals-to-one-timeline): Step-by-step guide for consolidating records from MyChart, Epic, CommonWell, and PDF sources
-- [How to Know Which Lab Tests to Order](https://xheal.com/en/blog/how-to-know-which-lab-tests-to-order): Case study on how xHeal identified non-standard tests that revealed a missed health story
+- [6 Lab Tests Your Annual Checkup Misses](https://xheal.ai/blog/the-lab-tests-your-annual-checkup-misses): HOMA-IR, hs-CRP, ferritin, vitamin D, thyroid antibodies, HbA1c — why they matter and how to request them
+- [How to Organize Medical Records from Multiple Hospitals](https://xheal.ai/blog/from-four-hospitals-to-one-timeline): Step-by-step guide for consolidating records from MyChart, Epic, CommonWell, and PDF sources
+- [How to Know Which Lab Tests to Order](https://xheal.ai/blog/how-to-know-which-lab-tests-to-order): Case study on how xHeal identified non-standard tests that revealed a missed health story
 
 ## Blog — Doctor & Specialist Visits
 
-- [How to Prepare for a Doctor Appointment: The Complete Cheat Sheet](https://xheal.com/en/blog/the-doctor-visit-cheat-sheet): One-page health summary template, top questions to ask, doorknob moment avoidance
-- [What Your Specialist Wishes You Brought](https://xheal.com/en/blog/what-your-specialist-wishes-you-brought): Data, records, and communication strategies for specialist appointments
+- [How to Prepare for a Doctor Appointment: The Complete Cheat Sheet](https://xheal.ai/blog/the-doctor-visit-cheat-sheet): One-page health summary template, top questions to ask, doorknob moment avoidance
+- [What Your Specialist Wishes You Brought](https://xheal.ai/blog/what-your-specialist-wishes-you-brought): Data, records, and communication strategies for specialist appointments
 
 ## Blog — Fitness & Recovery
 
-- [How to Know If You're Overtraining: What My Data Showed](https://xheal.com/en/blog/overtraining-how-my-data-proved-it): HRV, resting heart rate, and sleep architecture as overtraining signals — with before/after data
+- [How to Know If You're Overtraining: What My Data Showed](https://xheal.ai/blog/overtraining-how-my-data-proved-it): HRV, resting heart rate, and sleep architecture as overtraining signals — with before/after data
 
 ## Blog — Product Stories
 
-- [Early Insulin Resistance: I Had It With Zero Symptoms](https://xheal.com/en/blog/case-study-how-xheal-helped-me-reduce-early-insulin-resistance): Founder case study — HOMA-IR detected at 3.83, reversed to 2.0 in 12 weeks
+- [Early Insulin Resistance: I Had It With Zero Symptoms](https://xheal.ai/blog/case-study-how-xheal-helped-me-reduce-early-insulin-resistance): Founder case study — HOMA-IR detected at 3.83, reversed to 2.0 in 12 weeks
 
 ## Author
 
-- [Trifon Getsov — Author Bio](https://xheal.com/en/team/trifon-getsov): CEO & Co-founder. 3x CEO, personal chronic illness recovery, xHeal AI validated against 5,000+ patients. All content medically reviewed by Dr. Rayna Mihaylova, MD.
+- [Trifon Getsov — Author Bio](https://xheal.ai/team/trifon-getsov): CEO & Co-founder. 3x CEO, personal chronic illness recovery, xHeal AI validated against 5,000+ patients. All content medically reviewed by Dr. Rayna Mihaylova, MD.
 
 ## Legal
 
-- [Privacy Policy](https://xheal.com/en/privacy-policy)
-- [Terms & Conditions](https://xheal.com/en/terms-conditions)
-- [Cookie Policy](https://xheal.com/en/cookie-policy)
+- [Privacy Policy](https://xheal.ai/privacy-policy)
+- [Terms & Conditions](https://xheal.ai/terms-conditions)
+- [Cookie Policy](https://xheal.ai/cookie-policy)

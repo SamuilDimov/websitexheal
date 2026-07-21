@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import ComplianceBadges from "@/components/ui/ComplianceBadges";
+import ApplauseLabBadge from "@/components/ui/ApplauseLabBadge";
 
 export default function Footer() {
   const t = useTranslations("Footer");
@@ -161,6 +162,7 @@ export default function Footer() {
               >
                 {t("cookiePolicy")}
               </Link>
+              <ApplauseLabBadge className="ml-auto max-[767px]:ml-0" />
             </div>
           </div>
         </div>

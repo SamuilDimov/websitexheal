@@ -17,12 +17,6 @@ export default function FlareUpTriggerPatternsPage() {
     <FeatureLandingPage
       heroTitle={accent("heroTitle")}
       heroSubtitle={t("heroSubtitle")}
-      heroImage={{
-        src: "/images/screenshots/flare-up-insights.png",
-        alt: t("heroImageAlt"),
-        width: 1058,
-        height: 2078,
-      }}
       painHeading={accent("painHeading", "text-xbrand")}
       painPoints={[
         { icon: "question_mark", title: t("pain1Title"), detail: t("pain1Detail") },

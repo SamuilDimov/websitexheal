@@ -8,6 +8,21 @@ import { getCrossLinks } from "@/data/cross-links";
 
 /* Map page slug pairs to CrossLinks translation keys */
 const crossLinkKeyMap: Record<string, Record<string, string>> = {
+  workouts: {
+    nutrition: "crossLink_workouts_nutrition",
+    mindfulness: "crossLink_workouts_mindfulness",
+    "health-awareness": "crossLink_workouts_awareness",
+  },
+  nutrition: {
+    workouts: "crossLink_nutrition_workouts",
+    mindfulness: "crossLink_nutrition_mindfulness",
+    "flare-up-trigger-patterns": "crossLink_nutrition_flare",
+  },
+  mindfulness: {
+    nutrition: "crossLink_mindfulness_nutrition",
+    workouts: "crossLink_mindfulness_workouts",
+    "health-awareness": "crossLink_mindfulness_awareness",
+  },
   "chat-with-your-health": {
     "flare-up-trigger-patterns": "crossLink_chat_flare",
     "specialist-ready-reports": "crossLink_chat_reports",
@@ -42,6 +57,9 @@ const crossLinkKeyMap: Record<string, Record<string, string>> = {
 
 /* Map feature slugs to CrossLinks title keys */
 const titleKeyMap: Record<string, string> = {
+  workouts: "workouts",
+  nutrition: "nutrition",
+  mindfulness: "mindfulness",
   "chat-with-your-health": "chatWithYourHealth",
   "flare-up-trigger-patterns": "flareUpTriggerPatterns",
   "health-awareness": "healthAwareness",

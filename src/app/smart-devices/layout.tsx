@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
-import { Analytics } from "@vercel/analytics/next";
+import { buildMetadata } from "@/lib/site";
 import "../[locale]/globals.css";
 
 const manrope = Manrope({
@@ -11,15 +11,17 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "xHeal Band — Pre-Order | xHeal",
-  description:
-    "Be first in line for the xHeal Band — the wearable built for people who take their health seriously. Reserve yours today.",
-  openGraph: {
-    title: "xHeal Band — Pre-Order",
+  ...buildMetadata({
+    locale: "en",
+    path: "/smart-devices",
+    title: "xHeal Band — Pre-Order | xHeal",
     description:
-      "Be first in line for the xHeal Band. Reserve yours today.",
-    type: "website",
-  },
+      "Be first in line for the xHeal Band — the wearable built for people who take their health seriously. Reserve yours today.",
+    robots: {
+      index: false,
+      follow: true,
+    },
+  }),
   icons: {
     icon: "/favicon.png",
     apple: "/apple-touch-icon.png",
@@ -48,7 +50,6 @@ export default function SmartDevicesLayout({
       </head>
       <body className="bg-xbg text-xprimary antialiased" style={{ width: "100%", overflowX: "hidden" }}>
         {children}
-        <Analytics />
       </body>
     </html>
   );

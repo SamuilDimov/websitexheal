@@ -112,16 +112,6 @@ export default function OutcomeCarousel() {
           transition: "background-color 0.4s ease, border-color 0.4s ease",
         }}
       >
-        {/* Colored accent bar */}
-        <div
-          className="absolute top-0 left-0 w-full"
-          style={{
-            height: "3px",
-            background: `linear-gradient(90deg, ${current.color}, ${current.color}60)`,
-            transition: "background 0.4s ease",
-          }}
-        />
-
         <div className="flex items-start gap-[18px]">
           {/* Large icon */}
           <div

@@ -2,6 +2,8 @@ import { use } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { setRequestLocale, getTranslations } from "next-intl/server";
+import { buildMetadata } from "@/lib/site";
+import DnaTimeline from "@/components/about/DnaTimeline";
 
 export async function generateMetadata({
   params,
@@ -10,15 +12,19 @@ export async function generateMetadata({
 }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Metadata" });
-  return {
+  return buildMetadata({
+    locale,
+    path: "/about",
     title: t("about.title"),
     description: t("about.description"),
-  };
+    translated: true,
+  });
 }
 
 const timelineKeys = [
-  "event1", "event2", "event3", "event4", "event5", "event6", "event7",
+  "event1", "event3", "eventPersonalTrainer", "eventWellnessClinics", "event4", "event5", "eventDoctorPilots", "event6", "event7",
   "event8", "event9", "event10", "event11", "event12", "event13", "event14",
+  "event15", "event16", "event17", "event18", "event19", "event20",
 ] as const;
 
 const teamKeys = [
@@ -51,58 +57,29 @@ export default function AboutPage({
           <h1 className="t-display1 text-xprimary text-center">
             {t("heroTitle")}
           </h1>
+          <p className="t-body1 text-xsecondary text-center max-w-[680px]">
+            {t("heroSubtitle")}
+          </p>
         </div>
       </section>
 
-      {/* Timeline */}
+      {/* Timeline — rotating DNA helix, one event open at a time */}
       <section className="bg-xbg">
-        <div className="w-full max-w-[1440px] mx-auto px-10 py-24 flex flex-col items-center gap-12 max-[991px]:px-8 max-[991px]:py-16 max-[479px]:px-5">
-          <div className="timeline relative w-full">
-            {/* Vertical divider line */}
-            <div className="absolute left-1/2 top-0 bottom-0 w-[2px] -ml-px bg-xborder max-[767px]:hidden" />
-
-            {timelineKeys.map((eventKey, index) => {
-              const isLeft = index % 2 === 0;
-              const date = t(`timeline.${eventKey}.date`);
-              const title = t(`timeline.${eventKey}.title`);
-              const description = t(`timeline.${eventKey}.description`);
-
-              return (
-                <div
-                  key={index}
-                  className="timeline-item grid grid-cols-[1fr_1fr] gap-16 py-5 relative max-[767px]:grid-cols-1 max-[767px]:gap-5"
-                >
-                  {isLeft ? (
-                    <>
-                      <div className="surface-card-feature p-6 text-right flex flex-col gap-2 relative max-[767px]:text-left">
-                        <p className="t-overline text-xbrand">{date}</p>
-                        <h3 className="t-h4 text-xprimary max-w-[42ch] ml-auto max-[767px]:ml-0">
-                          {title}
-                        </h3>
-                        <p className="t-body2 text-xsecondary">{description}</p>
-                        {/* Dot */}
-                        <div className="absolute top-1/2 -mt-1 -right-[39px] w-2 h-2 bg-xbrand rounded-full ring-2 ring-xbg max-[767px]:hidden" />
-                      </div>
-                      <div className="max-[767px]:hidden" />
-                    </>
-                  ) : (
-                    <>
-                      <div className="max-[767px]:hidden" />
-                      <div className="surface-card-feature p-6 text-left flex flex-col gap-2 relative">
-                        <p className="t-overline text-xbrand">{date}</p>
-                        <h3 className="t-h4 text-xprimary max-w-[42ch]">
-                          {title}
-                        </h3>
-                        <p className="t-body2 text-xsecondary">{description}</p>
-                        {/* Dot */}
-                        <div className="absolute top-1/2 -mt-1 -left-[39px] w-2 h-2 bg-xbrand rounded-full ring-2 ring-xbg max-[767px]:hidden" />
-                      </div>
-                    </>
-                  )}
-                </div>
-              );
-            })}
-          </div>
+        <div className="w-full max-w-[1440px] mx-auto px-10 max-[991px]:px-8 max-[479px]:px-5">
+          <DnaTimeline
+            events={timelineKeys.map((eventKey) => ({
+              key: eventKey,
+              date: t(`timeline.${eventKey}.date`),
+              title: t(`timeline.${eventKey}.title`),
+              description: t(`timeline.${eventKey}.description`),
+            }))}
+            labels={{
+              ariaLabel: t("timelineAriaLabel"),
+              hint: t("timelineHint"),
+              event: t("timelineEventLabel"),
+              of: t("timelineOfLabel"),
+            }}
+          />
         </div>
       </section>
 
