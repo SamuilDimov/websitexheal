@@ -57,6 +57,10 @@ function handler(event) {
     return request;
   }
 
+  if (uri === "/google9d80d9bffb68e2b1.html") {
+    return request;
+  }
+
   var normalizedUri = uri.length > 1 ? uri.replace(/\/+$/, "") : uri;
 
   if (
@@ -112,7 +116,6 @@ function handler(event) {
     }
 
     if (
-      uri === "/smart-devices.txt" ||
       uri === "/en.txt" ||
       uri === "/bg.txt" ||
       uri.indexOf("/en/") === 0 ||
@@ -131,8 +134,6 @@ function handler(event) {
 
   if (uri === "/") {
     request.uri = "/en.html";
-  } else if (uri === "/smart-devices") {
-    request.uri = "/smart-devices.html";
   } else if (uri === "/bg" || uri.indexOf("/bg/") === 0) {
     request.uri = uri + ".html";
   } else {

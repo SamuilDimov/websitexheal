@@ -75,7 +75,11 @@ Work in AWS account `569380617479`, region `eu-central-1`.
 
 The bucket policy is added after the CloudFront distribution exists.
 
-## 4. Create the Preorder Lambda
+## 4. Create the Dormant Preorder Lambda
+
+The public preorder page is currently removed. Keep this Lambda and its API
+route as dormant infrastructure so the feature can be restored later. Leave
+`RESEND_API_KEY` empty while dormant; the endpoint then returns HTTP 503.
 
 1. Create an execution role for `xheal-website-preorder`.
 2. Attach only the AWS managed `AWSLambdaBasicExecutionRole` policy.
@@ -84,7 +88,9 @@ The bucket policy is added after the CloudFront distribution exists.
 4. Do not attach the Lambda to a VPC; it needs outbound access to Resend.
 5. Set reserved concurrency to `10`.
 6. Generate a random 256-bit origin token and keep it in the password manager.
-7. Add encrypted environment variables `RESEND_API_KEY` and `ORIGIN_TOKEN`.
+7. Add the encrypted `ORIGIN_TOKEN` environment variable. Define
+   `RESEND_API_KEY` but leave it empty while dormant; set it only when
+   reactivating the feature.
 8. Upload an initial zip containing
    `infra/aws/lambda/preorder/index.mjs` and `emails.mjs` at the zip root.
 9. Set the handler to `index.handler`.
@@ -307,11 +313,13 @@ Variables. Add:
 3. Confirm the workflow uploads S3, publishes Lambda and the CloudFront
    Function, invalidates CloudFront, and runs deployed validation.
 4. Open the generated CloudFront domain and test `/`, `/about`, `/bg`,
-   `/bg/about`, `/smart-devices`, a blog article, and an unknown route.
-5. Submit one controlled preorder and confirm both Resend emails arrive.
-6. Confirm the deployment workflow's preorder smoke test receives HTTP 400 for
-   an empty payload without sending email.
-7. After test traffic, confirm basic request and error metrics appear under the
+   `/bg/about`, a blog article, and an unknown route.
+5. Confirm `/smart-devices` returns HTTP 404.
+6. Confirm `/google9d80d9bffb68e2b1.html` returns HTTP 200 with the exact body
+   `google-site-verification: google9d80d9bffb68e2b1.html`.
+7. Do not smoke-test the dormant preorder endpoint until `RESEND_API_KEY` is
+   configured and the public feature is reactivated.
+8. After test traffic, confirm basic request and error metrics appear under the
    CloudFront distribution's Monitoring tab.
 
 The workflow runs hourly at minute 17 so future-dated blog posts become visible

@@ -8,8 +8,7 @@ test("serves localized pages and Next navigation payloads", async ({ request }) 
     "/bg",
     "/bg/about",
     "/bg/about.txt",
-    "/smart-devices",
-    "/smart-devices.txt",
+    "/google9d80d9bffb68e2b1.html",
   ]) {
     const response = await request.get(path);
     expect(response.status(), path).toBe(200);
@@ -17,8 +16,20 @@ test("serves localized pages and Next navigation payloads", async ({ request }) 
 });
 
 test("returns real 404 responses for unknown routes", async ({ request }) => {
-  const response = await request.get("/definitely-not-a-page");
-  expect(response.status()).toBe(404);
+  for (const path of ["/definitely-not-a-page", "/smart-devices"]) {
+    const response = await request.get(path);
+    expect(response.status(), path).toBe(404);
+  }
+});
+
+test("serves the exact Google Search Console verification token", async ({
+  request,
+}) => {
+  const response = await request.get("/google9d80d9bffb68e2b1.html");
+  expect(response.status()).toBe(200);
+  expect((await response.text()).trim()).toBe(
+    "google-site-verification: google9d80d9bffb68e2b1.html",
+  );
 });
 
 test("canonicalizes English and historical URLs", async ({ request }) => {

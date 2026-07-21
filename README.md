@@ -16,11 +16,13 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## Band preorder environment
+## Dormant band preorder backend
 
-The static website sends `POST /api/preorder` through CloudFront to the Lambda
-under `infra/aws/lambda/preorder`. The Lambda requires these encrypted
-environment variables:
+The public band preorder page is removed. Its dormant `POST /api/preorder`
+route remains available through CloudFront and the Lambda under
+`infra/aws/lambda/preorder` so the feature can be restored without rebuilding
+the infrastructure. The Lambda requires these encrypted environment variables
+when the feature is active:
 
 ```bash
 RESEND_API_KEY=your_resend_api_key
@@ -28,6 +30,8 @@ ORIGIN_TOKEN=a_random_value_shared_only_with_the_cloudfront_api_origin
 ```
 
 Never expose either value through a `NEXT_PUBLIC_` variable or GitHub Actions.
+With `RESEND_API_KEY` intentionally empty, the dormant endpoint returns HTTP
+503 and is not included in deployment smoke tests.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 

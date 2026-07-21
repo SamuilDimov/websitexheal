@@ -28,14 +28,13 @@ test("maps public pages to exported locale objects", () => {
   assert.equal(route("/about").output.uri, "/en/about.html");
   assert.equal(route("/bg").output.uri, "/bg.html");
   assert.equal(route("/bg/about").output.uri, "/bg/about.html");
-  assert.equal(route("/smart-devices").output.uri, "/smart-devices.html");
+  assert.equal(route("/smart-devices").output.uri, "/en/smart-devices.html");
 });
 
 test("maps Next client-navigation payloads", () => {
   assert.equal(route("/index.txt").output.uri, "/en.txt");
   assert.equal(route("/about.txt").output.uri, "/en/about.txt");
   assert.equal(route("/bg/about.txt").output.uri, "/bg/about.txt");
-  assert.equal(route("/smart-devices.txt").output.uri, "/smart-devices.txt");
 });
 
 test("leaves public files and Next assets unchanged", () => {
@@ -43,6 +42,7 @@ test("leaves public files and Next assets unchanged", () => {
     "/robots.txt",
     "/llms.txt",
     "/sitemap.xml",
+    "/google9d80d9bffb68e2b1.html",
     "/images/logo.svg",
     "/_next/static/app.js",
     "/.well-known/security.txt",

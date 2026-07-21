@@ -162,16 +162,4 @@ jobs:
       - name: Validate deployed distribution
         env:
           VALIDATION_ORIGIN: https://${{ env.CLOUDFRONT_DOMAIN }}
-        run: |
-          npm run validate:production
-          API_STATUS="$(curl --silent --show-error \
-            --output "$RUNNER_TEMP/preorder-smoke.json" \
-            --write-out "%{http_code}" \
-            --request POST \
-            --header "Content-Type: application/json" \
-            --data '{}' \
-            "$VALIDATION_ORIGIN/api/preorder")"
-          if [ "$API_STATUS" != "400" ]; then
-            echo "Preorder smoke check returned HTTP $API_STATUS instead of 400" >&2
-            exit 1
-          fi
+        run: npm run validate:production

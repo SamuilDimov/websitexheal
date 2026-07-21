@@ -75,7 +75,6 @@ const EXPECTED_SHOWCASE_IMAGES = new Map([
   ],
 ]);
 const EXCLUDED_ROUTES = [
-  "/smart-devices",
   "/bg/guides",
   "/bg/guides/workouts/workout-overview",
   "/bg/team/trifon-getsov",
@@ -451,6 +450,27 @@ async function assertSpecialRoutes() {
   );
   if (unknown.status !== 404) {
     fail(`/blog/<unknown>: expected 404, received ${unknown.status}`);
+  }
+
+  const removedPreorderPage = await requestPublic(
+    `${PUBLIC_ORIGIN}/smart-devices`,
+  );
+  if (removedPreorderPage.status !== 404) {
+    fail(`/smart-devices: expected 404, received ${removedPreorderPage.status}`);
+  }
+
+  const googleVerification = await requestPublic(
+    `${PUBLIC_ORIGIN}/google9d80d9bffb68e2b1.html`,
+  );
+  if (googleVerification.status !== 200) {
+    fail(
+      `/google9d80d9bffb68e2b1.html: expected 200, received ${googleVerification.status}`,
+    );
+  } else if (
+    googleVerification.body.trim() !==
+    "google-site-verification: google9d80d9bffb68e2b1.html"
+  ) {
+    fail(`/google9d80d9bffb68e2b1.html: unexpected verification body`);
   }
 
   for (const [source, destination] of HISTORICAL_REDIRECTS) {

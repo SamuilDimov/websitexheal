@@ -42,13 +42,26 @@ for (const requiredFile of [
   "en.txt",
   "bg.html",
   "bg.txt",
-  "smart-devices.html",
-  "smart-devices.txt",
+  "google9d80d9bffb68e2b1.html",
   "robots.txt",
   "sitemap.xml",
 ]) {
   if (!(await fileExists(path.join(exportRoot, requiredFile)))) {
     fail(`missing ${requiredFile}`);
+  }
+}
+
+const googleVerificationPath = path.join(
+  exportRoot,
+  "google9d80d9bffb68e2b1.html",
+);
+if (await fileExists(googleVerificationPath)) {
+  const verification = (await readFile(googleVerificationPath, "utf8")).trim();
+  if (
+    verification !==
+    "google-site-verification: google9d80d9bffb68e2b1.html"
+  ) {
+    fail("Google site verification file has unexpected content");
   }
 }
 
