@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import type { GuideCategoryInfo } from "@/data/guides";
 import { getGuidesByCategory, type GuideCategory } from "@/data/guides";
@@ -7,10 +8,11 @@ interface GuideCategoryCardProps {
   locale?: string;
 }
 
-export function GuideCategoryCard({
+export async function GuideCategoryCard({
   category,
   locale = "en",
 }: GuideCategoryCardProps) {
+  const t = await getTranslations({ locale, namespace: "Guides" });
   const guides = getGuidesByCategory(category.slug as GuideCategory, locale);
   const firstGuide = guides[0];
 
@@ -47,7 +49,7 @@ export function GuideCategoryCard({
       <div className="flex items-center gap-1.5 mt-auto pt-2">
         <span className="font-icons text-[16px] text-xtertiary">article</span>
         <span className="t-caption text-xtertiary">
-          {guides.length} {guides.length === 1 ? "guide" : "guides"}
+          {t("guideCount", { count: guides.length })}
         </span>
       </div>
     </Link>
@@ -60,6 +62,7 @@ interface GuideListCardProps {
   title: string;
   description: string;
   readingTime: number;
+  minReadLabel: string;
 }
 
 export function GuideListCard({
@@ -68,6 +71,7 @@ export function GuideListCard({
   title,
   description,
   readingTime,
+  minReadLabel,
 }: GuideListCardProps) {
   return (
     <Link
@@ -80,7 +84,9 @@ export function GuideListCard({
       <p className="t-body3 text-xtertiary line-clamp-2">{description}</p>
       <div className="flex items-center gap-1.5 mt-auto">
         <span className="font-icons text-[14px] text-xtertiary">schedule</span>
-        <span className="t-caption text-xtertiary">{readingTime} min read</span>
+        <span className="t-caption text-xtertiary">
+          {readingTime} {minReadLabel}
+        </span>
       </div>
     </Link>
   );

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import {
   getAllGuides,
@@ -31,19 +32,20 @@ export async function generateMetadata({
   params: Promise<{ category: string; slug: string; locale: string }>;
 }): Promise<Metadata> {
   const { category, slug, locale } = await params;
+  const t = await getTranslations({ locale, namespace: "Guides" });
   const guide = getGuide(category, slug, locale);
   const categoryInfo = getCategoryInfo(category as GuideCategory, locale);
 
   if (!guide) {
     return {
-      title: "Guide Not Found | xHeal",
+      title: t("notFoundTitle"),
     };
   }
 
   return buildMetadata({
     locale,
     path: `/guides/${category}/${slug}`,
-    title: `${guide.title} | ${categoryInfo?.label || "Guides"} | xHeal`,
+    title: `${guide.title} | ${categoryInfo?.label || t("breadcrumbRoot")} | xHeal`,
     description: guide.description,
     robots:
       locale === "bg"
@@ -61,6 +63,7 @@ export default async function GuidePage({
   params: Promise<{ category: string; slug: string; locale: string }>;
 }) {
   const { category, slug, locale } = await params;
+  const t = await getTranslations({ locale, namespace: "Guides" });
   const guide = getGuide(category, slug, locale);
   const categoryInfo = getCategoryInfo(category as GuideCategory, locale);
 
@@ -86,6 +89,8 @@ export default async function GuidePage({
             navigation={navigation}
             currentCategory={category}
             currentSlug={slug}
+            allGuidesLabel={t("allGuides")}
+            toggleNavigationLabel={t("toggleNavigation")}
           />
 
           {/* Content */}
@@ -121,7 +126,9 @@ export default async function GuidePage({
               <div className="flex items-center gap-4 flex-wrap">
                 <div className="flex items-center gap-1.5 text-xtertiary">
                   <span className="font-icons text-[16px]">schedule</span>
-                  <span className="t-body3">{guide.readingTime} min read</span>
+                  <span className="t-body3">
+                    {guide.readingTime} {t("minRead")}
+                  </span>
                 </div>
 
                 {guide.prerequisites && guide.prerequisites.length > 0 && (
@@ -132,8 +139,9 @@ export default async function GuidePage({
                         checklist
                       </span>
                       <span className="t-body3">
-                        {guide.prerequisites.length} prerequisite
-                        {guide.prerequisites.length > 1 ? "s" : ""}
+                        {t("prerequisiteCount", {
+                          count: guide.prerequisites.length,
+                        })}
                       </span>
                     </div>
                   </>
@@ -150,10 +158,10 @@ export default async function GuidePage({
                   </span>
                   <div>
                     <p className="t-body3 font-semibold text-xprimary mb-2">
-                      Before you start
+                      {t("beforeYouStart")}
                     </p>
                     <p className="t-body3 text-xsecondary mb-2">
-                      We recommend reading these guides first:
+                      {t("prerequisitesIntro")}
                     </p>
                     <ul className="flex flex-col gap-1">
                       {guide.prerequisites.map((prereqSlug) => {
@@ -185,7 +193,11 @@ export default async function GuidePage({
             />
 
             {/* Navigation */}
-            <GuideNav previousGuide={previousGuide} nextGuide={nextGuide} />
+            <GuideNav
+              previousGuide={previousGuide}
+              nextGuide={nextGuide}
+              locale={locale}
+            />
 
             {/* Back to guides link */}
             <div className="mt-8 pt-6 border-t border-xborder">
@@ -194,7 +206,7 @@ export default async function GuidePage({
                 className="inline-flex items-center gap-2 t-button text-xbrand hover:underline"
               >
                 <span className="font-icons text-[18px]">arrow_back</span>
-                Back to all guides
+                {t("backToAll")}
               </Link>
             </div>
           </article>

@@ -1477,6 +1477,29 @@
       "newsletter": "Newsletter"
     }
   },
+  "Guides": {
+    "metaTitle": "Guides | xHeal",
+    "metaDescription": "Learn how to use xHeal with step-by-step tutorials, feature guides, and tips for getting the most out of your personal health companion.",
+    "notFoundTitle": "Guide Not Found | xHeal",
+    "heading": "User Guides",
+    "subheading": "Step-by-step tutorials and guides to help you get the most out of xHeal.",
+    "viewAll": "View all",
+    "browseByTopic": "Browse by Topic",
+    "helpHeading": "Can’t find what you’re looking for?",
+    "helpBody": "Check out our FAQ or reach out to our support team for help.",
+    "helpCta": "Visit Support",
+    "allGuides": "All Guides",
+    "toggleNavigation": "Toggle navigation",
+    "breadcrumbRoot": "Guides",
+    "minRead": "min read",
+    "guideCount": "{count, plural, one {# guide} other {# guides}}",
+    "prerequisiteCount": "{count, plural, one {# prerequisite} other {# prerequisites}}",
+    "beforeYouStart": "Before you start",
+    "prerequisitesIntro": "We recommend reading these guides first:",
+    "backToAll": "Back to all guides",
+    "previous": "Previous",
+    "next": "Next"
+  },
   "NotFound": {
     "eyebrow": "Error 404",
     "title": "This page could not be found",

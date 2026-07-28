@@ -1,4 +1,6 @@
+import { getTranslations } from "next-intl/server";
 import {
+  getCategoryLabel,
   getGuideCategories,
   getGuideNavigation,
   getGuidesByCategory,
@@ -13,6 +15,7 @@ export default async function GuidesPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "Guides" });
   // Get first 4 guides from "getting-started" for featured section
   const gettingStartedGuides = getGuidesByCategory(
     "getting-started",
@@ -28,10 +31,10 @@ export default async function GuidesPage({
         <div className="absolute inset-0 pointer-events-none bg-radial-glow" aria-hidden />
         <div className="relative w-full max-w-[1440px] mx-auto px-10 pt-[160px] pb-12 flex flex-col items-center gap-4 max-[991px]:px-8 max-[991px]:pt-[120px] max-[479px]:px-5">
           <h1 className="t-display2 text-xprimary text-center">
-            User Guides
+            {t("heading")}
           </h1>
           <p className="t-body1 text-xsecondary text-center max-w-[600px]">
-            Step-by-step tutorials and guides to help you get the most out of xHeal.
+            {t("subheading")}
           </p>
         </div>
       </section>
@@ -40,19 +43,25 @@ export default async function GuidesPage({
       <section className="w-full max-w-[1440px] mx-auto px-10 py-12 max-[991px]:px-8 max-[479px]:px-5">
         <div className="flex gap-8 lg:gap-12">
           {/* Sidebar */}
-          <GuidesSidebar navigation={navigation} />
+          <GuidesSidebar
+            navigation={navigation}
+            allGuidesLabel={t("allGuides")}
+            toggleNavigationLabel={t("toggleNavigation")}
+          />
 
           {/* Content */}
           <div className="flex-1 min-w-0">
             {/* Getting Started - Featured */}
             <div className="mb-12">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="t-h2 text-xprimary">Getting Started</h2>
+                <h2 className="t-h2 text-xprimary">
+                  {getCategoryLabel("getting-started", locale)}
+                </h2>
                 <Link
                   href="/guides/getting-started/welcome"
                   className="t-button-sm text-xbrand hover:underline flex items-center gap-1"
                 >
-                  View all
+                  {t("viewAll")}
                   <span className="font-icons text-[16px]">arrow_forward</span>
                 </Link>
               </div>
@@ -65,6 +74,7 @@ export default async function GuidesPage({
                     title={guide.title}
                     description={guide.description}
                     readingTime={guide.readingTime}
+                    minReadLabel={t("minRead")}
                   />
                 ))}
               </div>
@@ -72,7 +82,7 @@ export default async function GuidesPage({
 
             {/* All Categories */}
             <div>
-              <h2 className="t-h2 text-xprimary mb-6">Browse by Topic</h2>
+              <h2 className="t-h2 text-xprimary mb-6">{t("browseByTopic")}</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                 {categories.map((category) => (
                   <GuideCategoryCard
@@ -94,17 +104,15 @@ export default async function GuidesPage({
                 </div>
                 <div className="flex-1 text-center md:text-left">
                   <h3 className="t-h4 text-xprimary mb-2">
-                    Can&apos;t find what you&apos;re looking for?
+                    {t("helpHeading")}
                   </h3>
-                  <p className="t-body2 text-xsecondary">
-                    Check out our FAQ or reach out to our support team for help.
-                  </p>
+                  <p className="t-body2 text-xsecondary">{t("helpBody")}</p>
                 </div>
                 <Link
                   href="/support"
                   className="inline-flex items-center justify-center bg-xbrand text-white t-button-sm h-[44px] px-6 rounded-[10px] transition-all duration-200 hover:bg-[#5a73ff] hover:shadow-[0_8px_24px_rgba(71,100,255,0.4)]"
                 >
-                  Visit Support
+                  {t("helpCta")}
                 </Link>
               </div>
             </div>

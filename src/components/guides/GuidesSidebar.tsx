@@ -8,12 +8,18 @@ interface GuidesSidebarProps {
   currentCategory?: string;
   currentSlug?: string;
   navigation: GuideNavigationCategory[];
+  // Passed in from the server rather than read from a client message catalog so
+  // guide copy never has to ship in the shared client bundle.
+  allGuidesLabel: string;
+  toggleNavigationLabel: string;
 }
 
 export default function GuidesSidebar({
   currentCategory,
   currentSlug,
   navigation,
+  allGuidesLabel,
+  toggleNavigationLabel,
 }: GuidesSidebarProps) {
   const pathname = usePathname();
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(
@@ -108,7 +114,7 @@ export default function GuidesSidebar({
       <button
         onClick={() => setMobileOpen(!mobileOpen)}
         className="lg:hidden fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 rounded-full bg-xbrand text-white shadow-lg hover:bg-[#5a73ff] transition-colors"
-        aria-label="Toggle navigation"
+        aria-label={toggleNavigationLabel}
       >
         <span className="font-icons text-[24px]">
           {mobileOpen ? "close" : "menu_book"}
@@ -147,7 +153,7 @@ export default function GuidesSidebar({
             }`}
           >
             <span className="font-icons text-[18px]">home</span>
-            All Guides
+            {allGuidesLabel}
           </Link>
 
           {/* Divider */}

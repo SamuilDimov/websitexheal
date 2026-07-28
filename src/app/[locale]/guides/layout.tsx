@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { buildMetadata } from "@/lib/site";
 
 type Props = {
@@ -10,13 +11,13 @@ export async function generateMetadata({
   params,
 }: Pick<Props, "params">): Promise<Metadata> {
   const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "Guides" });
 
   return buildMetadata({
     locale,
     path: "/guides",
-    title: "Guides | xHeal",
-    description:
-      "Learn how to use xHeal with step-by-step tutorials, feature guides, and tips for getting the most out of your personal health companion.",
+    title: t("metaTitle"),
+    description: t("metaDescription"),
     robots:
       locale === "bg"
         ? {
