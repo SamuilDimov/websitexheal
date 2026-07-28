@@ -1,5 +1,5 @@
 import {
-  guideCategories,
+  getGuideCategories,
   getGuideNavigation,
   getGuidesByCategory,
 } from "@/data/guides";
@@ -7,10 +7,19 @@ import { GuideCategoryCard, GuideListCard } from "@/components/guides/GuideCard"
 import GuidesSidebar from "@/components/guides/GuidesSidebar";
 import { Link } from "@/i18n/navigation";
 
-export default function GuidesPage() {
+export default async function GuidesPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
   // Get first 4 guides from "getting-started" for featured section
-  const gettingStartedGuides = getGuidesByCategory("getting-started").slice(0, 4);
-  const navigation = getGuideNavigation();
+  const gettingStartedGuides = getGuidesByCategory(
+    "getting-started",
+    locale
+  ).slice(0, 4);
+  const navigation = getGuideNavigation(locale);
+  const categories = getGuideCategories(locale);
 
   return (
     <div className="bg-xbg min-h-screen">
@@ -65,8 +74,12 @@ export default function GuidesPage() {
             <div>
               <h2 className="t-h2 text-xprimary mb-6">Browse by Topic</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                {guideCategories.map((category) => (
-                  <GuideCategoryCard key={category.slug} category={category} />
+                {categories.map((category) => (
+                  <GuideCategoryCard
+                    key={category.slug}
+                    category={category}
+                    locale={locale}
+                  />
                 ))}
               </div>
             </div>

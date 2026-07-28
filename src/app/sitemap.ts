@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { getBlogPosts } from "@/data/blog-posts";
-import { guides } from "@/data/guides";
+import { getAllGuides } from "@/data/guides";
 import { routing } from "@/i18n/routing";
 import { absoluteUrl, localizedPath } from "@/lib/site";
 
@@ -74,7 +74,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }));
   });
 
-  const guidePages: MetadataRoute.Sitemap = guides.map((guide) => ({
+  const guidePages: MetadataRoute.Sitemap = getAllGuides(
+    ENGLISH_LOCALE
+  ).map((guide) => ({
     url: absoluteUrl(`/guides/${guide.category}/${guide.slug}`),
     lastModified: LAST_MODIFIED,
     changeFrequency: "monthly" as const,

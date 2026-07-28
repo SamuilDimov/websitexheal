@@ -4,10 +4,14 @@ import { getGuidesByCategory, type GuideCategory } from "@/data/guides";
 
 interface GuideCategoryCardProps {
   category: GuideCategoryInfo;
+  locale?: string;
 }
 
-export function GuideCategoryCard({ category }: GuideCategoryCardProps) {
-  const guides = getGuidesByCategory(category.slug as GuideCategory);
+export function GuideCategoryCard({
+  category,
+  locale = "en",
+}: GuideCategoryCardProps) {
+  const guides = getGuidesByCategory(category.slug as GuideCategory, locale);
   const firstGuide = guides[0];
 
   return (

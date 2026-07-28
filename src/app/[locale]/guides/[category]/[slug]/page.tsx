@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import {
-  guides,
+  getAllGuides,
   getGuide,
   getCategoryInfo,
   getGuideNavigation,
@@ -15,9 +15,10 @@ import GuideBreadcrumb from "@/components/guides/GuideBreadcrumb";
 import GuideNav from "@/components/guides/GuideNav";
 import { buildMetadata } from "@/lib/site";
 
-// Generate static params for all guides
+// Generate static params for all guides. Slugs are locale-invariant, so the
+// English set covers every locale.
 export function generateStaticParams() {
-  return guides.map((guide) => ({
+  return getAllGuides().map((guide) => ({
     category: guide.category,
     slug: guide.slug,
   }));
@@ -30,8 +31,8 @@ export async function generateMetadata({
   params: Promise<{ category: string; slug: string; locale: string }>;
 }): Promise<Metadata> {
   const { category, slug, locale } = await params;
-  const guide = getGuide(category, slug);
-  const categoryInfo = getCategoryInfo(category as GuideCategory);
+  const guide = getGuide(category, slug, locale);
+  const categoryInfo = getCategoryInfo(category as GuideCategory, locale);
 
   if (!guide) {
     return {
@@ -57,19 +58,20 @@ export async function generateMetadata({
 export default async function GuidePage({
   params,
 }: {
-  params: Promise<{ category: string; slug: string }>;
+  params: Promise<{ category: string; slug: string; locale: string }>;
 }) {
-  const { category, slug } = await params;
-  const guide = getGuide(category, slug);
-  const categoryInfo = getCategoryInfo(category as GuideCategory);
+  const { category, slug, locale } = await params;
+  const guide = getGuide(category, slug, locale);
+  const categoryInfo = getCategoryInfo(category as GuideCategory, locale);
 
   if (!guide) {
     notFound();
   }
 
-  const previousGuide = getPreviousGuide(category, slug);
-  const nextGuide = getNextGuide(category, slug);
-  const navigation = getGuideNavigation();
+  const previousGuide = getPreviousGuide(category, slug, locale);
+  const nextGuide = getNextGuide(category, slug, locale);
+  const navigation = getGuideNavigation(locale);
+  const localeGuides = getAllGuides(locale);
 
   return (
     <div className="bg-xbg min-h-screen">
@@ -89,7 +91,11 @@ export default async function GuidePage({
           {/* Content */}
           <article className="flex-1 min-w-0 max-w-[800px]">
             {/* Breadcrumb */}
-            <GuideBreadcrumb category={category} guideTitle={guide.title} />
+            <GuideBreadcrumb
+              category={category}
+              guideTitle={guide.title}
+              locale={locale}
+            />
 
             {/* Header */}
             <header className="mt-6 mb-8 pb-6 border-b border-xborder">
@@ -151,7 +157,7 @@ export default async function GuidePage({
                     </p>
                     <ul className="flex flex-col gap-1">
                       {guide.prerequisites.map((prereqSlug) => {
-                        const prereqGuide = guides.find(
+                        const prereqGuide = localeGuides.find(
                           (g) => g.slug === prereqSlug
                         );
                         if (!prereqGuide) return null;

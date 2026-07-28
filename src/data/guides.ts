@@ -1,5 +1,9 @@
 // Guides data - centralized source of truth for user guides and tutorials
-// Organized by category with full content
+// Organized by category with full content.
+//
+// The module is locale-aware in the same shape as `src/data/blog-posts.ts`:
+// per-locale arrays behind accessors that take a `locale` as their final
+// parameter and default to English.
 
 import type { GuideNavigationCategory } from "@/types/content";
 
@@ -22,7 +26,7 @@ export interface GuideCategoryInfo {
   icon: string;
 }
 
-export const guideCategories: GuideCategoryInfo[] = [
+const guideCategoriesEn: GuideCategoryInfo[] = [
   {
     slug: "getting-started",
     label: "Getting Started",
@@ -96,10 +100,16 @@ export interface Guide {
   prerequisites?: string[];
 }
 
-const guideOverrides: Record<
+type GuideOverrides = Record<
   string,
   Partial<Pick<Guide, "title" | "description" | "content">>
-> = {
+>;
+
+// Corrections layered over the original English guide definitions, mostly to
+// narrow claims down to what the product actually ships today. Bulgarian guides
+// are authored directly against the corrected text, so they need no equivalent
+// patch layer.
+const guideOverridesEn: GuideOverrides = {
   "nutrition/nutrition-overview": {
     content: "<h2>Your Nutrition Hub</h2><p>xHeal combines calorie and macro tracking with seven-day meal planning.</p><h3>Nutrition Dashboard</h3><p>See calories, protein, carbohydrates, and fat against your daily targets, review logged meals, and open an active meal plan.</p><h3>Meal Planning</h3><p>Build a plan from your eating style, calorie and macro targets, allergies, dietary restrictions, and ingredient preferences. Swap individual meals and view the aggregated shopping list.</p><h3>Food Logging</h3><p>Log calories and macros manually or photograph a meal for AI-estimated foods, portions, calories, and macros. You can edit the resulting meal after analysis.</p><h3>Recipe Catalog</h3><p>Browse nearly 500 recipes whose nutrition is calculated from USDA-based ingredient data.</p><blockquote><strong>Current scope:</strong> Database search, barcode lookup, favorites, and a dedicated hydration workflow are not currently available.</blockquote>",
   },
@@ -147,90 +157,128 @@ const guideOverrides: Record<
   },
 };
 
-function applyGuideOverride(guide: Guide): Guide {
-  const override = guideOverrides[`${guide.category}/${guide.slug}`];
-  return override ? { ...guide, ...override } : guide;
+function applyGuideOverrides(
+  definitions: Guide[],
+  overrides: GuideOverrides
+): Guide[] {
+  return definitions.map((guide) => {
+    const override = overrides[`${guide.category}/${guide.slug}`];
+    return override ? { ...guide, ...override } : guide;
+  });
 }
 
-export function getCategoryLabel(slug: GuideCategory): string {
-  return guideCategories.find((c) => c.slug === slug)?.label || slug;
+export function getGuideCategories(locale: string = "en"): GuideCategoryInfo[] {
+  return locale === "bg" ? guideCategoriesBg : guideCategoriesEn;
 }
 
-export function getCategoryInfo(slug: GuideCategory): GuideCategoryInfo | undefined {
-  return guideCategories.find((c) => c.slug === slug);
+export function getAllGuides(locale: string = "en"): Guide[] {
+  return locale === "bg" ? guidesBg : guidesEn;
 }
 
-export function getGuidesByCategory(category: GuideCategory): Guide[] {
-  return guides
+export function getCategoryLabel(
+  slug: GuideCategory,
+  locale: string = "en"
+): string {
+  return getGuideCategories(locale).find((c) => c.slug === slug)?.label || slug;
+}
+
+export function getCategoryInfo(
+  slug: GuideCategory,
+  locale: string = "en"
+): GuideCategoryInfo | undefined {
+  return getGuideCategories(locale).find((c) => c.slug === slug);
+}
+
+export function getGuidesByCategory(
+  category: GuideCategory,
+  locale: string = "en"
+): Guide[] {
+  return getAllGuides(locale)
     .filter((g) => g.category === category)
     .sort((a, b) => a.order - b.order);
 }
 
-export function getGuide(category: string, slug: string): Guide | undefined {
-  return guides.find((g) => g.category === category && g.slug === slug);
+export function getGuide(
+  category: string,
+  slug: string,
+  locale: string = "en"
+): Guide | undefined {
+  return getAllGuides(locale).find(
+    (g) => g.category === category && g.slug === slug
+  );
 }
 
-export function getAllGuides(): Guide[] {
-  return guides;
-}
-
-export function getGuideNavigation(): GuideNavigationCategory[] {
-  return guideCategories.map(({ slug, label, icon }) => ({
+export function getGuideNavigation(
+  locale: string = "en"
+): GuideNavigationCategory[] {
+  return getGuideCategories(locale).map(({ slug, label, icon }) => ({
     slug,
     label,
     icon,
-    guides: getGuidesByCategory(slug).map((guide) => ({
+    guides: getGuidesByCategory(slug, locale).map((guide) => ({
       slug: guide.slug,
       title: guide.title,
     })),
   }));
 }
 
-export function getNextGuide(currentCategory: string, currentSlug: string): Guide | undefined {
-  const categoryGuides = guides
+export function getNextGuide(
+  currentCategory: string,
+  currentSlug: string,
+  locale: string = "en"
+): Guide | undefined {
+  const localeGuides = getAllGuides(locale);
+  const categories = getGuideCategories(locale);
+  const categoryGuides = localeGuides
     .filter((g) => g.category === currentCategory)
     .sort((a, b) => a.order - b.order);
-  
+
   const currentIndex = categoryGuides.findIndex((g) => g.slug === currentSlug);
   if (currentIndex >= 0 && currentIndex < categoryGuides.length - 1) {
     return categoryGuides[currentIndex + 1];
   }
-  
-  const categoryIndex = guideCategories.findIndex((c) => c.slug === currentCategory);
-  if (categoryIndex >= 0 && categoryIndex < guideCategories.length - 1) {
-    const nextCategory = guideCategories[categoryIndex + 1];
-    const nextCategoryGuides = guides
+
+  const categoryIndex = categories.findIndex((c) => c.slug === currentCategory);
+  if (categoryIndex >= 0 && categoryIndex < categories.length - 1) {
+    const nextCategory = categories[categoryIndex + 1];
+    const nextCategoryGuides = localeGuides
       .filter((g) => g.category === nextCategory.slug)
       .sort((a, b) => a.order - b.order);
     return nextCategoryGuides[0];
   }
-  
+
   return undefined;
 }
 
-export function getPreviousGuide(currentCategory: string, currentSlug: string): Guide | undefined {
-  const categoryGuides = guides
+export function getPreviousGuide(
+  currentCategory: string,
+  currentSlug: string,
+  locale: string = "en"
+): Guide | undefined {
+  const localeGuides = getAllGuides(locale);
+  const categories = getGuideCategories(locale);
+  const categoryGuides = localeGuides
     .filter((g) => g.category === currentCategory)
     .sort((a, b) => a.order - b.order);
-  
+
   const currentIndex = categoryGuides.findIndex((g) => g.slug === currentSlug);
   if (currentIndex > 0) {
     return categoryGuides[currentIndex - 1];
   }
-  
-  const categoryIndex = guideCategories.findIndex((c) => c.slug === currentCategory);
+
+  const categoryIndex = categories.findIndex((c) => c.slug === currentCategory);
   if (categoryIndex > 0) {
-    const prevCategory = guideCategories[categoryIndex - 1];
-    const prevCategoryGuides = guides
+    const prevCategory = categories[categoryIndex - 1];
+    const prevCategoryGuides = localeGuides
       .filter((g) => g.category === prevCategory.slug)
       .sort((a, b) => a.order - b.order);
     return prevCategoryGuides[prevCategoryGuides.length - 1];
   }
-  
+
   return undefined;
 }
 
-const guideDefinitions: Guide[] = [
+const guideDefinitionsEn: Guide[] = [
   {
     slug: "welcome",
     category: "getting-started",
@@ -557,4 +605,15 @@ const guideDefinitions: Guide[] = [
   },
 ];
 
-export const guides: Guide[] = guideDefinitions.map(applyGuideOverride);
+const guidesEn: Guide[] = applyGuideOverrides(
+  guideDefinitionsEn,
+  guideOverridesEn
+);
+
+// Bulgarian guide content lands in Workstream 4 of
+// marketing-research/gsc-indexing-remediation-plan.md. Until then the Bulgarian
+// set reuses the corrected English guides so this refactor is behaviour-neutral,
+// and `/bg/guides/**` stays `noindex` for exactly that reason.
+const guideDefinitionsBg: Guide[] = guidesEn;
+const guideCategoriesBg: GuideCategoryInfo[] = guideCategoriesEn;
+const guidesBg: Guide[] = guideDefinitionsBg;
