@@ -18,13 +18,7 @@ export async function generateMetadata({
     path: "/guides",
     title: t("metaTitle"),
     description: t("metaDescription"),
-    robots:
-      locale === "bg"
-        ? {
-            index: false,
-            follow: true,
-          }
-        : undefined,
+    translated: true,
   });
 }
 

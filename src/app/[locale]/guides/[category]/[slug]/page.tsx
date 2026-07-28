@@ -47,13 +47,7 @@ export async function generateMetadata({
     path: `/guides/${category}/${slug}`,
     title: `${guide.title} | ${categoryInfo?.label || t("breadcrumbRoot")} | xHeal`,
     description: guide.description,
-    robots:
-      locale === "bg"
-        ? {
-            index: false,
-            follow: true,
-          }
-        : undefined,
+    translated: true,
   });
 }
 

@@ -33,11 +33,11 @@ const TRANSLATED_STATIC_PAGES: StaticPage[] = [
   { path: "/health-timeline", changeFrequency: "monthly", priority: 0.8 },
   { path: "/log-life-events", changeFrequency: "monthly", priority: 0.8 },
   { path: "/specialist-ready-reports", changeFrequency: "monthly", priority: 0.8 },
+  { path: "/guides", changeFrequency: "weekly", priority: 0.9 },
 ];
 
 const ENGLISH_ONLY_STATIC_PAGES: StaticPage[] = [
   { path: "/team/trifon-getsov", changeFrequency: "monthly", priority: 0.7 },
-  { path: "/guides", changeFrequency: "weekly", priority: 0.9 },
 ];
 
 function staticEntry(
@@ -74,14 +74,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }));
   });
 
+  // Guide slugs are locale-invariant, so the English set drives both locales.
   const guidePages: MetadataRoute.Sitemap = getAllGuides(
     ENGLISH_LOCALE
-  ).map((guide) => ({
-    url: absoluteUrl(`/guides/${guide.category}/${guide.slug}`),
-    lastModified: LAST_MODIFIED,
-    changeFrequency: "monthly" as const,
-    priority: 0.7,
-  }));
+  ).flatMap((guide) =>
+    LOCALES.map((locale) => ({
+      url: absoluteUrl(
+        localizedPath(locale, `/guides/${guide.category}/${guide.slug}`)
+      ),
+      lastModified: LAST_MODIFIED,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    }))
+  );
 
   return [
     ...staticPages,

@@ -74,11 +74,7 @@ const EXPECTED_SHOWCASE_IMAGES = new Map([
     ],
   ],
 ]);
-const EXCLUDED_ROUTES = [
-  "/bg/guides",
-  "/bg/guides/workouts/workout-overview",
-  "/bg/team/trifon-getsov",
-];
+const EXCLUDED_ROUTES = ["/bg/team/trifon-getsov"];
 const HISTORICAL_REDIRECTS = new Map([
   [
     "/blog/how-xheal-guided-me-to-the-right-lab-tests",
