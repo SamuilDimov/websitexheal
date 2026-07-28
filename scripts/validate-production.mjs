@@ -444,6 +444,111 @@ async function assertExcludedRoutes(sitemapUrls) {
   }
 }
 
+function parseRobots(body) {
+  const groups = [];
+  let group = null;
+
+  for (const rawLine of body.split(/\r?\n/)) {
+    const line = rawLine.replace(/#.*$/, "").trim();
+    if (!line) continue;
+
+    const separator = line.indexOf(":");
+    if (separator === -1) continue;
+    const field = line.slice(0, separator).trim().toLowerCase();
+    const value = line.slice(separator + 1).trim();
+
+    if (field === "user-agent") {
+      if (!group || group.rules.length > 0) {
+        group = { agents: [], rules: [] };
+        groups.push(group);
+      }
+      group.agents.push(value.toLowerCase());
+    } else if (field === "allow" || field === "disallow") {
+      if (group) group.rules.push({ allow: field === "allow", path: value });
+    }
+  }
+
+  return groups;
+}
+
+// Mirrors Google's matcher: `*` matches any sequence, a trailing `$` anchors the
+// end of the path, and the rule with the longest path wins, with allow breaking
+// ties. https://developers.google.com/search/docs/crawling-indexing/robots/robots_txt
+function robotsRuleMatches(pattern, pathname) {
+  if (!pattern) return false;
+  const anchored = pattern.endsWith("$");
+  const literal = anchored ? pattern.slice(0, -1) : pattern;
+  const expression = literal
+    .split("*")
+    .map((part) => part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+    .join("[\\s\\S]*");
+  return new RegExp(`^${expression}${anchored ? "$" : ""}`).test(pathname);
+}
+
+function robotsAllows(groups, pathname) {
+  const group = groups.find((candidate) => candidate.agents.includes("*"));
+  if (!group) return true;
+
+  let winner = null;
+  for (const rule of group.rules) {
+    if (!robotsRuleMatches(rule.path, pathname)) continue;
+    if (
+      !winner ||
+      rule.path.length > winner.path.length ||
+      (rule.path.length === winner.path.length && rule.allow)
+    ) {
+      winner = rule;
+    }
+  }
+  return winner ? winner.allow : true;
+}
+
+// The RSC payloads mirror every page as uncanonicalized text/plain, so they must
+// stay crawl-blocked while published content stays crawlable.
+async function assertRobotsRules() {
+  const robots = await requestPublic(`${PUBLIC_ORIGIN}/robots.txt`);
+  if (robots.status !== 200) {
+    fail(`/robots.txt: expected 200, received ${robots.status}`);
+    return;
+  }
+
+  for (const directive of ["Disallow: /*.txt$", "Allow: /llms.txt"]) {
+    if (!robots.body.includes(directive)) {
+      fail(`/robots.txt: missing "${directive}"`);
+    }
+  }
+
+  const groups = parseRobots(robots.body);
+  const expectations = [
+    ["/", true],
+    ["/about", true],
+    ["/guides", true],
+    ["/guides/getting-started/welcome", true],
+    ["/bg/guides", true],
+    ["/blog", true],
+    ["/sitemap.xml", true],
+    ["/llms.txt", true],
+    ["/en.txt", false],
+    ["/bg.txt", false],
+    ["/about.txt", false],
+    ["/en/about.txt", false],
+    ["/bg/about.txt", false],
+    ["/en/about/__next._tree.txt", false],
+    ["/en/guides/getting-started/welcome.txt", false],
+  ];
+
+  for (const [pathname, expected] of expectations) {
+    const allowed = robotsAllows(groups, pathname);
+    if (allowed !== expected) {
+      fail(
+        `/robots.txt: ${pathname} is ${allowed ? "crawlable" : "blocked"}, expected ${
+          expected ? "crawlable" : "blocked"
+        }`,
+      );
+    }
+  }
+}
+
 // The error document must never be reachable as an indexable HTTP 200, and every
 // genuine miss must answer 404 with an explicit noindex. Search Console reported
 // `/404.html` as a soft 404 because it satisfied neither condition.
@@ -827,6 +932,7 @@ async function run() {
 
   await mapWithConcurrency([...internalTargets], 8, assertInternalTarget);
   await assertExcludedRoutes(sitemapSet);
+  await assertRobotsRules();
   await assertErrorDocument();
   await assertSpecialRoutes();
   await assertNoJsShowcase();
