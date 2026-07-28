@@ -8,7 +8,8 @@
 - GSC last update: July 24, 2026
 - Audited against commit: `3069dab`
 - Canonical public origin: `https://xheal.ai`
-- Status: Planned, not started
+- Status: Workstreams 1-7 shipped in `1dd7075`..`07d8574`. Workstream 8 is
+  manual and outstanding.
 
 Search Console emailed two new indexing reasons: `Blocked by robots.txt` and
 `Alternate page with proper canonical tag`. The report shows 122 indexed and 62
@@ -111,7 +112,7 @@ namespace.
 
 ## Workstream 1: Soft 404 Remediation
 
-Status: Not started.
+Status: Shipped in `1dd7075`.
 Commit: `fix(seo): stop serving /404.html as an indexable 200`
 
 ### User Story
@@ -158,7 +159,7 @@ the router does not break the custom error page.
 
 ## Workstream 2: RSC Payload Exposure
 
-Status: Not started.
+Status: Shipped in `9f9b396`.
 Commit: `fix(seo): keep Next.js RSC payloads out of the index`
 
 ### User Story
@@ -210,7 +211,7 @@ enumerating RSC payload paths explicitly instead of a wildcard.
 
 ## Workstream 3: Locale-Aware Guides Module
 
-Status: Not started.
+Status: Shipped in `b4b99d6`.
 Commit: `refactor(guides): make the guides module locale-aware`
 
 ### User Story
@@ -254,7 +255,7 @@ translation work.
 
 ## Workstream 4: Bulgarian Guide Content
 
-Status: Not started.
+Status: Shipped in `603c23e`.
 Commit: `feat(guides): add Bulgarian guide content`
 
 ### User Story
@@ -301,7 +302,7 @@ wasted crawl budget into indexable content in a market xHeal already serves with
 
 ## Workstream 5: Guides UI Localization
 
-Status: Not started.
+Status: Shipped in `c974741`.
 Commit: `feat(guides): localize guides UI chrome`
 
 ### User Story
@@ -339,7 +340,7 @@ content without the chrome produces a visibly bilingual page.
 
 ## Workstream 6: Index The Bulgarian Guides
 
-Status: Not started.
+Status: Shipped in `0b87f77`.
 Commit: `feat(seo): index Bulgarian guides`
 
 ### User Story
@@ -384,7 +385,7 @@ signal this plan is fixing.
 
 ## Workstream 7: Bulgarian Author Page
 
-Status: Not started.
+Status: Shipped in `07d8574`.
 Commit: `feat(seo): index Bulgarian team bio`
 
 ### User Story
@@ -422,7 +423,8 @@ attribution target for 24 translated Bulgarian blog posts.
 
 ## Workstream 8: Search Console Validation
 
-Status: Not started. Manual, performed after Workstreams 1 and 2 deploy.
+Status: Outstanding. Manual. Both passes are unblocked at once because
+Workstreams 1 through 7 shipped together.
 
 ### User Story
 
@@ -503,6 +505,42 @@ any point after Workstream 1.
 
 Workstream 8 runs twice: once after Workstreams 1 and 2 for the defect
 validations, and once after Workstreams 6 and 7 for the sitemap resubmission.
+
+## Implementation Deviations
+
+Recorded where the shipped work differs from this plan.
+
+- **Workstream 1** redirects every error-document variant, not just
+  `/404.html`: `/404`, `/404/`, `/en/404`, `/en/404.html` all 308 to `/`, and
+  `/bg/404`, `/bg/404.html` 308 to `/bg`. Handling them before the generic
+  `.html` rule keeps each one a single hop instead of a chain. The plan also
+  states the built-in Next 404 carries no `robots` directive; it actually
+  emits a bare `noindex`. The custom pages emit `noindex, nofollow`.
+- **Workstream 2** covers 1373 RSC payloads, not 681. The site grew between the
+  audit and implementation.
+- **Workstream 4** gives the Bulgarian set no override layer. `guideOverrides`
+  is a historical correction applied over stale English definitions; the
+  Bulgarian guides were authored directly against the corrected text, so
+  translating the discarded definitions and then patching them would have
+  duplicated the work for no benefit. The invariant the plan cares about — that
+  Bulgarian shows corrected content whose HTML structure matches its English
+  counterpart post-override — is enforced in `scripts/validate-seo.mjs`.
+- **Workstream 4** additionally adds guide locale-parity assertions to
+  `validate-seo.mjs` rather than relying only on production checks: identical
+  guide and category counts, identical `slug`/`category`/`order`/`readingTime`/
+  `prerequisites`/`icon`, no Bulgarian string equal to its English counterpart,
+  Cyrillic present in every translated field, identical HTML tag signature per
+  guide, unique rendered titles and descriptions per locale, and the
+  70-character metadata title budget. Bulgarian runs longer than English, so
+  catching the title budget at the source is what made the translation safe.
+- **Workstream 5** changed one English string incidentally: the straight
+  apostrophe in "Can't find what you're looking for?" became the typographic
+  apostrophe already used throughout the message catalogs.
+- **Workstream 7** removes `ENGLISH_ONLY_STATIC_PAGES` from `src/app/sitemap.ts`
+  and `EXCLUDED_ROUTES` from `scripts/validate-production.mjs` entirely. Both
+  became empty: every indexable route is translated and in the sitemap, and
+  `/smart-devices` is absent from the export rather than served as `noindex`.
+- The sitemap holds **148** URLs, not the estimated 147.
 
 ## Superseded Decisions
 
