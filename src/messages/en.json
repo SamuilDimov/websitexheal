@@ -1477,6 +1477,26 @@
       "newsletter": "Newsletter"
     }
   },
+  "Team": {
+    "trifon": {
+      "metaTitle": "Trifon Getsov — Author & Co-founder | xHeal",
+      "metaDescription": "CEO & Co-founder of xHeal. After a 4-year personal health crisis, Trifon built xHeal to help people understand their health data before symptoms appear. xHeal AI validated against 5,000+ patients.",
+      "name": "Trifon Getsov",
+      "role": "CEO & Co-founder, xHeal",
+      "aboutHeading": "About Trifon",
+      "aboutParagraph1": "Trifon Getsov is CEO and Co-founder of xHeal, a health intelligence platform that connects wearable data, lab results, and symptom patterns to detect health issues before symptoms appear. He brings experience as a 3x CEO across biotechnology, software, and product development.",
+      "aboutParagraph2": "In 2019, at age 27, Trifon experienced recurring prostatitis that resisted nine rounds of antibiotics and left his immune system severely compromised. After visiting specialists in Bulgaria and abroad without identifying a root cause, he spent four years investigating his own health data. He eventually identified gut dysbiosis driving chronic inflammation as the underlying issue — a finding that would have been visible much earlier with the right data connections.",
+      "aboutParagraph3": "That experience became the founding insight behind xHeal. During beta testing, xHeal’s predictive engine detected elevated HOMA-IR (early-stage insulin resistance) in Trifon before he had any symptoms — the kind of early warning that standard annual bloodwork would have missed entirely. xHeal’s AI has since been validated against more than 5,000 patient records.",
+      "credentialsHeading": "Credentials & Experience",
+      "credential1": "CEO & Co-founder, xHeal",
+      "credential2": "3x CEO — biotechnology and product development",
+      "credential3": "4-year personal chronic illness recovery: identified gut dysbiosis as root cause after 9 rounds of antibiotics failed",
+      "credential4": "xHeal AI validated against 5,000+ patient records",
+      "credential5": "Personal case study: early insulin resistance detected by xHeal before symptoms appeared",
+      "medicalReview": "All health content authored by Trifon Getsov on the xHeal blog is medically reviewed by <reviewer>Dr. Rayna Mihaylova, MD</reviewer> before publication, in line with E-E-A-T guidelines for health and medical content.",
+      "articlesHeading": "Published Articles"
+    }
+  },
   "Guides": {
     "metaTitle": "Guides | xHeal",
     "metaDescription": "Learn how to use xHeal with step-by-step tutorials, feature guides, and tips for getting the most out of your personal health companion.",

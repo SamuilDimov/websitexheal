@@ -74,7 +74,10 @@ const EXPECTED_SHOWCASE_IMAGES = new Map([
     ],
   ],
 ]);
-const EXCLUDED_ROUTES = ["/bg/team/trifon-getsov"];
+// Routes that must stay reachable but out of the index. Empty today: every
+// indexable route is translated and in the sitemap, and /smart-devices is
+// removed from the export entirely rather than served as noindex.
+const EXCLUDED_ROUTES = [];
 const HISTORICAL_REDIRECTS = new Map([
   [
     "/blog/how-xheal-guided-me-to-the-right-lab-tests",

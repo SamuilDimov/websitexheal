@@ -34,11 +34,10 @@ const TRANSLATED_STATIC_PAGES: StaticPage[] = [
   { path: "/log-life-events", changeFrequency: "monthly", priority: 0.8 },
   { path: "/specialist-ready-reports", changeFrequency: "monthly", priority: 0.8 },
   { path: "/guides", changeFrequency: "weekly", priority: 0.9 },
-];
-
-const ENGLISH_ONLY_STATIC_PAGES: StaticPage[] = [
   { path: "/team/trifon-getsov", changeFrequency: "monthly", priority: 0.7 },
 ];
+
+// Every indexable route is now translated, so there is no English-only set.
 
 function staticEntry(
   page: StaticPage,
@@ -55,10 +54,6 @@ function staticEntry(
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages = TRANSLATED_STATIC_PAGES.flatMap((page) =>
     LOCALES.map((locale) => staticEntry(page, locale))
-  );
-
-  const englishOnlyStaticPages = ENGLISH_ONLY_STATIC_PAGES.map((page) =>
-    staticEntry(page, ENGLISH_LOCALE)
   );
 
   const blogPages: MetadataRoute.Sitemap = getBlogPosts("en").flatMap((post) => {
@@ -88,10 +83,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }))
   );
 
-  return [
-    ...staticPages,
-    ...englishOnlyStaticPages,
-    ...blogPages,
-    ...guidePages,
-  ];
+  return [...staticPages, ...blogPages, ...guidePages];
 }
