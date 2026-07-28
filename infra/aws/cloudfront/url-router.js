@@ -72,6 +72,21 @@ function handler(event) {
     return redirect(HISTORICAL_REDIRECTS[normalizedUri] + query);
   }
 
+  // The error document is an implementation detail of the static export.
+  // CloudFront generates custom error responses on the origin-response path, so
+  // this viewer-request redirect never runs for a genuine 404; it only affects
+  // clients and crawlers that request the artifact directly. Redirecting them to
+  // a real page keeps `/404.html` from being indexed as an HTTP 200.
+  var errorDocument = normalizedUri.replace(/\.html$/, "");
+
+  if (errorDocument === "/404" || errorDocument === "/en/404") {
+    return redirect("/" + query);
+  }
+
+  if (errorDocument === "/bg/404") {
+    return redirect("/bg" + query);
+  }
+
   if (normalizedUri === "/en") {
     return redirect("/" + query);
   }
@@ -91,7 +106,7 @@ function handler(event) {
     return redirect("/" + query);
   }
 
-  if (uri !== "/404.html" && uri.endsWith(".html")) {
+  if (uri.endsWith(".html")) {
     var cleanUri = uri.slice(0, -5);
 
     if (cleanUri.indexOf("/en/") === 0) {

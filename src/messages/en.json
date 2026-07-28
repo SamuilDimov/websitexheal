@@ -1476,5 +1476,16 @@
       "product-stories": "Product Stories",
       "newsletter": "Newsletter"
     }
+  },
+  "NotFound": {
+    "eyebrow": "Error 404",
+    "title": "This page could not be found",
+    "description": "The link may be outdated, or the page may have moved. Try one of the destinations below.",
+    "links": {
+      "home": "Home",
+      "guides": "Guides",
+      "blog": "Blog",
+      "support": "Support"
+    }
   }
 }

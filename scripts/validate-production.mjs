@@ -444,6 +444,51 @@ async function assertExcludedRoutes(sitemapUrls) {
   }
 }
 
+// The error document must never be reachable as an indexable HTTP 200, and every
+// genuine miss must answer 404 with an explicit noindex. Search Console reported
+// `/404.html` as a soft 404 because it satisfied neither condition.
+async function assertErrorDocument() {
+  for (const [artifact, destination] of [
+    ["/404.html", "/"],
+    ["/404", "/"],
+    ["/bg/404.html", "/bg"],
+    ["/bg/404", "/bg"],
+  ]) {
+    const page = await requestPublic(`${PUBLIC_ORIGIN}${artifact}`);
+    if (page.status !== 308) {
+      fail(`${artifact}: expected 308, received ${page.status}`);
+      if (page.status === 200 && !isNoindex(page)) {
+        fail(`${artifact}: error document is served as an indexable 200`);
+      }
+      continue;
+    }
+    const location = page.headers.get("location");
+    const resolved = location
+      ? new URL(location, PUBLIC_ORIGIN).toString()
+      : "(missing)";
+    if (resolved !== `${PUBLIC_ORIGIN}${destination}`) {
+      fail(`${artifact}: redirects to ${resolved}, expected ${destination}`);
+    }
+  }
+
+  for (const missing of [
+    "/xheal-validation-path-that-does-not-exist",
+    "/bg/xheal-validation-path-that-does-not-exist",
+  ]) {
+    const page = await requestPublic(`${PUBLIC_ORIGIN}${missing}`);
+    if (page.status !== 404) {
+      fail(`${missing}: expected 404, received ${page.status}`);
+      continue;
+    }
+    if (!isNoindex(page)) {
+      fail(`${missing}: 404 response is missing a noindex directive`);
+    }
+    if (!/content=["'][^"']*nofollow/i.test(page.body)) {
+      fail(`${missing}: 404 response is missing a nofollow directive`);
+    }
+  }
+}
+
 async function assertSpecialRoutes() {
   const unknown = await requestPublic(
     `${PUBLIC_ORIGIN}/blog/phase-6-validation-route-that-does-not-exist`,
@@ -782,6 +827,7 @@ async function run() {
 
   await mapWithConcurrency([...internalTargets], 8, assertInternalTarget);
   await assertExcludedRoutes(sitemapSet);
+  await assertErrorDocument();
   await assertSpecialRoutes();
   await assertNoJsShowcase();
   await assertFeatureDetailVisuals();

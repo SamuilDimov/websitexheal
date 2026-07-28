@@ -87,6 +87,33 @@ test("preserves duplicate query values on redirects", () => {
   );
 });
 
+test("redirects the error document away from an indexable 200", () => {
+  for (const uri of ["/404.html", "/404", "/404/", "/en/404.html", "/en/404"]) {
+    const result = route(uri);
+    assert.equal(result.output.statusCode, 308, uri);
+    assert.equal(result.output.headers.location.value, "/", uri);
+  }
+
+  for (const uri of ["/bg/404.html", "/bg/404", "/bg/404/"]) {
+    const result = route(uri);
+    assert.equal(result.output.statusCode, 308, uri);
+    assert.equal(result.output.headers.location.value, "/bg", uri);
+  }
+});
+
+test("preserves the query string on error-document redirects", () => {
+  const result = route("/404.html", {
+    querystring: { from: { value: "crawler" } },
+  });
+
+  assert.equal(result.output.headers.location.value, "/?from=crawler");
+});
+
+test("does not mistake real routes for the error document", () => {
+  assert.equal(route("/blog/404-errors").output.uri, "/en/blog/404-errors.html");
+  assert.equal(route("/404-not-found").output.uri, "/en/404-not-found.html");
+});
+
 test("redirects the historical blog route", () => {
   const result = route("/blog/how-xheal-guided-me-to-the-right-lab-tests", {
     querystring: { source: { value: "email" } },
