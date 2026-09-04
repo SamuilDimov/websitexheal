@@ -69,7 +69,7 @@
     "linkBlog": "Blog",
     "linkSupport": "Support",
     "disclaimer": "xHeal is a health companion and awareness tool. It supports care decisions and care-team collaboration. It does not diagnose, treat, prescribe, or replace medical professionals.",
-    "compliance": "HIPAA and GDPR compliant · WHO, ADA and EASD guideline-informed"
+    "compliance": "HIPAA and GDPR compliant. WHO, ADA and EASD guideline-informed."
   },
   "Newsletter": {
     "heading": "Get smarter about your health.",
@@ -105,12 +105,12 @@
     "downloadOnAppStore": "Download on the App Store",
     "downloadQrAlt": "Download App QR Code",
     "dashboardAlt": "xHeal v2 preview showing workouts, nutrition, mindfulness, Digital Twin insights, health records, daily routines, and a free start.",
-    "eyebrow": "Digital Health Twin · iOS",
+    "eyebrow": "Digital Health Twin for iOS",
     "lead": "xHeal connects your labs, records, wearables and daily logs into one Digital Twin, then tells you what is changing and what to do next.",
     "secondaryCta": "See how it works",
     "disclaimer": "xHeal is a health companion. It supports care decisions and does not diagnose or replace medical professionals.",
     "proof1": "250+ health parameters",
-    "proof2": "WHO · ADA · EASD guideline-informed",
+    "proof2": "WHO, ADA and EASD guideline-informed",
     "proof3": "Set up in about 5 minutes",
     "phoneAlt": "xHeal home screen showing your xHeal Score, Health Status and Today's Snapshot"
   },
@@ -330,7 +330,7 @@
     "compliant": "Compliant"
   },
   "MedicalStandards": {
-    "standards": "WHO · ADA · EASD",
+    "standards": "WHO, ADA and EASD",
     "label": "Medical-Standard Reasoning"
   },
   "Integrations": {
@@ -1636,9 +1636,9 @@
   "Signals": {
     "eyebrow": "Signals",
     "heading": "What changes when your health data works together",
-    "signal1Meta": "Apple Watch · 14 nights",
-    "signal2Meta": "Symptom log + HRV · since Monday",
-    "signal3Meta": "Lab PDFs · 3 results",
+    "signal1Meta": "Apple Watch, 14 nights",
+    "signal2Meta": "Symptom log + HRV, since Monday",
+    "signal3Meta": "Lab PDFs, 3 results",
     "closing": "Patterns spotted earlier. Answers grounded in your data, not generic advice."
   },
   "Bento": {
@@ -1667,7 +1667,7 @@
     "numeral3": "~5,000",
     "numeral3Label": "patients in alpha testing",
     "numeral3Note": "Historical alpha testing, 95% accuracy. Not a diagnostic claim.",
-    "standards": "WHO · ADA · EASD guideline-informed · HIPAA and GDPR compliant",
+    "standards": "WHO, ADA and EASD guideline-informed. HIPAA and GDPR compliant.",
     "voicesLabel": "What people say about xHeal"
   },
   "FAQ": {

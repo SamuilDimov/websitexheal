@@ -9,7 +9,8 @@ export default function ProofLine({ className = "" }: { className?: string }) {
   const s = useTranslations("MedicalStandards");
   const c = useTranslations("Compliance");
   const items = [
-    `${s("standards")} · ${s("label")}`,
+    s("standards"),
+    s("label"),
     `${c("hipaa")} ${c("compliant")}`,
     `${c("gdpr")} ${c("compliant")}`,
   ];

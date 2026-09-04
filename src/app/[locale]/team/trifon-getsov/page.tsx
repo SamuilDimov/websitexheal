@@ -113,8 +113,11 @@ export default async function TrifonBioPage({
                       <span className="t-h6 text-xprimary group-hover:text-xbrand transition-colors duration-200">
                         {post.title}
                       </span>
-                      <span className="t-caption text-xtertiary">
-                        {post.date} · {post.readingTime} {tBlog("minRead")}
+                      <span className="t-caption text-xtertiary flex flex-wrap items-center gap-x-3">
+                        <span>{post.date}</span>
+                        <span>
+                          {post.readingTime} {tBlog("minRead")}
+                        </span>
                       </span>
                     </Link>
                   ))}

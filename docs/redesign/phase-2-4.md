@@ -681,6 +681,28 @@ the same on the 1290 x 2796 captures because both aspect ratios are ~0.46.
 Declared `width`/`height` updated in `feature-visuals.ts` (10 entries), the
 bento, How-it-works and the two frame defaults.
 
+## Middots removed
+
+Samuil asked for the interpunct separators to go. Two kinds, handled
+differently, because a `·` is doing two different jobs on this site.
+
+Where it separated two elements it was structural, and the fix was spacing:
+the blog card's category / reading-time row and its author / date byline (one
+of which was `&middot;`, so it survived the first grep), the team page's date
+/ reading-time line, and `ProofLine`, whose standards and label are now two
+list items and get the brand dot markers the other items already had. The
+byline needed its gap widened afterwards — 2.5 is right between avatar and
+name and reads as one phrase between name and date.
+
+Where it sat inside a sentence it was punctuation, and the copy was rewritten
+in both catalogs: lists take "A, B and C", clauses take a full stop.
+`MedicalStandards`, `Compliance`, the Signals metas and both `standards`
+lines. `Hero.eyebrow` and `Hero.proof2` were done too even though nothing
+renders them now, so they do not bring the character back if they return.
+
+Verified: zero in the whole export, and zero in rendered text on the home,
+blog, feature and bg pages.
+
 ## Type: one face
 
 IBM Plex Mono is out. Samuil clocked the eyebrows as somebody else's

@@ -43,7 +43,6 @@ export default function BlogCard({
         {/* Category + reading time, in the site's mono data voice */}
         <div className="t-data flex flex-wrap items-center gap-x-3 text-xtertiary">
           <span className="text-xbrand">{categoryLabels[post.category]}</span>
-          <span aria-hidden="true">·</span>
           <span>
             {post.readingTime} {minReadLabel}
           </span>
@@ -66,8 +65,10 @@ export default function BlogCard({
             style={{ width: 28, height: 28 }}
           />
           <span className="t-body3 text-xsecondary">{post.author.name}</span>
-          <span className="text-xtertiary">&middot;</span>
-          <span className="t-body3 text-xtertiary">{post.date}</span>
+          {/* The dot between these two is gone, so the space has to do the
+              separating; the row's 2.5 gap is enough for avatar-to-name but
+              reads as one phrase between name and date. */}
+          <span className="t-body3 text-xtertiary ms-1.5">{post.date}</span>
         </div>
       </div>
     </Link>
