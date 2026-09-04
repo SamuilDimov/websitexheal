@@ -494,7 +494,20 @@ fix. The reliable signal is the first painted frame: it used to be a
 full-size, fully-posed device and is now near-empty, because the phone starts
 below the frame.
 
-The lead-in came down with it, 0.35 s to 0.1 s. The frame sequence waited so
+The lead-in came down with it, 0.35 s to 0.1 s, and the flip itself from
+2.8 s to 1.8 s — Samuil found the wait long, and rightly: 2.8 s was the frame
+sequence's length, chosen when the animation was the whole of the wait. As a
+live model the flip is the tail of a wait that already includes a lazy chunk,
+a GLB and a texture, about 1.7 s before the first frame.
+
+A `<link rel="preload">` on the model and the hero texture looked like the
+obvious way to shorten that first 1.7 s, and it made things worse: measured in
+Chrome, both assets were requested **twice**. Neither preload is matched by
+the loader that eventually asks for them — `TextureLoader` sets
+`crossOrigin=anonymous` and `FileLoader` fetches with `credentials:
+same-origin`, and a preload has to agree on request mode and credentials to be
+reused. Reverted. Shortening that head start needs the loaders and the
+preloads brought into agreement, not a link tag. The frame sequence waited so
 the flip did not start during hydration; the model is lazy-loaded, so by the
 time it can play the page has long settled and the beat was only an empty
 slot where the hero's phone belongs.

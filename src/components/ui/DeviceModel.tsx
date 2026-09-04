@@ -62,7 +62,14 @@ export const ENTRANCES = {
   flip: {
     from: { y: -1.15, rot: [6 * R, -360 * R, -8 * R] },
     to: { y: 0, rot: [0, 0, 0] },
-    duration: 2.8,
+    /**
+     * 2.8 s was the frame sequence's length, 1.4x the render's own 2 s, given
+     * room because the flip is the hero moment. As a live model it starts
+     * after a lazy chunk, a GLB and a texture have landed, so the visitor has
+     * already been waiting about a second and a half before the first frame —
+     * the animation is not the whole wait, it is the tail of it.
+     */
+    duration: 1.8,
     /**
      * The frame sequence waited 0.35 s so the flip did not start during
      * hydration. The model is lazy-loaded, so by the time it can play the
