@@ -1,8 +1,11 @@
 @import "tailwindcss";
 
 /* ===== FONTS ===== */
-/* Manrope (400–700, latin + cyrillic) and IBM Plex Mono (400/500) are loaded via
-   next/font/google in layout.tsx and exposed as --font-manrope / --font-plex-mono. */
+/* Manrope (400–600, latin + cyrillic) is loaded via next/font/google in
+   layout.tsx and exposed as --font-manrope. It is the only face on the site:
+   the eyebrows and data lines ran on IBM Plex Mono until Samuil pointed out
+   that a borrowed mono is not our type, so `--font-data-stack` is Manrope too
+   and the data voice is carried by case and tracking instead. */
 
 /* ===== CSS VARIABLES (xHeal Design System v2 — dark) ===== */
 :root {
@@ -119,7 +122,7 @@
   --accent-tint: #edf0ff;
   --hero-wash: linear-gradient(180deg, #edf0ff 0%, #f7f8fc 100%);
   --radius-panel: 32px;
-  --font-mono-stack: var(--font-plex-mono), "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-data-stack: var(--font-manrope), "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 [data-surface="light"] {
@@ -268,7 +271,7 @@
 
   /* Fonts */
   --font-sans: var(--font-manrope), "Manrope", system-ui, -apple-system, sans-serif;
-  --font-mono: var(--font-mono-stack);
+  --font-mono: var(--font-data-stack);
 
   /* Border radius */
   --radius-xs: 4px;
@@ -504,15 +507,15 @@ blockquote {
 }
 .t-overline,
 .t-eyebrow {
-  font-family: var(--font-mono-stack);
+  font-family: var(--font-data-stack);
   font-size: 12px;
   line-height: 1.4;
-  font-weight: 500;
-  letter-spacing: 0.08em;
+  font-weight: 600;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 .t-data {
-  font-family: var(--font-mono-stack);
+  font-family: var(--font-data-stack);
   font-size: 13px;
   line-height: 1.4;
   font-weight: 400;
@@ -1864,6 +1867,70 @@ blockquote {
 .x-btn--ghost:hover {
   background-color: color-mix(in srgb, var(--text-primary) 5%, transparent);
 }
+/* Flat mockups turn toward the cursor too (see PointerTilt), on the same
+   numbers as the 3D devices so the two read as one system. The perspective is
+   per element rather than on a shared parent: each mockup is its own object,
+   not a group sharing one vanishing point. */
+[data-tilt] {
+  transform: perspective(1400px) translate3d(var(--tilt-tx, 0px), var(--tilt-ty, 0px), 0)
+    rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+  transform-style: preserve-3d;
+}
+
+/* ===== MAGNETIC BUTTONS + ROLLING LABELS =====
+   thebrightapp.xyz's button treatment: the control leans toward the cursor
+   while it is near it, its content leans half as much again, and the label
+   rolls up to a duplicate of itself. `MagneticHover` writes only the two
+   custom properties; every transform is composed here, so a button's own
+   press scale survives. `RollText` needs no script at all. */
+[data-magnetic] {
+  transform: translate3d(var(--mag-x, 0px), var(--mag-y, 0px), 0);
+  /* The pull is already eased frame by frame in script; a CSS transition on
+     transform on top of that smooths the smoothing and the button trails the
+     cursor by a beat too long. Colour still fades. */
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease,
+    opacity 0.2s ease;
+}
+[data-magnetic]:active {
+  transform: translate3d(var(--mag-x, 0px), var(--mag-y, 0px), 0) scale(0.97);
+}
+[data-magnetic-inner] {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transform: translate3d(var(--mag-x, 0px), var(--mag-y, 0px), 0);
+}
+.roll-text {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  /* The roll distance is one line box, so this has to be explicit. */
+  line-height: 1.2;
+}
+.roll-text__line {
+  display: block;
+  transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.roll-text__line--dup {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateY(100%);
+}
+[data-magnetic]:hover .roll-text__line,
+[data-magnetic]:focus-visible .roll-text__line {
+  transform: translateY(-100%);
+}
+[data-magnetic]:hover .roll-text__line--dup,
+[data-magnetic]:focus-visible .roll-text__line--dup {
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .roll-text__line {
+    transition: none;
+  }
+}
+
 .x-link {
   display: inline-flex;
   align-items: center;
@@ -1905,19 +1972,17 @@ blockquote {
    dome sits fixed above it (z -1 inside the isolated wrapper), and the light
    sections go translucent so the lattice runs under all of them. Dark
    sections keep their own opaque surfaces and simply cover it. */
-.home-dome section.bg-xbg,
+.home-dome section.bg-xbg:not([data-surface="dark"]),
 .home-dome header.bg-xbg {
   background-color: transparent;
 }
-.home-dome section.bg-xbg-2 {
+/* The `:not()` above matters: a plain `.home-dome section.bg-xbg` rule
+   out-specifies the `[data-surface="dark"]` rule that paints `--bg-primary`,
+   so any dark section inside the wrapper would silently lose its ground. */
+/* The FAQ is the one banded light section inside the window (see `WINDOWS` in
+   DotDome.tsx); every other `bg-xbg-2` band keeps its full `--ground-2`. */
+.home-dome section#faq.bg-xbg-2 {
   background-color: color-mix(in srgb, var(--ground-2) 62%, transparent);
-}
-.home-dome .hero-panel {
-  background: linear-gradient(180deg, rgba(237, 240, 255, 0.85) 0%, rgba(247, 248, 252, 0) 100%);
-}
-/* Soft focus: the dashes read as light rather than as ink. */
-.dot-dome {
-  filter: blur(1.1px);
 }
 /* The closing + footer wrapper sits outside the homepage wrapper and owns the
    dark background; Footer.tsx gives it `relative z-[1]` so it paints after the
@@ -1926,12 +1991,6 @@ blockquote {
 .closing-phone {
   height: auto;
   display: block;
-}
-.footer-wordmark {
-  display: block;
-  max-height: 22vw;
-  object-fit: contain;
-  object-position: left bottom;
 }
 @media (prefers-reduced-motion: no-preference) {
   .hero-phone {
@@ -1970,33 +2029,27 @@ blockquote {
 
 /* ===== REDESIGN PHASE 3/4 — SECTIONS ===== */
 /* Flat device frame */
+/* App screens stand on their own. There was a graphite bezel and a drawn
+   dynamic island here, but the ten 810x1654 screenshots were device renders
+   that already carried a titanium body and an island of their own — the page
+   was framing a framed phone and drawing a second island over the baked one.
+   The renders are cropped to their screens now (730x1583, scripts/crop-device
+   -screens.mjs) and the frame is just the clip. 14% of the width is the
+   screen's own baked corner radius, so the rounding lands on the pixels
+   rather than beside them. */
 .phone-frame {
-  border-radius: 12% / 6%;
-  background: #15171c;
-  padding: 3.2%;
-  /* Hairline ring so the graphite bezel separates from a dark ground; not a drop shadow. */
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
+  border-radius: 14% / 6.4%;
 }
 .phone-frame__screen {
   position: relative;
   width: 100%;
   height: 100%;
   overflow: hidden;
-  border-radius: 10% / 5%;
+  border-radius: 14% / 6.4%;
   background: #000e1b;
 }
 .phone-frame__screen > img {
   display: block;
-}
-.phone-frame__island {
-  position: absolute;
-  top: 5.2%;
-  left: 50%;
-  width: 30%;
-  height: 3.2%;
-  border-radius: 999px;
-  background: #050609;
-  transform: translateX(-50%);
 }
 
 /* How it works: pinned screens */
@@ -2146,7 +2199,7 @@ blockquote {
   font-size: 12px;
 }
 .chat__card-sub {
-  font-family: var(--font-mono-stack);
+  font-family: var(--font-data-stack);
   font-size: 9px;
   letter-spacing: 0.08em;
   text-transform: uppercase;

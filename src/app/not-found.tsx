@@ -64,11 +64,10 @@ export default function NotFound() {
             style={{
               margin: 0,
               fontSize: "12px",
-              letterSpacing: "0.12em",
+              letterSpacing: "0.14em",
               textTransform: "uppercase",
               color: COLORS.secondary,
-              fontFamily: "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
-              fontWeight: 500,
+              fontWeight: 600,
             }}
           >
             Error 404

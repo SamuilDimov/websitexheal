@@ -2,9 +2,15 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import FeatureDeviceFrame from "@/components/sections/FeatureDeviceFrame";
+import DeviceCanvas from "@/components/ui/DeviceCanvas";
 
 const DEFAULT_SLIDE_INTERVAL_MS = 2000;
+/**
+ * A device swaps its screen with a ~0.46 s dip (see `DeviceModel`), so the
+ * flat slideshow's 2 s beat would leave the screen mid-transition a quarter of
+ * the time. Each screen gets long enough to be read instead.
+ */
+const DEVICE_SLIDE_INTERVAL_MS = 3800;
 
 export interface FeatureSlideshowImage {
   src: string;
@@ -59,19 +65,21 @@ export default function FeatureImageSlideshow({
     };
   }, [images.length]);
 
+  const beat = deviceFrame ? Math.max(intervalMs, DEVICE_SLIDE_INTERVAL_MS) : intervalMs;
+
   useEffect(() => {
     if (!shouldPlay || images.length < 2) return;
 
     const interval = window.setInterval(() => {
       setActiveIndex((current) => (current + 1) % images.length);
-    }, intervalMs);
+    }, beat);
 
     return () => window.clearInterval(interval);
-  }, [images.length, intervalMs, shouldPlay]);
+  }, [images.length, beat, shouldPlay]);
 
   const firstImage = images[0];
   const isLanding = variant === "landing";
-  const slideshowInterval = images.length > 1 ? intervalMs : undefined;
+  const slideshowInterval = images.length > 1 ? beat : undefined;
   const renderedImages = images.map((image, index) => {
     const isActive = index === activeIndex;
 
@@ -96,20 +104,28 @@ export default function FeatureImageSlideshow({
   });
 
   if (deviceFrame) {
+    // The device is a live model now, not a CSS frame around a flat image:
+    // the slideshow drives which screenshot is on its display.
     return (
-      <FeatureDeviceFrame
-        containerRef={containerRef}
-        variant={variant}
-        aspectRatio={isLanding ? `${firstImage.width} / ${firstImage.height}` : undefined}
-        slideshowIntervalMs={slideshowInterval}
+      <div
+        ref={containerRef}
+        className={
+          isLanding
+            ? "relative flex-none w-[420px] max-w-full max-[767px]:w-[300px] max-[767px]:mx-auto"
+            : "feature-showcase-device relative flex-none"
+        }
+        style={{ width: isLanding ? undefined : "clamp(160px, 18vw, 250px)" }}
+        data-slideshow-interval={slideshowInterval}
+        data-slideshow-variant={variant}
       >
-        <div
-          className="relative h-full w-full overflow-hidden"
-          style={{ borderRadius: isLanding ? 37 : 24 }}
-        >
-          {renderedImages}
-        </div>
-      </FeatureDeviceFrame>
+        <DeviceCanvas
+          screen={images[activeIndex].src}
+          poster={firstImage.src}
+          entrance="settle"
+          className="w-full"
+        />
+        <span className="sr-only">{images[activeIndex].alt}</span>
+      </div>
     );
   }
 

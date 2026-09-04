@@ -8,6 +8,7 @@ import { routing } from "@/i18n/routing";
 import { APP_STORE_URL } from "@/lib/site";
 import Icon from "@/components/ui/Icon";
 import AppleLogo from "@/components/ui/AppleLogo";
+import RollText from "@/components/ui/RollText";
 
 /**
  * Capsule navigation (redesign phase 2).
@@ -150,9 +151,14 @@ export default function Navbar() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="nav-capsule__cta"
+                data-magnetic
               >
-                <AppleLogo size={15} className="nav-capsule__cta-icon" />
-                <span className="max-[359px]:sr-only">{t("getApp")}</span>
+                <span data-magnetic-inner>
+                  <AppleLogo size={15} className="nav-capsule__cta-icon" />
+                  <span className="max-[359px]:sr-only">
+                    <RollText>{t("getApp")}</RollText>
+                  </span>
+                </span>
               </a>
 
               <button
@@ -218,9 +224,12 @@ export default function Navbar() {
               rel="noopener noreferrer"
               className="nav-sheet__cta"
               tabIndex={isOpen ? 0 : -1}
+              data-magnetic
             >
-              <AppleLogo size={18} />
-              {t("getApp")}
+              <span data-magnetic-inner>
+                <AppleLogo size={18} />
+                <RollText>{t("getApp")}</RollText>
+              </span>
             </a>
           </div>
         </nav>

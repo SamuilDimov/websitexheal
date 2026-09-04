@@ -4,12 +4,11 @@ import { useEffect, useRef } from "react";
 
 /**
  * Page background: a sphere of short indigo dashes laid out on latitude
- * rings, drawn on a fixed layer behind the whole homepage. Scroll drives it:
- * a set of keyframes over page progress moves the sphere's centre, radius and
- * tilt, so it opens as a horizon dome under the hero, drifts up behind the
- * phone, sits large and low under the features, and hangs from the top edge
- * with its pole toward the viewer by the FAQ. It also idles round its
- * vertical axis and turns with the scroll.
+ * rings, drawn on a fixed layer behind the homepage. Scroll drives it: a set
+ * of keyframes moves the sphere's centre, radius, tilt and surface, and a
+ * separate envelope (see `WINDOWS`) decides where on the page it is visible
+ * at all — one stretch at the end, Proof through the FAQ. It also idles round
+ * its vertical axis and turns with the scroll.
  *
  * Reference: the Three.js particle dome on tranquil-495tmg.peachworlds.com
  * (black ground, additive cyan glow). This is the light-ground reading of the
@@ -28,45 +27,76 @@ import { useEffect, useRef } from "react";
 /**
  * Poses are anchored to the homepage sections, not to page fractions, so the
  * shape answers the content beside it and survives copy changes. Each key
- * names a section; its pose is reached when that section's anchor (`top` or
- * `center`) meets the viewport's, and poses ease (smoothstep) between keys.
+ * names a section and a fraction `p` through that section's own travel past
+ * the viewport, and poses ease (smoothstep) between keys.
  *
  * `cx`/`cy`: centre as viewport fractions. `r`: radius as fractions of
  * [height, width], the larger wins. `tilt`: rotation toward the viewer.
- * `squash`: scale of the unit sphere on [x, y, z] before rotation, which is
- * what turns the globe into a disc or a pill. `band`: the latitude range
- * (y in −1..1) that is drawn, with soft edges, which is what turns it into a
- * dome, a ring or a bowl. `gain`: overall opacity.
+ * `shape`: which surface the points sit on; every shape is built from the
+ * same (latitude, longitude) grid, so the points themselves travel between
+ * shapes as the scroll moves from one key to the next: the sphere collapses
+ * into a needle, the needle opens into a funnel, the funnel flattens into a
+ * lens. That is the reference's behaviour, where the cloud pinches to a
+ * point under the dashboard and re-expands as a swirling column. `band`: the
+ * latitude range drawn, with soft edges, which turns a sphere into a dome or
+ * a bowl. `gain`: overall opacity.
  */
+type Shape = "sphere" | "needle" | "funnel" | "lens" | "ring";
 type Key = {
   sel: string;
-  at: "top" | "center";
+  /**
+   * Where in the section's own travel the pose lands: 0 as its top reaches
+   * the bottom of the viewport, 1 as its bottom clears the top, 0.5 when the
+   * two centres meet. Expressing it as a fraction of `height + viewport`
+   * rather than as a pixel anchor is what makes the sequence hold its order
+   * on any screen — with fixed anchors, a viewport taller than the section
+   * reorders the keys and the shapes play out of sequence. Several keys per
+   * section is what keeps it moving: with one, the lattice reached its pose
+   * and then sat still until the next section, and the taller the screen the
+   * longer it sat.
+   */
+  p: number;
   cx: number;
   cy: number;
   r: readonly [number, number];
   tilt: number;
-  squash: readonly [number, number, number];
+  shape: Shape;
   band: readonly [number, number];
   gain: number;
 };
 
 const KEYS: readonly Key[] = [
-  // Hero: the horizon dome the reference opens with.
-  { sel: "#hero", at: "top", cx: 0.5, cy: 1.06, r: [0.66, 0.56], tilt: 0, squash: [1, 1, 1], band: [0, 1], gain: 1 },
-  // Problem ("normal tests, real symptoms"): the data flattened to a disc, seen from above.
-  { sel: '[aria-labelledby="problem-heading"]', at: "center", cx: 0.5, cy: 0.58, r: [0.56, 0.44], tilt: 1.15, squash: [1.25, 0.3, 1.25], band: [-1, 1], gain: 0.9 },
-  // How it works: the twin assembles into a whole globe behind the phone.
-  { sel: "#how-it-works", at: "center", cx: 0.78, cy: 0.5, r: [0.42, 0.3], tilt: 0.45, squash: [1, 1, 1], band: [-1, 1], gain: 0.95 },
-  // Signals: a wide tilted ring around the three cards.
-  { sel: '[aria-labelledby="signals-heading"]', at: "center", cx: 0.5, cy: 0.62, r: [0.44, 0.32], tilt: 1.2, squash: [1.25, 1, 1.25], band: [-0.3, 0.3], gain: 1.15 },
-  // Features: large and low-left, the lattice behind the bento.
-  { sel: "#features", at: "center", cx: 0.15, cy: 0.85, r: [0.62, 0.46], tilt: 0.7, squash: [1, 1, 1], band: [-1, 1], gain: 0.85 },
-  // Digital Twin chapter covers the layer; pass through the centre unseen.
-  { sel: "#digital-twin", at: "center", cx: 0.5, cy: 0.5, r: [0.4, 0.3], tilt: 1, squash: [1, 1, 1], band: [-1, 1], gain: 0.6 },
-  // Proof: a bowl hanging from the top edge.
-  { sel: '[aria-labelledby="proof-heading"]', at: "center", cx: 0.5, cy: -0.08, r: [0.62, 0.52], tilt: 0, squash: [1, 1, 1], band: [-1, 0], gain: 0.95 },
-  // FAQ: a flat disc from above, settling before the footer covers it.
-  { sel: "#faq", at: "center", cx: 0.5, cy: 0.12, r: [0.6, 0.5], tilt: 1.3, squash: [1.3, 0.4, 1.3], band: [-1, 1], gain: 0.85 },
+  // Above the window, so never drawn. They still matter: the lattice grows
+  // out of the pose it is holding when Proof arrives, so the last of these is
+  // the shape it opens from.
+  { sel: "#hero", p: 0.5, cx: 0.5, cy: 1.06, r: [0.66, 0.56], tilt: 0, shape: "sphere", band: [0, 1], gain: 1 },
+  { sel: '[aria-labelledby="problem-heading"]', p: 0.5, cx: 0.5, cy: 0.6, r: [0.5, 0.36], tilt: 0.15, shape: "needle", band: [-1, 1], gain: 1.3 },
+  { sel: "#how-it-works", p: 0.5, cx: 0.38, cy: 0.55, r: [0.6, 0.42], tilt: 0.25, shape: "funnel", band: [-1, 1], gain: 1.05 },
+  { sel: '[aria-labelledby="signals-heading"]', p: 0.5, cx: 0.5, cy: 0.62, r: [0.55, 0.45], tilt: 1.15, shape: "lens", band: [-1, 1], gain: 1.1 },
+  { sel: "#features", p: 0.5, cx: 0.15, cy: 0.85, r: [0.62, 0.46], tilt: 0.7, shape: "sphere", band: [-1, 1], gain: 0.85 },
+  { sel: "#digital-twin", p: 0.5, cx: 0.5, cy: 0.5, r: [0.3, 0.2], tilt: 0.5, shape: "needle", band: [-1, 1], gain: 0.6 },
+
+  // The visible run: five poses across Proof and the FAQ, so the shape is
+  // still travelling when the closing arrives. It rises as a funnel from the
+  // bottom edge, opens into a bowl hanging from the top, swings down into a
+  // globe, flattens into a lens behind the questions, then tips into a ring
+  // and drifts off to the left as the page ends.
+  { sel: '[aria-labelledby="proof-heading"]', p: 0.2, cx: 0.58, cy: 1.05, r: [0.55, 0.4], tilt: 0.1, shape: "funnel", band: [-1, 1], gain: 0.8 },
+  { sel: '[aria-labelledby="proof-heading"]', p: 0.45, cx: 0.5, cy: -0.08, r: [0.62, 0.52], tilt: 0, shape: "sphere", band: [-1, 0], gain: 0.95 },
+  { sel: '[aria-labelledby="proof-heading"]', p: 0.78, cx: 0.44, cy: 0.34, r: [0.66, 0.5], tilt: 0.55, shape: "sphere", band: [-1, 1], gain: 1 },
+  { sel: "#faq", p: 0.45, cx: 0.5, cy: 0.52, r: [0.6, 0.46], tilt: 1.15, shape: "lens", band: [-1, 1], gain: 1.05 },
+  { sel: "#faq", p: 0.9, cx: 0.3, cy: 0.72, r: [0.54, 0.44], tilt: 0.85, shape: "ring", band: [-1, 1], gain: 1 },
+];
+
+/**
+ * Where the lattice is allowed to show: one stretch at the end of the page,
+ * Proof through the FAQ, the last thing before the dark close. Everything
+ * above it — hero, Problem, How it works, Signals, Features, Digital Twin —
+ * is plain light ground with nothing drawn. Ranges are read from the live
+ * layout (`from` element's top to `to` element's bottom).
+ */
+const WINDOWS: readonly { from: string; to: string }[] = [
+  { from: '[aria-labelledby="proof-heading"]', to: "#faq" },
 ];
 
 type Pose = {
@@ -75,7 +105,10 @@ type Pose = {
   r: number;
   tilt: number;
   gain: number;
-  squash: [number, number, number];
+  shapeA: Shape;
+  shapeB: Shape;
+  /** 0 = shapeA, 1 = shapeB. */
+  mix: number;
   band: [number, number];
 };
 
@@ -88,10 +121,45 @@ function keyStops(): { key: Key; y: number }[] {
     if (!el) continue;
     const rect = el.getBoundingClientRect();
     const top = rect.top + window.scrollY;
-    out.push({ key, y: key.at === "top" ? top : top + rect.height / 2 - vh / 2 });
+    out.push({ key, y: top - vh + (rect.height + vh) * key.p });
   }
   return out.sort((a, b) => a.y - b.y);
 }
+
+/** Document-space [start, end] of each window, from the live layout. */
+function windowRanges(): [number, number][] {
+  const out: [number, number][] = [];
+  for (const w of WINDOWS) {
+    const a = document.querySelector(w.from);
+    const b = document.querySelector(w.to);
+    if (!a || !b) continue;
+    out.push([a.getBoundingClientRect().top + window.scrollY, b.getBoundingClientRect().bottom + window.scrollY]);
+  }
+  return out;
+}
+
+const smooth = (u: number) => (u <= 0 ? 0 : u >= 1 ? 1 : u * u * (3 - 2 * u));
+
+/**
+ * Overall opacity from the windows, tied to how much of the screen the range
+ * owns rather than to a scroll fraction: it rises as the range's top travels
+ * from the bottom of the viewport to the top, and falls again over the last
+ * viewport before its end. So the lattice is invisible while Features still
+ * holds the screen, is at full strength once Proof fills it, and is gone by
+ * the time the closing has risen into place.
+ */
+function envelopeAt(ranges: [number, number][], scrollY: number, vh: number): number {
+  const fade = Math.max(1, vh * 0.9);
+  let out = 0;
+  for (const [start, end] of ranges) {
+    const rise = (scrollY + vh - start) / fade;
+    const fall = (end - scrollY) / fade;
+    const c = smooth(Math.min(rise, fall));
+    if (c > out) out = c;
+  }
+  return out;
+}
+
 
 function poseAt(stops: { key: Key; y: number }[], scrollY: number, width: number, height: number): Pose {
   const toPose = (k: Key): Pose => ({
@@ -100,7 +168,9 @@ function poseAt(stops: { key: Key; y: number }[], scrollY: number, width: number
     r: Math.max(height * k.r[0], width * k.r[1]),
     tilt: k.tilt,
     gain: k.gain,
-    squash: [k.squash[0], k.squash[1], k.squash[2]],
+    shapeA: k.shape,
+    shapeB: k.shape,
+    mix: 0,
     band: [k.band[0], k.band[1]],
   });
   if (stops.length === 0) return toPose(KEYS[0]);
@@ -120,7 +190,9 @@ function poseAt(stops: { key: Key; y: number }[], scrollY: number, width: number
     r: mix(a.r, b.r),
     tilt: mix(a.tilt, b.tilt),
     gain: mix(a.gain, b.gain),
-    squash: [mix(a.squash[0], b.squash[0]), mix(a.squash[1], b.squash[1]), mix(a.squash[2], b.squash[2])],
+    shapeA: a.shapeA,
+    shapeB: b.shapeA,
+    mix: u,
     band: [mix(a.band[0], b.band[0]), mix(a.band[1], b.band[1])],
   };
 }
@@ -140,17 +212,22 @@ export default function DotDome({ className = "" }: { className?: string }) {
     let width = 0;
     let height = 0;
     let dpr = 1;
-    // Unit-sphere points: [x, y, z] with y up.
-    let points: Float32Array = new Float32Array(0);
+    // One (latitude, longitude) grid, realised as several surfaces. `sphere`
+    // doubles as the band reference (its y is sin(latitude)).
+    const empty = new Float32Array(0);
+    const shapes: Record<Shape, Float32Array> = { sphere: empty, needle: empty, funnel: empty, lens: empty, ring: empty };
+    let count3 = 0;
     let visible = true;
     let raf = 0;
     let last = 0;
     let angle = 0;
     let scrollY = window.scrollY;
     let stops: { key: Key; y: number }[] = [];
+    let ranges: [number, number][] = [];
     let dirty = true;
     const measure = () => {
       stops = keyStops();
+      ranges = windowRanges();
     };
 
     const build = () => {
@@ -164,32 +241,70 @@ export default function DotDome({ className = "" }: { className?: string }) {
       // Ring spacing in screen px at the largest radius the keyframes use;
       // denser on wide screens, sparser on phones so the frame stays cheap.
       const radius = Math.max(height * 0.7, width * 0.6);
-      const spacing = width < 768 ? 13 : 10;
+      const spacing = width < 768 ? 12 : 9;
       const latStep = spacing / radius;
-      const out: number[] = [];
-      // Whole sphere: the tilt keyframes bring the pole and the underside
-      // into view.
+      const sphere: number[] = [];
+      const needle: number[] = [];
+      const funnel: number[] = [];
+      const lens: number[] = [];
+      const ring: number[] = [];
+      // Whole sphere grid: the tilt keyframes bring the pole and the underside
+      // into view. Ring counts follow cos(latitude) but keep 45 % at the
+      // poles, so the shapes that are wide where the sphere is narrow (the
+      // funnel's mouth) still have points to spend.
       for (let lat = -Math.PI / 2 + latStep; lat < Math.PI / 2 - latStep / 2; lat += latStep) {
-        const ringR = Math.cos(lat);
-        const count = Math.max(6, Math.round((2 * Math.PI * ringR * radius) / spacing));
+        const c = Math.cos(lat);
+        const v = Math.sin(lat); // -1 (bottom) .. 1 (top)
+        const count = Math.max(8, Math.round(((2 * Math.PI * radius) / spacing) * (0.45 + 0.55 * c)));
         // Offset alternate rings by half a step so the grid reads as a lattice.
         const phase = (Math.round(lat / latStep) % 2) * (Math.PI / count);
         for (let i = 0; i < count; i++) {
           const lon = (i / count) * Math.PI * 2 + phase;
-          out.push(ringR * Math.sin(lon), Math.sin(lat), ringR * Math.cos(lon));
+          const sl = Math.sin(lon);
+          const cl = Math.cos(lon);
+          sphere.push(c * sl, v, c * cl);
+          // Needle: a thin dense column, slightly wider at the ends.
+          const rn = 0.035 + 0.06 * v * v;
+          needle.push(rn * sl, 0.7 * v, rn * cl);
+          // Funnel: narrow at the top, opening downward, with a twist so the
+          // meridians swirl the way the reference's column does.
+          const t = (1 - v) / 2;
+          const rf = 0.05 + 0.95 * Math.pow(t, 1.9);
+          const tw = lon + 2.4 * (1 - t);
+          funnel.push(rf * Math.sin(tw), 1.05 * v, rf * Math.cos(tw));
+          // Lens: a flat disc, circle profile, a tenth of the height.
+          lens.push(c * sl, 0.1 * v, c * cl);
+          // Ring: a torus; latitude becomes the angle round the tube.
+          const th = lat * 2;
+          const rr = 0.82 + 0.18 * Math.cos(th);
+          ring.push(rr * sl, 0.18 * Math.sin(th), rr * cl);
         }
       }
-      points = new Float32Array(out);
+      shapes.sphere = new Float32Array(sphere);
+      shapes.needle = new Float32Array(needle);
+      shapes.funnel = new Float32Array(funnel);
+      shapes.lens = new Float32Array(lens);
+      shapes.ring = new Float32Array(ring);
+      count3 = shapes.sphere.length;
     };
 
     const draw = () => {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, width, height);
 
+      // Outside the two windows there is nothing to draw; a cleared canvas
+      // costs a fill and skips the ~3k projections.
+      const env = envelopeAt(ranges, scrollY, height);
+      if (env <= 0.004) return;
+
       const pose = poseAt(stops, scrollY, width, height);
-      const [qx, qy, qz] = pose.squash;
       const [bandLo, bandHi] = pose.band;
       const bandSoft = 0.16;
+      const A = shapes[pose.shapeA];
+      const B = shapes[pose.shapeB];
+      const ref = shapes.sphere;
+      const m = pose.mix;
+      const m1 = 1 - m;
       const radius = pose.r;
       const cx = pose.cx;
       const cy = pose.cy;
@@ -203,22 +318,24 @@ export default function DotDome({ className = "" }: { className?: string }) {
       const cosT = Math.cos(pose.tilt);
       const sinT = Math.sin(pose.tilt);
 
-      // Alpha buckets so each stroke style is set once per frame.
-      const buckets = 10;
+      // Alpha buckets so each stroke style is set once per frame. Twenty-eight
+      // steps put the banding below what the eye picks up on a full-height
+      // sphere; ten showed as visible contour rings.
+      const buckets = 28;
       const paths: Path2D[] = Array.from({ length: buckets }, () => new Path2D());
 
-      for (let i = 0; i < points.length; i += 3) {
-        const lat = points[i + 1];
+      for (let i = 0; i < count3; i += 3) {
+        const lat = ref[i + 1];
         // Latitude band with soft edges: dome, ring or bowl.
         const bandA =
           Math.min(1, Math.max(0, (lat - bandLo + bandSoft) / bandSoft)) *
           Math.min(1, Math.max(0, (bandHi + bandSoft - lat) / bandSoft));
         if (bandA <= 0) continue;
-        // Squash the unit sphere (disc, pill), then spin about the vertical
-        // axis, then tilt the pole toward the viewer.
-        const x0 = points[i] * qx;
-        const y1 = lat * qy;
-        const z0 = points[i + 2] * qz;
+        // The point travels between the two shapes, then spins about the
+        // vertical axis, then tilts toward the viewer.
+        const x0 = A[i] * m1 + B[i] * m;
+        const y1 = A[i + 1] * m1 + B[i + 1] * m;
+        const z0 = A[i + 2] * m1 + B[i + 2] * m;
         const x = x0 * cosA + z0 * sinA;
         const z1 = -x0 * sinA + z0 * cosA;
         const y = y1 * cosT - z1 * sinT;
@@ -237,7 +354,7 @@ export default function DotDome({ className = "" }: { className?: string }) {
         // Weight toward the lower part of the sphere: quieter at the top,
         // full at the base, the way the reference dome brightens downward.
         const drop = Math.min(1, Math.max(0, (sy - (cy - radius)) / (2 * radius)));
-        a *= (0.4 + 0.6 * drop * drop) * pose.gain;
+        a *= (0.4 + 0.6 * drop * drop) * pose.gain * env;
         if (a < 0.01) continue;
 
         // Dash along the meridian: the screen direction toward the pole.
@@ -253,7 +370,9 @@ export default function DotDome({ className = "" }: { className?: string }) {
       }
 
       ctx.lineCap = "round";
-      ctx.lineWidth = 1.6;
+      // A true hairline at 2x: the canvas is no longer blurred, so the stroke
+      // carries the softness itself rather than borrowing it from a filter.
+      ctx.lineWidth = 1.15;
       for (let b = 0; b < buckets; b++) {
         const alpha = ((b + 0.5) / buckets) / 1.6;
         ctx.strokeStyle = `rgba(${BRAND}, ${alpha.toFixed(3)})`;

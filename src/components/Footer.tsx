@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import DeviceCanvas from "@/components/ui/DeviceCanvas";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { APP_STORE_URL } from "@/lib/site";
@@ -42,6 +43,7 @@ function ClosingSection() {
                 href={APP_STORE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
+                data-magnetic
                 className="x-store-badge"
               >
                 <Image
@@ -65,14 +67,11 @@ function ClosingSection() {
           </div>
 
           <div className="relative mx-auto flex w-full max-w-[380px] justify-center md:max-w-none md:justify-end">
-            <Image
-              src="/images/hero-phone.webp"
-              alt=""
-              width={1144}
-              height={1984}
-              sizes="(max-width: 767px) 70vw, 420px"
-              className="closing-phone w-[70%] max-w-[420px] md:w-full"
-              loading="lazy"
+            <DeviceCanvas
+              screen="/images/screens-hero.webp"
+              poster="/images/closing-phone.webp"
+              entrance="settle"
+              className="w-[62%] max-w-[260px] md:w-full md:max-w-[300px]"
             />
           </div>
         </div>
@@ -156,16 +155,6 @@ function SiteFooter() {
             <span className="t-data">{t("copyright", { year: new Date().getFullYear() })}</span>
             <span className="t-data">{t("compliance")}</span>
           </div>
-        </div>
-
-        <div aria-hidden="true" className="select-none overflow-hidden pt-4">
-          <Image
-            src="/images/logo.svg"
-            alt=""
-            width={250}
-            height={71}
-            className="footer-wordmark h-auto w-full opacity-[0.92]"
-          />
         </div>
       </div>
     </footer>

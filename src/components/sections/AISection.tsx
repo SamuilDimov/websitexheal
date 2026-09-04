@@ -7,10 +7,12 @@ import PhoneFrame from "@/components/ui/PhoneFrame";
 import ChatTranscript from "@/components/ui/ChatTranscript";
 
 /**
- * Digital Twin chapter: the one dark section on the page. The full v2 dark
- * token set is in force via `data-surface="dark"`. The phone is pinned while
- * three cards scroll past; the chat transcript is rendered as UI and types in
- * once when it enters the viewport.
+ * Digital Twin chapter. It ran on the dark token set until Samuil asked for
+ * the black ground behind the mockup gone; it is a light section now and the
+ * dark chapter of the redesign is the close alone. The phone's own screen
+ * stays dark because that is the app. The phone is pinned while three cards
+ * scroll past; the chat transcript is rendered as UI and types in once when
+ * it enters the viewport.
  */
 export default function AISection() {
   const t = useTranslations("AI");
@@ -24,7 +26,6 @@ export default function AISection() {
   return (
     <section
       id="digital-twin"
-      data-surface="dark"
       aria-labelledby="ai-heading"
       className="relative bg-xbg text-xprimary"
     >
@@ -43,7 +44,7 @@ export default function AISection() {
           {/* Pinned phone with the real chat as UI */}
           <div className="order-first md:order-last md:col-span-5 md:col-start-8 md:self-start md:sticky md:top-[12vh]">
             <div>
-              <PhoneFrame className="mx-auto w-[min(320px,78%)]" aspectRatio="810 / 1654">
+              <PhoneFrame className="mx-auto w-[min(320px,78%)]" aspectRatio="730 / 1583" tilt>
                 <ChatTranscript />
               </PhoneFrame>
             </div>
@@ -56,7 +57,7 @@ export default function AISection() {
                 className="flex flex-col gap-4 border-t x-hairline py-10 md:min-h-[48vh] md:justify-center"
               >
                 <ScrollReveal delay={index * 60}>
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-xbrand/15 text-xbrand-light">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-xbrand/10 text-xbrand">
                     <Icon name={card.icon} size={20} />
                   </span>
                   <h3 className="t-h2 text-xprimary mt-5 max-w-[18ch]">{card.title}</h3>
@@ -73,6 +74,7 @@ export default function AISection() {
             href={APP_STORE_URL}
             target="_blank"
             rel="noopener noreferrer"
+            data-magnetic
             className="x-store-badge"
           >
             <Image src="/images/app-store-badge.svg" alt={t("downloadOnAppStore")} width={150} height={50} />

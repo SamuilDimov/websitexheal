@@ -1,11 +1,13 @@
 import { hasLocale } from "next-intl";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
-import { Manrope, IBM_Plex_Mono } from "next/font/google";
+import { Manrope } from "next/font/google";
 import { routing } from "@/i18n/routing";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import MagneticHover from "@/components/ui/MagneticHover";
+import PointerTilt from "@/components/ui/PointerTilt";
 import ClientMessagesProvider from "@/components/ClientMessagesProvider";
 import { buildMetadata } from "@/lib/site";
 
@@ -15,14 +17,6 @@ const manrope = Manrope({
   subsets: ["latin", "cyrillic"],
   weight: ["400", "500", "600"],
   variable: "--font-manrope",
-  display: "swap",
-});
-
-// Data voice: eyebrows, timestamps, parameter counts.
-const plexMono = IBM_Plex_Mono({
-  subsets: ["latin", "cyrillic"],
-  weight: ["400", "500"],
-  variable: "--font-plex-mono",
   display: "swap",
 });
 
@@ -71,7 +65,7 @@ export default async function LocaleLayout({ children, params }: Props) {
   return (
     <html
       lang={locale}
-      className={`${manrope.variable} ${plexMono.variable}`}
+      className={manrope.variable}
       data-surface="light"
       data-scroll-behavior="smooth"
     >
@@ -94,6 +88,8 @@ export default async function LocaleLayout({ children, params }: Props) {
         />
       </head>
       <body className="bg-xbg text-xprimary antialiased">
+        <MagneticHover />
+        <PointerTilt />
         <ClientMessagesProvider
           locale={locale}
           namespaces={["Navbar", "Footer", "Newsletter", "Closing", "Compliance"]}

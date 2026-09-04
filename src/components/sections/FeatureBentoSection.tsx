@@ -42,8 +42,8 @@ export default function FeatureBentoSection() {
       line: b("flareUps"),
       large: {
         src: "/images/screenshots/flare-up-insights.png",
-        width: 810,
-        height: 1654,
+        width: 730,
+        height: 1583,
         alt: t("feature2Alt"),
       },
     },
@@ -59,8 +59,8 @@ export default function FeatureBentoSection() {
       line: b("chat"),
       large: {
         src: "/images/screenshots/chat-flare-up.png",
-        width: 810,
-        height: 1654,
+        width: 730,
+        height: 1583,
         alt: t("feature1Alt"),
       },
     },
@@ -113,7 +113,12 @@ export default function FeatureBentoSection() {
                   </div>
                   {tile.large && (
                     <div className="bento__phone pointer-events-none relative -mx-1 -mb-5 mt-2 h-[200px] overflow-hidden md:absolute md:-bottom-[38%] md:right-8 md:mx-0 md:mb-0 md:mt-0 md:h-auto md:w-[40%] md:max-w-[240px] md:overflow-visible">
-                      <div className="phone-frame relative mx-auto w-[56%] md:w-full" style={{ aspectRatio: `${tile.large.width} / ${tile.large.height}` }} aria-hidden="true">
+                      <div
+                        className="phone-frame relative mx-auto w-[56%] md:w-full"
+                        style={{ aspectRatio: `${tile.large.width} / ${tile.large.height}` }}
+                        aria-hidden="true"
+                        data-tilt
+                      >
                         <div className="phone-frame__screen">
                           <Image
                             src={tile.large.src}
@@ -124,7 +129,6 @@ export default function FeatureBentoSection() {
                             className="h-full w-full object-cover"
                           />
                         </div>
-                        <span className="phone-frame__island" />
                       </div>
                     </div>
                   )}

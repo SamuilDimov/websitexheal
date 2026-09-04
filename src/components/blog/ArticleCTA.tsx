@@ -15,6 +15,7 @@ export default async function ArticleCTA() {
         href={APP_STORE_URL}
         target="_blank"
         rel="noopener noreferrer"
+        data-magnetic
         className="mt-2"
       >
         <Image

@@ -78,8 +78,8 @@ export const featureVisuals = {
     images: [
       {
         src: "/images/screenshots/chat-flare-up.png",
-        width: 810,
-        height: 1654,
+        width: 730,
+        height: 1583,
         altKey: "feature1Alt",
       },
     ],
@@ -89,14 +89,14 @@ export const featureVisuals = {
     images: [
       {
         src: "/images/screenshots/flare-up-insights.png",
-        width: 810,
-        height: 1654,
+        width: 730,
+        height: 1583,
         altKey: "feature2Alt",
       },
       {
         src: "/images/screenshots/log-flare-up.webp",
-        width: 810,
-        height: 1654,
+        width: 730,
+        height: 1583,
         altKey: "feature2LogAlt",
       },
     ],
@@ -106,8 +106,8 @@ export const featureVisuals = {
     images: [
       {
         src: "/images/screenshots/health-awareness.webp",
-        width: 810,
-        height: 1654,
+        width: 730,
+        height: 1583,
         altKey: "feature3Alt",
       },
     ],
@@ -117,8 +117,8 @@ export const featureVisuals = {
     images: [
       {
         src: "/images/screenshots/doctor-report.webp",
-        width: 810,
-        height: 1654,
+        width: 730,
+        height: 1583,
         altKey: "feature4Alt",
       },
     ],
@@ -139,32 +139,32 @@ export const featureVisuals = {
     images: [
       {
         src: "/images/screenshots/log-life-event.webp",
-        width: 810,
-        height: 1654,
+        width: 730,
+        height: 1583,
         altKey: "feature6Alt",
       },
       {
         src: "/images/screenshots/log-medication.png",
-        width: 810,
-        height: 1654,
+        width: 730,
+        height: 1583,
         altKey: "feature6MedicationAlt",
       },
       {
         src: "/images/screenshots/log-supplement.webp",
-        width: 810,
-        height: 1654,
+        width: 730,
+        height: 1583,
         altKey: "feature6SupplementAlt",
       },
       {
         src: "/images/screenshots/log-peptide.webp",
-        width: 810,
-        height: 1654,
+        width: 730,
+        height: 1583,
         altKey: "feature6PeptideAlt",
       },
       {
         src: "/images/screenshots/log-flare-up.webp",
-        width: 810,
-        height: 1654,
+        width: 730,
+        height: 1583,
         altKey: "feature6FlareUpAlt",
       },
     ],

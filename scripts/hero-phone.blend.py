@@ -80,6 +80,25 @@ def parse_args(argv):
     p.add_argument("--exit-frames", type=int, default=EXIT_FRAMES)
     p.add_argument("--tail-frames", type=int, default=TAIL_FRAMES)
     p.add_argument("--save-blend", default=None)
+    p.add_argument(
+        "--export-glb",
+        default=None,
+        help="write the phone as a GLB instead of rendering; the site loads it live in three.js",
+    )
+    p.add_argument(
+        "--bare-screen",
+        action="store_true",
+        help=(
+            "export with no screen image: the display is a plain emissive face and the site "
+            "assigns each surface's screenshot as an emissive map at runtime. One geometry for "
+            "every mockup on the site instead of a GLB per screen."
+        ),
+    )
+    p.add_argument(
+        "--screen-aspect",
+        default="1206:2622",
+        help="display W:H when --bare-screen is set, since there is no image to take it from",
+    )
     return p.parse_args(argv)
 
 
@@ -201,6 +220,52 @@ def mat_flash():
     b.inputs["Emission Color"].default_value = (0.9, 0.85, 0.7, 1.0)
     b.inputs["Emission Strength"].default_value = 0.15
     return m
+
+
+def mat_display_bare():
+    """The display with no image on it. glTF gets `emissiveFactor` white and an
+    unlit black base; three.js hangs each surface's screenshot on the material
+    as `emissiveMap`. That is what lets one 160 KB geometry serve the hero, the
+    How-it-works phone, every feature page and the close, with the screens
+    themselves staying ordinary cached WebP rather than ten embedded copies of
+    the same device."""
+    mat = bpy.data.materials.new("Display")
+    mat.use_nodes = True
+    b = mat.node_tree.nodes["Principled BSDF"]
+    b.inputs["Base Color"].default_value = (0.0, 0.0, 0.0, 1.0)
+    b.inputs["Metallic"].default_value = 0.0
+    b.inputs["Roughness"].default_value = 1.0
+    b.inputs["Emission Color"].default_value = (1.0, 1.0, 1.0, 1.0)
+    b.inputs["Emission Strength"].default_value = 1.0
+    return mat
+
+
+def mat_display_gltf(image_path):
+    """The display for the GLB export. The render's version is an Emission
+    shader behind a Mix node, which the glTF exporter cannot follow — it walks
+    a fixed set of node patterns and would drop the texture, leaving a flat
+    emissive colour. A Principled BSDF with the image on Emission Color is a
+    pattern it does understand: it comes out as `emissiveTexture` with a white
+    `emissiveFactor`, which three.js renders as an unlit screen exactly the way
+    the pure-emission material does. Alpha is not multiplied in here because
+    glTF ignores an emissive texture's alpha; the image is flattened onto the
+    app's ground before export instead.
+    """
+    img = bpy.data.images.load(os.path.expanduser(image_path))
+    img.colorspace_settings.name = "sRGB"
+    mat = bpy.data.materials.new("Display")
+    mat.use_nodes = True
+    nt = mat.node_tree
+    b = nt.nodes["Principled BSDF"]
+    b.inputs["Base Color"].default_value = (0.0, 0.0, 0.0, 1.0)
+    b.inputs["Metallic"].default_value = 0.0
+    b.inputs["Roughness"].default_value = 1.0
+    b.inputs["Emission Strength"].default_value = 1.0
+    tex = nt.nodes.new("ShaderNodeTexImage")
+    tex.image = img
+    tex.extension = "EXTEND"
+    nt.links.new(tex.outputs["Color"], b.inputs["Emission Color"])
+    return mat, img.size[0], img.size[1]
 
 
 def mat_display(image_path):
@@ -364,9 +429,13 @@ def configure_render(args, width, height_px):
 
 # -------------------------------------------------------------------- device
 
-def build_phone(screen_path):
+def build_phone(screen_path, for_gltf=False, bare=None):
     """Returns (parent empty, body height, dims). Front is +Z, top of the phone is +Y."""
-    mat_disp, img_w, img_h = mat_display(screen_path)
+    if bare is not None:
+        mat_disp = mat_display_bare()
+        img_w, img_h = bare
+    else:
+        mat_disp, img_w, img_h = (mat_display_gltf if for_gltf else mat_display)(screen_path)
 
     disp_w = DISPLAY_WIDTH_MM * MM
     disp_h = disp_w * (img_h / img_w)
@@ -466,7 +535,7 @@ def main():
     except ValueError:
         sys.exit(f"--res must look like 1800x3200, got {args.res!r}")
     screen_path = os.path.expanduser(args.screen)
-    if not os.path.isfile(screen_path):
+    if not args.bare_screen and not os.path.isfile(screen_path):
         sys.exit(f"screen image not found: {screen_path}")
 
     intro_end = args.intro_frames
@@ -475,8 +544,47 @@ def main():
     last = exit_end + args.tail_frames
     args.beats = (intro_end, hold_end, exit_end, last)
 
+    bare = None
+    if args.bare_screen:
+        try:
+            bare = tuple(int(v) for v in args.screen_aspect.split(":"))
+        except ValueError:
+            sys.exit(f"--screen-aspect must look like 1206:2622, got {args.screen_aspect!r}")
+
     clear_scene()
-    phone, body_h, (bw, bh, bd, iw, ih) = build_phone(screen_path)
+    phone, body_h, (bw, bh, bd, iw, ih) = build_phone(
+        screen_path, for_gltf=args.export_glb is not None, bare=bare
+    )
+
+    if args.export_glb:
+        # Geometry and materials only. glTF has no area light, and the scene
+        # is lit by four of them, so the site rebuilds the rig in three.js
+        # from the numbers in build_lights(); a camera and a baked animation
+        # would only be thrown away as well. `export_apply` is not optional:
+        # the body carries a Bevel modifier and the glass is smooth-shaded,
+        # and without it the export is the unbevelled slabs.
+        path = os.path.expanduser(args.export_glb)
+        os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+        bpy.ops.export_scene.gltf(
+            filepath=path,
+            export_format="GLB",
+            export_apply=True,
+            export_cameras=False,
+            export_lights=False,
+            export_animations=False,
+            # NOT yup. The exporter's Z-up -> Y-up conversion assumes a scene
+            # authored in Blender's world convention; this one is laid out in
+            # camera space already (top of the phone is +Y, its face is +Z,
+            # the camera sits on +Z looking back), which is three.js's
+            # convention verbatim. Converting would lay the phone on its back.
+            export_yup=False,
+            export_extras=False,
+        )
+        size = os.path.getsize(path)
+        print(f"[hero-phone] GLB {path}  {size / 1024:.0f} KB  "
+              f"(body {bw:.2f} x {bh:.2f} x {bd:.2f} cm, screen image {iw}x{ih})")
+        return
+
     build_world()
     build_lights()
     place_camera(body_h, args.fill)

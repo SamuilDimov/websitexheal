@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import PhoneFrame from "@/components/ui/PhoneFrame";
+import DeviceCanvas from "@/components/ui/DeviceCanvas";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 
 const SCREENS = [
@@ -14,13 +15,13 @@ const SCREENS = [
   },
   {
     src: "/images/screenshots/health-awareness.webp",
-    width: 810,
-    height: 1654,
+    width: 730,
+    height: 1583,
   },
   {
     src: "/images/screenshots/flare-up-insights.png",
-    width: 810,
-    height: 1654,
+    width: 730,
+    height: 1583,
   },
 ] as const;
 
@@ -87,9 +88,7 @@ export default function HowItWorksSection() {
                 className="how-step flex flex-col gap-5 border-t x-hairline py-10 md:min-h-[56vh] md:justify-center md:py-14"
                 data-active={active === index ? "true" : "false"}
               >
-                <span className="t-eyebrow text-xtertiary">
-                  <b className="text-xbrand font-medium">0{index + 1}</b> · {step.label}
-                </span>
+                <span className="t-eyebrow text-xtertiary">{step.label}</span>
                 <h3 className="t-h2 text-xprimary max-w-[20ch]">{step.title}</h3>
                 <p className="t-body1 text-xsecondary max-w-[46ch]">{step.text}</p>
 
@@ -98,6 +97,7 @@ export default function HowItWorksSection() {
                   <PhoneFrame
                     className="mx-auto w-[52%] max-w-[220px]"
                     aspectRatio={`${step.screen.width} / ${step.screen.height}`}
+                    tilt
                   >
                     <Image
                       src={step.screen.src}
@@ -113,24 +113,17 @@ export default function HowItWorksSection() {
             ))}
           </ol>
 
-          {/* Desktop: pinned phone */}
+          {/* Desktop: pinned phone, live. The step change swaps the screen
+              texture on the same device rather than crossfading two flat
+              images, so the phone stays one object through the section. */}
           <div className="hidden md:col-span-6 md:flex md:items-start md:justify-center lg:col-span-5 lg:col-start-8">
-            <div className="sticky top-[14vh] w-[min(320px,80%)] self-start">
-              <PhoneFrame aspectRatio="810 / 1654">
-                {steps.map((step, index) => (
-                  <Image
-                    key={step.screen.src}
-                    src={step.screen.src}
-                    alt={index === active ? step.alt : ""}
-                    width={step.screen.width}
-                    height={step.screen.height}
-                    sizes="320px"
-                    className="how-screen absolute inset-0 h-full w-full object-cover"
-                    data-active={active === index ? "true" : "false"}
-                    priority={index === 0}
-                  />
-                ))}
-              </PhoneFrame>
+            <div className="sticky top-[14vh] w-[min(360px,86%)] self-start">
+              <DeviceCanvas
+                screen={steps[active].screen.src}
+                poster={steps[0].screen.src}
+                entrance="settle"
+                className="w-full"
+              />
             </div>
           </div>
         </div>
