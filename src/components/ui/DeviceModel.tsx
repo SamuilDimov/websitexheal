@@ -443,17 +443,20 @@ export default function DeviceModel({
         camera.position.z = height / 2 / (Math.tan((CAMERA_FOV / 2) * R) * fill);
 
         resize();
-        setPose(config.to, config.to, 0);
+        // The first painted frame has to be wherever the entrance starts, not
+        // the resting pose. Painting at rest and then jumping to the start
+        // pose showed the finished phone for a frame, blanked it, and only
+        // then played the entrance — a flash on every refresh, and the flip's
+        // 0.35 s lead-in made the gap long enough to read as a bug.
+        const opening = reduced ? config.to : config.from;
+        setPose(opening, config.to, 0);
         onScroll();
-        // One synchronous frame before any animation, so the device is on
-        // screen the moment it loads rather than a blank canvas.
         renderFrame();
         raf = requestAnimationFrame(tick);
 
         if (reduced) return;
 
         const play = () => {
-          setPose(config.from, config.to, 0);
           introTween = gsap.to(
             { t: 0 },
             {

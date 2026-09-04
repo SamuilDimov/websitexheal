@@ -472,6 +472,29 @@ broken. If those micro-interactions should survive that setting, the gate has
 to be split: keep it on the entrances and the scroll parallax, drop it for an
 8 px lean and a 6 degree turn.
 
+## The entrance flashed on load
+
+Samuil: "when i refresh the page i see a flash of the mockup, then disappears
+and the animation plays". Exactly what the code did. On load `DeviceModel`
+set the resting pose, painted one synchronous frame so the slot was never
+blank, and only then handed over to the entrance — which begins by jumping to
+its start pose. So: a finished phone for one frame, then nothing, then the
+flip. The flip's 0.35 s lead-in held that gap open long enough to read as a
+bug rather than as a glitch.
+
+The first painted frame is the entrance's start pose now, not the resting one
+(and the resting one only under reduced motion, which plays no entrance).
+`play()` just runs the tween; the pose is already where it should be.
+
+Caught in Samuil's own Chrome through playwriter, since the Browser pane never
+animates: screenshot the hero canvas on a tight loop straight after `goto` and
+watch the PNG size. Before, 19 KB then 48 KB then **41 KB** then 90 KB — the
+dip is the flash. After, 7 KB, 44, 50, 103, 117, settling: it only ever grows.
+
+Worth noting for anyone tempted to add a poster image to `DeviceCanvas` while
+the lazy chunk loads: for `flip` that would reintroduce this exactly, a phone
+on screen that vanishes the moment the model takes over.
+
 ## Pointer parallax
 
 The first pass at "parallax" was scroll-driven, which was the wrong reading:
