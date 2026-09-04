@@ -2040,6 +2040,48 @@ blockquote {
 .phone-frame {
   border-radius: 14% / 6.4%;
 }
+/* A device for the mockups that cannot be one. The 3D model carries a real
+   titanium body; the flat surfaces — the Digital Twin chat, which is live DOM,
+   and the bento phones — had nothing after the bezel came off, and a bare
+   screen next to real devices reads as a slab. This is that body in CSS, on
+   the model's own proportions (the GLB is 7.56 cm across a 6.96 cm display, so
+   4 % a side) and its titanium rather than the graphite that was here before.
+   It is only correct because the screenshots are cropped to bare screens now;
+   over a device render it would be the second frame Samuil rightly objected
+   to. */
+.phone-frame--chrome {
+  padding: 4%;
+  border-radius: 15.5% / 7.1%;
+  background: linear-gradient(
+    104deg,
+    #a9acb4 0%,
+    #edeff3 20%,
+    #c8ccd3 46%,
+    #f5f6f9 72%,
+    #aeb1b9 100%
+  );
+}
+.phone-frame--chrome .phone-frame__screen {
+  border-radius: 12.6% / 6.1%;
+}
+/* DOM content has to clear the island the way an app clears the status bar;
+   a screenshot already accounts for it in its own pixels. */
+.phone-frame__screen--inset {
+  padding-top: 10%;
+}
+/* The cropped screenshots carry their own status bar and island; only the
+   chat, which is DOM, needs one drawn. */
+.phone-frame__island {
+  position: absolute;
+  top: 5.6%;
+  left: 50%;
+  width: 27%;
+  height: 2.6%;
+  border-radius: 999px;
+  background: #05070c;
+  transform: translateX(-50%);
+  z-index: 1;
+}
 .phone-frame__screen {
   position: relative;
   width: 100%;

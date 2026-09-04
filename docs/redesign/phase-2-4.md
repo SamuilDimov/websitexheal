@@ -412,6 +412,32 @@ reads as the screen itself changing, which is the one transition a phone can
 honestly make. A true crossfade would need two display quads or a custom
 shader. The slideshow beat goes from 2 s to 3.8 s to give each screen room.
 
+## The flat mockups needed a device back
+
+Stripping the bezel site-wide was right for the screenshots that were device
+renders, and wrong for everything else. The Digital Twin chat is live DOM and
+the bento phones are cropped screens, so once the frame went they were bare
+slabs — and beside real 3D devices on the same page that reads as broken,
+which is what Samuil pointed at.
+
+`PhoneFrame` takes `chrome` and `island` now, both off by default:
+
+- `chrome` draws a titanium body on the model's own proportions (the GLB is
+  7.56 cm across a 6.96 cm display, so 4 % a side) in its titanium rather than
+  the graphite that used to be there, so the flat mockups sit beside the 3D
+  ones without looking like a different product. It is only correct because
+  the screenshots are cropped to bare screens; over a device render it would
+  be the second frame that started all this.
+- `island` is separate: the screenshots keep their own status bar, the chat
+  has none. Where it is drawn the screen gets a 10 % top inset, the way an app
+  clears the status bar — without it the island sat on top of the chat's
+  header.
+
+Applied to the chat (`chrome island`), the bento phones and the How-it-works
+mobile steps (`chrome`). The bento phone still hangs out of its card and is
+clipped at the bottom edge — that is the design, and it reads as deliberate
+again now that the thing being clipped is visibly a phone.
+
 ## Flat mockups turn too
 
 The mockups that are not 3D — the Digital Twin chat (live DOM), the Features

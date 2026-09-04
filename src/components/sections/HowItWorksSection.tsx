@@ -98,6 +98,7 @@ export default function HowItWorksSection() {
                     className="mx-auto w-[52%] max-w-[220px]"
                     aspectRatio={`${step.screen.width} / ${step.screen.height}`}
                     tilt
+                    chrome
                   >
                     <Image
                       src={step.screen.src}

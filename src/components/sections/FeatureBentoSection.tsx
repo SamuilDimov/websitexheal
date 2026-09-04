@@ -3,6 +3,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { APP_STORE_URL } from "@/lib/site";
 import Icon from "@/components/ui/Icon";
+import PhoneFrame from "@/components/ui/PhoneFrame";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 
 type Tile = {
@@ -113,23 +114,21 @@ export default function FeatureBentoSection() {
                   </div>
                   {tile.large && (
                     <div className="bento__phone pointer-events-none relative -mx-1 -mb-5 mt-2 h-[200px] overflow-hidden md:absolute md:-bottom-[38%] md:right-8 md:mx-0 md:mb-0 md:mt-0 md:h-auto md:w-[40%] md:max-w-[240px] md:overflow-visible">
-                      <div
-                        className="phone-frame relative mx-auto w-[56%] md:w-full"
-                        style={{ aspectRatio: `${tile.large.width} / ${tile.large.height}` }}
-                        aria-hidden="true"
-                        data-tilt
+                      <PhoneFrame
+                        className="mx-auto w-[56%] md:w-full"
+                        aspectRatio={`${tile.large.width} / ${tile.large.height}`}
+                        tilt
+                        chrome
                       >
-                        <div className="phone-frame__screen">
-                          <Image
-                            src={tile.large.src}
-                            alt=""
-                            width={tile.large.width}
-                            height={tile.large.height}
-                            sizes="(max-width: 767px) 46vw, 260px"
-                            className="h-full w-full object-cover"
-                          />
-                        </div>
-                      </div>
+                        <Image
+                          src={tile.large.src}
+                          alt=""
+                          width={tile.large.width}
+                          height={tile.large.height}
+                          sizes="(max-width: 767px) 46vw, 260px"
+                          className="h-full w-full object-cover"
+                        />
+                      </PhoneFrame>
                     </div>
                   )}
                 </Link>

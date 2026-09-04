@@ -44,7 +44,7 @@ export default function AISection() {
           {/* Pinned phone with the real chat as UI */}
           <div className="order-first md:order-last md:col-span-5 md:col-start-8 md:self-start md:sticky md:top-[12vh]">
             <div>
-              <PhoneFrame className="mx-auto w-[min(320px,78%)]" aspectRatio="730 / 1583" tilt>
+              <PhoneFrame className="mx-auto w-[min(320px,78%)]" aspectRatio="730 / 1583" tilt chrome island>
                 <ChatTranscript />
               </PhoneFrame>
             </div>
