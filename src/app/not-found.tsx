@@ -15,11 +15,11 @@ export const metadata: Metadata = {
 };
 
 const COLORS = {
-  background: "#000e1b",
-  card: "#0c1222",
-  border: "#141d2e",
-  primary: "#f0f2fd",
-  secondary: "#bcbcbf",
+  background: "#f7f8fc",
+  card: "#ffffff",
+  border: "#e3e6f0",
+  primary: "#141933",
+  secondary: "#505573",
   brand: "#4764ff",
 };
 
@@ -37,6 +37,7 @@ export default function NotFound() {
         style={{
           margin: 0,
           minHeight: "100vh",
+          boxSizing: "border-box",
           display: "grid",
           placeItems: "center",
           padding: "24px",
@@ -51,21 +52,23 @@ export default function NotFound() {
           style={{
             width: "100%",
             maxWidth: "560px",
+            boxSizing: "border-box",
             padding: "40px 32px",
-            borderRadius: "16px",
+            borderRadius: "20px",
             backgroundColor: COLORS.card,
             border: `1px solid ${COLORS.border}`,
-            textAlign: "center",
+            textAlign: "left",
           }}
         >
           <p
             style={{
               margin: 0,
-              fontSize: "14px",
+              fontSize: "12px",
               letterSpacing: "0.12em",
               textTransform: "uppercase",
-              color: COLORS.brand,
-              fontWeight: 700,
+              color: COLORS.secondary,
+              fontFamily: "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
+              fontWeight: 500,
             }}
           >
             Error 404
@@ -75,7 +78,7 @@ export default function NotFound() {
               margin: "12px 0 0",
               fontSize: "32px",
               lineHeight: 1.2,
-              fontWeight: 800,
+              fontWeight: 600,
             }}
           >
             This page could not be found
@@ -97,7 +100,6 @@ export default function NotFound() {
               display: "flex",
               flexWrap: "wrap",
               gap: "12px",
-              justifyContent: "center",
             }}
           >
             {LINKS.map(({ href, label }) => (

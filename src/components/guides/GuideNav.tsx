@@ -2,6 +2,7 @@ import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import type { Guide } from "@/data/guides";
 
+import Icon from "@/components/ui/Icon";
 interface GuideNavProps {
   previousGuide?: Guide;
   nextGuide?: Guide;
@@ -26,7 +27,7 @@ export default async function GuideNav({
           className="group flex-1 flex flex-col gap-1 p-4 rounded-xl border border-xborder hover:border-xbrand/50 hover:bg-xcard/50 transition-all"
         >
           <div className="flex items-center gap-1.5 text-xtertiary">
-            <span className="font-icons text-[16px]">arrow_back</span>
+            <Icon name="arrow_back" size={16} />
             <span className="t-caption">{t("previous")}</span>
           </div>
           <span className="t-body2 font-semibold text-xsecondary group-hover:text-xbrand transition-colors">
@@ -45,7 +46,7 @@ export default async function GuideNav({
         >
           <div className="flex items-center justify-end gap-1.5 text-xtertiary">
             <span className="t-caption">{t("next")}</span>
-            <span className="font-icons text-[16px]">arrow_forward</span>
+            <Icon name="arrow_forward" size={16} />
           </div>
           <span className="t-body2 font-semibold text-xsecondary group-hover:text-xbrand transition-colors">
             {nextGuide.title}

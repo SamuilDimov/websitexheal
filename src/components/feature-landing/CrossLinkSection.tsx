@@ -6,6 +6,7 @@ import { Link } from "@/i18n/navigation";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import { getCrossLinks } from "@/data/cross-links";
 
+import Icon from "@/components/ui/Icon";
 /* Map page slug pairs to CrossLinks translation keys */
 const crossLinkKeyMap: Record<string, Record<string, string>> = {
   workouts: {
@@ -83,9 +84,9 @@ export default function CrossLinkSection({
 
   return (
     <section className="bg-xbg">
-      <div className="w-full max-w-[1440px] mx-auto px-10 py-24 flex flex-col items-center gap-12 max-[991px]:px-8 max-[991px]:py-16 max-[479px]:px-5">
+      <div className="x-container x-section flex flex-col gap-12">
         <ScrollReveal>
-          <h2 className="t-display2 text-xprimary text-center">
+          <h2 className="t-display2 text-xprimary max-w-[52rem]">
             {tLanding("crossLinksHeading")}
           </h2>
         </ScrollReveal>
@@ -122,12 +123,7 @@ export default function CrossLinkSection({
 
                   {/* Icon + Title */}
                   <div className="flex items-center gap-3">
-                    <span
-                      className="text-xbrand"
-                      style={{ fontFamily: "MaterialSymbolsRounded", fontSize: 24 }}
-                    >
-                      {feature.icon}
-                    </span>
+                    <Icon name={feature.icon} size={24} className="text-xbrand" />
                     <h3 className="t-h4 text-xprimary">{title}</h3>
                   </div>
 
@@ -137,11 +133,7 @@ export default function CrossLinkSection({
                   {/* Learn more link */}
                   <div className="mt-auto flex items-center gap-1.5 text-xbrand t-button-sm group-hover:gap-2.5 transition-all duration-300">
                     {tLanding("learnMore")}
-                    <span
-                      style={{ fontFamily: "MaterialSymbolsRounded", fontSize: 20 }}
-                    >
-                      arrow_forward
-                    </span>
+                    <Icon name="arrow_forward" size={20} />
                   </div>
                 </Link>
               </ScrollReveal>

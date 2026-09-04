@@ -7,29 +7,32 @@ export default function LogLifeEventsPage() {
   const t = useTranslations("Feature_LogLifeEvents");
 
   /* Helper: wrap <accent>…</accent> in a coloured span via next-intl rich text */
-  function accent(key: string, color = "text-xbrand-light") {
+  function accent(key: string, color = "text-xbrand") {
     return t.rich(key, {
       accent: (chunks) => <span className={color}>{chunks}</span>,
     });
   }
 
+  /* Section headings keep their <accent> markup in the catalog but render plain: accent is reserved for the hero. */
+  const plain = (key: string) => t.rich(key, { accent: (chunks) => <>{chunks}</> });
+
   return (
     <FeatureLandingPage
       heroTitle={accent("heroTitle")}
       heroSubtitle={t("heroSubtitle")}
-      painHeading={accent("painHeading", "text-xbrand")}
+      painHeading={plain("painHeading")}
       painPoints={[
         { icon: "change_history", title: t("pain1Title"), detail: t("pain1Detail") },
         { icon: "link_off", title: t("pain2Title"), detail: t("pain2Detail") },
         { icon: "history_toggle_off", title: t("pain3Title"), detail: t("pain3Detail") },
       ]}
-      howHeading={accent("howHeading", "text-xbrand")}
+      howHeading={plain("howHeading")}
       howItWorks={[
         { step: "01", title: t("how1Title"), description: t("how1Description") },
         { step: "02", title: t("how2Title"), description: t("how2Description") },
         { step: "03", title: t("how3Title"), description: t("how3Description") },
       ]}
-      useCasesHeading={accent("useCasesHeading", "text-xbrand")}
+      useCasesHeading={plain("useCasesHeading")}
       useCases={[
         { question: t("uc1Question"), tag: t("uc1Tag"), description: t("uc1Description") },
         { question: t("uc2Question"), tag: t("uc2Tag"), description: t("uc2Description") },
@@ -56,13 +59,13 @@ export default function LogLifeEventsPage() {
         closingLine: t("compClosingLine"),
         highlightColumn: 3,
       }}
-      testimonialsHeading={accent("testimonialsHeading")}
+      testimonialsHeading={plain("testimonialsHeading")}
       testimonials={[
         { quote: t("test1Quote"), name: t("test1Name"), age: Number(t("test1Age")), image: "/images/testimonials/t-108.png" },
         { quote: t("test2Quote"), name: t("test2Name"), age: Number(t("test2Age")), image: "/images/testimonials/t-110.png" },
         { quote: t("test3Quote"), name: t("test3Name"), age: Number(t("test3Age")), image: "/images/testimonials/t-113.png" },
       ]}
-      trustHeading={accent("trustHeading", "text-xbrand")}
+      trustHeading={plain("trustHeading")}
       trustItems={[
         { title: t("trust1Title"), detail: t("trust1Detail") },
         { title: t("trust2Title"), detail: t("trust2Detail") },
@@ -78,7 +81,7 @@ export default function LogLifeEventsPage() {
         { q: t("faq5Q"), a: t("faq5A") },
       ]}
       pageSlug="log-life-events"
-      ctaHeading={accent("ctaHeading")}
+      ctaHeading={plain("ctaHeading")}
       ctaSubtitle={t("ctaSubtitle")}
     />
   );

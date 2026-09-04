@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Link, usePathname } from "@/i18n/navigation";
 import type { GuideNavigationCategory } from "@/types/content";
 
+import Icon from "@/components/ui/Icon";
 interface GuidesSidebarProps {
   currentCategory?: string;
   currentSlug?: string;
@@ -63,21 +64,16 @@ export default function GuidesSidebar({
               }`}
             >
               <div className="flex items-center gap-2.5">
-                <span
-                  className="font-icons text-[18px] opacity-70"
-                  style={{ fontVariationSettings: "'FILL' 0" }}
-                >
-                  {category.icon}
-                </span>
+                <Icon name={category.icon} size={18} className="opacity-70" />
                 <span className="t-body3 font-semibold">{category.label}</span>
               </div>
-              <span
-                className={`font-icons text-[16px] opacity-50 transition-transform ${
+              <Icon
+                name="expand_more"
+                size={16}
+                className={`opacity-50 transition-transform ${
                   isExpanded ? "rotate-180" : ""
                 }`}
-              >
-                expand_more
-              </span>
+              />
             </button>
 
             {/* Guides list */}
@@ -113,12 +109,10 @@ export default function GuidesSidebar({
       {/* Mobile toggle button */}
       <button
         onClick={() => setMobileOpen(!mobileOpen)}
-        className="lg:hidden fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 rounded-full bg-xbrand text-white shadow-lg hover:bg-[#5a73ff] transition-colors"
+        className="lg:hidden fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 rounded-full bg-xbrand text-white hover:bg-[#5a73ff] transition-colors"
         aria-label={toggleNavigationLabel}
       >
-        <span className="font-icons text-[24px]">
-          {mobileOpen ? "close" : "menu_book"}
-        </span>
+        <Icon name={mobileOpen ? "close" : "menu_book"} size={24} />
       </button>
 
       {/* Mobile overlay */}
@@ -152,7 +146,7 @@ export default function GuidesSidebar({
                 : "text-xsecondary hover:text-xprimary hover:bg-xcard/50"
             }`}
           >
-            <span className="font-icons text-[18px]">home</span>
+            <Icon name="home" size={18} />
             {allGuidesLabel}
           </Link>
 

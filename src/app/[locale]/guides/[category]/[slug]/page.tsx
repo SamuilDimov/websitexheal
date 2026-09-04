@@ -16,6 +16,7 @@ import GuideBreadcrumb from "@/components/guides/GuideBreadcrumb";
 import GuideNav from "@/components/guides/GuideNav";
 import { buildMetadata } from "@/lib/site";
 
+import Icon from "@/components/ui/Icon";
 // Generate static params for all guides. Slugs are locale-invariant, so the
 // English set covers every locale.
 export function generateStaticParams() {
@@ -76,7 +77,7 @@ export default async function GuidePage({
       <div className="h-[64px]" />
 
       {/* Main content with sidebar */}
-      <section className="w-full max-w-[1440px] mx-auto px-10 py-8 max-[991px]:px-8 max-[479px]:px-5">
+      <section className="x-container py-8">
         <div className="flex gap-8 lg:gap-12">
           {/* Sidebar */}
           <GuidesSidebar
@@ -101,12 +102,7 @@ export default async function GuidePage({
               {/* Category badge */}
               {categoryInfo && (
                 <div className="flex items-center gap-2 mb-4">
-                  <span
-                    className="font-icons text-[16px] text-xbrand"
-                    style={{ fontVariationSettings: "'FILL' 0" }}
-                  >
-                    {categoryInfo.icon}
-                  </span>
+                  <Icon name={categoryInfo.icon} size={16} className="text-xbrand" />
                   <span className="t-caption text-xbrand font-medium">
                     {categoryInfo.label}
                   </span>
@@ -119,7 +115,7 @@ export default async function GuidePage({
               {/* Meta */}
               <div className="flex items-center gap-4 flex-wrap">
                 <div className="flex items-center gap-1.5 text-xtertiary">
-                  <span className="font-icons text-[16px]">schedule</span>
+                  <Icon name="schedule" size={16} />
                   <span className="t-body3">
                     {guide.readingTime} {t("minRead")}
                   </span>
@@ -129,9 +125,7 @@ export default async function GuidePage({
                   <>
                     <span className="text-xtertiary opacity-50">|</span>
                     <div className="flex items-center gap-1.5 text-xtertiary">
-                      <span className="font-icons text-[16px]">
-                        checklist
-                      </span>
+                      <Icon name="checklist" size={16} />
                       <span className="t-body3">
                         {t("prerequisiteCount", {
                           count: guide.prerequisites.length,
@@ -147,9 +141,7 @@ export default async function GuidePage({
             {guide.prerequisites && guide.prerequisites.length > 0 && (
               <div className="mb-8 p-4 rounded-xl bg-xcard border border-xborder">
                 <div className="flex items-start gap-3">
-                  <span className="font-icons text-[20px] text-xbrand mt-0.5">
-                    info
-                  </span>
+                  <Icon name="info" size={20} className="text-xbrand mt-0.5" />
                   <div>
                     <p className="t-body3 font-semibold text-xprimary mb-2">
                       {t("beforeYouStart")}
@@ -199,7 +191,7 @@ export default async function GuidePage({
                 href="/guides"
                 className="inline-flex items-center gap-2 t-button text-xbrand hover:underline"
               >
-                <span className="font-icons text-[18px]">arrow_back</span>
+                <Icon name="arrow_back" size={18} />
                 {t("backToAll")}
               </Link>
             </div>

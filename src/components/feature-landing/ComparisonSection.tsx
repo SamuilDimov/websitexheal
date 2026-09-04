@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 
+import Icon from "@/components/ui/Icon";
 type CellValue = "yes" | "no" | "partial" | "n/a" | string;
 
 interface ComparisonRow {
@@ -39,29 +40,21 @@ function CellContent({
 }) {
   if (value === "yes") {
     return (
-      <span
-        className="text-xsuccess text-[20px]"
-        style={{ fontFamily: "MaterialSymbolsRounded" }}
-        aria-label={yesLabel}
-      >
-        <span aria-hidden>check_circle</span>
+      <span className="inline-flex text-xsuccess" role="img" aria-label={yesLabel}>
+        <Icon name="check_circle" size={20} />
       </span>
     );
   }
   if (value === "no") {
     return (
-      <span
-        className="text-xtertiary text-[20px]"
-        style={{ fontFamily: "MaterialSymbolsRounded" }}
-        aria-label={noLabel}
-      >
-        <span aria-hidden>cancel</span>
+      <span className="inline-flex text-xtertiary" role="img" aria-label={noLabel}>
+        <Icon name="cancel" size={20} />
       </span>
     );
   }
   if (value === "partial") {
     return (
-      <span className="t-caption text-xwarning font-bold uppercase">
+      <span className="t-data text-xwarning">
         {partialLabel}
       </span>
     );
@@ -91,11 +84,11 @@ export default function ComparisonSection({
 
   return (
     <section className="bg-xbg-2">
-      <div className="w-full max-w-[1440px] mx-auto px-10 py-24 flex flex-col items-center gap-12 max-[991px]:px-8 max-[991px]:py-16 max-[479px]:px-5">
+      <div className="x-container x-section flex flex-col gap-12">
         {/* Heading + Intro */}
-        <ScrollReveal className="flex flex-col items-center gap-6 max-w-[52rem] text-center">
+        <ScrollReveal className="flex flex-col gap-6 max-w-[52rem]">
           <h2 className="t-display2 text-xprimary">
-            {heading} <span className="text-xbrand">{headingAccent}</span>
+            {heading} {headingAccent}
           </h2>
           <p className="t-body1 text-xsecondary">{intro}</p>
         </ScrollReveal>
@@ -121,7 +114,7 @@ export default function ComparisonSection({
                       <span className="flex flex-col items-center gap-1">
                         <span>{col}</span>
                         {i === xHealCol && highlightLabel && (
-                          <span className="rounded-full bg-white/20 px-2 py-0.5 text-[9px] font-bold tracking-[0.08em] text-white">
+                          <span className="rounded-full bg-white/20 px-2 py-0.5 t-data text-[10px] text-white">
                             {highlightLabel}
                           </span>
                         )}
@@ -167,7 +160,7 @@ export default function ComparisonSection({
           {rows.map((row, ri) => (
             <ScrollReveal key={row.feature} delay={ri * 80}>
               <div className="border border-xborder bg-xcard rounded-[16px] p-5">
-                <h4 className="t-h6 text-xprimary mb-3">{row.feature}</h4>
+                <h3 className="t-h6 text-xprimary mb-3">{row.feature}</h3>
                 <div className="flex flex-col gap-2">
                   {columns.map((col, ci) => (
                     <div
@@ -181,13 +174,13 @@ export default function ComparisonSection({
                       <span
                         className={`t-body3 flex min-w-0 flex-wrap items-center gap-2 ${
                           ci === xHealCol
-                            ? "text-xbrand-light font-semibold"
+                            ? "text-xbrand font-semibold"
                             : "text-xtertiary"
                         }`}
                       >
                         <span>{col}</span>
                         {ci === xHealCol && highlightLabel && (
-                          <span className="rounded-full bg-[rgba(71,100,255,0.14)] px-2 py-0.5 text-[9px] font-bold tracking-[0.06em] text-xbrand">
+                          <span className="rounded-full bg-[rgba(71,100,255,0.14)] px-2 py-0.5 t-data text-[10px] text-xbrand">
                             {highlightLabel}
                           </span>
                         )}
@@ -210,7 +203,7 @@ export default function ComparisonSection({
         </div>
 
         {/* Closing line */}
-        <ScrollReveal className="text-center max-w-[48rem]">
+        <ScrollReveal className="max-w-[48rem]">
           <p className="t-h3 text-xprimary">{closingLine}</p>
         </ScrollReveal>
 
@@ -230,7 +223,7 @@ export default function ComparisonSection({
                         href={source.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-xbrand underline underline-offset-2 hover:text-xbrand-light"
+                        className="text-xbrand underline underline-offset-2 hover:text-xprimary"
                       >
                         {source.label}
                       </a>

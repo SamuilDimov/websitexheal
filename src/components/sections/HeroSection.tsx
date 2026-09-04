@@ -1,128 +1,78 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import MedicalStandardsBadge from "@/components/ui/MedicalStandardsBadge";
-import ComplianceBadges from "@/components/ui/ComplianceBadges";
-import HeroVideo from "@/components/ui/HeroVideo";
-import IntegrationLogosStrip from "@/components/ui/IntegrationLogosStrip";
+import { APP_STORE_URL } from "@/lib/site";
+import Icon from "@/components/ui/Icon";
+import HeroSequence from "@/components/ui/HeroSequence";
 
+/**
+ * Hero (redesign phase 2).
+ *
+ * One headline, one phone, one ask. The copy sits on a full-bleed hero wash
+ * over the page-wide `DotDome` layer (mounted in `page.tsx`); the phone
+ * stands on the section's bottom edge. The proof strip carries parameters, standards and setup time; the
+ * App Store rating is held until the count is worth showing.
+ *
+ * The 4-second play-once capture specified in the brief replaces the static
+ * phone once it exists; `HeroVideo` stays in the tree for that.
+ */
 export default function HeroSection() {
   const t = useTranslations("Hero");
 
+  const proof = [t("proof1"), t("proof2"), t("proof3")];
+
   return (
-    <section className="relative overflow-clip bg-xbg">
-      {/* Subtle radial glow backdrop */}
-      <div className="absolute inset-0 pointer-events-none bg-radial-glow" aria-hidden />
-      {/* Optional dot matrix overlay for texture */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.07]"
-        aria-hidden
-        style={{
-          backgroundImage: "url(/images/dot-matrix.svg)",
-          backgroundPosition: "50% 0%",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "contain",
-        }}
-      />
+    <section id="hero" className="hero-panel relative overflow-hidden pt-[72px]">
+      <div className="x-container relative">
+        <div className="relative">
+          <div className="grid gap-10 pt-14 md:grid-cols-12 md:gap-8 md:pt-24">
+            <div className="flex flex-col items-start gap-6 pb-2 md:col-span-7 md:pb-24 lg:col-span-7">
+              <span className="t-eyebrow text-xtertiary">{t("eyebrow")}</span>
+              <h1 className="t-display1 text-xprimary max-w-[13ch]">{t("heading")}</h1>
+              <p className="t-lead text-xsecondary max-w-[46ch]">{t("lead")}</p>
 
-      <div className="relative w-full max-w-[1440px] mx-auto px-10 pt-[160px] pb-[100px] max-[991px]:px-8 max-[991px]:pt-[120px] max-[991px]:pb-[60px] max-[479px]:px-5">
-        <div className="grid grid-cols-[1.4fr_1fr] gap-[80px] max-[991px]:gap-[40px] max-[767px]:grid-cols-1">
-          {/* Left Column */}
-          <div className="grid grid-cols-1 gap-10 max-[767px]:contents">
-            {/* Heading */}
-            <h1 className="t-display1 text-xprimary max-[767px]:order-1">
-              {t("heading")}{" "}
-              <span className="text-xbrand">{t("headingAccent")}</span>
-            </h1>
-
-            {/* Subtitle */}
-            <p className="t-h4 text-xsecondary max-w-[52ch] font-normal max-[767px]:order-2">
-              {t("subtitle")}
-            </p>
-
-            {/* Stats Cards */}
-            <div className="grid grid-cols-3 gap-4 max-[991px]:grid-cols-1 max-[767px]:order-4">
-              {/* Stat 1 */}
-              <div className="surface-card-feature p-5 flex flex-col gap-2 relative overflow-hidden">
-                <div className="t-h3 text-xprimary">{t("stat1Title")}</div>
-                <p className="t-body3 text-xsecondary">{t("stat1Text")}</p>
-              </div>
-
-              {/* Stat 2 */}
-              <div className="surface-card-feature p-5 flex flex-col gap-2 relative overflow-hidden">
-                <div className="t-h3 text-xprimary">{t("stat2Title")}</div>
-                <p className="t-body3 text-xsecondary">{t("stat2Text")}</p>
-              </div>
-
-              {/* Stat 3 (rating + avatars) */}
-              <div className="surface-card-feature p-5 flex flex-col gap-3 relative overflow-hidden">
-                <div className="t-h3 text-xprimary">{t("stat3Title")}</div>
-                <div className="flex items-center gap-[2px]">
-                  {[...Array(5)].map((_, i) => (
-                    <svg key={i} width="18" height="18" viewBox="0 0 24 24" fill="#F6A724" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                    </svg>
-                  ))}
-                </div>
-                {/* Overlapping avatar bubbles */}
-                <div className="flex items-center -space-x-2">
-                  {[
-                    "/images/testimonials/kristiyan.png",
-                    "/images/testimonials/james.jpeg",
-                    "/images/testimonials/jessica.jpeg",
-                    "/images/testimonials/t-015.png",
-                    "/images/testimonials/t-016.png",
-                  ].map((src, i) => (
-                    <Image
-                      key={i}
-                      src={src}
-                      alt=""
-                      width={32}
-                      height={32}
-                      className="rounded-full border-2 border-xcard object-cover"
-                      style={{ width: 32, height: 32, zIndex: 5 - i }}
-                    />
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* App Store Badge + Trust Signals */}
-            <div className="flex flex-col gap-4 max-[767px]:order-5">
-              <div className="flex items-center gap-6 flex-wrap">
+              <div className="flex flex-wrap items-center gap-6 pt-2">
                 <a
-                  href="https://apps.apple.com/us/app/xheal/id6748074977"
+                  href={APP_STORE_URL}
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="x-store-badge"
                 >
                   <Image
                     src="/images/app-store-badge.svg"
                     alt={t("downloadOnAppStore")}
-                    width={180}
-                    height={60}
+                    width={168}
+                    height={56}
                     priority
                   />
                 </a>
-                <MedicalStandardsBadge />
-                <ComplianceBadges />
+                <a href="#how-it-works" className="x-link t-button-sm">
+                  {t("secondaryCta")}
+                  <Icon name="arrow_forward" size={16} />
+                </a>
               </div>
-              <span className="t-body3 text-xtertiary">{t("freeToDownload")}</span>
-              <IntegrationLogosStrip />
-            </div>
-          </div>
 
-          {/* Right Column - Product hero artwork */}
-          <div className="flex justify-end self-start max-[767px]:justify-center max-[767px]:order-3">
-            <div className="relative w-[500px] max-w-full max-[767px]:w-full max-[767px]:max-w-[380px]">
-              {/* Subtle blue glow behind artwork */}
-              <div
-                className="absolute inset-0 -z-10 blur-[60px] opacity-50"
-                aria-hidden
-                style={{
-                  background:
-                    "radial-gradient(ellipse 60% 60% at 50% 50%, rgba(71, 100, 255, 0.4) 0%, transparent 70%)",
-                }}
+              <p className="t-caption text-xtertiary max-w-[52ch]">{t("disclaimer")}</p>
+
+              <ul
+                role="list"
+                className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2 border-t x-hairline pt-5"
+              >
+                {proof.map((item) => (
+                  <li key={item} className="flex items-center gap-2.5 t-data text-xsecondary">
+                    <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-xbrand" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="relative flex items-end justify-center md:col-span-5 md:justify-end">
+              {/* Scroll-driven phone sequence from the AE render; see HeroSequence. */}
+              <HeroSequence
+                scrollScope="#hero"
+                className="w-[86%] max-w-[420px] md:w-full md:max-w-[480px]"
               />
-              <HeroVideo description={t("dashboardAlt")} />
+              <span className="sr-only">{t("phoneAlt")}</span>
             </div>
           </div>
         </div>

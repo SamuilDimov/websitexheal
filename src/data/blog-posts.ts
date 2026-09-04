@@ -216,7 +216,7 @@ const blogPostsEn: BlogPost[] = [
       "The new xHeal experience brings your daily Snapshot, routines, Timeline, chat, reports, nutrition, workouts, and mindfulness into one iOS app.",
     metaDescription:
       "xHeal v2 launches July 20, 2026 on iOS in the European Union and United States, bringing its core daily wellness journeys into one app.",
-    image: "/images/xheal-v2-hero-poster-v6.png",
+    image: "/images/blog-default-cover.avif",
     category: "product-updates",
     author: blogAuthors.team,
     readingTime: 4,
@@ -2335,7 +2335,7 @@ const blogPostsBg: BlogPost[] = [
       "Новото xHeal преживяване събира ежедневния Snapshot, рутините, Timeline, чата, докладите, храненето, тренировките и mindfulness в едно iOS приложение.",
     metaDescription:
       "xHeal v2 стартира на 20 юли 2026 за iOS в Европейския съюз и САЩ, като събира основните ежедневни уелнес пътеки в едно приложение.",
-    image: "/images/xheal-v2-hero-poster-v6.png",
+    image: "/images/blog-default-cover.avif",
     category: "product-updates",
     author: blogAuthorsBg.team,
     readingTime: 4,

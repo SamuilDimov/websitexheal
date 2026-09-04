@@ -25,14 +25,12 @@ export default function LocaleNotFound() {
 
   return (
     <div className="bg-xbg min-h-screen">
-      <section className="w-full max-w-[1440px] mx-auto px-10 pt-[160px] pb-24 max-[991px]:px-8 max-[991px]:pt-[120px] max-[479px]:px-5">
-        <div className="mx-auto max-w-[600px] rounded-2xl bg-xcard border border-xborder p-8 text-center">
-          <p className="t-caption text-xbrand font-semibold uppercase tracking-[0.12em]">
-            {t("eyebrow")}
-          </p>
-          <h1 className="t-h2 text-xprimary mt-3">{t("title")}</h1>
-          <p className="t-body2 text-xsecondary mt-4">{t("description")}</p>
-          <nav className="mt-8 flex flex-wrap justify-center gap-3">
+      <section className="x-container pt-[72px] pb-24">
+        <div className="flex max-w-[64ch] flex-col items-start gap-4 pt-12 md:pt-20">
+          <p className="t-eyebrow text-xtertiary">{t("eyebrow")}</p>
+          <h1 className="t-display2 text-xprimary">{t("title")}</h1>
+          <p className="t-lead text-xsecondary">{t("description")}</p>
+          <nav className="mt-4 flex flex-wrap gap-3">
             {LINKS.map(({ href, key }) => (
               <Link
                 key={href}

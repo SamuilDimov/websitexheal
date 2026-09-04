@@ -1,6 +1,6 @@
 # xHeal Brand Kit
 
-Last updated: 2026-03-06
+Last updated: 2026-09-03
 Owner: Marketing + Product Marketing
 
 ## 1) Brand Core
@@ -19,7 +19,7 @@ For people managing recurring health uncertainty, xHeal helps detect flare-up pa
 
 ## 3) Audience Segments
 - Frustrated chronic-condition patient: "Normal tests, real symptoms."
-- Data collector / optimizer: "I track everything but still can’t connect causes."
+- Data collector / optimizer: "I track everything but still canâ€™t connect causes."
 - Multi-specialist / family care manager: "My health context is fragmented across systems."
 
 ## 4) Messaging Pillars
@@ -93,18 +93,27 @@ Secondary CTAs:
 - Compare plans
 
 ## 10) Visual Identity Tokens
-Typography:
-- Primary font: PPNeueMontreal
+Updated 2026-09-03 (website redesign, phase 1). Source of truth: `brand/xheal-design-system.json` v2.1.
 
-Core colors:
-- xblack: #141933
-- xwhite: #f8f8fa
-- xdark-blue: #4764ff
-- xlight-blue: #8c9dff
+Typography:
+- Primary font: Manrope, weights 400-600 (700 for inline emphasis only). Display type is weight 600, never heavier.
+- Data voice: IBM Plex Mono for eyebrows, timestamps, parameter counts and labels.
+- Both faces load latin + cyrillic for the Bulgarian site.
+- PPNeueMontreal is retired; the app, the design system and every product screenshot are set in Manrope.
+
+Core colors (light surface):
+- ground: #F7F8FC (page), ground-2: #EEF0F7 (bands), card: #FFFFFF
+- ink: #141933 (headings), ink-2: #505573 (body), ink-3: #878CA8 (labels)
+- accent: #4764FF (the only accent: CTAs, links, focus), accent tint: #EDF0FF
+- hairline: #E1E4F0 (1 px borders, the only depth device on light)
+
+Dark surface (Digital Twin chapter, closing download, app screenshots): the v2 dark system, unchanged.
+- xblack: #141933, xdark-blue: #4764ff, xlight-blue: #8c9dff, bg: #000E1B / #0C1222
 
 Design direction:
-- Clinical clarity + modern confidence
-- High contrast, clean whitespace, focused action states
+- Daylight clinical: light ground, one dark chapter, real app screens as the only imagery
+- Clinical clarity + modern confidence; high contrast, clean whitespace, focused action states
+- Flat surfaces: no box shadows or glows on marketing pages; radius 12 controls, 20 cards, 32 panels, pill buttons
 
 ## 11) Channel Priorities
 - Website: prevention + continuity narrative

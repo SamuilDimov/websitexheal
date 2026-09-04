@@ -21,17 +21,20 @@ export default function SpecialistReadyReportsPage() {
     { title: t("report4Title"), description: t("report4Description") },
   ];
 
+  /* Section headings keep their <accent> markup in the catalog but render plain: accent is reserved for the hero. */
+  const plain = (key: string) => t.rich(key, { accent: (chunks) => <>{chunks}</> });
+
   return (
     <FeatureLandingPage
       heroTitle={accent("heroTitle")}
       heroSubtitle={t("heroSubtitle")}
-      painHeading={accent("painHeading", "text-xdark-blue")}
+      painHeading={plain("painHeading")}
       painPoints={[
         { icon: "timer", title: t("pain1Title"), detail: t("pain1Detail") },
         { icon: "blur_on", title: t("pain2Title"), detail: t("pain2Detail") },
         { icon: "psychology_alt", title: t("pain3Title"), detail: t("pain3Detail") },
       ]}
-      howHeading={accent("howHeading", "text-xdark-blue")}
+      howHeading={plain("howHeading")}
       howItWorks={[
         { step: "01", title: t("how1Title"), description: t("how1Description") },
         { step: "02", title: t("how2Title"), description: t("how2Description") },
@@ -39,10 +42,10 @@ export default function SpecialistReadyReportsPage() {
       ]}
       extraSection={
         <section className="bg-xbg">
-          <div className="w-full max-w-[1440px] mx-auto px-10 py-24 flex flex-col gap-12 max-[991px]:px-8 max-[991px]:py-16 max-[479px]:px-5">
+          <div className="x-container x-section flex flex-col gap-12">
             <ScrollReveal>
               <h2 className="t-display2 text-xprimary max-w-[52rem]">
-                {accent("extraSectionHeading", "text-xbrand")}
+                {plain("extraSectionHeading")}
               </h2>
             </ScrollReveal>
 
@@ -50,7 +53,7 @@ export default function SpecialistReadyReportsPage() {
               {fourReports.map((r, i) => (
                 <ScrollReveal key={r.title} delay={i * 120}>
                   <div className="surface-card-feature p-8 flex flex-col gap-4 h-full">
-                    <h3 className="t-h3 text-xbrand-light">{r.title}</h3>
+                    <h3 className="t-h3 text-xprimary">{r.title}</h3>
                     <p className="t-body1 text-xsecondary">{r.description}</p>
                   </div>
                 </ScrollReveal>
@@ -59,7 +62,7 @@ export default function SpecialistReadyReportsPage() {
           </div>
         </section>
       }
-      useCasesHeading={accent("useCasesHeading", "text-xdark-blue")}
+      useCasesHeading={plain("useCasesHeading")}
       useCases={[
         { question: t("uc1Question"), tag: t("uc1Tag"), description: t("uc1Description") },
         { question: t("uc2Question"), tag: t("uc2Tag"), description: t("uc2Description") },
@@ -86,13 +89,13 @@ export default function SpecialistReadyReportsPage() {
         closingLine: t("compClosingLine"),
         highlightColumn: 3,
       }}
-      testimonialsHeading={accent("testimonialsHeading")}
+      testimonialsHeading={plain("testimonialsHeading")}
       testimonials={[
         { quote: t("test1Quote"), name: t("test1Name"), age: Number(t("test1Age")), image: "/images/testimonials/t-086.png" },
         { quote: t("test2Quote"), name: t("test2Name"), age: Number(t("test2Age")), image: "/images/testimonials/t-087.png" },
         { quote: t("test3Quote"), name: t("test3Name"), age: Number(t("test3Age")), image: "/images/testimonials/t-091.png" },
       ]}
-      trustHeading={accent("trustHeading", "text-xdark-blue")}
+      trustHeading={plain("trustHeading")}
       trustItems={[
         { title: t("trust1Title"), detail: t("trust1Detail") },
         { title: t("trust2Title"), detail: t("trust2Detail") },
@@ -108,7 +111,7 @@ export default function SpecialistReadyReportsPage() {
         { q: t("faq5Q"), a: t("faq5A") },
       ]}
       pageSlug="specialist-ready-reports"
-      ctaHeading={accent("ctaHeading")}
+      ctaHeading={plain("ctaHeading")}
       ctaSubtitle={t("ctaSubtitle")}
     />
   );

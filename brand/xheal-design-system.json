@@ -1,11 +1,11 @@
 {
   "meta": {
     "name": "xHeal Design System",
-    "version": "2.0",
+    "version": "2.1",
     "platform": "web",
-    "theme": "dark"
+    "theme": "dark",
+    "note": "v2.1 (redesign phase 1, 2026-09-03): additive light surface, display weight 600, mono data voice, radius 32 panel, shadows reserved for app UI. Dark v2 values unchanged."
   },
-
   "colors": {
     "brand": {
       "100": "#FFFFFF",
@@ -17,7 +17,6 @@
       "900": "#141933",
       "accent": "#FA4169"
     },
-
     "text": {
       "primary": "#F0F2FD",
       "secondary": "#BCBCBF",
@@ -26,131 +25,293 @@
       "inverse": "#FFFFFF",
       "link": "#4764FF"
     },
-
     "background": {
       "primary": "#000E1B",
       "secondary": "#0C1222",
       "tertiary": "#111828",
       "overlay": "rgba(0, 14, 27, 0.85)"
     },
-
     "border": {
       "default": "#141D2E",
       "subtle": "#0F1725",
       "medium": "#1E2740",
       "focus": "#4764FF"
     },
-
     "surface": {
       "card": "#0C1222",
       "cardInner": "#0A1A2A",
       "modal": "#0C1222"
     },
-
     "cardThemes": {
-      "pink":   { "accent": "#E8447F", "bg": "#101120" },
-      "teal":   { "accent": "#10DDD0", "bg": "#041925" },
-      "amber":  { "accent": "#F6A724", "bg": "#10161D" },
-      "purple": { "accent": "#8C9DFF", "bg": "#1A1A2E" }
+      "pink": {
+        "accent": "#E8447F",
+        "bg": "#101120"
+      },
+      "teal": {
+        "accent": "#10DDD0",
+        "bg": "#041925"
+      },
+      "amber": {
+        "accent": "#F6A724",
+        "bg": "#10161D"
+      },
+      "purple": {
+        "accent": "#8C9DFF",
+        "bg": "#1A1A2E"
+      }
     },
-
     "status": {
-      "success":     "#2ED8A3",
+      "success": "#2ED8A3",
       "successDark": "#4DA14D",
-      "error":       "#FF4D4D",
-      "warning":     "#FE9870",
-      "info":        "#4764FF"
+      "error": "#FF4D4D",
+      "warning": "#FE9870",
+      "info": "#4764FF"
     },
-
     "dataViz": {
-      "purple":      "#8C9DFF",
+      "purple": "#8C9DFF",
       "purpleBright": "#A855F7",
-      "green":       "#2ED8A3",
-      "greenDark":   "#4DA14D",
-      "greenTrack":  "#1A3329",
-      "orange":      "#FF9F1C",
-      "orangeRed":   "#FF6B35",
-      "blueLight":   "#5B9BFF",
-      "grey":        "#2A3040"
+      "green": "#2ED8A3",
+      "greenDark": "#4DA14D",
+      "greenTrack": "#1A3329",
+      "orange": "#FF9F1C",
+      "orangeRed": "#FF6B35",
+      "blueLight": "#5B9BFF",
+      "grey": "#2A3040"
     },
-
     "selection": {
-      "primary":    { "color": "#2ED8A3", "bg": "rgba(46, 216, 163, 0.06)" },
-      "supporting": { "color": "#FF9F1C", "bg": "rgba(255, 159, 28, 0.06)" },
-      "light":      { "color": "#A855F7", "bg": "rgba(168, 85, 247, 0.06)" },
-      "unselected": { "border": "#141D2E", "ring": "#878CA8" },
-      "selected":   "#4764FF"
+      "primary": {
+        "color": "#2ED8A3",
+        "bg": "rgba(46, 216, 163, 0.06)"
+      },
+      "supporting": {
+        "color": "#FF9F1C",
+        "bg": "rgba(255, 159, 28, 0.06)"
+      },
+      "light": {
+        "color": "#A855F7",
+        "bg": "rgba(168, 85, 247, 0.06)"
+      },
+      "unselected": {
+        "border": "#141D2E",
+        "ring": "#878CA8"
+      },
+      "selected": "#4764FF"
     },
-
     "icon": {
       "default": "#878CA8",
       "chevron": "#BCBCBF",
-      "active":  "#F0F2FD"
+      "active": "#F0F2FD"
     },
-
     "neutral": {
-      "50":   "#F0F2FD",
-      "100":  "#C3C8E5",
-      "200":  "#BCBCBF",
-      "300":  "#9DA3AF",
-      "400":  "#878CA8",
-      "500":  "#505573",
-      "600":  "#2A3040",
-      "700":  "#1E2740",
-      "800":  "#141D2E",
-      "850":  "#101120",
-      "900":  "#0C1222",
-      "950":  "#041925",
+      "50": "#F0F2FD",
+      "100": "#C3C8E5",
+      "200": "#BCBCBF",
+      "300": "#9DA3AF",
+      "400": "#878CA8",
+      "500": "#505573",
+      "600": "#2A3040",
+      "700": "#1E2740",
+      "800": "#141D2E",
+      "850": "#101120",
+      "900": "#0C1222",
+      "950": "#041925",
       "1000": "#000E1B"
     },
-
     "gradients": {
-      "xHealScore": ["#8C9DFF", "#A855F7"],
-      "recovery":   ["#2ED8A3", "#4DA14D"],
-      "fire":       ["#FF9F1C", "#FF6B35"],
-      "slider":     ["#4DA14D", "#9ACD32", "#F6A724", "#FF6B35", "#FF4D4D"]
+      "xHealScore": [
+        "#8C9DFF",
+        "#A855F7"
+      ],
+      "recovery": [
+        "#2ED8A3",
+        "#4DA14D"
+      ],
+      "fire": [
+        "#FF9F1C",
+        "#FF6B35"
+      ],
+      "slider": [
+        "#4DA14D",
+        "#9ACD32",
+        "#F6A724",
+        "#FF6B35",
+        "#FF4D4D"
+      ]
+    },
+    "surfaceLight": {
+      "ground": "#F7F8FC",
+      "ground2": "#EEF0F7",
+      "card": "#FFFFFF",
+      "hairline": "#E1E4F0",
+      "ink": "#141933",
+      "ink2": "#505573",
+      "ink3": "#878CA8",
+      "accent": "#4764FF",
+      "accentInk": "#2F47C9",
+      "accentTint": "#EDF0FF",
+      "heroWash": "linear-gradient(180deg, #EDF0FF 0%, #F7F8FC 100%)",
+      "rules": [
+        "Dark tokens are applied per section with data-surface=\"dark\" (Digital Twin chapter, closing).",
+        "Card themes (pink/teal/amber/purple) are for app screenshots only on marketing surfaces.",
+        "The accent appears on CTAs, links and focus rings; the indigo highlight-phrase device at most once per page."
+      ]
     }
   },
-
   "typography": {
-    "fontFamily": "'Manrope', sans-serif",
+    "fontFamily": "'Manrope', system-ui, sans-serif",
     "weights": {
-      "regular":  400,
-      "medium":   500,
+      "regular": 400,
+      "medium": 500,
       "semibold": 600,
-      "bold":     700,
-      "extrabold": 800
+      "bold": 700
     },
     "styles": {
-      "display1": { "size": "64px", "lineHeight": "1.1",  "weight": 800, "letterSpacing": "-2px" },
-      "display2": { "size": "48px", "lineHeight": "1.15", "weight": 800, "letterSpacing": "-1.5px" },
-      "h1":       { "size": "40px", "lineHeight": "1.2",  "weight": 800, "letterSpacing": "-1px" },
-      "h2":       { "size": "32px", "lineHeight": "1.25", "weight": 800, "letterSpacing": "-0.5px" },
-      "h3":       { "size": "24px", "lineHeight": "1.3",  "weight": 700, "letterSpacing": "0" },
-      "h4":       { "size": "20px", "lineHeight": "1.4",  "weight": 700, "letterSpacing": "0" },
-      "h5":       { "size": "18px", "lineHeight": "1.45", "weight": 600, "letterSpacing": "0" },
-      "h6":       { "size": "16px", "lineHeight": "1.5",  "weight": 600, "letterSpacing": "0" },
-      "body1":    { "size": "18px", "lineHeight": "1.6",  "weight": 400, "letterSpacing": "0" },
-      "body2":    { "size": "16px", "lineHeight": "1.6",  "weight": 400, "letterSpacing": "0" },
-      "body3":    { "size": "14px", "lineHeight": "1.5",  "weight": 400, "letterSpacing": "0" },
-      "caption":  { "size": "12px", "lineHeight": "1.4",  "weight": 500, "letterSpacing": "0.2px" },
-      "overline": { "size": "11px", "lineHeight": "1.4",  "weight": 700, "letterSpacing": "1.5px", "textTransform": "uppercase" },
-      "button":   { "size": "16px", "lineHeight": "1.5",  "weight": 700, "letterSpacing": "0.3px" },
-      "buttonSm": { "size": "14px", "lineHeight": "1.5",  "weight": 700, "letterSpacing": "0.2px" },
-      "label":    { "size": "14px", "lineHeight": "1.5",  "weight": 500, "letterSpacing": "0" },
-      "navLink":  { "size": "15px", "lineHeight": "1.5",  "weight": 600, "letterSpacing": "0" }
-    }
+      "display1": {
+        "size": "clamp(40px, 5vw, 68px)",
+        "lineHeight": "1.05",
+        "weight": 600,
+        "letterSpacing": "-0.03em"
+      },
+      "display2": {
+        "size": "clamp(30px, 3.4vw, 48px)",
+        "lineHeight": "1.1",
+        "weight": 600,
+        "letterSpacing": "-0.025em"
+      },
+      "h1": {
+        "size": "clamp(32px, 2.8vw, 40px)",
+        "lineHeight": "1.15",
+        "weight": 600,
+        "letterSpacing": "-0.02em"
+      },
+      "h2": {
+        "size": "clamp(26px, 2.2vw, 32px)",
+        "lineHeight": "1.2",
+        "weight": 600,
+        "letterSpacing": "-0.02em"
+      },
+      "h3": {
+        "size": "clamp(22px, 1.7vw, 24px)",
+        "lineHeight": "1.25",
+        "weight": 600,
+        "letterSpacing": "-0.015em"
+      },
+      "h4": {
+        "size": "20px",
+        "lineHeight": "1.35",
+        "weight": 600,
+        "letterSpacing": "-0.01em"
+      },
+      "h5": {
+        "size": "18px",
+        "lineHeight": "1.45",
+        "weight": 600,
+        "letterSpacing": "0"
+      },
+      "h6": {
+        "size": "16px",
+        "lineHeight": "1.5",
+        "weight": 600,
+        "letterSpacing": "0"
+      },
+      "body1": {
+        "size": "18px",
+        "lineHeight": "1.55",
+        "weight": 400,
+        "letterSpacing": "0"
+      },
+      "body2": {
+        "size": "16px",
+        "lineHeight": "1.6",
+        "weight": 400,
+        "letterSpacing": "0"
+      },
+      "body3": {
+        "size": "14px",
+        "lineHeight": "1.5",
+        "weight": 400,
+        "letterSpacing": "0"
+      },
+      "caption": {
+        "size": "12px",
+        "lineHeight": "1.4",
+        "weight": 500,
+        "letterSpacing": "0.2px"
+      },
+      "overline": {
+        "family": "mono",
+        "size": "12px",
+        "lineHeight": "1.4",
+        "weight": 500,
+        "letterSpacing": "0.08em",
+        "textTransform": "uppercase"
+      },
+      "button": {
+        "size": "15px",
+        "lineHeight": "1",
+        "weight": 600,
+        "letterSpacing": "0"
+      },
+      "buttonSm": {
+        "size": "14px",
+        "lineHeight": "1.5",
+        "weight": 600,
+        "letterSpacing": "0"
+      },
+      "label": {
+        "size": "14px",
+        "lineHeight": "1.5",
+        "weight": 500,
+        "letterSpacing": "0"
+      },
+      "navLink": {
+        "size": "15px",
+        "lineHeight": "1.5",
+        "weight": 600,
+        "letterSpacing": "0"
+      },
+      "lead": {
+        "size": "clamp(18px, 1.4vw, 21px)",
+        "lineHeight": "1.5",
+        "weight": 500,
+        "letterSpacing": "0"
+      },
+      "eyebrow": {
+        "family": "mono",
+        "size": "12px",
+        "lineHeight": "1.4",
+        "weight": 500,
+        "letterSpacing": "0.08em",
+        "textTransform": "uppercase"
+      },
+      "data": {
+        "family": "mono",
+        "size": "13px",
+        "lineHeight": "1.4",
+        "weight": 400,
+        "letterSpacing": "0",
+        "numeric": "tabular-nums"
+      },
+      "numeral": {
+        "size": "clamp(72px, 10vw, 144px)",
+        "lineHeight": "1",
+        "weight": 500,
+        "letterSpacing": "-0.04em",
+        "numeric": "tabular-nums"
+      }
+    },
+    "fontFamilyMono": "'IBM Plex Mono', ui-monospace, monospace",
+    "weightsNote": "800 removed in v2.1. 700 is inline emphasis only and retires as components are rewritten."
   },
-
   "spacing": {
-    "0":  "0",
-    "1":  "4px",
-    "2":  "8px",
-    "3":  "12px",
-    "4":  "16px",
-    "5":  "20px",
-    "6":  "24px",
-    "8":  "32px",
+    "0": "0",
+    "1": "4px",
+    "2": "8px",
+    "3": "12px",
+    "4": "16px",
+    "5": "20px",
+    "6": "24px",
+    "8": "32px",
     "10": "40px",
     "12": "48px",
     "16": "64px",
@@ -158,70 +319,65 @@
     "24": "96px",
     "32": "128px"
   },
-
   "borderRadius": {
     "none": "0",
-    "xs":   "4px",
-    "sm":   "8px",
-    "md":   "12px",
-    "lg":   "16px",
-    "xl":   "20px",
-    "xxl":  "24px",
-    "full": "9999px"
+    "xs": "4px",
+    "sm": "8px",
+    "md": "12px",
+    "lg": "16px",
+    "xl": "20px",
+    "xxl": "24px",
+    "full": "9999px",
+    "panel": "32px"
   },
-
   "borderWidth": {
-    "thin":   "1px",
+    "thin": "1px",
     "medium": "1.5px",
-    "thick":  "2px"
+    "thick": "2px"
   },
-
   "shadows": {
-    "sm":  "0 1px 4px rgba(0, 0, 0, 0.3)",
-    "md":  "0 4px 12px rgba(0, 0, 0, 0.3)",
-    "lg":  "0 8px 24px rgba(0, 0, 0, 0.4)",
-    "xl":  "0 16px 48px rgba(0, 0, 0, 0.5)",
+    "note": "Not used on marketing surfaces (phase 1 rule). Retained for app UI mock-ups.",
+    "sm": "0 1px 4px rgba(0, 0, 0, 0.3)",
+    "md": "0 4px 12px rgba(0, 0, 0, 0.3)",
+    "lg": "0 8px 24px rgba(0, 0, 0, 0.4)",
+    "xl": "0 16px 48px rgba(0, 0, 0, 0.5)",
     "glow": "0 8px 32px rgba(71, 100, 255, 0.3)"
   },
-
   "opacity": {
     "disabled": 0.4,
-    "hover":    0.8,
-    "pressed":  0.6,
-    "subtle":   0.1,
-    "medium":   0.5
+    "hover": 0.8,
+    "pressed": 0.6,
+    "subtle": 0.1,
+    "medium": 0.5
   },
-
   "zIndex": {
-    "hide":          -1,
-    "base":           0,
-    "dropdown":    1000,
-    "sticky":      1100,
-    "fixed":       1200,
+    "hide": -1,
+    "base": 0,
+    "dropdown": 1000,
+    "sticky": 1100,
+    "fixed": 1200,
     "modalBackdrop": 1300,
-    "modal":       1400,
-    "popover":     1500,
-    "toast":       1600,
-    "tooltip":     1700
+    "modal": 1400,
+    "popover": 1500,
+    "toast": 1600,
+    "tooltip": 1700
   },
-
   "breakpoints": {
-    "sm":  "640px",
-    "md":  "768px",
-    "lg":  "1024px",
-    "xl":  "1280px",
+    "sm": "640px",
+    "md": "768px",
+    "lg": "1024px",
+    "xl": "1280px",
     "xxl": "1440px"
   },
-
   "layout": {
     "maxWidth": "1200px",
     "containerPadding": {
-      "mobile":  "20px",
-      "tablet":  "32px",
+      "mobile": "20px",
+      "tablet": "32px",
       "desktop": "40px"
     },
     "sectionPadding": {
-      "mobile":  "64px",
+      "mobile": "64px",
       "desktop": "100px"
     },
     "gridGap": {
@@ -231,7 +387,6 @@
       "xl": "48px"
     }
   },
-
   "components": {
     "nav": {
       "height": "64px",
@@ -239,23 +394,55 @@
       "bg": "rgba(0, 14, 27, 0.8)",
       "borderBottom": "#141D2E"
     },
-
     "button": {
       "sizes": {
-        "sm": { "height": "36px", "padding": "0 16px", "fontSize": "14px", "radius": "8px" },
-        "md": { "height": "44px", "padding": "0 24px", "fontSize": "16px", "radius": "12px" },
-        "lg": { "height": "52px", "padding": "0 32px", "fontSize": "17px", "radius": "14px" }
+        "sm": {
+          "height": "36px",
+          "padding": "0 16px",
+          "fontSize": "14px",
+          "radius": "8px"
+        },
+        "md": {
+          "height": "44px",
+          "padding": "0 24px",
+          "fontSize": "16px",
+          "radius": "12px"
+        },
+        "lg": {
+          "height": "52px",
+          "padding": "0 32px",
+          "fontSize": "17px",
+          "radius": "14px"
+        }
       },
       "variants": {
-        "primary":   { "bg": "#4764FF", "color": "#FFFFFF" },
-        "accent":    { "bg": "#FA4169", "color": "#FFFFFF" },
-        "success":   { "bg": "#2ED8A3", "color": "#000E1B" },
-        "secondary": { "bg": "transparent", "border": "#1E2740", "color": "#F0F2FD" },
-        "ghost":     { "bg": "transparent", "color": "#4764FF" },
-        "white":     { "bg": "#FFFFFF", "color": "#000E1B" }
+        "primary": {
+          "bg": "#4764FF",
+          "color": "#FFFFFF"
+        },
+        "accent": {
+          "bg": "#FA4169",
+          "color": "#FFFFFF"
+        },
+        "success": {
+          "bg": "#2ED8A3",
+          "color": "#000E1B"
+        },
+        "secondary": {
+          "bg": "transparent",
+          "border": "#1E2740",
+          "color": "#F0F2FD"
+        },
+        "ghost": {
+          "bg": "transparent",
+          "color": "#4764FF"
+        },
+        "white": {
+          "bg": "#FFFFFF",
+          "color": "#000E1B"
+        }
       }
     },
-
     "input": {
       "height": "48px",
       "bg": "#000E1B",
@@ -266,7 +453,6 @@
       "fontSize": "15px",
       "placeholderColor": "#505573"
     },
-
     "tabBar": {
       "containerBorder": "#141D2E",
       "containerRadius": "9999px",
@@ -277,7 +463,6 @@
       "inactiveBg": "transparent",
       "inactiveText": "#878CA8"
     },
-
     "filterChip": {
       "height": "36px",
       "padding": "0 18px",
@@ -288,7 +473,6 @@
       "inactiveBorder": "#141D2E",
       "inactiveText": "#878CA8"
     },
-
     "toggle": {
       "width": "44px",
       "height": "24px",
@@ -297,7 +481,6 @@
       "inactiveBg": "#1E2740",
       "knob": "#FFFFFF"
     },
-
     "slider": {
       "trackHeight": "8px",
       "trackRadius": "4px",
@@ -307,7 +490,6 @@
       "activeLabel": "#4764FF",
       "inactiveLabel": "#878CA8"
     },
-
     "badge": {
       "height": "24px",
       "padding": "0 10px",
@@ -315,22 +497,38 @@
       "fontSize": "11px",
       "fontWeight": 700,
       "variants": {
-        "aiInsights": { "bg": "rgba(232, 68, 127, 0.15)", "color": "#E8447F" },
-        "labResults": { "bg": "rgba(16, 221, 208, 0.15)",  "color": "#10DDD0" },
-        "streak":     { "bg": "rgba(246, 167, 36, 0.2)",   "color": "#F6A724" },
-        "new":        { "bg": "rgba(71, 100, 255, 0.15)",  "color": "#4764FF" },
-        "common":     { "bg": "rgba(71, 100, 255, 0.2)",   "color": "#8C9DFF" },
-        "nutrition":  { "bg": "rgba(46, 216, 163, 0.15)",  "color": "#2ED8A3" }
+        "aiInsights": {
+          "bg": "rgba(232, 68, 127, 0.15)",
+          "color": "#E8447F"
+        },
+        "labResults": {
+          "bg": "rgba(16, 221, 208, 0.15)",
+          "color": "#10DDD0"
+        },
+        "streak": {
+          "bg": "rgba(246, 167, 36, 0.2)",
+          "color": "#F6A724"
+        },
+        "new": {
+          "bg": "rgba(71, 100, 255, 0.15)",
+          "color": "#4764FF"
+        },
+        "common": {
+          "bg": "rgba(71, 100, 255, 0.2)",
+          "color": "#8C9DFF"
+        },
+        "nutrition": {
+          "bg": "rgba(46, 216, 163, 0.15)",
+          "color": "#2ED8A3"
+        }
       }
     },
-
     "progressBar": {
       "height": "4px",
       "radius": "2px",
       "trackBg": "#2A3040",
       "fillBg": "#4764FF"
     },
-
     "tooltip": {
       "bg": "#111828",
       "border": "#141D2E",
@@ -338,12 +536,10 @@
       "radius": "8px",
       "shadow": "0 4px 12px rgba(0, 0, 0, 0.3)"
     },
-
     "skeleton": {
       "gradient": "linear-gradient(90deg, #141D2E 25%, #1E2740 50%, #141D2E 75%)",
       "animationDuration": "1.5s"
     },
-
     "card": {
       "bg": "#0C1222",
       "border": "#141D2E",
@@ -351,7 +547,6 @@
       "padding": "24px",
       "hoverBg": "#111828"
     },
-
     "featureCard": {
       "bg": "#0C1222",
       "border": "#141D2E",
@@ -362,7 +557,6 @@
       "hoverShadow": "0 16px 48px rgba(0, 0, 0, 0.3)",
       "accentBarHeight": "3px"
     },
-
     "testimonialCard": {
       "bg": "#0C1222",
       "border": "#141D2E",
@@ -370,7 +564,6 @@
       "padding": "28px",
       "starColor": "#F6A724"
     },
-
     "pricingCard": {
       "bg": "#0C1222",
       "border": "#141D2E",
@@ -380,7 +573,6 @@
       "featuredGradient": "linear-gradient(180deg, rgba(71, 100, 255, 0.06) 0%, #0C1222 100%)",
       "featureDot": "#2ED8A3"
     },
-
     "footer": {
       "borderTop": "#141D2E",
       "padding": "48px 0",
@@ -388,12 +580,25 @@
       "linkHoverColor": "#F0F2FD",
       "colTitleColor": "#878CA8"
     },
-
     "ctaSection": {
       "radius": "24px",
       "padding": "64px",
       "border": "#141D2E",
       "gradient": "linear-gradient(135deg, rgba(71, 100, 255, 0.08) 0%, rgba(168, 85, 247, 0.06) 50%, rgba(16, 221, 208, 0.04) 100%)"
     }
+  },
+  "icons": {
+    "set": "Lucide (lucide-react), inline SVG via components/ui/Icon.tsx",
+    "strokeWidth": 1.75,
+    "sizes": [
+      14,
+      16,
+      18,
+      20,
+      24,
+      28,
+      32
+    ],
+    "note": "MaterialSymbolsRounded font removed in v2.1; Material glyph names remain valid as aliases in Icon.tsx."
   }
 }

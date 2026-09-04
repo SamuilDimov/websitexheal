@@ -45,7 +45,6 @@ export default function BlogGrid({ posts, categories, labels }: BlogGridProps) {
             categoryLabels={categoryLabels}
             minReadLabel={labels.minRead}
             featured
-            clinical
           />
         </div>
       )}
@@ -58,7 +57,6 @@ export default function BlogGrid({ posts, categories, labels }: BlogGridProps) {
               post={post}
               categoryLabels={categoryLabels}
               minReadLabel={labels.minRead}
-              clinical
             />
           )
         )}

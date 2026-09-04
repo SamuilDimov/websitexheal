@@ -1,7 +1,7 @@
 import { hasLocale } from "next-intl";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
-import { Manrope } from "next/font/google";
+import { Manrope, IBM_Plex_Mono } from "next/font/google";
 import { routing } from "@/i18n/routing";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
@@ -9,10 +9,20 @@ import Footer from "@/components/Footer";
 import ClientMessagesProvider from "@/components/ClientMessagesProvider";
 import { buildMetadata } from "@/lib/site";
 
+// Redesign phase 1: display weight is 600; 800 is no longer loaded.
+// Cyrillic is required for the bg locale.
 const manrope = Manrope({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  subsets: ["latin", "cyrillic"],
+  weight: ["400", "500", "600"],
   variable: "--font-manrope",
+  display: "swap",
+});
+
+// Data voice: eyebrows, timestamps, parameter counts.
+const plexMono = IBM_Plex_Mono({
+  subsets: ["latin", "cyrillic"],
+  weight: ["400", "500"],
+  variable: "--font-plex-mono",
   display: "swap",
 });
 
@@ -59,7 +69,12 @@ export default async function LocaleLayout({ children, params }: Props) {
   setRequestLocale(locale);
 
   return (
-    <html lang={locale} className={manrope.variable} data-scroll-behavior="smooth">
+    <html
+      lang={locale}
+      className={`${manrope.variable} ${plexMono.variable}`}
+      data-surface="light"
+      data-scroll-behavior="smooth"
+    >
       <head>
         {/*
           One-time cleanup of legacy cookie-consent storage from the old
@@ -81,7 +96,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       <body className="bg-xbg text-xprimary antialiased">
         <ClientMessagesProvider
           locale={locale}
-          namespaces={["Navbar", "Footer", "Newsletter", "Compliance"]}
+          namespaces={["Navbar", "Footer", "Newsletter", "Closing", "Compliance"]}
         >
           <div className="page-wrapper w-full relative overflow-x-clip">
             <Navbar />

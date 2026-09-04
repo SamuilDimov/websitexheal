@@ -1,173 +1,230 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
+import { useLocale, useTranslations } from "next-intl";
+import { Link, usePathname } from "@/i18n/navigation";
+import { routing } from "@/i18n/routing";
+import { APP_STORE_URL } from "@/lib/site";
+import Icon from "@/components/ui/Icon";
+import AppleLogo from "@/components/ui/AppleLogo";
 
+/**
+ * Capsule navigation (redesign phase 2).
+ *
+ * A fixed, transparent shell holds a centred capsule. After 48 px of scroll
+ * the capsule gains a translucent card background, a blur and a hairline.
+ * When a dark section (`data-surface="dark"`) sits under the capsule the
+ * capsule itself switches to the dark token set so it stays legible.
+ */
 export default function Navbar() {
   const t = useTranslations("Navbar");
+  const locale = useLocale();
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [overDark, setOverDark] = useState(false);
+  const shellRef = useRef<HTMLElement>(null);
 
-  const navLinks = [
-    { href: "/about" as const, label: t("about") },
-    { href: "/blog" as const, label: t("blog") },
-    { href: "/support" as const, label: t("support") },
-  ];
+  const links = [
+    { href: "/#features", label: t("features") },
+    { href: "/#how-it-works", label: t("howItWorks") },
+    { href: "/blog", label: t("blog") },
+    { href: "/about", label: t("about") },
+  ] as const;
 
+  // Scroll state: 48 px threshold, the same trigger Bright uses.
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      setScrolled(window.scrollY > 48);
     };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const onScroll = () => {
+      if (!frame) frame = window.requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
   }, []);
 
+  // Surface detection: is a dark section under the capsule right now?
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
+    const shell = shellRef.current;
+    if (!shell || !("IntersectionObserver" in window)) return;
+
+    const darkSections = Array.from(
+      document.querySelectorAll<HTMLElement>('[data-surface="dark"]'),
+    );
+    if (darkSections.length === 0) return;
+
+    const intersecting = new Set<Element>();
+    const bandHeight = shell.getBoundingClientRect().height || 72;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) intersecting.add(entry.target);
+          else intersecting.delete(entry.target);
+        }
+        setOverDark(intersecting.size > 0);
+      },
+      {
+        // Only the band the capsule occupies counts.
+        rootMargin: `0px 0px -${Math.max(0, window.innerHeight - bandHeight)}px 0px`,
+        threshold: 0,
+      },
+    );
+    darkSections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, [pathname]);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setIsOpen(false);
     };
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
   }, []);
 
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    document.body.style.overflow = isOpen ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
   }, [isOpen]);
 
+  const otherLocale = routing.locales.find((l) => l !== locale) ?? locale;
+  const capsuleSurface = overDark && !isOpen ? "dark" : "light";
+
   return (
     <>
-      <nav
-        className={`fixed top-0 left-0 right-0 z-[1000] transition-all duration-300 ${
-          scrolled
-            ? "bg-[rgba(0,14,27,0.8)] backdrop-blur-[20px] border-b border-xborder"
-            : "bg-transparent"
-        }`}
+      <header
+        ref={shellRef}
+        className="fixed inset-x-0 top-0 z-[1000] pointer-events-none"
         role="banner"
       >
-        <div className="w-full max-w-[1440px] mx-auto px-10 flex flex-row justify-between items-center h-[64px] max-[991px]:px-8 max-[479px]:px-5 relative z-10">
-          {/* Logo */}
-          <Link href="/" className="pl-0 flex items-center">
-            <Image
-              src="/images/logo.svg"
-              alt="xHeal logo"
-              width={120}
-              height={32}
-              className="h-[28px] w-auto"
-              priority
-            />
-          </Link>
-
-          {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-2">
-            {navLinks.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="t-nav text-xsecondary hover:text-xprimary px-3 py-2 rounded-md transition-colors duration-200"
-              >
-                {item.label}
-              </Link>
-            ))}
-
-            <div className="ml-3">
-              <a
-                href="https://apps.apple.com/us/app/xheal/id6748074977"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center bg-xbrand text-white t-button-sm h-[40px] px-5 rounded-[10px] transition-all duration-200 hover:bg-[#5a73ff] hover:shadow-[0_8px_24px_rgba(71,100,255,0.4)]"
-              >
-                {t("downloadApp")}
-              </a>
-            </div>
-          </div>
-
-          {/* Mobile hamburger button */}
-          <button
-            className="md:hidden relative w-[28px] h-[20px] flex flex-col justify-between items-stretch z-[1002]"
-            onClick={() => setIsOpen(!isOpen)}
-            aria-label={t("toggleMenu")}
-            aria-expanded={isOpen}
+        <div className="mx-auto flex h-[72px] w-full max-w-[1240px] items-center justify-center px-4 max-[479px]:px-3">
+          <nav
+            aria-label={t("primaryNavigation")}
+            data-surface={capsuleSurface}
+            data-scrolled={scrolled || isOpen ? "true" : "false"}
+            className="nav-capsule pointer-events-auto"
           >
-            <span
-              className={`block h-[2px] bg-xprimary rounded-full transition-all duration-300 origin-center ${
-                isOpen ? "rotate-45 translate-y-[9px]" : ""
-              }`}
-            />
-            <span
-              className={`block h-[2px] bg-xprimary rounded-full transition-all duration-300 ${
-                isOpen ? "opacity-0 scale-x-0" : "opacity-100"
-              }`}
-            />
-            <span
-              className={`block h-[2px] bg-xprimary rounded-full transition-all duration-300 origin-center ${
-                isOpen ? "-rotate-45 -translate-y-[9px]" : ""
-              }`}
-            />
-          </button>
-        </div>
-      </nav>
-
-      {/* Mobile fullscreen menu */}
-      {isOpen && (
-        <div className="md:hidden fixed inset-0 z-[1003] flex flex-col bg-xbg">
-          {/* Top bar with logo + close */}
-          <div className="flex items-center justify-between px-5 h-[64px] border-b border-xborder">
-            <Link href="/" onClick={() => setIsOpen(false)}>
+            <Link href="/" className="nav-capsule__logo" aria-label="xHeal">
               <Image
                 src="/images/logo.svg"
-                alt="xHeal logo"
+                alt=""
                 width={120}
-                height={32}
-                className="h-[28px] w-auto"
+                height={34}
+                className="nav-logo h-[26px] w-auto"
+                priority
               />
             </Link>
-            <button
-              onClick={() => setIsOpen(false)}
-              aria-label={t("closeMenu")}
-              className="w-[32px] h-[32px] relative"
-            >
-              <span className="absolute top-1/2 left-0 w-full h-[2.5px] bg-xprimary rounded-full rotate-45 -translate-y-1/2" />
-              <span className="absolute top-1/2 left-0 w-full h-[2.5px] bg-xprimary rounded-full -rotate-45 -translate-y-1/2" />
-            </button>
-          </div>
 
-          {/* Links */}
-          <nav className="flex-1 flex flex-col justify-center px-5 gap-1">
-            {[{ href: "/" as const, label: t("home") }, ...navLinks].map((item) => (
+            <ul className="nav-capsule__links hidden md:flex" role="list">
+              {links.map((item) => (
+                <li key={item.href}>
+                  <Link href={item.href} className="nav-capsule__link t-nav">
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+
+            <div className="ml-auto flex items-center gap-1.5 md:ml-1">
               <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setIsOpen(false)}
-                className="py-4 text-center rounded-xl active:bg-xcard transition-colors"
+                href={pathname || "/"}
+                locale={otherLocale}
+                className="nav-capsule__locale t-eyebrow hidden md:inline-flex"
+                aria-label={t("switchLocale", { locale: otherLocale.toUpperCase() })}
+                hrefLang={otherLocale}
               >
-                <span className="t-h3 text-xprimary">{item.label}</span>
+                {otherLocale.toUpperCase()}
               </Link>
-            ))}
 
-            {/* CTA button inside nav flow */}
-            <div className="mt-6">
               <a
-                href="https://apps.apple.com/us/app/xheal/id6748074977"
+                href={APP_STORE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={() => setIsOpen(false)}
-                className="block text-center py-4 rounded-[14px] bg-xbrand text-white t-button"
+                className="nav-capsule__cta"
               >
-                {t("downloadApp")}
+                <AppleLogo size={15} className="nav-capsule__cta-icon" />
+                <span className="max-[359px]:sr-only">{t("getApp")}</span>
               </a>
+
+              <button
+                type="button"
+                className="nav-capsule__menu md:hidden"
+                onClick={() => setIsOpen((open) => !open)}
+                aria-label={isOpen ? t("closeMenu") : t("toggleMenu")}
+                aria-expanded={isOpen}
+                aria-controls="mobile-menu"
+              >
+                <Icon name={isOpen ? "close" : "menu"} size={20} />
+              </button>
             </div>
           </nav>
         </div>
-      )}
+      </header>
+
+      {/* Mobile sheet */}
+      <div
+        id="mobile-menu"
+        className={`nav-sheet md:hidden ${isOpen ? "is-open" : ""}`}
+        aria-hidden={!isOpen}
+      >
+        <nav aria-label={t("primaryNavigation")} className="nav-sheet__inner">
+          <ul role="list" className="nav-sheet__links">
+            {links.map((item) => (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  onClick={() => setIsOpen(false)}
+                  className="nav-sheet__link t-h3"
+                  tabIndex={isOpen ? 0 : -1}
+                >
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+            <li>
+              <Link
+                href="/support"
+                onClick={() => setIsOpen(false)}
+                className="nav-sheet__link t-h3"
+                tabIndex={isOpen ? 0 : -1}
+              >
+                {t("support")}
+              </Link>
+            </li>
+          </ul>
+
+          <div className="nav-sheet__footer">
+            <Link
+              href={pathname || "/"}
+              locale={otherLocale}
+              onClick={() => setIsOpen(false)}
+              className="nav-sheet__locale t-eyebrow"
+              tabIndex={isOpen ? 0 : -1}
+            >
+              {t("switchLocale", { locale: otherLocale.toUpperCase() })}
+            </Link>
+            <a
+              href={APP_STORE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="nav-sheet__cta"
+              tabIndex={isOpen ? 0 : -1}
+            >
+              <AppleLogo size={18} />
+              {t("getApp")}
+            </a>
+          </div>
+        </nav>
+      </div>
     </>
   );
 }

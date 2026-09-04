@@ -9,6 +9,7 @@ import {
 } from "react";
 import type { BlogImageSlide } from "@/data/blog-posts";
 
+import Icon from "@/components/ui/Icon";
 interface ChatScreenshotSliderLabels {
   ariaLabel: string;
   carouselDescription: string;
@@ -147,9 +148,7 @@ export default function ChatScreenshotSlider({
           disabled={activeIndex === 0}
           aria-label={labels.previous}
         >
-          <span className="material-symbols-outlined" aria-hidden="true">
-            arrow_back
-          </span>
+          <Icon name="arrow_back" />
         </button>
 
         <div className="chat-slider-dots" aria-label={status}>
@@ -171,14 +170,12 @@ export default function ChatScreenshotSlider({
           disabled={activeIndex === lastIndex}
           aria-label={labels.next}
         >
-          <span className="material-symbols-outlined" aria-hidden="true">
-            arrow_forward
-          </span>
+          <Icon name="arrow_forward" />
         </button>
       </div>
 
       <div className="chat-slider-hint" aria-hidden="true">
-        <span className="material-symbols-outlined">swipe</span>
+        <Icon name="swipe" />
         <span>{labels.hint}</span>
       </div>
 

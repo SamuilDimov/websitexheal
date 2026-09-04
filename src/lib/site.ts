@@ -4,6 +4,7 @@ import { routing } from "@/i18n/routing";
 export const SITE_URL = new URL("https://xheal.ai");
 export const SITE_ORIGIN = SITE_URL.origin;
 export const DEFAULT_SOCIAL_IMAGE = "/images/hero-health-data.jpg";
+export const APP_STORE_URL = "https://apps.apple.com/us/app/xheal/id6748074977";
 
 export function absoluteUrl(path = "/") {
   return new URL(path, SITE_URL).toString();

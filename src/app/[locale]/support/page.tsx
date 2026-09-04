@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 
+import PageHeader from "@/components/ui/PageHeader";
 const faqKeys = [
   "faq1", "faq2", "faq3", "faq4", "faq5", "faq6", "faq7", "faq8", "faq9",
 ] as const;
@@ -49,20 +50,12 @@ export default function SupportPage() {
 
   return (
     <>
-      {/* Hero */}
-      <section className="relative bg-xbg overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none bg-radial-glow" aria-hidden />
-        <div className="relative w-full max-w-[1440px] mx-auto px-10 pt-[160px] pb-16 flex flex-col items-center gap-10 max-[991px]:px-8 max-[991px]:pt-[120px] max-[479px]:px-5">
-          <h1 className="t-display1 text-xprimary text-center">
-            {t("heroTitle")}
-          </h1>
-        </div>
-      </section>
+      <PageHeader eyebrow={t("eyebrow")} title={t("heroTitle")} />
 
       {/* FAQ Section */}
       <section className="bg-xbg">
-        <div className="w-full max-w-[1440px] mx-auto px-10 py-24 flex flex-col items-center gap-10 max-[991px]:px-8 max-[991px]:py-16 max-[479px]:px-5">
-          <div className="w-full max-w-[800px]">
+        <div className="x-container pb-24 pt-4">
+          <div className="w-full max-w-[760px]">
             <h2 className="t-h1 text-xprimary mb-5">{t("faqTitle")}</h2>
             <p className="t-body1 text-xsecondary mb-10">
               {t("faqDescription")}{" "}

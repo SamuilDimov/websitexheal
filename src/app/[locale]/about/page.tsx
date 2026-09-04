@@ -3,8 +3,9 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { buildMetadata } from "@/lib/site";
-import DnaTimeline from "@/components/about/DnaTimeline";
+import MilestoneTimeline from "@/components/about/MilestoneTimeline";
 
+import PageHeader from "@/components/ui/PageHeader";
 export async function generateMetadata({
   params,
 }: {
@@ -50,45 +51,34 @@ export default function AboutPage({
 
   return (
     <>
-      {/* Hero */}
-      <section className="relative bg-xbg overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none bg-radial-glow" aria-hidden />
-        <div className="relative w-full max-w-[1440px] mx-auto px-10 pt-[160px] pb-16 flex flex-col items-center gap-12 max-[991px]:px-8 max-[991px]:pt-[120px] max-[479px]:px-5">
-          <h1 className="t-display1 text-xprimary text-center">
-            {t("heroTitle")}
-          </h1>
-          <p className="t-body1 text-xsecondary text-center max-w-[680px]">
-            {t("heroSubtitle")}
-          </p>
-        </div>
-      </section>
+      <PageHeader eyebrow={t("eyebrow")} title={t("heroTitle")} lead={t("heroSubtitle")} />
 
-      {/* Timeline — rotating DNA helix, one event open at a time */}
-      <section className="bg-xbg">
-        <div className="w-full max-w-[1440px] mx-auto px-10 max-[991px]:px-8 max-[479px]:px-5">
-          <DnaTimeline
+      {/* Timeline */}
+      <section className="bg-xbg" aria-labelledby="timeline-heading">
+        <div className="x-container x-section flex flex-col gap-12 md:gap-16">
+          <div className="flex flex-col gap-4">
+            <span className="t-eyebrow text-xtertiary">{t("timelineEyebrow")}</span>
+            <h2 id="timeline-heading" className="t-display2 text-xprimary max-w-[18ch]">{t("timelineHeading")}</h2>
+          </div>
+          <MilestoneTimeline
+            ariaLabel={t("timelineAriaLabel")}
             events={timelineKeys.map((eventKey) => ({
               key: eventKey,
               date: t(`timeline.${eventKey}.date`),
               title: t(`timeline.${eventKey}.title`),
               description: t(`timeline.${eventKey}.description`),
             }))}
-            labels={{
-              ariaLabel: t("timelineAriaLabel"),
-              hint: t("timelineHint"),
-              event: t("timelineEventLabel"),
-              of: t("timelineOfLabel"),
-            }}
           />
         </div>
       </section>
 
       {/* Team */}
       <section className="bg-xbg-2">
-        <div className="w-full max-w-[1440px] mx-auto px-10 py-24 flex flex-col items-center gap-12 max-[991px]:px-8 max-[991px]:py-16 max-[479px]:px-5">
-          <h2 className="t-display2 text-xprimary text-center">
-            {t("teamHeading")}
-          </h2>
+        <div className="x-container x-section flex flex-col gap-12">
+          <div className="flex flex-col gap-4">
+            <span className="t-eyebrow text-xtertiary">{t("teamEyebrow")}</span>
+            <h2 className="t-display2 text-xprimary max-w-[20ch]">{t("teamHeading")}</h2>
+          </div>
 
           <div className="grid grid-cols-2 gap-10 w-full max-[767px]:grid-cols-1">
             {teamKeys.map((member) => (
@@ -104,7 +94,7 @@ export default function AboutPage({
                   className="w-[160px] h-[224px] object-cover rounded-[16px] ring-1 ring-xborder max-[767px]:w-full max-[767px]:h-auto max-[767px]:max-w-[280px]"
                 />
                 <div className="flex flex-col gap-2">
-                  <h3 className="t-h2 text-xprimary">
+                  <h3 className="t-h3 text-xprimary">
                     {t(`team.${member.key}.name`)}
                   </h3>
                   <p className="t-h6 text-xbrand">
@@ -122,10 +112,11 @@ export default function AboutPage({
 
       {/* Advisors */}
       <section className="bg-xbg">
-        <div className="w-full max-w-[1440px] mx-auto px-10 py-24 flex flex-col items-center gap-12 max-[991px]:px-8 max-[991px]:py-16 max-[479px]:px-5">
-          <h2 className="t-display2 text-xprimary text-center">
-            {t("advisorsHeading")}
-          </h2>
+        <div className="x-container x-section flex flex-col gap-12">
+          <div className="flex flex-col gap-4">
+            <span className="t-eyebrow text-xtertiary">{t("advisorsEyebrow")}</span>
+            <h2 className="t-display2 text-xprimary max-w-[20ch]">{t("advisorsHeading")}</h2>
+          </div>
 
           <div className="grid grid-cols-2 gap-10 w-full max-[767px]:grid-cols-1">
             {advisorKeys.map((advisor) => (
@@ -141,7 +132,7 @@ export default function AboutPage({
                   className="w-[160px] h-[224px] object-cover rounded-[16px] ring-1 ring-xborder max-[767px]:w-full max-[767px]:h-auto max-[767px]:max-w-[280px]"
                 />
                 <div className="flex flex-col gap-2">
-                  <h3 className="t-h2 text-xprimary">
+                  <h3 className="t-h3 text-xprimary">
                     {t(`advisors.${advisor.key}.name`)}
                   </h3>
                   <p className="t-h6 text-xbrand">

@@ -7,8 +7,9 @@ import FeatureImageSlideshow from "@/components/sections/FeatureImageSlideshow";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import CrossLinkSection from "@/components/feature-landing/CrossLinkSection";
 import ComparisonSection from "@/components/feature-landing/ComparisonSection";
-import MedicalStandardsBadge from "@/components/ui/MedicalStandardsBadge";
-import ComplianceBadges from "@/components/ui/ComplianceBadges";
+import ProofLine from "@/components/ui/ProofLine";
+import Icon from "@/components/ui/Icon";
+import { APP_STORE_URL } from "@/lib/site";
 import {
   featureVisuals,
   type FeatureVisualSlug,
@@ -209,29 +210,8 @@ export default function FeatureLandingPage(props: FeatureLandingPageProps) {
       {/* 1. HERO                                                       */}
       {/* ============================================================ */}
       <section className="relative overflow-hidden bg-xbg">
-        {/* Subtle radial glow backdrop */}
-        <div className="absolute inset-0 pointer-events-none bg-radial-glow" aria-hidden />
-        <div
-          className="absolute inset-0 opacity-[0.06] pointer-events-none"
-          aria-hidden
-          style={{
-            backgroundImage: "url(/images/dot-matrix.svg)",
-            backgroundPosition: "50%",
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "cover",
-          }}
-        />
 
-        <div
-          className="absolute right-[10%] top-[50%] -translate-y-[50%] w-[500px] h-[500px] rounded-full pointer-events-none max-[767px]:right-[50%] max-[767px]:translate-x-[50%] max-[767px]:top-[60%]"
-          aria-hidden
-          style={{
-            background: "radial-gradient(circle, rgba(71,100,255,0.25) 0%, transparent 70%)",
-            animation: "pulseGlow 4s ease-in-out infinite",
-          }}
-        />
-
-        <div className="relative z-10 w-full max-w-[1440px] mx-auto px-10 pt-[160px] pb-24 max-[991px]:px-8 max-[991px]:pt-[120px] max-[991px]:pb-16 max-[479px]:px-5">
+        <div className="relative z-10 x-container pt-[72px] pb-20"><div className="pt-12 md:pt-20">
           <div className="grid grid-cols-[1.4fr_1fr] gap-16 items-center max-[767px]:grid-cols-1 max-[767px]:gap-10">
             <div
               className="flex flex-col gap-8 text-xprimary"
@@ -244,34 +224,13 @@ export default function FeatureLandingPage(props: FeatureLandingPageProps) {
               </div>
 
               {/* Social proof */}
-              <div
-                className="flex items-center gap-4 flex-wrap"
-                style={{ animation: "fadeInUp 0.6s ease-out 0.4s both" }}
-              >
-                <div className="flex -space-x-2">
-                  {[
-                    "/images/testimonial-kris.jpeg",
-                    "/images/testimonial-jessica.jpeg",
-                    "/images/testimonial-michael.jpeg",
-                  ].map((src, i) => (
-                    <Image
-                      key={i}
-                      src={src}
-                      alt=""
-                      width={36}
-                      height={36}
-                      className="w-9 h-9 rounded-full border-2 border-xcard object-cover"
-                    />
-                  ))}
-                </div>
-                <span className="t-body2 text-xsecondary">{t("rated5")}</span>
-              </div>
+              {/* Rating held until the App Store count clears 100 (redesign decision 4). */}
 
               {/* CTA */}
               <div style={{ animation: "fadeInUp 0.6s ease-out 0.6s both" }}>
                 <div className="flex items-center gap-6 flex-wrap">
                   <a
-                    href="https://apps.apple.com/us/app/xheal/id6748074977"
+                    href={APP_STORE_URL}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-block"
@@ -284,10 +243,9 @@ export default function FeatureLandingPage(props: FeatureLandingPageProps) {
                       priority
                     />
                   </a>
-                  <MedicalStandardsBadge />
-                  <ComplianceBadges />
                 </div>
                 <p className="t-body3 text-xtertiary mt-2">{t("freeToDownload")}</p>
+                <ProofLine className="mt-5 border-t x-hairline pt-5" />
               </div>
             </div>
 
@@ -299,16 +257,8 @@ export default function FeatureLandingPage(props: FeatureLandingPageProps) {
               <div
                 className="relative"
                 data-feature-hero={props.pageSlug}
-                style={{ animation: "floatPhone 5s ease-in-out infinite" }}
+                
               >
-                <div
-                  className="absolute inset-0 -z-10 blur-[60px] opacity-50"
-                  aria-hidden
-                  style={{
-                    background:
-                      "radial-gradient(ellipse 60% 60% at 50% 50%, rgba(71,100,255,0.4) 0%, transparent 70%)",
-                  }}
-                />
                 <FeatureImageSlideshow
                   images={heroImages}
                   deviceFrame={visual.deviceFrame}
@@ -320,13 +270,14 @@ export default function FeatureLandingPage(props: FeatureLandingPageProps) {
             </div>
           </div>
         </div>
+      </div>
       </section>
 
       {/* ============================================================ */}
       {/* 2. PAIN POINTS                                                */}
       {/* ============================================================ */}
       <section className="bg-xbg">
-        <div className="w-full max-w-[1440px] mx-auto px-10 py-24 flex flex-col gap-12 max-[991px]:px-8 max-[991px]:py-16 max-[479px]:px-5">
+        <div className="x-container x-section flex flex-col gap-12">
           <ScrollReveal>
             <h2 className="t-display2 text-xprimary max-w-[52rem]">
               {props.painHeading}
@@ -337,12 +288,7 @@ export default function FeatureLandingPage(props: FeatureLandingPageProps) {
             {props.painPoints.map((p, i) => (
               <ScrollReveal key={p.title} delay={i * 120}>
                 <div className="surface-card-feature p-8 flex flex-col gap-5 h-full">
-                  <span
-                    className="text-xbrand"
-                    style={{ fontFamily: "MaterialSymbolsRounded", fontSize: 32 }}
-                  >
-                    {p.icon}
-                  </span>
+                  <Icon name={p.icon} size={32} className="text-xbrand" />
                   <h3 className="t-h3 text-xprimary">{p.title}</h3>
                   <p className="t-body1 text-xsecondary">{p.detail}</p>
                 </div>
@@ -356,17 +302,10 @@ export default function FeatureLandingPage(props: FeatureLandingPageProps) {
       {/* 3. HOW IT WORKS                                               */}
       {/* ============================================================ */}
       <section className="relative bg-xbg">
-        <div
-          className="absolute inset-0 pointer-events-none opacity-60"
-          aria-hidden
-          style={{
-            background:
-              "radial-gradient(ellipse 60% 40% at 50% 50%, rgba(71, 100, 255, 0.08) 0%, transparent 70%)",
-          }}
-        />
-        <div className="relative w-full max-w-[1440px] mx-auto px-10 py-24 flex flex-col items-center gap-12 max-[991px]:px-8 max-[991px]:py-16 max-[479px]:px-5">
+
+        <div className="relative x-container x-section flex flex-col gap-12">
           <ScrollReveal>
-            <h2 className="t-display2 text-xprimary text-center">
+            <h2 className="t-display2 text-xprimary max-w-[52rem]">
               {props.howHeading}
             </h2>
           </ScrollReveal>
@@ -386,7 +325,7 @@ export default function FeatureLandingPage(props: FeatureLandingPageProps) {
               {props.howItWorks.map((s, i) => (
                 <ScrollReveal key={s.step} delay={i * 200}>
                   <div className="grid grid-cols-[64px_1fr] gap-8 items-start max-[767px]:grid-cols-[48px_1fr] max-[767px]:gap-5">
-                    <div className="w-16 h-16 rounded-full bg-xbrand text-white flex items-center justify-center t-h5 flex-shrink-0 relative z-10 shadow-[0_8px_24px_rgba(71,100,255,0.4)] max-[767px]:w-12 max-[767px]:h-12 max-[767px]:text-[14px]">
+                    <div className="w-16 h-16 rounded-full bg-xbrand text-white flex items-center justify-center t-h5 flex-shrink-0 relative z-10 max-[767px]:w-12 max-[767px]:h-12 max-[767px]:text-[14px]">
                       {s.step}
                     </div>
                     <div className="surface-card-feature p-8 flex flex-col gap-3">
@@ -410,7 +349,7 @@ export default function FeatureLandingPage(props: FeatureLandingPageProps) {
       {/* 4. USE CASES                                                  */}
       {/* ============================================================ */}
       <section className="bg-xbg">
-        <div className="w-full max-w-[1440px] mx-auto px-10 py-24 flex flex-col gap-12 max-[991px]:px-8 max-[991px]:py-16 max-[479px]:px-5">
+        <div className="x-container x-section flex flex-col gap-12">
           <ScrollReveal>
             <h2 className="t-display2 text-xprimary max-w-[52rem]">
               {props.useCasesHeading}
@@ -454,17 +393,11 @@ export default function FeatureLandingPage(props: FeatureLandingPageProps) {
       {/* TESTIMONIALS                                                  */}
       {/* ============================================================ */}
       <section className="relative overflow-hidden bg-xbg-2">
-        <div
-          className="absolute top-[-100px] left-[20%] w-[400px] h-[400px] rounded-full pointer-events-none"
-          aria-hidden
-          style={{
-            background: "radial-gradient(circle, rgba(71,100,255,0.15) 0%, transparent 70%)",
-          }}
-        />
 
-        <div className="relative w-full max-w-[1440px] mx-auto px-10 py-24 flex flex-col items-center gap-12 max-[991px]:px-8 max-[991px]:py-16 max-[479px]:px-5">
+
+        <div className="relative x-container x-section flex flex-col gap-12">
           <ScrollReveal>
-            <h2 className="t-display2 text-xprimary text-center">
+            <h2 className="t-display2 text-xprimary max-w-[52rem]">
               {props.testimonialsHeading}
             </h2>
           </ScrollReveal>
@@ -472,7 +405,7 @@ export default function FeatureLandingPage(props: FeatureLandingPageProps) {
           <div className="grid grid-cols-3 gap-6 w-full max-[991px]:grid-cols-1">
             {props.testimonials.map((tm, i) => (
               <ScrollReveal key={tm.name} delay={i * 150}>
-                <div className="border border-xborder bg-xcard rounded-[20px] p-8 flex flex-col justify-between gap-7 h-full transition-all duration-300 hover:border-xborder-medium hover:-translate-y-1 hover:shadow-lg">
+                <div className="border border-xborder bg-xcard rounded-[20px] p-8 flex flex-col justify-between gap-7 h-full transition-all duration-300 hover:border-xborder-medium">
                   <div className="flex flex-col gap-4">
                     <StarRating />
                     <p className="t-body1 text-xprimary">
@@ -502,7 +435,7 @@ export default function FeatureLandingPage(props: FeatureLandingPageProps) {
       {/* TRUST & SECURITY                                              */}
       {/* ============================================================ */}
       <section className="bg-xbg">
-        <div className="w-full max-w-[1440px] mx-auto px-10 py-24 max-[991px]:px-8 max-[991px]:py-16 max-[479px]:px-5">
+        <div className="x-container x-section">
           <div className="grid grid-cols-[1.4fr_1fr] gap-16 items-center max-[991px]:gap-10 max-[767px]:grid-cols-1">
             <ScrollReveal>
               <div className="flex flex-col gap-8">
@@ -522,20 +455,13 @@ export default function FeatureLandingPage(props: FeatureLandingPageProps) {
                   ))}
                 </div>
 
-                <ComplianceBadges />
+                <ProofLine />
               </div>
             </ScrollReveal>
 
             <ScrollReveal delay={200}>
               <div className="relative">
-                <div
-                  className="absolute inset-0 -z-10 blur-[80px] opacity-50"
-                  aria-hidden
-                  style={{
-                    background:
-                      "radial-gradient(ellipse 60% 60% at 50% 50%, rgba(71,100,255,0.3) 0%, transparent 70%)",
-                  }}
-                />
+
                 <Image
                   src="/images/xheal-360.svg"
                   alt="xHeal 360-degree health analysis"
@@ -553,9 +479,9 @@ export default function FeatureLandingPage(props: FeatureLandingPageProps) {
       {/* FAQ                                                           */}
       {/* ============================================================ */}
       <section className="bg-xbg-2">
-        <div className="w-full max-w-[1440px] mx-auto px-10 py-24 flex flex-col items-center gap-12 max-[991px]:px-8 max-[991px]:py-16 max-[479px]:px-5">
+        <div className="x-container x-section flex flex-col gap-12">
           <ScrollReveal>
-            <h2 className="t-display2 text-xprimary text-center">
+            <h2 className="t-display2 text-xprimary max-w-[52rem]">
               {props.faqHeading}
             </h2>
           </ScrollReveal>
@@ -574,24 +500,10 @@ export default function FeatureLandingPage(props: FeatureLandingPageProps) {
       {/* FINAL CTA                                                     */}
       {/* ============================================================ */}
       <section className="relative overflow-hidden bg-xbg">
-        <div
-          className="absolute inset-0 pointer-events-none"
-          aria-hidden
-          style={{
-            background:
-              "radial-gradient(ellipse 80% 60% at 50% 100%, rgba(71,100,255,0.18) 0%, transparent 60%), radial-gradient(ellipse 60% 40% at 80% 50%, rgba(168,85,247,0.08) 0%, transparent 60%)",
-          }}
-        />
-        <div
-          className="absolute bottom-[-100px] left-[50%] -translate-x-[50%] w-[600px] h-[300px] rounded-full pointer-events-none"
-          aria-hidden
-          style={{
-            background: "radial-gradient(ellipse, rgba(71,100,255,0.25) 0%, transparent 70%)",
-            animation: "pulseGlow 5s ease-in-out infinite",
-          }}
-        />
 
-        <div className="relative z-10 w-full max-w-[1440px] mx-auto px-10 py-32 flex flex-col items-center gap-8 text-center max-[991px]:px-8 max-[991px]:py-24 max-[479px]:px-5">
+
+
+        <div className="relative z-10 x-container flex flex-col items-center gap-8 py-32 text-center max-[991px]:py-24">
           <ScrollReveal>
             <h2 className="t-display1 text-xprimary max-w-[48rem] mx-auto">
               {props.ctaHeading}
@@ -604,7 +516,7 @@ export default function FeatureLandingPage(props: FeatureLandingPageProps) {
           </ScrollReveal>
           <ScrollReveal delay={300}>
             <a
-              href="https://apps.apple.com/us/app/xheal/id6748074977"
+              href={APP_STORE_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block"

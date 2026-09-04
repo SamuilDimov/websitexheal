@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 
+import { APP_STORE_URL } from "@/lib/site";
 export default async function ArticleCTA() {
   const t = await getTranslations("Blog");
 
@@ -11,7 +12,7 @@ export default async function ArticleCTA() {
         {t("ctaDescription")}
       </p>
       <a
-        href="https://apps.apple.com/us/app/xheal/id6748074977"
+        href={APP_STORE_URL}
         target="_blank"
         rel="noopener noreferrer"
         className="mt-2"

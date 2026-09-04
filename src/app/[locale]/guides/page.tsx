@@ -9,6 +9,8 @@ import { GuideCategoryCard, GuideListCard } from "@/components/guides/GuideCard"
 import GuidesSidebar from "@/components/guides/GuidesSidebar";
 import { Link } from "@/i18n/navigation";
 
+import Icon from "@/components/ui/Icon";
+import PageHeader from "@/components/ui/PageHeader";
 export default async function GuidesPage({
   params,
 }: {
@@ -26,21 +28,10 @@ export default async function GuidesPage({
 
   return (
     <div className="bg-xbg min-h-screen">
-      {/* Hero */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none bg-radial-glow" aria-hidden />
-        <div className="relative w-full max-w-[1440px] mx-auto px-10 pt-[160px] pb-12 flex flex-col items-center gap-4 max-[991px]:px-8 max-[991px]:pt-[120px] max-[479px]:px-5">
-          <h1 className="t-display2 text-xprimary text-center">
-            {t("heading")}
-          </h1>
-          <p className="t-body1 text-xsecondary text-center max-w-[600px]">
-            {t("subheading")}
-          </p>
-        </div>
-      </section>
+      <PageHeader eyebrow={t("eyebrow")} title={t("heading")} lead={t("subheading")} size="display2" />
 
       {/* Main content with sidebar */}
-      <section className="w-full max-w-[1440px] mx-auto px-10 py-12 max-[991px]:px-8 max-[479px]:px-5">
+      <section className="x-container pb-20 pt-2">
         <div className="flex gap-8 lg:gap-12">
           {/* Sidebar */}
           <GuidesSidebar
@@ -62,7 +53,7 @@ export default async function GuidesPage({
                   className="t-button-sm text-xbrand hover:underline flex items-center gap-1"
                 >
                   {t("viewAll")}
-                  <span className="font-icons text-[16px]">arrow_forward</span>
+                  <Icon name="arrow_forward" size={16} />
                 </Link>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -98,9 +89,7 @@ export default async function GuidesPage({
             <div className="mt-16 p-8 rounded-2xl bg-gradient-to-br from-xbrand/10 to-transparent border border-xbrand/20">
               <div className="flex flex-col md:flex-row items-center gap-6 md:gap-8">
                 <div className="flex-shrink-0 w-16 h-16 rounded-2xl bg-xbrand/20 flex items-center justify-center">
-                  <span className="font-icons text-[32px] text-xbrand">
-                    help
-                  </span>
+                  <Icon name="help" size={32} className="text-xbrand" />
                 </div>
                 <div className="flex-1 text-center md:text-left">
                   <h3 className="t-h4 text-xprimary mb-2">
@@ -110,7 +99,7 @@ export default async function GuidesPage({
                 </div>
                 <Link
                   href="/support"
-                  className="inline-flex items-center justify-center bg-xbrand text-white t-button-sm h-[44px] px-6 rounded-[10px] transition-all duration-200 hover:bg-[#5a73ff] hover:shadow-[0_8px_24px_rgba(71,100,255,0.4)]"
+                  className="inline-flex items-center justify-center bg-xbrand text-white t-button-sm h-[44px] px-6 rounded-[10px] transition-all duration-200 hover:bg-[#5a73ff]"
                 >
                   {t("helpCta")}
                 </Link>

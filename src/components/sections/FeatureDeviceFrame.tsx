@@ -32,9 +32,7 @@ export default function FeatureDeviceFrame({
         border: `${isLanding ? 5 : 4}px solid #202229`,
         borderRadius: isLanding ? 48 : 32,
         background: "#050609",
-        boxShadow: isLanding
-          ? "0 0 0 1px rgba(218, 222, 231, 0.42), inset 0 0 0 1px rgba(255, 255, 255, 0.08), 0 24px 56px rgba(0, 0, 0, 0.48)"
-          : "0 0 0 1px rgba(218, 222, 231, 0.42), inset 0 0 0 1px rgba(255, 255, 255, 0.08), 0 18px 40px rgba(0, 0, 0, 0.42)",
+        boxShadow: "0 0 0 1px var(--border-default)",
       }}
     >
       {children}
@@ -48,7 +46,7 @@ export default function FeatureDeviceFrame({
           height: isLanding ? 20 : 15,
           borderRadius: 9999,
           background: "#020204",
-          boxShadow: "inset 0 -1px 1px rgba(255, 255, 255, 0.08)",
+          
           transform: "translateX(-50%)",
         }}
       />
@@ -62,7 +60,7 @@ export default function FeatureDeviceFrame({
           height: "11%",
           borderRadius: 3,
           background: "linear-gradient(90deg, #15161b, #5c5f68 55%, #17181d)",
-          boxShadow: `0 ${isLanding ? 64 : 52}px 0 #34363e`,
+          
         }}
       />
       <span

@@ -5,6 +5,7 @@ import { Link } from "@/i18n/navigation";
 import { getBlogPosts } from "@/data/blog-posts";
 import { buildMetadata } from "@/lib/site";
 
+import PageHeader from "@/components/ui/PageHeader";
 export async function generateMetadata({
   params,
 }: {
@@ -37,8 +38,9 @@ export default async function TrifonBioPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const [t, tBlog] = await Promise.all([
+  const [t, tTeam, tBlog] = await Promise.all([
     getTranslations({ locale, namespace: "Team.trifon" }),
+    getTranslations({ locale, namespace: "Team" }),
     getTranslations({ locale, namespace: "Blog" }),
   ]);
   const posts = getBlogPosts(locale);
@@ -50,27 +52,21 @@ export default async function TrifonBioPage({
 
   return (
     <>
-      {/* Hero */}
-      <section className="relative bg-xbg overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none bg-radial-glow" aria-hidden />
-        <div className="relative w-full max-w-[1440px] mx-auto px-10 pt-[160px] pb-16 flex flex-col items-center gap-5 max-[991px]:px-8 max-[991px]:pt-[120px] max-[479px]:px-5">
-          <Image
-            src="/images/trifon.png"
-            alt={t("name")}
-            width={120}
-            height={120}
-            className="rounded-full object-cover ring-2 ring-xborder-medium"
-            style={{ width: 120, height: 120 }}
-          />
-          <h1 className="t-display1 text-xprimary text-center">{t("name")}</h1>
-          <p className="t-h4 text-xbrand">{t("role")}</p>
-        </div>
-      </section>
+      <PageHeader eyebrow={tTeam("eyebrow")} title={t("name")} lead={t("role")}>
+        <Image
+          src="/images/trifon.png"
+          alt={t("name")}
+          width={96}
+          height={96}
+          className="mt-2 rounded-full object-cover ring-1 ring-xborder"
+          style={{ width: 96, height: 96 }}
+        />
+      </PageHeader>
 
       {/* Bio content */}
       <section className="bg-xbg">
-        <div className="w-full max-w-[1440px] mx-auto px-10 py-24 flex flex-col items-center max-[991px]:px-8 max-[991px]:py-16 max-[479px]:px-5">
-          <div className="max-w-[800px] mx-auto w-full flex flex-col gap-12">
+        <div className="x-container pb-24 pt-4">
+          <div className="w-full max-w-[760px] flex flex-col gap-12">
             {/* About */}
             <div className="flex flex-col gap-5">
               <h2 className="t-h1 text-xprimary">{t("aboutHeading")}</h2>

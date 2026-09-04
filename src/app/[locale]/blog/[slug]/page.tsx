@@ -13,6 +13,8 @@ import RelatedPosts from "@/components/blog/RelatedPosts";
 import MedicalDisclaimer from "@/components/blog/MedicalDisclaimer";
 import { buildMetadata } from "@/lib/site";
 
+import Icon from "@/components/ui/Icon";
+import PageHeader from "@/components/ui/PageHeader";
 export const dynamicParams = false;
 
 export function generateStaticParams() {
@@ -79,24 +81,12 @@ export default async function BlogPostPage({
 
   return (
     <>
-      {/* Hero */}
-      <section className="relative bg-xbg overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none bg-radial-glow" aria-hidden />
-        <div className="relative w-full max-w-[1440px] mx-auto px-10 pt-[160px] pb-16 flex flex-col items-center gap-5 max-[991px]:px-8 max-[991px]:pt-[120px] max-[479px]:px-5">
-          {/* Category badge */}
-          <span className="badge badge-new">
-            {t(`categories.${post.category}`)}
-          </span>
-          <h1 className="t-display1 text-xprimary text-center max-w-[20ch]">
-            {post.title}
-          </h1>
-        </div>
-      </section>
+      <PageHeader eyebrow={t(`categories.${post.category}`)} title={post.title} />
 
       {/* Content */}
       <section className="bg-xbg">
-        <div className="w-full max-w-[1440px] mx-auto px-10 py-12 flex flex-col items-center max-[991px]:px-8 max-[479px]:px-5">
-          <div className="max-w-[800px] mx-auto w-full flex flex-col gap-6">
+        <div className="x-container pb-20 pt-2">
+          <div className="w-full max-w-[760px] flex flex-col gap-6">
             {/* Cover image */}
             <Image
               src={post.image}
@@ -139,9 +129,7 @@ export default async function BlogPostPage({
 
               {/* Date */}
               <div className="flex items-center gap-1.5 text-xtertiary">
-                <span className="font-icons" style={{ fontSize: "16px" }}>
-                  calendar_today
-                </span>
+                <Icon name="calendar_today" size={16} />
                 <span className="t-body3">
                   {post.date}
                   {post.lastUpdated && (
@@ -156,9 +144,7 @@ export default async function BlogPostPage({
 
               {/* Reading time */}
               <div className="flex items-center gap-1.5 text-xtertiary">
-                <span className="font-icons" style={{ fontSize: "16px" }}>
-                  schedule
-                </span>
+                <Icon name="schedule" size={16} />
                 <span className="t-body3">
                   {post.readingTime} {t("minRead")}
                 </span>

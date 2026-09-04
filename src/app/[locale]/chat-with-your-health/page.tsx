@@ -7,17 +7,20 @@ export default function ChatWithYourHealthPage() {
   const t = useTranslations("Feature_ChatWithYourHealth");
 
   /* Helper: wrap <accent>…</accent> in a coloured span via next-intl rich text */
-  function accent(key: string, color = "text-xbrand-light") {
+  function accent(key: string, color = "text-xbrand") {
     return t.rich(key, {
       accent: (chunks) => <span className={color}>{chunks}</span>,
     });
   }
 
+  /* Section headings keep their <accent> markup in the catalog but render plain: accent is reserved for the hero. */
+  const plain = (key: string) => t.rich(key, { accent: (chunks) => <>{chunks}</> });
+
   return (
     <FeatureLandingPage
       heroTitle={accent("heroTitle")}
       heroSubtitle={t("heroSubtitle")}
-      painHeading={accent("painHeading", "text-xbrand")}
+      painHeading={plain("painHeading")}
       painPoints={[
         {
           icon: "hub",
@@ -35,7 +38,7 @@ export default function ChatWithYourHealthPage() {
           detail: t("pain3Detail"),
         },
       ]}
-      howHeading={accent("howHeading", "text-xbrand")}
+      howHeading={plain("howHeading")}
       howItWorks={[
         {
           step: "01",
@@ -53,7 +56,7 @@ export default function ChatWithYourHealthPage() {
           description: t("how3Description"),
         },
       ]}
-      useCasesHeading={accent("useCasesHeading", "text-xbrand")}
+      useCasesHeading={plain("useCasesHeading")}
       useCases={[
         {
           question: t("uc1Question"),
@@ -105,7 +108,7 @@ export default function ChatWithYourHealthPage() {
         closingLine: t("compClosingLine"),
         highlightColumn: 3,
       }}
-      testimonialsHeading={accent("testimonialsHeading")}
+      testimonialsHeading={plain("testimonialsHeading")}
       testimonials={[
         {
           quote: t("test1Quote"),
@@ -126,7 +129,7 @@ export default function ChatWithYourHealthPage() {
           image: "/images/testimonials/t-130.png",
         },
       ]}
-      trustHeading={accent("trustHeading", "text-xbrand")}
+      trustHeading={plain("trustHeading")}
       trustItems={[
         { title: t("trust1Title"), detail: t("trust1Detail") },
         { title: t("trust2Title"), detail: t("trust2Detail") },
@@ -142,7 +145,7 @@ export default function ChatWithYourHealthPage() {
         { q: t("faq5Q"), a: t("faq5A") },
       ]}
       pageSlug="chat-with-your-health"
-      ctaHeading={accent("ctaHeading")}
+      ctaHeading={plain("ctaHeading")}
       ctaSubtitle={t("ctaSubtitle")}
     />
   );

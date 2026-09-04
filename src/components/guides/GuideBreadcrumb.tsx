@@ -2,6 +2,7 @@ import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { getCategoryLabel, type GuideCategory } from "@/data/guides";
 
+import Icon from "@/components/ui/Icon";
 interface GuideBreadcrumbProps {
   category?: string;
   guideTitle?: string;
@@ -26,9 +27,7 @@ export default async function GuideBreadcrumb({
 
       {category && (
         <>
-          <span className="font-icons text-[14px] opacity-50">
-            chevron_right
-          </span>
+          <Icon name="chevron_right" size={14} className="opacity-50" />
           <Link
             href={`/guides`}
             className="hover:text-xprimary transition-colors"
@@ -40,9 +39,7 @@ export default async function GuideBreadcrumb({
 
       {guideTitle && (
         <>
-          <span className="font-icons text-[14px] opacity-50">
-            chevron_right
-          </span>
+          <Icon name="chevron_right" size={14} className="opacity-50" />
           <span className="text-xsecondary truncate max-w-[200px]">
             {guideTitle}
           </span>
