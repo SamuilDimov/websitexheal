@@ -703,6 +703,32 @@ renders them now, so they do not bring the character back if they return.
 Verified: zero in the whole export, and zero in rendered text on the home,
 blog, feature and bg pages.
 
+## Chat overflow, and the carousel had no affordance
+
+**The Digital Twin chat was clipped on a phone.** It is DOM at a flat 12 px,
+which fits the 286 px screen a 320 px frame gives on a desktop; at 390 px wide
+the frame is 261 px and the content ran 35 px past the screen, cutting the
+input bar in half. The screen is a container now (`container-type:
+inline-size`) and the chat's whole stylesheet is in `em` against one root size
+of `clamp(8.5px, 4.2cqw, 12px)` — 4.2 cqw being that same 12 px at the design
+width, floored so it stays legible and capped so it never grows past what was
+drawn. Measured at 320, 390, 430 and 1440: zero overflow at every width, and
+still exactly 12 px on the desktop, so nothing there moved.
+
+**The Signals row did not look like a carousel and its cards did not line up.**
+Two separate things. The alignment was scroll snapping ignoring the row's own
+padding — it aligns a card's start edge to the scrollport's, so the row rested
+at `scrollLeft: 24` with the first card flush against the viewport while the
+heading above it was indented; `scroll-padding-inline: 1.5rem` is what puts
+them on the same line, and an `::after` spacer gives the last card the same
+clearance. The affordance is `ui/SnapDots.tsx`, which watches a row by
+selector rather than owning it — so the list stays plain markup that is a grid
+at `md` and a snap row below — and hides itself when there is nothing to
+scroll, which is exactly what happens at `md`. Position comes from scroll
+offset rather than an IntersectionObserver, so the dots track a drag instead
+of flipping at a threshold, and dividing the travel by dot count rather than
+by card width is what makes the last card reach the last dot.
+
 ## Hero order on a phone
 
 Stacked, the device belonged above the call to action, not below the

@@ -1,6 +1,7 @@
 import { useTranslations } from "next-intl";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import Icon from "@/components/ui/Icon";
+import SnapDots from "@/components/ui/SnapDots";
 
 /**
  * Signals: three real insight cards from the app, rendered as components so
@@ -50,6 +51,7 @@ export default function SignalsSection() {
         </ScrollReveal>
 
         <ul
+          id="signals-row"
           role="list"
           className="x-snap-row -mx-6 flex gap-4 overflow-x-auto px-6 pb-2 md:mx-0 md:grid md:grid-cols-3 md:gap-6 md:overflow-visible md:px-0 md:pb-0"
         >
@@ -76,6 +78,10 @@ export default function SignalsSection() {
             </li>
           ))}
         </ul>
+
+        {/* Hides itself at md, where the same list is a three-column grid and
+            there is nothing to scroll. */}
+        <SnapDots target="#signals-row" count={signals.length} label={t("heading")} className="-mt-6" />
       </div>
     </section>
   );

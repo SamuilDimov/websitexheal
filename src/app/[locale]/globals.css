@@ -2096,6 +2096,9 @@ blockquote {
   overflow: hidden;
   border-radius: 14% / 6.4%;
   background: #000e1b;
+  /* The chat inside is DOM at a fixed design size, so the screen has to be a
+     container it can measure itself against. */
+  container-type: inline-size;
 }
 .phone-frame__screen > img {
   display: block;
@@ -2123,9 +2126,38 @@ blockquote {
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
+  /* Snapping ignores the row's own padding: the first card's start edge gets
+     aligned to the scrollport's, so the row rests at scrollLeft 24 and the
+     card sits flush against the viewport while the heading above it is
+     indented. Scroll padding is what puts the two on the same line. */
+  scroll-padding-inline: 1.5rem;
 }
 .x-snap-row::-webkit-scrollbar {
   display: none;
+}
+/* Carousel affordance: the row gets an end pad so the last card does not sit
+   flush against the viewport edge, and dots below it so the row reads as
+   something you scroll. */
+/* An end stop, so the last card clears the edge the way the first one does. */
+.x-snap-row::after {
+  content: "";
+  flex: 0 0 0.5rem;
+}
+.snap-dot {
+  width: 22px;
+  height: 4px;
+  border-radius: 999px;
+  background-color: var(--border-medium);
+  transition: background-color 0.25s ease, width 0.25s ease;
+}
+.snap-dot[data-active="true"] {
+  width: 30px;
+  background-color: var(--accent);
+}
+@media (prefers-reduced-motion: reduce) {
+  .snap-dot {
+    transition: none;
+  }
 }
 .x-snap-item {
   scroll-snap-align: start;
@@ -2162,38 +2194,44 @@ blockquote {
 }
 
 /* Chat transcript as UI (inside the dark chapter) */
+/* The chat is laid out in em against this one size, so the whole transcript
+   scales with the phone rather than overflowing it. It was 12px flat, which
+   fits the 286px screen a 320px frame gives on a desktop and overflowed by
+   35px at 390px wide, where the frame is 261px — clipping the input bar. 4.2
+   cqw is that same 12px at the design width, floored so it stays legible and
+   capped so it never grows past the design. */
 .chat {
   font-family: var(--font-sans);
-  font-size: 12px;
+  font-size: clamp(8.5px, 4.2cqw, 12px);
   line-height: 1.45;
 }
 .chat__bar {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.6667em;
   padding: 12% 7% 4%;
 }
 .chat__bar-dot {
-  width: 8px;
-  height: 8px;
+  width: 0.6667em;
+  height: 0.6667em;
   border-radius: 999px;
   background: var(--status-success);
 }
 .chat__bar-title {
   font-weight: 600;
-  font-size: 13px;
+  font-size: 1.0833em;
 }
 .chat__body {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 0.8333em;
   padding: 4% 7%;
   flex: 1;
 }
 .chat__msg {
   max-width: 82%;
-  padding: 9px 12px;
-  border-radius: 14px;
+  padding: 0.75em 12px;
+  border-radius: 1.1667em;
   opacity: 0;
   transform: translateY(8px);
   transition: opacity 0.35s ease, transform 0.35s ease;
@@ -2214,9 +2252,9 @@ blockquote {
 .chat__card {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 12px;
-  border-radius: 14px;
+  gap: 0.8333em;
+  padding: 1.0em;
+  border-radius: 1.1667em;
   background: #0c1222;
   border: 1px solid #1e2740;
   opacity: 0;
@@ -2231,12 +2269,12 @@ blockquote {
 .chat__card-head {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.6667em;
 }
 .chat__card-icon {
   display: inline-flex;
-  width: 24px;
-  height: 24px;
+  width: 2.0em;
+  height: 2.0em;
   align-items: center;
   justify-content: center;
   border-radius: 999px;
@@ -2245,11 +2283,11 @@ blockquote {
 }
 .chat__card-title {
   font-weight: 600;
-  font-size: 12px;
+  font-size: 1.0em;
 }
 .chat__card-sub {
   font-family: var(--font-data-stack);
-  font-size: 9px;
+  font-size: 0.75em;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #878ca8;
@@ -2257,31 +2295,31 @@ blockquote {
 .chat__card-text {
   margin: 0;
   color: #bcbcbf;
-  font-size: 11.5px;
+  font-size: 0.9583em;
 }
 .chat__card-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: 0.6667em;
 }
 .chat__card-label {
   color: #878ca8;
-  font-size: 10.5px;
+  font-size: 0.875em;
 }
 .chat__card-value {
   font-weight: 600;
-  font-size: 11px;
+  font-size: 0.9167em;
 }
 .chat__chips {
   display: flex;
-  gap: 4px;
+  gap: 0.3333em;
 }
 .chat__chip {
-  padding: 3px 8px;
+  padding: 0.25em 8px;
   border-radius: 999px;
   border: 1px solid #1e2740;
-  font-size: 10px;
+  font-size: 0.8333em;
   color: #bcbcbf;
 }
 .chat__chip--on {
@@ -2291,16 +2329,16 @@ blockquote {
 }
 .chat__card-actions {
   display: flex;
-  gap: 6px;
-  margin-top: 2px;
+  gap: 0.5em;
+  margin-top: 0.1667em;
 }
 .chat__btn {
   flex: 1;
   text-align: center;
-  padding: 7px 8px;
+  padding: 0.5833em 8px;
   border-radius: 999px;
   border: 1px solid #1e2740;
-  font-size: 11px;
+  font-size: 0.9167em;
   font-weight: 600;
   color: #bcbcbf;
 }
@@ -2314,17 +2352,17 @@ blockquote {
   align-items: center;
   justify-content: space-between;
   margin: 0 7% 8%;
-  padding: 8px 8px 8px 14px;
+  padding: 0.6667em 8px 8px 14px;
   border-radius: 999px;
   border: 1px solid #1e2740;
   background: #0c1222;
   color: #878ca8;
-  font-size: 11px;
+  font-size: 0.9167em;
 }
 .chat__send {
   display: inline-flex;
-  width: 24px;
-  height: 24px;
+  width: 2.0em;
+  height: 2.0em;
   align-items: center;
   justify-content: center;
   border-radius: 999px;
