@@ -703,6 +703,25 @@ renders them now, so they do not bring the character back if they return.
 Verified: zero in the whole export, and zero in rendered text on the home,
 blog, feature and bg pages.
 
+## Hero order on a phone
+
+Stacked, the device belonged above the call to action, not below the
+disclaimer — the way the competitors in the brief do it, and the reason is
+straightforward: the phone is what earns the scroll to the App Store button,
+so arriving after it is the wrong way round.
+
+The hero is three grid items now rather than two columns — copy, device,
+buttons — because the device sits between the two text blocks on a phone and
+beside both of them on a desktop. Stacked, DOM order does the work. From `md`
+the text blocks are placed back into one column by row and the device spans
+both rows on the right.
+
+The rows are pinned `auto 1fr`. Without that a row-spanning item shares its
+height out across the rows it spans, and the device is tall enough to push the
+buttons halfway down the column; measured, the gap between the lead and the
+App Store badge went from 24 px to well over a hundred. Pinned, it is 24 px
+again, which is the `gap-6` the single flex column used to give it.
+
 ## Section eyebrows removed
 
 Samuil pointed at CONNECT, THE PROBLEM and CONNECTS and said he does not like
