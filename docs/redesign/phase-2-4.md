@@ -422,12 +422,19 @@ which is what Samuil pointed at.
 
 `PhoneFrame` takes `chrome` and `island` now, both off by default:
 
-- `chrome` draws a titanium body on the model's own proportions (the GLB is
-  7.56 cm across a 6.96 cm display, so 4 % a side) in its titanium rather than
-  the graphite that used to be there, so the flat mockups sit beside the 3D
-  ones without looking like a different product. It is only correct because
-  the screenshots are cropped to bare screens; over a device render it would
-  be the second frame that started all this.
+- `chrome` puts the device back. It was a CSS gradient first, which was an
+  approximation and looked like one; it is the same Blender phone now,
+  rendered once as a flat asset by `--export-frame` (orthographic, face-on,
+  matte black screen, transparent surround, 21 KB) so the flat mockups and the
+  3D ones are literally the same object. Orthographic matters: the page insets
+  its content into the screen rect by percentage, and under perspective the
+  display plane — nearer the camera than the body's silhouette — projects
+  larger than its true share. The script prints the frame aspect and the
+  screen rect (89.382 % x 93.385 %, inset 5.309 % / 3.308 %) for the CSS to
+  use, which also means the asset must never be trimmed: trimming cuts at the
+  alpha bounds and breaks the correspondence. It is only correct at all
+  because the screenshots are cropped to bare screens; over a device render it
+  would be the second frame that started all this.
 - `island` is separate: the screenshots keep their own status bar, the chat
   has none. Where it is drawn the screen gets a 10 % top inset, the way an app
   clears the status bar — without it the island sat on top of the chat's

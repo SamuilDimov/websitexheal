@@ -95,6 +95,15 @@ def parse_args(argv):
         ),
     )
     p.add_argument(
+        "--export-frame",
+        default=None,
+        help=(
+            "render one orthographic, face-on still of the device with a black screen and a "
+            "transparent surround, for the mockups that cannot be 3D (live DOM, small cards). "
+            "Prints the screen rect as percentages so the CSS can inset content into it."
+        ),
+    )
+    p.add_argument(
         "--screen-aspect",
         default="1206:2622",
         help="display W:H when --bare-screen is set, since there is no image to take it from",
@@ -220,6 +229,20 @@ def mat_flash():
     b.inputs["Emission Color"].default_value = (0.9, 0.85, 0.7, 1.0)
     b.inputs["Emission Strength"].default_value = 0.15
     return m
+
+
+def mat_display_black():
+    """The display for the still frame: matte black, no emission. The DOM or
+    the screenshot goes on top of it in the page, so the render only has to
+    supply a screen-shaped hole of the right colour — anything emissive here
+    would glow through the content laid over it."""
+    mat = bpy.data.materials.new("Display")
+    mat.use_nodes = True
+    b = mat.node_tree.nodes["Principled BSDF"]
+    b.inputs["Base Color"].default_value = (0.004, 0.006, 0.012, 1.0)
+    b.inputs["Metallic"].default_value = 0.0
+    b.inputs["Roughness"].default_value = 0.42
+    return mat
 
 
 def mat_display_bare():
@@ -378,6 +401,22 @@ def animate(phone, height, beats, flip_deg):
         fc.extrapolation = "CONSTANT"
 
 
+def place_camera_ortho(height, margin=1.03):
+    """Orthographic and face-on, for the still frame. Perspective would make
+    the display plane, which sits nearer the camera than the body's silhouette,
+    project slightly larger than its true share of the device — and the page
+    insets content into that rect by percentage, so it has to be exact."""
+    data = bpy.data.cameras.new("Camera")
+    data.type = "ORTHO"
+    data.ortho_scale = height * margin
+    data.sensor_fit = "VERTICAL"
+    cam = link(bpy.data.objects.new("Camera", data))
+    bpy.context.scene.camera = cam
+    cam.location = Vector((0.0, 0.0, 60.0))
+    cam.rotation_euler = (0.0, 0.0, 0.0)
+    return cam
+
+
 def place_camera(height, fill):
     data = bpy.data.cameras.new("Camera")
     data.lens = 58.0
@@ -429,10 +468,10 @@ def configure_render(args, width, height_px):
 
 # -------------------------------------------------------------------- device
 
-def build_phone(screen_path, for_gltf=False, bare=None):
+def build_phone(screen_path, for_gltf=False, bare=None, black_screen=False):
     """Returns (parent empty, body height, dims). Front is +Z, top of the phone is +Y."""
     if bare is not None:
-        mat_disp = mat_display_bare()
+        mat_disp = mat_display_black() if black_screen else mat_display_bare()
         img_w, img_h = bare
     else:
         mat_disp, img_w, img_h = (mat_display_gltf if for_gltf else mat_display)(screen_path)
@@ -553,8 +592,50 @@ def main():
 
     clear_scene()
     phone, body_h, (bw, bh, bd, iw, ih) = build_phone(
-        screen_path, for_gltf=args.export_glb is not None, bare=bare
+        screen_path,
+        for_gltf=args.export_glb is not None,
+        bare=bare,
+        black_screen=args.export_frame is not None,
     )
+
+    if args.export_frame:
+        # The device as a flat asset: orthographic, face-on, screen matte black,
+        # everything outside the body transparent. The page lays its own screen
+        # over the black rect, so the render is the body and nothing else.
+        build_world()
+        build_lights()
+        place_camera_ortho(body_h)
+        scene = bpy.context.scene
+        scene.render.engine = "BLENDER_EEVEE_NEXT"
+        scene.render.film_transparent = True
+        scene.render.resolution_y = 2400
+        scene.render.resolution_x = int(round(2400 * (bw / bh)))
+        scene.render.resolution_percentage = 100
+        scene.render.image_settings.file_format = "PNG"
+        scene.render.image_settings.color_mode = "RGBA"
+        scene.view_settings.view_transform = "Standard"
+        scene.eevee.taa_render_samples = max(args.samples, 128)
+        path = os.path.expanduser(args.export_frame)
+        os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+        scene.render.filepath = path
+        scene.frame_set(0)
+        bpy.ops.render.render(write_still=True)
+        # The display's share of the body, which the CSS insets content by.
+        disp_w = DISPLAY_WIDTH_MM * MM
+        disp_h = disp_w * (ih / iw)
+        print(f"[hero-phone] frame {path}  {scene.render.resolution_x}x{scene.render.resolution_y}")
+        print(f"[hero-phone] device {bw:.3f} x {bh:.3f} cm, screen {disp_w:.3f} x {disp_h:.3f} cm")
+        # Relative to the rendered frame, not to the device: the frame carries a
+        # margin so the bevel's outermost pixel is not clipped, and the CSS
+        # insets against the image. Do not trim the output — trimming cuts at
+        # the alpha bounds and breaks the correspondence these numbers rely on.
+        margin = 1.03
+        print(f"[hero-phone] frame aspect {bw / bh:.5f}   "
+              f"screen inset  x {(1 - disp_w / (bw * margin)) / 2 * 100:.3f}%  "
+              f"y {(1 - disp_h / (bh * margin)) / 2 * 100:.3f}%   "
+              f"screen size  w {disp_w / (bw * margin) * 100:.3f}%  "
+              f"h {disp_h / (bh * margin) * 100:.3f}%")
+        return
 
     if args.export_glb:
         # Geometry and materials only. glTF has no area light, and the scene

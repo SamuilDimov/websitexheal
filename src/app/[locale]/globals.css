@@ -2040,34 +2040,41 @@ blockquote {
 .phone-frame {
   border-radius: 14% / 6.4%;
 }
-/* A device for the mockups that cannot be one. The 3D model carries a real
-   titanium body; the flat surfaces — the Digital Twin chat, which is live DOM,
-   and the bento phones — had nothing after the bezel came off, and a bare
-   screen next to real devices reads as a slab. This is that body in CSS, on
-   the model's own proportions (the GLB is 7.56 cm across a 6.96 cm display, so
-   4 % a side) and its titanium rather than the graphite that was here before.
-   It is only correct because the screenshots are cropped to bare screens now;
-   over a device render it would be the second frame Samuil rightly objected
-   to. */
+/* A device for the mockups that cannot be one.
+   The 3D model carries a real titanium body; the flat surfaces — the Digital
+   Twin chat, which is live DOM, and the bento phones — had nothing after the
+   bezel came off, and a bare screen next to real devices reads as a slab.
+   This is the same Blender device, rendered once as a flat asset
+   (`--export-frame`: orthographic, face-on, matte black screen, transparent
+   surround) rather than approximated in CSS, so the flat mockups and the 3D
+   ones are literally the same phone.
+
+   The numbers below come from the render itself, which prints them: the frame
+   is the device box plus a 3 % margin, and the screen occupies 89.382 % x
+   93.385 % of it, centred. Orthographic is what makes them exact — under
+   perspective the display plane, being nearer the camera than the body's
+   silhouette, projects larger than its true share. Re-render and the script
+   reprints these; never trim the asset, which would cut at the alpha bounds
+   and break the correspondence. */
 .phone-frame--chrome {
-  padding: 4%;
-  border-radius: 15.5% / 7.1%;
-  background: linear-gradient(
-    104deg,
-    #a9acb4 0%,
-    #edeff3 20%,
-    #c8ccd3 46%,
-    #f5f6f9 72%,
-    #aeb1b9 100%
-  );
+  aspect-ratio: 0.48055;
+  background-image: url("/images/phone-body.webp");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  border-radius: 0;
 }
 .phone-frame--chrome .phone-frame__screen {
-  border-radius: 12.6% / 6.1%;
+  position: absolute;
+  left: 5.309%;
+  top: 3.308%;
+  width: 89.382%;
+  height: 93.385%;
+  border-radius: 12.4% / 5.9%;
 }
 /* DOM content has to clear the island the way an app clears the status bar;
    a screenshot already accounts for it in its own pixels. */
 .phone-frame__screen--inset {
-  padding-top: 10%;
+  padding-top: 8%;
 }
 /* The cropped screenshots carry their own status bar and island; only the
    chat, which is DOM, needs one drawn. */

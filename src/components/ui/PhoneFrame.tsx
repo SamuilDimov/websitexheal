@@ -35,7 +35,7 @@ export default function PhoneFrame({
   return (
     <div
       className={`phone-frame${chrome ? " phone-frame--chrome" : ""} relative ${className}`}
-      style={{ aspectRatio, ...style }}
+      style={chrome ? style : { aspectRatio, ...style }}
       aria-hidden="true"
       data-tilt={tilt || undefined}
     >
