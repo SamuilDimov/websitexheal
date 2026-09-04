@@ -94,7 +94,20 @@ export const ENTRANCES = {
 
 export type EntranceName = keyof typeof ENTRANCES;
 
-/** The GLB is fetched once per page however many devices are on it. */
+/**
+ * The GLB is fetched once per page however many devices are on it, and the
+ * fetch is meant to be served by the `<link rel="preload">` in the layout.
+ *
+ * That only happens if the preload and the request agree on mode and
+ * credentials. `FileLoader` builds a `Request` with `credentials:
+ * "same-origin"` and the default `cors` mode — which is precisely what
+ * `crossorigin="anonymous"` on the link means, since anonymous maps to
+ * credentials mode *same-origin*, not omit. So the loader was always right and
+ * the first preload attempt, which had no `crossorigin` at all, was the thing
+ * that mismatched: Chrome reported "the request credentials mode does not
+ * match" and downloaded the model twice. Do not add `crossorigin` on one side
+ * without the other.
+ */
 let sharedModel: Promise<THREE.Group> | null = null;
 function loadPhone(): Promise<THREE.Group> {
   if (!sharedModel) {

@@ -500,14 +500,25 @@ sequence's length, chosen when the animation was the whole of the wait. As a
 live model the flip is the tail of a wait that already includes a lazy chunk,
 a GLB and a texture, about 1.7 s before the first frame.
 
-A `<link rel="preload">` on the model and the hero texture looked like the
-obvious way to shorten that first 1.7 s, and it made things worse: measured in
-Chrome, both assets were requested **twice**. Neither preload is matched by
-the loader that eventually asks for them — `TextureLoader` sets
-`crossOrigin=anonymous` and `FileLoader` fetches with `credentials:
-same-origin`, and a preload has to agree on request mode and credentials to be
-reused. Reverted. Shortening that head start needs the loaders and the
-preloads brought into agreement, not a link tag. The frame sequence waited so
+The model and the hero texture are preloaded in the head to shorten that
+first 1.7 s, and getting it right took two goes. The first attempt had both
+assets requested **twice**: a preload is reused only if the eventual request
+agrees with it on mode and credentials, and the link tags carried no
+`crossorigin`. The fix was one attribute, not code — `crossorigin="anonymous"`
+means credentials mode *same-origin*, which is exactly what both of three's
+loaders already use (`ImageLoader` puts the attribute on the element,
+`FileLoader` builds its Request with `credentials: "same-origin"`). Chrome had
+been saying so all along in the console: "the request credentials mode does
+not match."
+
+Worth recording because the intuition is backwards: anonymous does not mean
+omit. An intermediate version replaced `GLTFLoader.load` with a hand-rolled
+`fetch(..., { mode: "cors", credentials: "omit" })` to force a match, and that
+mismatched too. The stock loader was correct from the start.
+
+Measured after: both assets finish at 391 ms while the three.js chunk does not
+mount its canvas until 1254 ms, so the device has everything it needs the
+moment it exists, and neither asset is fetched twice. No preload warnings. The frame sequence waited so
 the flip did not start during hydration; the model is lazy-loaded, so by the
 time it can play the page has long settled and the beat was only an empty
 slot where the hero's phone belongs.

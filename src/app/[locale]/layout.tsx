@@ -71,6 +71,27 @@ export default async function LocaleLayout({ children, params }: Props) {
     >
       <head>
         {/*
+          The hero's device cannot start loading until the lazy three.js chunk
+          has parsed, so its model and screen are fetched here in parallel with
+          the JavaScript instead of behind it.
+
+          `crossorigin` is load-bearing. A preload is reused only if the
+          eventual request agrees with it on mode and credentials, and
+          anonymous means credentials mode *same-origin* — which is what both
+          of three's loaders already use (`ImageLoader` sets the attribute on
+          the element, `FileLoader` builds its Request with same-origin). The
+          first attempt at this omitted `crossorigin` and Chrome downloaded
+          both assets twice, reporting the mismatch in the console.
+        */}
+        <link rel="preload" href="/models/phone.glb" as="fetch" crossOrigin="anonymous" />
+        <link
+          rel="preload"
+          href="/images/screens-hero.webp"
+          as="image"
+          crossOrigin="anonymous"
+          fetchPriority="high"
+        />
+        {/*
           One-time cleanup of legacy cookie-consent storage from the old
           deploy. The site is now cookieless and no longer reads or writes
           these keys; this purges them on first visit so returning users
