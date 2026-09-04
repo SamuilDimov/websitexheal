@@ -703,6 +703,32 @@ renders them now, so they do not bring the character back if they return.
 Verified: zero in the whole export, and zero in rendered text on the home,
 blog, feature and bg pages.
 
+## Mobile audit, and the feature pages had lost their device
+
+Swept 21 routes at 390 px — home, bg, about, blog, a post, guides, a guide,
+support, all three legal pages, the team page and all nine feature pages —
+checking for document overflow, elements outside the viewport, boxes clipping
+their own content, and console errors. No horizontal scroll anywhere and no
+errors. Four things flagged, all false positives worth naming so the next
+sweep does not chase them: the Signals snap row (its cards are meant to run
+past the edge), the bento phone (meant to be clipped by its card), the guides
+sidebar (a closed off-canvas drawer at `left: -280`) and a `-webkit-line-clamp:
+2` truncation.
+
+One real regression, and it was mine. `feature-visuals.ts` set
+`deviceFrame: false` for exactly the features whose screenshots were device
+renders — chat, flare-ups, health awareness, reports, log life events — since
+framing an image that already had a body would double it. Cropping those
+renders to bare screens made that flag wrong: five feature pages were showing
+a screen with no device at all, a flat rounded rectangle beside a page full of
+real ones. All nine are `true` now, and each renders the 3D device; the flag
+stays because a future visual that is not a phone screen would still want it
+off.
+
+The two flat screenshots left on the workouts, nutrition and mindfulness pages
+are 4:3 thumbnails on the cross-links to other features, not mockups, and are
+right as they are.
+
 ## Chat overflow, and the carousel had no affordance
 
 **The Digital Twin chat was clipped on a phone.** It is DOM at a flat 12 px,

@@ -74,7 +74,7 @@ export const featureVisuals = {
     ],
   },
   "chat-with-your-health": {
-    deviceFrame: false,
+    deviceFrame: true,
     images: [
       {
         src: "/images/screenshots/chat-flare-up.png",
@@ -85,7 +85,7 @@ export const featureVisuals = {
     ],
   },
   "flare-up-trigger-patterns": {
-    deviceFrame: false,
+    deviceFrame: true,
     images: [
       {
         src: "/images/screenshots/flare-up-insights.png",
@@ -102,7 +102,7 @@ export const featureVisuals = {
     ],
   },
   "health-awareness": {
-    deviceFrame: false,
+    deviceFrame: true,
     images: [
       {
         src: "/images/screenshots/health-awareness.webp",
@@ -113,7 +113,7 @@ export const featureVisuals = {
     ],
   },
   "specialist-ready-reports": {
-    deviceFrame: false,
+    deviceFrame: true,
     images: [
       {
         src: "/images/screenshots/doctor-report.webp",
@@ -135,7 +135,7 @@ export const featureVisuals = {
     ],
   },
   "log-life-events": {
-    deviceFrame: false,
+    deviceFrame: true,
     images: [
       {
         src: "/images/screenshots/log-life-event.webp",
@@ -172,6 +172,13 @@ export const featureVisuals = {
 } as const satisfies Record<
   FeatureVisualSlug,
   {
+    /**
+     * Always true now. It used to be false for the features whose screenshots
+     * were device renders — they carried their own body, so framing them again
+     * doubled it up. Those renders are cropped to bare screens, so every visual
+     * needs the device supplied. Kept as a flag because a future visual that is
+     * not a phone screen (a chart, a report) would want it off.
+     */
     deviceFrame: boolean;
     images: readonly {
       src: string;
