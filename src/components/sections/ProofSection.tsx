@@ -27,7 +27,6 @@ export default async function ProofSection() {
       <div className="x-container x-section flex flex-col gap-14 md:gap-20">
         <ScrollReveal>
           <div className="flex flex-col gap-4">
-            <span className="t-eyebrow text-xtertiary">{t("eyebrow")}</span>
             <h2 id="proof-heading" className="t-display2 text-xprimary max-w-[20ch]">
               {t("heading")}
             </h2>
@@ -47,7 +46,7 @@ export default async function ProofSection() {
         </ul>
 
         <ScrollReveal>
-          <p className="t-eyebrow text-xtertiary">{t("standards")}</p>
+          <p className="t-data text-xtertiary">{t("standards")}</p>
         </ScrollReveal>
       </div>
 

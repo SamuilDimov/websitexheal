@@ -703,6 +703,27 @@ renders them now, so they do not bring the character back if they return.
 Verified: zero in the whole export, and zero in rendered text on the home,
 blog, feature and bg pages.
 
+## Section eyebrows removed
+
+Samuil pointed at CONNECT, THE PROBLEM and CONNECTS and said he does not like
+"those labels, all of those, type of stuff". So every decorative eyebrow is
+gone: the section tags on Problem, How-it-works, Signals, Works-with,
+Features, Digital Twin, Proof, the FAQ and the close; the per-item labels on
+the How-it-works steps and the Signals cards; the three on About; the bento
+CTA's; the use-case tags on the feature pages; and `PageHeader`'s, which took
+the prop with it and nine call sites and four orphaned translators after it.
+Headings now open their own sections.
+
+Three things that look like eyebrows are kept, because they are controls or
+structure rather than decoration: the navbar's locale switch, the footer's
+column headings (a link list needs its heading) and the comparison table's
+column headers. Proof's standards line is kept too but restyled from
+`t-eyebrow` to `t-data` — it is a compliance claim that happened to be
+wearing a label's uppercase, and deleting it would have deleted the claim.
+
+Strings stay in the catalogs. Nothing renders them, and they are the cheap way
+back if a section wants its tag again.
+
 ## Type: one face
 
 IBM Plex Mono is out. Samuil clocked the eyebrows as somebody else's

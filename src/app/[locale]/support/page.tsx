@@ -50,7 +50,7 @@ export default function SupportPage() {
 
   return (
     <>
-      <PageHeader eyebrow={t("eyebrow")} title={t("heroTitle")} />
+      <PageHeader title={t("heroTitle")} />
 
       {/* FAQ Section */}
       <section className="bg-xbg">

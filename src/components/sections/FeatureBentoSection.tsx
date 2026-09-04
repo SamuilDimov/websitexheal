@@ -75,7 +75,6 @@ export default function FeatureBentoSection() {
       <div className="x-container x-section flex flex-col gap-12 md:gap-16">
         <ScrollReveal>
           <div className="flex flex-col gap-4">
-            <span className="t-eyebrow text-xtertiary">{b("eyebrow")}</span>
             <h2 id="features-heading" className="t-display2 text-xprimary max-w-[18ch]">
               {t("heading")} {t("headingAccent")}
             </h2>
@@ -146,7 +145,6 @@ export default function FeatureBentoSection() {
                 className="bento__tile x-card flex h-full min-h-[180px] flex-col justify-between gap-6 bg-xbg p-5 text-xprimary md:p-6"
               >
                 <div className="flex flex-col gap-2">
-                  <span className="t-eyebrow text-xtertiary">{b("ctaEyebrow")}</span>
                   <p className="t-h5 text-xprimary">{b("ctaTitle")}</p>
                 </div>
                 <Image

@@ -8,14 +8,12 @@ import type { ReactNode } from "react";
  * blocks with radial glows that the dark site used.
  */
 export default function PageHeader({
-  eyebrow,
   title,
   lead,
   size = "display1",
   children,
   id,
 }: {
-  eyebrow?: string;
   title: string;
   lead?: string;
   size?: "display1" | "display2";
@@ -27,7 +25,6 @@ export default function PageHeader({
     <header className="bg-xbg pt-[72px]">
       <div className="x-container pb-10 pt-12 md:pb-14 md:pt-20">
         <div className="flex max-w-[64ch] flex-col items-start gap-4">
-          {eyebrow ? <span className="t-eyebrow text-xtertiary">{eyebrow}</span> : null}
           <h1 id={id} className={`text-xprimary ${size === "display1" ? "t-display1" : "t-display2"}`}>
             {title}
           </h1>

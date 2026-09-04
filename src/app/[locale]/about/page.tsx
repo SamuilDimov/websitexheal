@@ -51,13 +51,12 @@ export default function AboutPage({
 
   return (
     <>
-      <PageHeader eyebrow={t("eyebrow")} title={t("heroTitle")} lead={t("heroSubtitle")} />
+      <PageHeader title={t("heroTitle")} lead={t("heroSubtitle")} />
 
       {/* Timeline */}
       <section className="bg-xbg" aria-labelledby="timeline-heading">
         <div className="x-container x-section flex flex-col gap-12 md:gap-16">
           <div className="flex flex-col gap-4">
-            <span className="t-eyebrow text-xtertiary">{t("timelineEyebrow")}</span>
             <h2 id="timeline-heading" className="t-display2 text-xprimary max-w-[18ch]">{t("timelineHeading")}</h2>
           </div>
           <MilestoneTimeline
@@ -76,7 +75,6 @@ export default function AboutPage({
       <section className="bg-xbg-2">
         <div className="x-container x-section flex flex-col gap-12">
           <div className="flex flex-col gap-4">
-            <span className="t-eyebrow text-xtertiary">{t("teamEyebrow")}</span>
             <h2 className="t-display2 text-xprimary max-w-[20ch]">{t("teamHeading")}</h2>
           </div>
 
@@ -114,7 +112,6 @@ export default function AboutPage({
       <section className="bg-xbg">
         <div className="x-container x-section flex flex-col gap-12">
           <div className="flex flex-col gap-4">
-            <span className="t-eyebrow text-xtertiary">{t("advisorsEyebrow")}</span>
             <h2 className="t-display2 text-xprimary max-w-[20ch]">{t("advisorsHeading")}</h2>
           </div>
 

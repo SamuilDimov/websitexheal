@@ -25,7 +25,6 @@ export default function WorksWithSection() {
     >
       <div className="x-container flex flex-col gap-5 py-8 md:flex-row md:items-center md:gap-10 md:py-7">
         <div className="flex flex-col gap-1 md:min-w-[220px]">
-          <span className="t-eyebrow text-xtertiary">{t("eyebrow")}</span>
           <h2 id="works-with-heading" className="t-body2 text-xsecondary">
             {t("importText")}
           </h2>

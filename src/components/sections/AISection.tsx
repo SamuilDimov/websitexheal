@@ -32,7 +32,6 @@ export default function AISection() {
       <div className="x-container py-24 md:py-32 lg:py-40">
         <ScrollReveal>
           <div className="flex flex-col gap-5">
-            <span className="t-eyebrow text-xtertiary">{t("eyebrow")}</span>
             <h2 id="ai-heading" className="t-display2 text-xprimary max-w-[22ch]">
               {t("heading")} {t("headingAccent")}
             </h2>

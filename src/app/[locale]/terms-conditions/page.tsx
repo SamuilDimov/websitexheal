@@ -29,11 +29,10 @@ export default async function TermsConditionsPage({
 }) {
   const { locale } = await params;
   const legal = getLegalContent(locale);
-  const tLegal = await getTranslations({ locale, namespace: "Legal" });
 
   return (
     <>
-      <PageHeader eyebrow={tLegal("eyebrow")} title={legal.termsConditions.title} />
+      <PageHeader title={legal.termsConditions.title} />
 
       {/* Content */}
       <section className="bg-xbg">

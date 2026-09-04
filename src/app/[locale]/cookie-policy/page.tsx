@@ -28,11 +28,10 @@ export default async function CookiePolicyPage({
 }) {
   const { locale } = await params;
   const legal = getLegalContent(locale);
-  const tLegal = await getTranslations({ locale, namespace: "Legal" });
 
   return (
     <>
-      <PageHeader eyebrow={tLegal("eyebrow")} title={legal.cookiePolicy.title} />
+      <PageHeader title={legal.cookiePolicy.title} />
 
       {/* Content */}
       <section className="bg-xbg">

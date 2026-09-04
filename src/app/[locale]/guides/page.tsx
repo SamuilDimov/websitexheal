@@ -28,7 +28,7 @@ export default async function GuidesPage({
 
   return (
     <div className="bg-xbg min-h-screen">
-      <PageHeader eyebrow={t("eyebrow")} title={t("heading")} lead={t("subheading")} size="display2" />
+      <PageHeader title={t("heading")} lead={t("subheading")} size="display2" />
 
       {/* Main content with sidebar */}
       <section className="x-container pb-20 pt-2">

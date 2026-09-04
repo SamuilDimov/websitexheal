@@ -22,7 +22,7 @@ export default async function BlogPage({
 
   return (
     <>
-      <PageHeader eyebrow={t("eyebrow")} title={t("heroTitle")} lead={t("heroSubtitle")} />
+      <PageHeader title={t("heroTitle")} lead={t("heroSubtitle")} />
 
       {/* Category filter + Posts */}
       <section className="bg-xbg">

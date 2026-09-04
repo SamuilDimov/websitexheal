@@ -360,7 +360,6 @@ export default function FeatureLandingPage(props: FeatureLandingPageProps) {
             {props.useCases.map((uc, i) => (
               <ScrollReveal key={uc.question} delay={i * 80}>
                 <div className="group surface-card-feature p-7 flex flex-col gap-4 h-full">
-                  <span className="t-overline text-xbrand">{uc.tag}</span>
                   <h3 className="t-h4 text-xprimary">
                     &ldquo;{uc.question}&rdquo;
                   </h3>

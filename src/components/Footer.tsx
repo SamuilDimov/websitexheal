@@ -33,7 +33,6 @@ function ClosingSection() {
       <div className="x-container x-section">
         <div className="grid items-center gap-12 md:grid-cols-[7fr_5fr] md:gap-16">
           <div className="flex flex-col items-start gap-6">
-            <span className="t-eyebrow text-xtertiary">{t("eyebrow")}</span>
             <h2 id="closing-heading" className="t-display2 text-xprimary max-w-[16ch]">
               {t("heading")}
             </h2>
@@ -168,7 +167,6 @@ function NewsletterField() {
 
   return (
     <div id="sign-up" className="flex flex-col gap-4">
-      <span className="t-eyebrow text-xtertiary">{t("eyebrow")}</span>
       {submitted ? (
         <p className="t-body3 text-xsecondary">{t("successHeading")}</p>
       ) : (

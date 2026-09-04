@@ -69,7 +69,6 @@ export default function HowItWorksSection() {
       <div className="x-container x-section">
         <ScrollReveal>
           <div className="flex flex-col gap-4">
-            <span className="t-eyebrow text-xtertiary">{t("eyebrow")}</span>
             <h2 id="how-heading" className="t-display2 text-xprimary max-w-[18ch]">
               {t("title")}
             </h2>
@@ -88,7 +87,6 @@ export default function HowItWorksSection() {
                 className="how-step flex flex-col gap-5 border-t x-hairline py-10 md:min-h-[56vh] md:justify-center md:py-14"
                 data-active={active === index ? "true" : "false"}
               >
-                <span className="t-eyebrow text-xtertiary">{step.label}</span>
                 <h3 className="t-h2 text-xprimary max-w-[20ch]">{step.title}</h3>
                 <p className="t-body1 text-xsecondary max-w-[46ch]">{step.text}</p>
 

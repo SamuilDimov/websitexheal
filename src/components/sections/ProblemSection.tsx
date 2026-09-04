@@ -14,7 +14,6 @@ export default function ProblemSection() {
       <div className="x-container x-section flex flex-col gap-12 md:gap-16">
         <ScrollReveal>
           <div className="flex flex-col gap-4">
-            <span className="t-eyebrow text-xtertiary">{t("eyebrow")}</span>
             <h2 id="problem-heading" className="t-display2 text-xprimary max-w-[18ch]">
               {t("heading")}
             </h2>

@@ -81,7 +81,7 @@ export default async function BlogPostPage({
 
   return (
     <>
-      <PageHeader eyebrow={t(`categories.${post.category}`)} title={post.title} />
+      <PageHeader title={post.title} />
 
       {/* Content */}
       <section className="bg-xbg">

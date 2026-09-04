@@ -38,9 +38,8 @@ export default async function TrifonBioPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const [t, tTeam, tBlog] = await Promise.all([
+  const [t, tBlog] = await Promise.all([
     getTranslations({ locale, namespace: "Team.trifon" }),
-    getTranslations({ locale, namespace: "Team" }),
     getTranslations({ locale, namespace: "Blog" }),
   ]);
   const posts = getBlogPosts(locale);
@@ -52,7 +51,7 @@ export default async function TrifonBioPage({
 
   return (
     <>
-      <PageHeader eyebrow={tTeam("eyebrow")} title={t("name")} lead={t("role")}>
+      <PageHeader title={t("name")} lead={t("role")}>
         <Image
           src="/images/trifon.png"
           alt={t("name")}

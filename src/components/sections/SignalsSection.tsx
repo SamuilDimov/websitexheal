@@ -41,7 +41,6 @@ export default function SignalsSection() {
         <ScrollReveal>
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between md:gap-12">
             <div className="flex flex-col gap-4">
-              <span className="t-eyebrow text-xtertiary">{t("eyebrow")}</span>
               <h2 id="signals-heading" className="t-display2 text-xprimary max-w-[20ch]">
                 {t("heading")}
               </h2>
@@ -66,7 +65,6 @@ export default function SignalsSection() {
                     >
                       <Icon name={signal.icon} size={18} />
                     </span>
-                    <span className="t-eyebrow text-xtertiary">{signal.label}</span>
                   </div>
                   <p className="t-h3 text-xprimary">{signal.text}</p>
                   <p className="t-data text-xtertiary mt-auto flex items-center gap-2">

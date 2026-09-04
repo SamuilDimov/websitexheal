@@ -28,11 +28,10 @@ export default async function PrivacyPolicyPage({
 }) {
   const { locale } = await params;
   const legal = getLegalContent(locale);
-  const tLegal = await getTranslations({ locale, namespace: "Legal" });
 
   return (
     <>
-      <PageHeader eyebrow={tLegal("eyebrow")} title={legal.privacyPolicy.title} />
+      <PageHeader title={legal.privacyPolicy.title} />
 
       {/* Content */}
       <section className="bg-xbg">
