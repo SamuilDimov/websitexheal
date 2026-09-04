@@ -486,10 +486,18 @@ The first painted frame is the entrance's start pose now, not the resting one
 (and the resting one only under reduced motion, which plays no entrance).
 `play()` just runs the tween; the pose is already where it should be.
 
-Caught in Samuil's own Chrome through playwriter, since the Browser pane never
-animates: screenshot the hero canvas on a tight loop straight after `goto` and
-watch the PNG size. Before, 19 KB then 48 KB then **41 KB** then 90 KB — the
-dip is the flash. After, 7 KB, 44, 50, 103, 117, settling: it only ever grows.
+The evidence here was the code, not the measurement. Screenshotting the hero
+canvas on a tight loop through playwriter did show a dip in PNG size before
+the animation ramped, and that looked like the flash — but a 360 flip narrows
+the silhouette as the phone turns edge-on, so it dips on every run, fix or no
+fix. The reliable signal is the first painted frame: it used to be a
+full-size, fully-posed device and is now near-empty, because the phone starts
+below the frame.
+
+The lead-in came down with it, 0.35 s to 0.1 s. The frame sequence waited so
+the flip did not start during hydration; the model is lazy-loaded, so by the
+time it can play the page has long settled and the beat was only an empty
+slot where the hero's phone belongs.
 
 Worth noting for anyone tempted to add a poster image to `DeviceCanvas` while
 the lazy chunk loads: for `flip` that would reintroduce this exactly, a phone

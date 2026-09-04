@@ -63,7 +63,14 @@ export const ENTRANCES = {
     from: { y: -1.15, rot: [6 * R, -360 * R, -8 * R] },
     to: { y: 0, rot: [0, 0, 0] },
     duration: 2.8,
-    delay: 0.35,
+    /**
+     * The frame sequence waited 0.35 s so the flip did not start during
+     * hydration. The model is lazy-loaded, so by the time it can play the
+     * page has long settled and that beat is only an empty slot — the phone
+     * starts below the frame, so every millisecond of it is a hole where the
+     * hero's phone should be.
+     */
+    delay: 0.1,
     ease: "power2.out",
     /** Scroll-scrubbed exit, hero only. */
     exit: { y: -1.45, rot: [-6 * R, 52 * R, 5 * R] },
