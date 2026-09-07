@@ -49,14 +49,29 @@ export type DevicePose = {
   readonly y: number;
   readonly x?: number;
   readonly rot: readonly [number, number, number];
+  /**
+   * Lid angle in radians, for a device that has one. The laptop's GLB is
+   * authored with the lid upright, so 0 is open flat against the back,
+   * +90 deg is shut and a negative angle leans the screen away from you.
+   * Devices with no `Lid` node ignore it.
+   */
+  readonly lid?: number;
 };
+
+/** The two geometries the site ships. One GLB each, fetched once per page. */
+export const MODELS = {
+  phone: "/models/phone.glb",
+  laptop: "/models/laptop.glb",
+} as const;
+
+export type DeviceName = keyof typeof MODELS;
 
 /**
  * Entrances. The hero's is the render sequence's choreography, kept beat for
- * beat. The rest of the site gets `settle`, which is deliberately a different
- * gesture: the phone is already there, turned away three-quarters, and swings
- * round to face you as it comes into view. A second full flip on every section
- * would read as a tic.
+ * beat. Other phones get `settle`, which is deliberately a different gesture:
+ * the phone is already there, turned away three-quarters, and swings round to
+ * face you as it comes into view. A second full flip on every section would
+ * read as a tic. The laptop gets `open`, which is its own gesture entirely.
  */
 export const ENTRANCES = {
   flip: {
@@ -90,6 +105,32 @@ export const ENTRANCES = {
     ease: "power3.out",
     exit: null,
   },
+  /**
+   * The laptop's entrance, on the professional view. A phone's gesture is a
+   * turn, because a phone has no moving part; a laptop's is the lid, and
+   * borrowing the flip for it would waste the one thing the geometry was
+   * modelled for. It arrives nearly shut and a little low, then rises,
+   * squares up and opens onto the workspace.
+   *
+   * The body rests at 9 deg of pitch rather than square to the camera: an
+   * open laptop seen dead-on shows its deck edge-on, so the keyboard vanishes
+   * and the machine reads as a screen on a stick. The resting pose is the
+   * same one `hero-laptop.blend.py --export-still` renders for the poster, so
+   * the still and the live model are the same object in the same attitude and
+   * the hand-off between them is invisible.
+   */
+  open: {
+    from: { y: -0.1, x: 0.03, rot: [13 * R, -15 * R, 1.5 * R], lid: 58 * R },
+    // The lid rests just off upright, not thrown back: at -20 deg the screen
+    // was so foreshortened that the deck became the subject and the workspace
+    // — the thing the page is actually selling — was reading edge-on. The
+    // body's pitch is what shows the keyboard; the lid's job is to face you.
+    to: { y: 0, x: 0, rot: [7 * R, -4 * R, 0], lid: -5 * R },
+    duration: 1.7,
+    delay: 0.12,
+    ease: "power3.out",
+    exit: null,
+  },
 } as const;
 
 export type EntranceName = keyof typeof ENTRANCES;
@@ -108,17 +149,17 @@ export type EntranceName = keyof typeof ENTRANCES;
  * match" and downloaded the model twice. Do not add `crossorigin` on one side
  * without the other.
  */
-let sharedModel: Promise<THREE.Group> | null = null;
-function loadPhone(): Promise<THREE.Group> {
-  if (!sharedModel) {
-    sharedModel = new Promise((resolve, reject) => {
-      new GLTFLoader().load("/models/phone.glb", (gltf) => resolve(gltf.scene), undefined, reject);
+const sharedModels = new Map<string, Promise<THREE.Group>>();
+function loadDevice(url: string): Promise<THREE.Group> {
+  let pending = sharedModels.get(url);
+  if (!pending) {
+    pending = new Promise<THREE.Group>((resolve, reject) => {
+      new GLTFLoader().load(url, (gltf) => resolve(gltf.scene), undefined, reject);
     });
-    sharedModel.catch(() => {
-      sharedModel = null;
-    });
+    pending.catch(() => sharedModels.delete(url));
+    sharedModels.set(url, pending);
   }
-  return sharedModel;
+  return pending;
 }
 
 /**
@@ -158,8 +199,11 @@ const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 export default function DeviceModel({
   screen,
   poster,
+  device = "phone",
   entrance = "settle",
   fill = 0.9,
+  fitBy = "height",
+  envIntensity = 1,
   parallax = 0.06,
   tilt = 12,
   scrollScope,
@@ -167,11 +211,32 @@ export default function DeviceModel({
 }: {
   /** Screenshot to hang on the display. */
   screen: string;
+  /** Which geometry to load. `laptop` is the only one with a hinge. */
+  device?: DeviceName;
   /** Shown if WebGL or the model is unavailable. Defaults to the screenshot. */
   poster?: string;
   entrance?: EntranceName;
-  /** Fraction of the frame height the device fills at rest. */
+  /** Fraction of the fitted dimension the device fills at rest. */
   fill?: number;
+  /**
+   * Which of the device's dimensions the camera frames. A phone is taller
+   * than it is wide and fits on height; a laptop fits on width, or the open
+   * lid pushes it off both sides of the canvas.
+   */
+  fitBy?: "height" | "width";
+  /**
+   * How much of the studio's environment reflection the body keeps.
+   *
+   * The rig has four area lights and an environment gradient, and three's
+   * `RectAreaLight` casts no shadows — so a large flat upward-facing surface
+   * takes the whole bright top of that gradient with nothing occluding it.
+   * On a phone that is fine; a laptop's deck is four times the area and comes
+   * out looking like unlit grey clay, brighter than the screen it exists to
+   * frame. Damping the environment leaves the area lights' speculars doing
+   * the shaping, which is what gives the metal its edges back. The display is
+   * never touched: it is emissive and owns its own brightness.
+   */
+  envIntensity?: number;
   /**
    * Scroll parallax, as a fraction of the device's own height. The device
    * drifts up as its slot crosses the viewport, so it travels against the
@@ -252,21 +317,37 @@ export default function DeviceModel({
     }
 
     const camera = new THREE.PerspectiveCamera(CAMERA_FOV, 1, 1, 400);
-    const device = new THREE.Group();
-    scene.add(device);
+    const deviceGroup = new THREE.Group();
+    scene.add(deviceGroup);
 
     const config = ENTRANCES[entrance];
+    /** Pose units: poses are fractions of the device's own height. */
     let height = 15.7;
+    /** The dimension the camera frames, which is not always that height. */
+    let fitSpan = 15.7;
     let raf = 0;
     let disposed = false;
     let needsRender = true;
     const owned: Array<{ dispose: () => void }> = [];
+
+    /**
+     * Fitting on width has to run on every resize, not once on load: the
+     * distance that keeps a given width in frame depends on the canvas
+     * aspect, so a phone rotating to landscape would otherwise crop the
+     * laptop rather than reframe it.
+     */
+    const fitCamera = () => {
+      const half = Math.tan((CAMERA_FOV / 2) * R);
+      const denominator = fitBy === "width" ? half * Math.max(camera.aspect, 0.01) : half;
+      camera.position.z = fitSpan / 2 / (denominator * fill);
+    };
 
     const resize = () => {
       const rect = host.getBoundingClientRect();
       if (rect.width < 1 || rect.height < 1) return;
       renderer.setSize(rect.width, rect.height, false);
       camera.aspect = rect.width / rect.height;
+      fitCamera();
       camera.updateProjectionMatrix();
       needsRender = true;
     };
@@ -280,6 +361,8 @@ export default function DeviceModel({
     let poseY = 0;
     let poseX = 0;
     let driftY = 0;
+    /** The laptop's hinge, if this device has one. */
+    let lidNode: THREE.Object3D | null = null;
     const poseRot: [number, number, number] = [0, 0, 0];
     /** Where the pointer wants the device to look, and where it is now. */
     let aimYaw = 0;
@@ -293,9 +376,9 @@ export default function DeviceModel({
      */
     const SLIDE = 0.22;
     const place = () => {
-      device.position.y = (poseY + driftY - pitch * SLIDE * 0.6) * height;
-      device.position.x = (poseX + yaw * SLIDE) * height;
-      device.rotation.set(poseRot[0] + pitch, poseRot[1] + yaw, poseRot[2]);
+      deviceGroup.position.y = (poseY + driftY - pitch * SLIDE * 0.6) * height;
+      deviceGroup.position.x = (poseX + yaw * SLIDE) * height;
+      deviceGroup.rotation.set(poseRot[0] + pitch, poseRot[1] + yaw, poseRot[2]);
       needsRender = true;
     };
 
@@ -306,6 +389,7 @@ export default function DeviceModel({
       poseRot[0] = lerp(from.rot[0], to.rot[0], t);
       poseRot[1] = lerp(from.rot[1], to.rot[1], t);
       poseRot[2] = lerp(from.rot[2], to.rot[2], t);
+      if (lidNode) lidNode.rotation.x = lerp(from.lid ?? 0, to.lid ?? 0, t);
       place();
     };
 
@@ -377,7 +461,7 @@ export default function DeviceModel({
     let entranceObserver: IntersectionObserver | undefined;
 
     Promise.all([
-      loadPhone(),
+      loadDevice(MODELS[device]),
       new Promise<THREE.Texture>((resolve, reject) =>
         new THREE.TextureLoader().load(screenRef.current, resolve, undefined, reject),
       ),
@@ -405,9 +489,23 @@ export default function DeviceModel({
             node.material = material;
             display = material;
             owned.push(material);
+            return;
+          }
+          if (
+            envIntensity !== 1 &&
+            node.material instanceof THREE.MeshStandardMaterial
+          ) {
+            // Cloned per instance: the template's materials are shared with
+            // every other device on the page.
+            const material = node.material.clone();
+            material.envMapIntensity = envIntensity;
+            material.needsUpdate = true;
+            node.material = material;
+            owned.push(material);
           }
         });
-        device.add(model);
+        lidNode = model.getObjectByName("Lid") ?? null;
+        deviceGroup.add(model);
 
         /**
          * Swap the screen with a dip rather than a cut. The display is the
@@ -465,9 +563,12 @@ export default function DeviceModel({
           };
         }
 
+        // Measured at the authored pose, before the entrance moves anything:
+        // for the laptop that is the lid upright, which is a stable box to
+        // frame against however far the lid happens to be open.
         const box = new THREE.Box3().setFromObject(model);
         height = box.max.y - box.min.y;
-        camera.position.z = height / 2 / (Math.tan((CAMERA_FOV / 2) * R) * fill);
+        fitSpan = fitBy === "width" ? box.max.x - box.min.x : height;
 
         resize();
         // The first painted frame has to be wherever the entrance starts, not
@@ -552,7 +653,7 @@ export default function DeviceModel({
     // `screen` is deliberately not a dependency: it is read through a ref and
     // changes are handled by the swap below, without a rebuild.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [poster, entrance, fill, parallax, tilt, scrollScope]);
+  }, [poster, device, entrance, fill, fitBy, envIntensity, parallax, tilt, scrollScope]);
 
   useEffect(() => {
     swapRef.current?.(screen);

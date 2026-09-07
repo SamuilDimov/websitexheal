@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import type { EntranceName } from "@/components/ui/DeviceModel";
+import type { DeviceName, EntranceName } from "@/components/ui/DeviceModel";
 
 /**
  * Lazy boundary for every 3D device on the site.
@@ -21,18 +21,26 @@ const DeviceModel = dynamic(() => import("@/components/ui/DeviceModel"), {
 export default function DeviceCanvas({
   screen,
   poster,
+  device = "phone",
   entrance = "settle",
   fill = 0.9,
+  fitBy,
+  envIntensity,
   parallax,
+  tilt,
   scrollScope,
   className = "",
   aspect = "1494 / 2364",
 }: {
   screen: string;
   poster?: string;
+  device?: DeviceName;
   entrance?: EntranceName;
   fill?: number;
+  fitBy?: "height" | "width";
+  envIntensity?: number;
   parallax?: number;
+  tilt?: number;
   scrollScope?: string;
   className?: string;
   /** The canvas box. Wider than the device, which needs room to turn. */
@@ -43,9 +51,13 @@ export default function DeviceCanvas({
       <DeviceModel
         screen={screen}
         poster={poster}
+        device={device}
         entrance={entrance}
         fill={fill}
+        fitBy={fitBy ?? (device === "laptop" ? "width" : "height")}
+        envIntensity={envIntensity}
         parallax={parallax}
+        tilt={tilt}
         scrollScope={scrollScope}
         className="h-full w-full"
       />

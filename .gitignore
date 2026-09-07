@@ -61,3 +61,6 @@ start-err.log
 
 # root-level QA / dev screenshots produced by Playwright runs
 /*.jpeg
+
+# hero-laptop.blend.py imports hero-phone.blend.py as a module
+scripts/__pycache__/
