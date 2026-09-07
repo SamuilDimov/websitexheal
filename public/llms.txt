@@ -8,6 +8,7 @@ xHeal was founded by Trifon Getsov after a 4-year personal health crisis. Its pr
 
 - [Home](https://xheal.ai/): Overview of xHeal's health intelligence platform
 - [About](https://xheal.ai/about): Founding story, team, and medical advisors
+- [For Professionals](https://xheal.ai/professionals): xHeal Provider Workspace for clinics, practitioners and studios — services, appointments, clients, documents and analytics, with client-consented health context. Early access.
 - [Workouts & Recovery](https://xheal.ai/workouts): Readiness-based workout guidance, session logging, and progress tracking
 - [Nutrition](https://xheal.ai/nutrition): Seven-day meal planning based on targets, restrictions, allergies, and preferences
 - [Mindfulness & Wellbeing](https://xheal.ai/mindfulness): Contextual breathing practices, mood check-ins, and mindful activity

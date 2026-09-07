@@ -9,6 +9,10 @@ import { APP_STORE_URL } from "@/lib/site";
 import Icon from "@/components/ui/Icon";
 import AppleLogo from "@/components/ui/AppleLogo";
 import RollText from "@/components/ui/RollText";
+import AudienceSwitch, {
+  PROFESSIONAL_PATH,
+  isProfessionalPath,
+} from "@/components/ui/AudienceSwitch";
 
 /**
  * Capsule navigation (redesign phase 2).
@@ -17,22 +21,38 @@ import RollText from "@/components/ui/RollText";
  * the capsule gains a translucent card background, a blur and a hairline.
  * When a dark section (`data-surface="dark"`) sits under the capsule the
  * capsule itself switches to the dark token set so it stays legible.
+ *
+ * The capsule is audience-aware. `/professionals` is the same company seen
+ * from the buying side, so the switch, the links and the call to action all
+ * change with it: the consumer view asks for a download, the professional
+ * view asks for early access. Only the switch itself stays in both.
  */
 export default function Navbar() {
   const t = useTranslations("Navbar");
+  const tPro = useTranslations("ProNavbar");
   const locale = useLocale();
   const pathname = usePathname();
+  const isPro = isProfessionalPath(pathname);
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [overDark, setOverDark] = useState(false);
   const shellRef = useRef<HTMLElement>(null);
 
-  const links = [
+  const consumerLinks = [
     { href: "/#features", label: t("features") },
     { href: "/#how-it-works", label: t("howItWorks") },
     { href: "/blog", label: t("blog") },
     { href: "/about", label: t("about") },
-  ] as const;
+  ];
+  // Three anchors on the professional side: the capsule also carries the
+  // switch there, and a fourth link pushes the early-access pill off the row
+  // on a 13-inch laptop.
+  const professionalLinks = [
+    { href: `${PROFESSIONAL_PATH}#workspace`, label: tPro("workspace") },
+    { href: `${PROFESSIONAL_PATH}#consent`, label: tPro("consent") },
+    { href: `${PROFESSIONAL_PATH}#faq`, label: tPro("faq") },
+  ];
+  const links = isPro ? professionalLinks : consumerLinks;
 
   // Scroll state: 48 px threshold, the same trigger Bright uses.
   useEffect(() => {
@@ -98,7 +118,11 @@ export default function Navbar() {
   }, [isOpen]);
 
   const otherLocale = routing.locales.find((l) => l !== locale) ?? locale;
-  const capsuleSurface = overDark && !isOpen ? "dark" : "light";
+  // The open sheet paints its own ground, so the capsule matches the sheet
+  // rather than whatever section is scrolled under it. On the professional
+  // view that ground is dark end to end.
+  const sheetSurface = isPro ? "dark" : "light";
+  const capsuleSurface = isOpen ? sheetSurface : overDark ? "dark" : "light";
 
   return (
     <>
@@ -125,6 +149,8 @@ export default function Navbar() {
               />
             </Link>
 
+            <AudienceSwitch />
+
             <ul className="nav-capsule__links hidden md:flex" role="list">
               {links.map((item) => (
                 <li key={item.href}>
@@ -146,20 +172,33 @@ export default function Navbar() {
                 {otherLocale.toUpperCase()}
               </Link>
 
-              <a
-                href={APP_STORE_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="nav-capsule__cta"
-                data-magnetic
-              >
-                <span data-magnetic-inner>
-                  <AppleLogo size={15} className="nav-capsule__cta-icon" />
-                  <span className="max-[359px]:sr-only">
-                    <RollText>{t("getApp")}</RollText>
+              {isPro ? (
+                <Link
+                  href={`${PROFESSIONAL_PATH}#early-access`}
+                  className="nav-capsule__cta"
+                  data-magnetic
+                >
+                  <span data-magnetic-inner>
+                    <RollText>{tPro("cta")}</RollText>
+                    <Icon name="arrow_forward" size={15} />
                   </span>
-                </span>
-              </a>
+                </Link>
+              ) : (
+                <a
+                  href={APP_STORE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="nav-capsule__cta"
+                  data-magnetic
+                >
+                  <span data-magnetic-inner>
+                    <AppleLogo size={15} className="nav-capsule__cta-icon" />
+                    <span className="max-[359px]:sr-only">
+                      <RollText>{t("getApp")}</RollText>
+                    </span>
+                  </span>
+                </a>
+              )}
 
               <button
                 type="button"
@@ -179,10 +218,16 @@ export default function Navbar() {
       {/* Mobile sheet */}
       <div
         id="mobile-menu"
+        data-surface={sheetSurface}
         className={`nav-sheet md:hidden ${isOpen ? "is-open" : ""}`}
         aria-hidden={!isOpen}
       >
         <nav aria-label={t("primaryNavigation")} className="nav-sheet__inner">
+          <AudienceSwitch
+            variant="sheet"
+            className="mb-6"
+            onNavigate={() => setIsOpen(false)}
+          />
           <ul role="list" className="nav-sheet__links">
             {links.map((item) => (
               <li key={item.href}>
@@ -218,19 +263,34 @@ export default function Navbar() {
             >
               {t("switchLocale", { locale: otherLocale.toUpperCase() })}
             </Link>
-            <a
-              href={APP_STORE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="nav-sheet__cta"
-              tabIndex={isOpen ? 0 : -1}
-              data-magnetic
-            >
-              <span data-magnetic-inner>
-                <AppleLogo size={18} />
-                <RollText>{t("getApp")}</RollText>
-              </span>
-            </a>
+            {isPro ? (
+              <Link
+                href={`${PROFESSIONAL_PATH}#early-access`}
+                onClick={() => setIsOpen(false)}
+                className="nav-sheet__cta"
+                tabIndex={isOpen ? 0 : -1}
+                data-magnetic
+              >
+                <span data-magnetic-inner>
+                  <RollText>{tPro("cta")}</RollText>
+                  <Icon name="arrow_forward" size={18} />
+                </span>
+              </Link>
+            ) : (
+              <a
+                href={APP_STORE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="nav-sheet__cta"
+                tabIndex={isOpen ? 0 : -1}
+                data-magnetic
+              >
+                <span data-magnetic-inner>
+                  <AppleLogo size={18} />
+                  <RollText>{t("getApp")}</RollText>
+                </span>
+              </a>
+            )}
           </div>
         </nav>
       </div>

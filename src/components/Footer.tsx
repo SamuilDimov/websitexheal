@@ -4,7 +4,8 @@ import { useState } from "react";
 import Image from "next/image";
 import DeviceCanvas from "@/components/ui/DeviceCanvas";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
+import { isProfessionalPath } from "@/components/ui/AudienceSwitch";
 import { APP_STORE_URL } from "@/lib/site";
 import Icon from "@/components/ui/Icon";
 
@@ -15,11 +16,18 @@ import Icon from "@/components/ui/Icon";
  * the App Store call to action with a QR code for desktop visitors, then the
  * footer holds the sitemap, a one-field newsletter, socials, the compliance
  * disclaimer and the wordmark.
+ *
+ * The professional view ends on its own ask instead — the page renders
+ * `ProClosing` (early access) as its last section, so the App Store closing
+ * is dropped there rather than asking a clinic to download a consumer app.
+ * The sitemap footer below it is the same on both views.
  */
 export default function Footer() {
+  const isPro = isProfessionalPath(usePathname());
+
   return (
     <div data-surface="dark" className="relative z-[1] bg-xbg text-xprimary">
-      <ClosingSection />
+      {isPro ? null : <ClosingSection />}
       <SiteFooter />
     </div>
   );
@@ -106,6 +114,7 @@ function SiteFooter() {
     {
       heading: t("colCompany"),
       links: [
+        { href: "/professionals", label: t("linkProfessionals") },
         { href: "/about", label: t("linkAbout") },
         { href: "/blog", label: t("linkBlog") },
         { href: "/support", label: t("linkSupport") },

@@ -113,7 +113,15 @@ export default async function LocaleLayout({ children, params }: Props) {
         <PointerTilt />
         <ClientMessagesProvider
           locale={locale}
-          namespaces={["Navbar", "Footer", "Newsletter", "Closing", "Compliance"]}
+          namespaces={[
+            "Navbar",
+            "ProNavbar",
+            "AudienceSwitch",
+            "Footer",
+            "Newsletter",
+            "Closing",
+            "Compliance",
+          ]}
         >
           <div className="page-wrapper w-full relative overflow-x-clip">
             <Navbar />

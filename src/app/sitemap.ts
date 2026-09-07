@@ -19,6 +19,7 @@ type StaticPage = {
 const TRANSLATED_STATIC_PAGES: StaticPage[] = [
   { path: "/", changeFrequency: "weekly", priority: 1.0 },
   { path: "/about", changeFrequency: "monthly", priority: 0.8 },
+  { path: "/professionals", changeFrequency: "monthly", priority: 0.9 },
   { path: "/blog", changeFrequency: "weekly", priority: 0.9 },
   { path: "/support", changeFrequency: "monthly", priority: 0.5 },
   { path: "/privacy-policy", changeFrequency: "yearly", priority: 0.3 },

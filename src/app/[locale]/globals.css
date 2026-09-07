@@ -103,6 +103,12 @@
   --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4);
   --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.5);
   --shadow-glow: 0 8px 32px rgba(71, 100, 255, 0.3);
+
+  /* Audience switch (see .aud-switch). The control sits inside the nav
+     capsule, which flips surface under dark sections, so the track and thumb
+     are tokens rather than fixed colours. */
+  --switch-track: rgba(240, 242, 253, 0.07);
+  --switch-thumb: #1e2740;
 }
 
 
@@ -144,6 +150,8 @@
   --border-subtle: #eaedf5;
   --border-medium: #d3d8e8;
   --gradient-hero: var(--hero-wash);
+  --switch-track: rgba(20, 25, 51, 0.06);
+  --switch-thumb: #ffffff;
   background-color: var(--bg-primary);
   color: var(--text-primary);
 }
@@ -167,6 +175,8 @@
   --border-subtle: #0f1725;
   --border-medium: #1e2740;
   --gradient-hero: linear-gradient(180deg, #000e1b 0%, #0c1222 100%);
+  --switch-track: rgba(240, 242, 253, 0.07);
+  --switch-thumb: #1e2740;
   background-color: var(--bg-primary);
   color: var(--text-primary);
 }
@@ -1622,7 +1632,7 @@ blockquote {
   align-items: center;
   gap: 4px;
   width: 100%;
-  max-width: 880px;
+  max-width: 1040px;
   min-height: 52px;
   padding: 6px 6px 6px 14px;
   border-radius: 999px;
@@ -1671,8 +1681,30 @@ blockquote {
   height: 40px;
   padding: 0 14px;
   border-radius: 999px;
+  white-space: nowrap;
   color: var(--text-secondary);
   transition: color 0.2s ease, background-color 0.2s ease;
+}
+/* Between the breakpoint and 1024 px the capsule carries the switch, four
+   links, the locale and the pill on a narrow row. Everything tightens rather
+   than wrapping — "How it works" broke over three lines before this. */
+@media (min-width: 48rem) and (max-width: 63.99rem) {
+  .nav-capsule {
+    gap: 0;
+    padding-left: 12px;
+  }
+  .nav-capsule__logo {
+    margin-right: 4px;
+  }
+  .nav-capsule__link {
+    padding: 0 9px;
+  }
+  .nav-capsule__locale {
+    padding: 0 8px;
+  }
+  .nav-capsule__cta {
+    padding: 0 14px 0 12px;
+  }
 }
 .nav-capsule__link:hover,
 .nav-capsule__link:focus-visible {
@@ -2499,5 +2531,677 @@ blockquote {
   .timeline__item:last-child::before {
     bottom: auto;
     height: 34px;
+  }
+}
+
+/* ===== AUDIENCE SWITCH =====
+   Two links dressed as a segmented control. The thumb's position and width
+   are set inline from the measured active anchor (see AudienceSwitch.tsx);
+   everything else lives here.
+
+   `display` is declared per variant inside this unlayered block because
+   unlayered rules beat Tailwind's layered `hidden` / `md:inline-flex` — the
+   same trap the nav menu button hit above. */
+.aud-switch {
+  position: relative;
+  align-items: center;
+  flex: none;
+  padding: 3px;
+  border-radius: 999px;
+  background-color: var(--switch-track);
+}
+.aud-switch[data-variant="capsule"] {
+  display: none;
+  margin-right: 6px;
+}
+@media (min-width: 48rem) {
+  .aud-switch[data-variant="capsule"] {
+    display: inline-flex;
+  }
+}
+.aud-switch[data-variant="sheet"] {
+  display: flex;
+  width: 100%;
+}
+.aud-switch__thumb {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 0;
+  border-radius: 999px;
+  background-color: var(--switch-thumb);
+  border: 1px solid var(--border-default);
+  will-change: transform, width;
+}
+/* Withheld until the first measurement, or the thumb slides in from the left
+   edge on every page load. */
+.aud-switch[data-ready="true"] .aud-switch__thumb {
+  transition:
+    transform 0.42s cubic-bezier(0.32, 0.72, 0, 1),
+    width 0.42s cubic-bezier(0.32, 0.72, 0, 1);
+}
+.aud-switch__opt {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  color: var(--text-tertiary);
+  transition: color 0.24s ease;
+}
+.aud-switch__opt:hover,
+.aud-switch__opt:focus-visible {
+  color: var(--text-secondary);
+  text-decoration: none;
+}
+.aud-switch__opt[data-active="true"] {
+  color: var(--text-primary);
+}
+.aud-switch[data-variant="sheet"] .aud-switch__opt {
+  flex: 1;
+  height: 46px;
+  font-size: 15px;
+}
+@media (min-width: 48rem) and (max-width: 63.99rem) {
+  .aud-switch[data-variant="capsule"] {
+    margin-right: 4px;
+  }
+  .aud-switch[data-variant="capsule"] .aud-switch__opt {
+    padding: 0 10px;
+    font-size: 12px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .aud-switch[data-ready="true"] .aud-switch__thumb {
+    transition: none;
+  }
+}
+
+/* ===== PROFESSIONAL VIEW =====
+   `/professionals` runs on the v2 dark token set (the page wrapper carries
+   data-surface="dark"), so everything below is written against semantic
+   tokens and inherits the right values without a second palette. */
+
+.pro-hero {
+  background-color: var(--bg-primary);
+  background-image: radial-gradient(
+    1100px 480px at 50% -160px,
+    rgba(71, 100, 255, 0.18),
+    transparent 70%
+  );
+}
+
+.pro-hero__stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  margin-top: 56px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border-default);
+}
+@media (min-width: 768px) {
+  .pro-hero__stats {
+    gap: 0;
+  }
+  .pro-hero__stats > li + li {
+    padding-left: 32px;
+    border-left: 1px solid var(--border-default);
+  }
+}
+
+/* The laptop is a live 3D model now (see ProHero), so this is only the box it
+   is framed in — the bezel, lip and hinge that used to be drawn here are
+   geometry in `laptop.glb`. The canvas keeps its own aspect ratio, so the only
+   job left is width. Capped and centred while it is stacked under the copy on
+   a phone; edge to edge of its own column once it moves beside it. */
+.pro-laptop {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  margin-inline: auto;
+}
+@media (min-width: 768px) {
+  .pro-laptop {
+    max-width: none;
+  }
+}
+
+.pro-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 15px;
+  border-radius: 999px;
+  border: 1px solid var(--border-default);
+  background-color: var(--surface-card);
+  color: var(--text-secondary);
+}
+
+/* Two doors, one seam. The lock is taken out of flow so it does not claim a
+   grid cell, and it wears the section's own ground so the divider reads as
+   passing behind it. */
+.pro-doors {
+  position: relative;
+  display: grid;
+  gap: 28px;
+}
+.pro-doors__lock {
+  display: none;
+}
+@media (min-width: 768px) {
+  .pro-doors {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0;
+  }
+  .pro-doors > div:nth-of-type(1) {
+    padding-right: 56px;
+  }
+  .pro-doors > div:nth-of-type(2) {
+    padding-left: 56px;
+    border-left: 1px solid var(--border-default);
+  }
+  .pro-doors__lock {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    transform: translate(-50%, -50%);
+    border: 1px solid var(--border-default);
+    border-radius: 999px;
+    background-color: var(--bg-secondary);
+    color: var(--text-tertiary);
+  }
+}
+
+/* The five sidebar modules as a spec sheet: mark, name, one line. */
+.pro-stack > li {
+  border-top: 1px solid var(--border-default);
+}
+.pro-stack > li:last-child {
+  border-bottom: 1px solid var(--border-default);
+}
+.pro-stack__item {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  column-gap: 12px;
+  row-gap: 6px;
+  padding: 20px 0;
+  align-items: start;
+}
+.pro-stack__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 26px;
+  color: var(--brand-500);
+  transition: color 0.25s ease, transform 0.25s ease;
+}
+.pro-stack > li:hover .pro-stack__icon {
+  color: var(--text-primary);
+  transform: translateX(2px);
+}
+.pro-stack__title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.pro-stack__body {
+  grid-column: 2;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+@media (min-width: 768px) {
+  .pro-stack__item {
+    grid-template-columns: 56px minmax(170px, 240px) minmax(0, 1fr);
+    column-gap: 28px;
+    row-gap: 0;
+    padding: 26px 0;
+    align-items: baseline;
+  }
+  .pro-stack__icon {
+    /* Baseline alignment puts a flex box on its bottom edge; nudge the mark
+       back onto the title's own baseline. */
+    align-self: center;
+    justify-content: flex-start;
+    transform: translateY(1px);
+  }
+  .pro-stack > li:hover .pro-stack__icon {
+    transform: translateY(1px) translateX(2px);
+  }
+  .pro-stack__body {
+    grid-column: 3;
+  }
+}
+
+/* KPI strip. The hairlines are the 1 px grid gap showing through, which is
+   the one way to get clean dividers out of a grid that rewraps. */
+.pro-kpis {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  border: 1px solid var(--border-default);
+  border-radius: 20px;
+  background-color: var(--border-default);
+  overflow: hidden;
+}
+@media (min-width: 640px) {
+  .pro-kpis {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1024px) {
+  .pro-kpis {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+.pro-kpi {
+  padding: 18px 18px 20px;
+  background-color: var(--surface-card);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.pro-kpi[data-in="true"] {
+  opacity: 1;
+  transform: none;
+}
+.pro-kpi__label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+.pro-kpi__value {
+  margin-top: 10px;
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+.pro-kpi__note {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+.pro-analytics-grid {
+  display: grid;
+  gap: 16px;
+}
+@media (min-width: 900px) {
+  .pro-analytics-grid {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  }
+}
+
+.pro-panel {
+  margin: 0;
+  padding: 20px;
+  border: 1px solid var(--border-default);
+  border-radius: 20px;
+  background-color: var(--surface-card);
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.pro-panel[data-in="true"] {
+  opacity: 1;
+  transform: none;
+}
+.pro-panel__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+.pro-panel__title {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.pro-panel__sub {
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+.pro-panel__badge {
+  flex: none;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--status-success);
+}
+
+.pro-chart {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.pro-chart__grid {
+  stroke: var(--border-default);
+  stroke-width: 1;
+}
+.pro-chart__tick {
+  fill: var(--text-tertiary);
+  font-size: 11px;
+}
+.pro-chart__bar {
+  fill: var(--brand-600);
+  transform-box: fill-box;
+  transform-origin: bottom;
+  transform: scaleY(0);
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.pro-chart__bar[data-in="true"] {
+  transform: scaleY(1);
+}
+.pro-chart__line {
+  fill: none;
+  stroke: var(--status-success);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1400;
+  stroke-dashoffset: 1400;
+  transition: stroke-dashoffset 1.1s ease 0.35s;
+}
+.pro-chart__line[data-in="true"] {
+  stroke-dashoffset: 0;
+}
+.pro-chart__dot {
+  fill: var(--status-success);
+  stroke: var(--surface-card);
+  stroke-width: 2;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.pro-chart__dot[data-in="true"] {
+  opacity: 1;
+}
+
+.pro-legend {
+  display: flex;
+  gap: 20px;
+  margin-top: 14px;
+}
+.pro-legend__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+.pro-legend__swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+}
+.pro-legend__swatch--revenue {
+  background-color: var(--brand-600);
+}
+.pro-legend__swatch--visits {
+  background-color: var(--status-success);
+}
+
+/* The heatmap sits beside a taller chart. Rather than leaving dead space at
+   the bottom of the card, the rows take the height the grid hands them —
+   which is also how the workspace itself draws it. */
+.pro-panel--fill {
+  display: flex;
+  flex-direction: column;
+}
+.pro-panel--fill .pro-pulse {
+  flex: 1;
+}
+.pro-pulse {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.pro-panel--fill .pro-pulse__row:not(.pro-pulse__row--axis) {
+  flex: 1;
+  align-items: stretch;
+}
+.pro-panel--fill .pro-pulse__day {
+  align-self: center;
+}
+.pro-panel--fill .pro-pulse__cell {
+  height: auto;
+  min-height: 20px;
+}
+.pro-pulse__row {
+  display: grid;
+  grid-template-columns: 34px repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  align-items: center;
+}
+.pro-pulse__day,
+.pro-pulse__hour {
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+.pro-pulse__day {
+  text-align: right;
+}
+.pro-pulse__hour {
+  text-align: center;
+}
+.pro-pulse__cell {
+  height: 22px;
+  border-radius: 6px;
+  /* Mint at the slot's own load, mixed down into the panel's inner ground. */
+  background-color: color-mix(
+    in srgb,
+    var(--status-success) calc(var(--load, 0) * 100%),
+    var(--surface-card-inner)
+  );
+  opacity: 0;
+  transform: scaleX(0.92);
+  transform-origin: left;
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+.pro-pulse__cell[data-in="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+.pro-consent-card {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 20px;
+  border: 1px solid var(--border-default);
+  border-radius: 24px;
+  background-color: var(--surface-card);
+}
+.pro-consent-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px;
+  border: 1px solid color-mix(in srgb, var(--theme-amber-accent) 38%, transparent);
+  border-radius: 16px;
+  background-color: color-mix(in srgb, var(--theme-amber-accent) 7%, transparent);
+}
+.pro-consent-banner__mark {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background-color: color-mix(in srgb, var(--theme-amber-accent) 14%, transparent);
+  color: var(--theme-amber-accent);
+}
+.pro-consent-banner__title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.pro-consent-banner__body {
+  margin-top: 5px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+.pro-meter__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+.pro-meter__label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+.pro-meter__value {
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--theme-amber-accent);
+}
+.pro-meter__track {
+  margin-top: 12px;
+  height: 8px;
+  border-radius: 999px;
+  background-color: var(--surface-card-inner);
+  overflow: hidden;
+}
+.pro-meter__fill {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: 999px;
+  background-color: var(--theme-amber-accent);
+  transition: width 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.1s;
+}
+.pro-meter__fill[data-in="true"] {
+  width: var(--ready, 0%);
+}
+.pro-meter__caption {
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+.pro-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  text-align: left;
+}
+.pro-table thead th {
+  padding: 0 20px 12px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  border-bottom: 1px solid var(--border-medium);
+}
+.pro-table tbody th,
+.pro-table tbody td {
+  padding: 20px;
+  vertical-align: top;
+  border-bottom: 1px solid var(--border-default);
+}
+.pro-table tbody th {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.pro-table tbody tr[data-ours="true"] th,
+.pro-table tbody tr[data-ours="true"] td {
+  background-color: color-mix(in srgb, var(--accent) 12%, transparent);
+  border-bottom-color: color-mix(in srgb, var(--accent) 30%, transparent);
+  color: var(--text-primary);
+}
+.pro-table tbody tr[data-ours="true"] th:first-child {
+  border-top-left-radius: 14px;
+  border-bottom-left-radius: 14px;
+}
+.pro-table tbody tr[data-ours="true"] td:last-child {
+  border-top-right-radius: 14px;
+  border-bottom-right-radius: 14px;
+}
+
+.pro-compare-card {
+  padding: 20px;
+  border: 1px solid var(--border-default);
+  border-radius: 20px;
+  background-color: var(--surface-card);
+}
+.pro-compare-card[data-ours="true"] {
+  border-color: color-mix(in srgb, var(--accent) 50%, transparent);
+  background-color: color-mix(in srgb, var(--accent) 12%, var(--surface-card));
+}
+
+.pro-field {
+  width: 100%;
+  height: 52px;
+  padding: 0 18px;
+  border: 1px solid var(--border-default);
+  border-radius: 999px;
+  background-color: var(--surface-card);
+  color: var(--text-primary);
+  font-size: 15px;
+  transition: border-color 0.2s ease;
+}
+.pro-field::placeholder {
+  color: var(--text-tertiary);
+}
+.pro-field:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+/* Entrances are decoration; the finished state is the content. Under reduced
+   motion every surface above starts where it ends. */
+@media (prefers-reduced-motion: reduce) {
+  .pro-kpi,
+  .pro-panel,
+  .pro-chart__bar,
+  .pro-chart__line,
+  .pro-chart__dot,
+  .pro-pulse__cell,
+  .pro-meter__fill {
+    transition: none;
+  }
+  .pro-kpi,
+  .pro-panel,
+  .pro-pulse__cell {
+    opacity: 1;
+    transform: none;
+  }
+  .pro-chart__bar {
+    transform: scaleY(1);
+  }
+  .pro-chart__line {
+    stroke-dashoffset: 0;
+  }
+  .pro-chart__dot {
+    opacity: 1;
+  }
+  .pro-meter__fill {
+    width: var(--ready, 0%);
   }
 }

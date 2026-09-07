@@ -77,6 +77,8 @@ import {
   Utensils,
   UtensilsCrossed,
   Waypoints,
+  Store,
+  Users,
   X,
 } from "lucide-react";
 
@@ -184,6 +186,10 @@ export const ICONS = {
   rocket_launch: Rocket,
   chat_bubble: MessageCircle,
   forum: MessagesSquare,
+
+  // Provider Workspace sidebar
+  storefront: Store,
+  groups: Users,
 } satisfies Record<string, LucideIcon>;
 
 export type IconName = keyof typeof ICONS;
