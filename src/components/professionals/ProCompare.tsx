@@ -34,7 +34,6 @@ export default function ProCompare() {
       <div className="x-container x-section flex flex-col gap-12 md:gap-14">
         <ScrollReveal>
           <div className="flex flex-col gap-4">
-            <p className="t-eyebrow text-xtertiary">{t("compareEyebrow")}</p>
             <h2
               id="pro-compare-heading"
               className="t-display2 text-xprimary max-w-[18ch]"

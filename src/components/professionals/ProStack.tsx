@@ -30,7 +30,6 @@ export default function ProStack() {
       <div className="x-container x-section flex flex-col gap-12 md:gap-16">
         <ScrollReveal>
           <div className="flex flex-col gap-4">
-            <p className="t-eyebrow text-xtertiary">{t("stackEyebrow")}</p>
             <h2
               id="pro-stack-heading"
               className="t-display2 text-xprimary max-w-[18ch]"

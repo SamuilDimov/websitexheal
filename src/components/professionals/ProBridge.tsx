@@ -25,7 +25,6 @@ export default function ProBridge() {
       <div className="x-container x-section flex flex-col gap-12 md:gap-16">
         <ScrollReveal>
           <div className="flex flex-col gap-4">
-            <p className="t-eyebrow text-xtertiary">{t("bridgeEyebrow")}</p>
             <h2
               id="pro-bridge-heading"
               className="t-display2 text-xprimary max-w-[16ch]"

@@ -74,10 +74,9 @@ export default function ProClosing() {
     >
       <div className="x-container x-section grid gap-12 md:grid-cols-12 md:gap-10">
         <div className="md:col-span-6">
-          <p className="t-eyebrow text-xtertiary">{t("closingEyebrow")}</p>
           <h2
             id="pro-closing-heading"
-            className="t-display2 text-xprimary mt-4 max-w-[16ch]"
+            className="t-display2 text-xprimary max-w-[16ch]"
           >
             {t("closingHeading")}
           </h2>

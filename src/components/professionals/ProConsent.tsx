@@ -29,7 +29,6 @@ export default async function ProConsent() {
         <div className="md:col-span-6">
           <ScrollReveal>
             <div className="flex flex-col gap-4">
-              <p className="t-eyebrow text-xtertiary">{t("consentEyebrow")}</p>
               <h2
                 id="pro-consent-heading"
                 className="t-display2 text-xprimary max-w-[16ch]"

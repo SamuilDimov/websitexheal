@@ -45,7 +45,6 @@ export default function ProHero() {
             the buttons halfway down the column. */}
         <div className="grid gap-10 pt-14 md:grid-cols-12 md:grid-rows-[auto_1fr] md:gap-x-8 md:gap-y-6 md:pt-24">
           <div className="flex flex-col items-start gap-5 md:col-span-6 md:col-start-1 md:row-start-1">
-            <p className="t-eyebrow text-xtertiary">{t("heroEyebrow")}</p>
             <h1 className="t-display1 text-xprimary max-w-[15ch]">
               {t("heroHeading")}
             </h1>
@@ -92,7 +91,7 @@ export default function ProHero() {
             <li key={stat.label}>
               <ScrollReveal delay={index * 80}>
                 <p className="t-h3 text-xprimary">{stat.value}</p>
-                <p className="t-data text-xtertiary mt-1">{stat.label}</p>
+                <p className="t-data text-xtertiary mt-2">{stat.label}</p>
               </ScrollReveal>
             </li>
           ))}

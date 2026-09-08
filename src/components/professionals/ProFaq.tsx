@@ -33,7 +33,6 @@ export default function ProFaq() {
       <div className="x-container x-section grid gap-10 md:grid-cols-12 md:gap-8">
         <ScrollReveal className="md:col-span-4">
           <div className="flex flex-col gap-4 md:sticky md:top-[14vh]">
-            <p className="t-eyebrow text-xtertiary">{t("faqEyebrow")}</p>
             <h2
               id="pro-faq-heading"
               className="t-display2 text-xprimary max-w-[12ch]"

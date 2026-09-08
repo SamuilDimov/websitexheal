@@ -2638,20 +2638,36 @@ blockquote {
   );
 }
 
+/* The hero's closing spec row, which also carries the hero's bottom spacing:
+   the section has none of its own, so without a padding-bottom here the labels
+   sat flush against the next section's top hairline. */
 .pro-hero__stats {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 20px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
   margin-top: 56px;
-  padding-top: 28px;
+  padding-top: 32px;
+  padding-bottom: 64px;
   border-top: 1px solid var(--border-default);
 }
-@media (min-width: 768px) {
+/* Three columns leave a phone about 110 px a label, and "Modules, one
+   workspace" needs two lines to fit it. Stacked below the breakpoint, with the
+   rule between them turned horizontal. */
+.pro-hero__stats > li + li {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border-default);
+}
+@media (min-width: 640px) {
   .pro-hero__stats {
-    gap: 0;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    padding-bottom: 88px;
   }
   .pro-hero__stats > li + li {
+    margin-top: 0;
+    padding-top: 0;
     padding-left: 32px;
+    border-top: none;
     border-left: 1px solid var(--border-default);
   }
 }
