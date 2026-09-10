@@ -27,7 +27,10 @@ and 18 baked textures, and has no hinge:
   * splits it at z = 2 into lid and base — the two groups the model actually
     has, though nothing in it is named
   * throws away all 40 materials and all 18 textures and assigns the site's
-    own, so the machine sits in the same studio as the phone
+    own, so the machine sits in the same studio as the phone — unless
+    `--keep-source-materials`, which keeps the source's maps instead, because
+    on a deck this size the flat materials read as unlit clay and the maps are
+    what carry the keycap legends, the grille perforation and the grain
   * finds the display by measurement rather than by name (the node names are
     Sketchfab hashes) and gives it the emissive material three.js hangs the
     screenshot on
@@ -97,6 +100,20 @@ def parse_args(argv):
     p.add_argument("--export-glb", default=None)
     p.add_argument("--export-still", default=None)
     p.add_argument("--tri-cap", type=int, default=TRI_CAP)
+    # The site's four flat materials are a deliberate simplification, but on a
+    # 16-inch deck they read as unlit clay: the source ships 18 baked maps that
+    # carry the keycap legends, the speaker perforation, the port cutouts and
+    # the aluminium's grain, and throwing them away is most of why the built
+    # model looks cheaper than the source. This keeps them — at the cost of the
+    # maps' own weight, so it comes with a texture format and a tri cap that
+    # are worth raising together.
+    p.add_argument("--keep-source-materials", action="store_true")
+    # AUTO, not WEBP: 4.2's exporter writes each image to an extensionless temp
+    # file and the WebP writer refuses it ("could not write image"), which
+    # aborts the whole export. Revisit when Blender moves on.
+    p.add_argument("--texture-format", default="AUTO",
+                   choices=("AUTO", "WEBP", "JPEG"))
+    p.add_argument("--texture-quality", type=int, default=75)
     p.add_argument("--lid", type=float, default=5.0)
     p.add_argument("--pitch", type=float, default=7.0)
     p.add_argument("--yaw", type=float, default=-4.0)
@@ -152,7 +169,7 @@ def tri_count(obj):
     return sum(len(p.vertices) - 2 for p in obj.data.polygons)
 
 
-def import_source(path):
+def import_source(path, keep_uvs=False):
     bpy.ops.wm.read_factory_settings(use_empty=True)
     if not os.path.isfile(path):
         sys.exit(f"source model not found: {path}")
@@ -181,9 +198,14 @@ def import_source(path):
     # of them costs 8 bytes on every vertex — 2.6 MB of a 3.9 MB export, for
     # maps that are being thrown away. Only the display needs UVs, and it gets
     # a fresh planar set later.
+    #
+    # `keep_uvs` is the source-materials build, where the maps are not thrown
+    # away. Even then only the first layer survives: the baked maps all sample
+    # TEXCOORD_0, and the other five are lightmap and detail sets this model
+    # never uses.
     for o in [o for o in bpy.data.objects if o.type == "MESH"]:
-        while o.data.uv_layers:
-            o.data.uv_layers.remove(o.data.uv_layers[0])
+        while len(o.data.uv_layers) > (1 if keep_uvs else 0):
+            o.data.uv_layers.remove(o.data.uv_layers[-1 if keep_uvs else 0])
         for attr in list(o.data.color_attributes):
             o.data.color_attributes.remove(attr)
 
@@ -303,7 +325,7 @@ def screen_uvs(obj):
 
 
 def build(args):
-    meshes = import_source(os.path.expanduser(args.source))
+    meshes = import_source(os.path.expanduser(args.source), keep_uvs=args.keep_source_materials)
     source_tris = sum(tri_count(o) for o in meshes)
     screen = find_screen(meshes)
     groups, materials = classify(meshes, screen)
@@ -318,6 +340,12 @@ def build(args):
         display_material, _, _ = (
             P.mat_display_gltf if args.export_glb else P.mat_display
         )(os.path.abspath(os.path.expanduser(args.screen)))
+    # The display's own baked UVs point at the source's screen art. It gets a
+    # planar set instead, and it has to be the *only* set on that mesh: glTF
+    # binds the display texture to TEXCOORD_0, which is whichever layer comes
+    # first.
+    while screen.data.uv_layers:
+        screen.data.uv_layers.remove(screen.data.uv_layers[0])
     span_x, span_v = screen_uvs(screen)
     screen.data.materials.clear()
     screen.data.materials.append(display_material)
@@ -325,6 +353,8 @@ def build(args):
     # ---- everything else ---------------------------------------------------
     for o in groups["lid"] + groups["base"]:
         decimate(o, args.tri_cap)
+        if args.keep_source_materials:
+            continue
         o.data.materials.clear()
         o.data.materials.append(materials[o.name])
 
@@ -454,6 +484,10 @@ def main():
             export_animations=False,
             export_yup=False,
             export_extras=False,
+            # Only bites on a source-materials build; with the site's flat
+            # materials there is nothing to encode.
+            export_image_format=args.texture_format,
+            export_image_quality=args.texture_quality,
         )
         print(f"[mac-laptop] GLB {path}  {os.path.getsize(path) / 1024:.0f} KB")
         print("[mac-laptop] node 'Lid' rotates about X: 0 upright, +90 shut, negative leans back")

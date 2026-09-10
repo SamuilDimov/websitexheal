@@ -215,3 +215,33 @@ a crawler that stops at the markup, must never be handed a dashboard of zeros.
   missing feature screenshots, the retired slideshow interval). The
   professional page contributes three of them, in two of those existing
   categories, and introduces no new category.
+
+## The hero laptop, second pass (2026-09-10)
+
+The laptop read as unlit grey clay, and the cause was our own conversion rather
+than the source mesh. `hero-laptop-mac.blend.py` was dropping the source's 18
+baked maps and 40 materials for our five flat ones, and decimating 112,625 tris
+to 26,375 — so the deck arrived with no keycap legends, no speaker perforation,
+no port cutouts and no aluminium grain.
+
+`--keep-source-materials` keeps the source's PBR materials and their maps. It
+keeps the first UV layer (the maps all sample TEXCOORD_0; the other five layers
+are still stripped), and the display alone is still cleared to our emissive
+material with a planar UV set — that set has to be the *only* one on the panel,
+since glTF binds the screenshot to TEXCOORD_0.
+
+    Blender --background --python scripts/hero-laptop-mac.blend.py -- \
+      --keep-source-materials --tri-cap 1500 --bare-screen \
+      --export-glb public/models/laptop.glb
+
+39,510 tris, 3.7 MB, of which 1.7 MB is textures: the remaining weight is
+geometry, so `--tri-cap` is the dial, not the maps. `--texture-format WEBP`
+fails in Blender 4.2 ("could not write image"), so the export stays AUTO/PNG.
+
+The screen texture was replaced in the same pass. `provider-workspace.webp` was
+2200x1248 (1.76) against a panel that is 3456x2234 (1.547), so the workspace was
+being squashed onto the glass and its bottom row of cards was cropped out of the
+capture. It is now 2560x1655 off `laptopscreen.png`. The poster was re-rendered
+from the same build so the hand-off stays invisible.
+
+The machine is now the source's silver rather than our space black.
